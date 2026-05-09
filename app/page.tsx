@@ -3,6 +3,7 @@ import Hero from "@/components/Hero";
 import TrustBar from "@/components/TrustBar";
 import ProblemsSolution from "@/components/ProblemsSolution";
 import PricingSection from "@/components/PricingSection";
+import ServicesGrid from "@/components/ServicesGrid";
 import BeforeAfter from "@/components/BeforeAfter";
 import HowItWorks from "@/components/HowItWorks";
 import Benefits from "@/components/Benefits";
@@ -13,6 +14,7 @@ import FAQ from "@/components/FAQ";
 import FinalCTA from "@/components/FinalCTA";
 import Footer from "@/components/Footer";
 import FloatingWhatsApp from "@/components/FloatingWhatsApp";
+import { DEFAULT_CITY } from "@/lib/services";
 
 export default function Page() {
   return (
@@ -23,6 +25,7 @@ export default function Page() {
         <TrustBar />
         <ProblemsSolution />
         <PricingSection />
+        <ServicesGrid city={DEFAULT_CITY} />
         <BeforeAfter />
         <HowItWorks />
         <Benefits />

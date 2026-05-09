@@ -1,6 +1,7 @@
 import { MetadataRoute } from "next";
 import { SITE } from "@/lib/site";
 import { CITIES, cityPath } from "@/lib/cities";
+import { SERVICES, servicePath } from "@/lib/services";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const now = new Date();
@@ -11,11 +12,21 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "weekly",
       priority: 1,
     },
+    // Pages ville
     ...CITIES.map((c) => ({
       url: `${SITE.url}${cityPath(c)}`,
       lastModified: now,
       changeFrequency: "weekly" as const,
       priority: 0.8,
     })),
+    // Pages service × ville
+    ...SERVICES.flatMap((s) =>
+      CITIES.map((c) => ({
+        url: `${SITE.url}${servicePath(s, c)}`,
+        lastModified: now,
+        changeFrequency: "weekly" as const,
+        priority: 0.7,
+      })),
+    ),
   ];
 }

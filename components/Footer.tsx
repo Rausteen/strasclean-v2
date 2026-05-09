@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { SITE } from "@/lib/site";
 import { CITIES, cityPath } from "@/lib/cities";
+import { SERVICES, servicePath, DEFAULT_CITY } from "@/lib/services";
 import { WhatsAppIcon, PhoneIcon, SparklesIcon } from "./Icon";
 
 export default function Footer() {
@@ -40,15 +41,19 @@ export default function Footer() {
 
           <div className="lg:col-span-3">
             <h3 className="text-sm font-semibold uppercase tracking-wider text-white/80">
-              Navigation
+              Prestations
             </h3>
             <ul className="mt-4 space-y-2 text-sm text-white/65">
-              <li><a href="#formules" className="hover:text-white">Formules</a></li>
-              <li><a href="#avant-apres" className="hover:text-white">Avant / Après</a></li>
-              <li><a href="#fonctionnement" className="hover:text-white">Fonctionnement</a></li>
-              <li><a href="#avis" className="hover:text-white">Avis</a></li>
-              <li><a href="#faq" className="hover:text-white">FAQ</a></li>
-              <li><a href="#reserver" className="hover:text-white">Réserver</a></li>
+              {SERVICES.map((s) => (
+                <li key={s.slug}>
+                  <Link
+                    href={servicePath(s, DEFAULT_CITY)}
+                    className="hover:text-white"
+                  >
+                    {s.name} {DEFAULT_CITY.name}
+                  </Link>
+                </li>
+              ))}
             </ul>
           </div>
 

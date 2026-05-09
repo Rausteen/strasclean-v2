@@ -2,8 +2,10 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Header from "@/components/Header";
 import CityHero from "@/components/CityHero";
+import ServiceCityHero from "@/components/ServiceCityHero";
 import TrustBar from "@/components/TrustBar";
 import LocalSection from "@/components/LocalSection";
+import ServiceDetail from "@/components/ServiceDetail";
 import PricingSection from "@/components/PricingSection";
 import BeforeAfter from "@/components/BeforeAfter";
 import HowItWorks from "@/components/HowItWorks";
@@ -15,7 +17,10 @@ import FinalCTA from "@/components/FinalCTA";
 import Footer from "@/components/Footer";
 import FloatingWhatsApp from "@/components/FloatingWhatsApp";
 import OtherCities from "@/components/OtherCities";
-import { CITIES, CITY_URL_PREFIX, findCityBySlug, inCity, cityPath } from "@/lib/cities";
+import ServicesGrid from "@/components/ServicesGrid";
+import ServiceLinks from "@/components/ServiceLinks";
+import { CITIES, City, CITY_URL_PREFIX, cityPath, inCity } from "@/lib/cities";
+import { SERVICES, Service, matchSlug, servicePath } from "@/lib/services";
 import { SITE } from "@/lib/site";
 
 type Params = { slug: string };
@@ -23,7 +28,11 @@ type Params = { slug: string };
 export const dynamicParams = false;
 
 export function generateStaticParams(): Params[] {
-  return CITIES.map((c) => ({ slug: `${CITY_URL_PREFIX}-${c.slug}` }));
+  const cityParams = CITIES.map((c) => ({ slug: `${CITY_URL_PREFIX}-${c.slug}` }));
+  const serviceCityParams = SERVICES.flatMap((s) =>
+    CITIES.map((c) => ({ slug: `${s.slug}-${c.slug}` })),
+  );
+  return [...cityParams, ...serviceCityParams];
 }
 
 export async function generateMetadata({
@@ -32,19 +41,62 @@ export async function generateMetadata({
   params: Promise<Params>;
 }): Promise<Metadata> {
   const { slug } = await params;
-  const city = findCityBySlug(slug);
-  if (!city) return {};
+  const m = matchSlug(slug);
+  if (!m) return {};
 
-  const title = `Nettoyage voiture à domicile ${inCity(city)} — StrasClean`;
-  const description = `Nettoyage auto à domicile ${inCity(city)} (${city.postalCodes.join(", ")}). Intérieur, shampouinage, désinfection, lavage extérieur et detailing premium. Réservation rapide par WhatsApp.`;
+  if (m.type === "city") {
+    const city = m.city;
+    const title = `Nettoyage voiture à domicile ${inCity(city)} — StrasClean`;
+    const description = `Nettoyage auto à domicile ${inCity(city)} (${city.postalCodes.join(", ")}). Intérieur, shampouinage, désinfection, lavage extérieur et detailing premium. Réservation rapide par WhatsApp.`;
+    return {
+      title,
+      description,
+      alternates: { canonical: cityPath(city) },
+      openGraph: {
+        type: "website",
+        url: `${SITE.url}${cityPath(city)}`,
+        siteName: SITE.name,
+        title,
+        description,
+        locale: "fr_FR",
+        images: [
+          {
+            url: "/og.svg",
+            width: 1200,
+            height: 630,
+            alt: `StrasClean — nettoyage voiture à domicile ${inCity(city)}`,
+          },
+        ],
+      },
+      twitter: {
+        card: "summary_large_image",
+        title,
+        description,
+        images: ["/og.svg"],
+      },
+      keywords: [
+        `nettoyage voiture domicile ${city.name}`,
+        `lavage auto domicile ${city.name}`,
+        `nettoyage intérieur voiture ${city.name}`,
+        `detailing auto ${city.name}`,
+        `nettoyage siège voiture ${city.name}`,
+        `shampouinage siège voiture ${city.name}`,
+        `nettoyage voiture à domicile ${city.name}`,
+      ],
+    };
+  }
 
+  // service × city
+  const { service, city } = m;
+  const title = `${service.name} ${inCity(city)} — StrasClean`;
+  const description = `${service.shortDesc} StrasClean intervient ${inCity(city)} (${city.postalCodes.join(", ")}) à domicile. À partir de ${service.priceFrom} €. Réservation rapide par WhatsApp.`;
   return {
     title,
     description,
-    alternates: { canonical: cityPath(city) },
+    alternates: { canonical: servicePath(service, city) },
     openGraph: {
       type: "website",
-      url: `${SITE.url}${cityPath(city)}`,
+      url: `${SITE.url}${servicePath(service, city)}`,
       siteName: SITE.name,
       title,
       description,
@@ -54,7 +106,7 @@ export async function generateMetadata({
           url: "/og.svg",
           width: 1200,
           height: 630,
-          alt: `StrasClean — nettoyage voiture à domicile ${inCity(city)}`,
+          alt: `StrasClean — ${service.name} ${inCity(city)}`,
         },
       ],
     },
@@ -65,27 +117,33 @@ export async function generateMetadata({
       images: ["/og.svg"],
     },
     keywords: [
-      `nettoyage voiture domicile ${city.name}`,
-      `lavage auto domicile ${city.name}`,
-      `nettoyage intérieur voiture ${city.name}`,
-      `detailing auto ${city.name}`,
-      `nettoyage siège voiture ${city.name}`,
-      `shampouinage siège voiture ${city.name}`,
-      `nettoyage voiture à domicile ${city.name}`,
+      `${service.name} ${city.name}`,
+      `${service.shortName.toLowerCase()} ${city.name.toLowerCase()}`,
+      `${service.name.toLowerCase()} ${city.name.toLowerCase()}`,
+      `${service.name} domicile ${city.name}`,
+      `${service.shortName} à domicile ${city.name}`,
     ],
   };
 }
 
-export default async function CityPage({
+export default async function Page({
   params,
 }: {
   params: Promise<Params>;
 }) {
   const { slug } = await params;
-  const city = findCityBySlug(slug);
-  if (!city) return notFound();
+  const m = matchSlug(slug);
+  if (!m) return notFound();
 
-  // JSON-LD scopé à la ville
+  return m.type === "city" ? (
+    <CityPage city={m.city} />
+  ) : (
+    <ServiceCityPage service={m.service} city={m.city} />
+  );
+}
+
+// ─── City page ───────────────────────────────────────────────────────────
+function CityPage({ city }: { city: City }) {
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "AutoDetailing",
@@ -102,13 +160,9 @@ export default async function CityPage({
       addressRegion: SITE.region,
       addressCountry: SITE.country,
     },
-    areaServed: {
-      "@type": "City",
-      name: city.name,
-    },
+    areaServed: { "@type": "City", name: city.name },
   };
 
-  // Témoignage personnalisé pour la ville (placé en tête)
   const cityReview = {
     name: city.review.name,
     city: city.name,
@@ -122,6 +176,7 @@ export default async function CityPage({
         <CityHero city={city} />
         <TrustBar />
         <LocalSection city={city} />
+        <ServicesGrid city={city} />
         <PricingSection />
         <BeforeAfter />
         <HowItWorks />
@@ -130,6 +185,98 @@ export default async function CityPage({
         <MidCTA />
         <FAQ />
         <OtherCities current={city} />
+        <FinalCTA />
+      </main>
+      <Footer />
+      <FloatingWhatsApp />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+    </>
+  );
+}
+
+// ─── Service × City page ─────────────────────────────────────────────────
+function ServiceCityPage({ service, city }: { service: Service; city: City }) {
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Service",
+    name: `${service.name} — ${city.name}`,
+    description: service.shortDesc,
+    serviceType: service.name,
+    provider: {
+      "@type": "AutoDetailing",
+      name: SITE.name,
+      telephone: SITE.phoneDisplay,
+      address: {
+        "@type": "PostalAddress",
+        addressLocality: city.name,
+        postalCode: city.postalCodes[0],
+        addressRegion: SITE.region,
+        addressCountry: SITE.country,
+      },
+    },
+    areaServed: { "@type": "City", name: city.name },
+    offers: {
+      "@type": "Offer",
+      priceCurrency: "EUR",
+      price: service.priceFrom,
+      url: `${SITE.url}${servicePath(service, city)}`,
+      availability: "https://schema.org/InStock",
+    },
+  };
+
+  const cityReview = {
+    name: city.review.name,
+    city: city.name,
+    text: city.review.text,
+  };
+
+  // "Autres prestations à {Ville}" — pour le maillage interne
+  const otherServiceItems = SERVICES.filter((s) => s.slug !== service.slug).map(
+    (s) => ({
+      label: s.name,
+      sublabel: `À partir de ${s.priceFrom} € · ${s.duration}`,
+      href: servicePath(s, city),
+      emoji: s.emoji,
+    }),
+  );
+
+  // "{Service} dans d'autres villes" — pour le maillage interne
+  const otherCityItems = CITIES.filter((c) => c.slug !== city.slug).map((c) => ({
+    label: `${service.shortName} ${c.name}`,
+    href: servicePath(service, c),
+  }));
+
+  return (
+    <>
+      <Header />
+      <main>
+        <ServiceCityHero service={service} city={city} />
+        <TrustBar />
+        <ServiceDetail service={service} city={city} />
+        <LocalSection city={city} />
+        <PricingSection />
+        <BeforeAfter />
+        <Benefits />
+        <Testimonials cityReview={cityReview} />
+        <ServiceLinks
+          eyebrow={`Autres prestations ${inCity(city)}`}
+          title={`Tous nos services ${inCity(city)}.`}
+          description={`Découvrez l'ensemble des prestations StrasClean disponibles ${inCity(city)}.`}
+          items={otherServiceItems}
+          variant="service"
+        />
+        <ServiceLinks
+          eyebrow={service.shortName}
+          title={`${service.name} dans d'autres villes.`}
+          description="StrasClean propose cette prestation dans toute l'eurométropole de Strasbourg."
+          items={otherCityItems}
+          variant="city"
+        />
+        <MidCTA />
+        <FAQ />
         <FinalCTA />
       </main>
       <Footer />
