@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { SITE } from "@/lib/site";
 import {
   WhatsAppIcon,
@@ -106,16 +107,23 @@ function HeroVisual() {
       {/* Main car card */}
       <div className="relative animate-fade-up [animation-delay:120ms]">
         <div className="relative overflow-hidden rounded-3xl border border-white/10 bg-gradient-to-br from-ink-800 to-ink-900 p-6 shadow-card">
-          {/* Mock photo */}
-          <div className="relative aspect-[4/3] w-full overflow-hidden rounded-2xl bg-gradient-to-br from-slate-800 via-slate-900 to-black">
-            <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_30%,rgba(16,185,129,0.18),transparent_55%)]" />
-            <div className="absolute inset-0 bg-[radial-gradient(circle_at_80%_70%,rgba(255,255,255,0.07),transparent_55%)]" />
-            <CarMock />
-            <span className="absolute left-4 top-4 chip !bg-black/40">
+          {/* Photo */}
+          <div className="relative aspect-[4/3] w-full overflow-hidden rounded-2xl bg-ink-950">
+            <Image
+              src="/hero.webp"
+              alt="Voiture nettoyée par StrasClean — rendu showroom à Strasbourg"
+              fill
+              priority
+              sizes="(max-width: 1024px) 100vw, 600px"
+              className="object-cover"
+            />
+            {/* Subtle overlay to blend top/bottom edges with the dark UI */}
+            <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-black/10" />
+            <span className="absolute left-4 top-4 chip !bg-black/50 backdrop-blur-md">
               <SparklesIcon size={12} className="text-brand-400" />
-              Avant / Après
+              Rendu showroom
             </span>
-            <span className="absolute right-4 top-4 chip !bg-black/40 !text-brand-200">
+            <span className="absolute right-4 top-4 chip !bg-black/50 !text-brand-200 backdrop-blur-md">
               ★★★★★
             </span>
           </div>
@@ -168,71 +176,3 @@ function HeroVisual() {
   );
 }
 
-function CarMock() {
-  // Inline SVG mock — clean, premium, no heavy assets
-  return (
-    <svg
-      viewBox="0 0 600 420"
-      className="absolute inset-0 h-full w-full"
-      aria-hidden="true"
-    >
-      <defs>
-        <linearGradient id="floor" x1="0" x2="0" y1="0" y2="1">
-          <stop offset="0" stopColor="#0b1220" />
-          <stop offset="1" stopColor="#05070A" />
-        </linearGradient>
-        <linearGradient id="body" x1="0" x2="0" y1="0" y2="1">
-          <stop offset="0" stopColor="#1e293b" />
-          <stop offset="1" stopColor="#0f172a" />
-        </linearGradient>
-        <linearGradient id="shine" x1="0" x2="1" y1="0" y2="0">
-          <stop offset="0" stopColor="#10B981" stopOpacity="0" />
-          <stop offset=".5" stopColor="#10B981" stopOpacity=".55" />
-          <stop offset="1" stopColor="#10B981" stopOpacity="0" />
-        </linearGradient>
-      </defs>
-      <rect width="600" height="420" fill="url(#floor)" />
-      {/* shadow under car */}
-      <ellipse cx="300" cy="320" rx="220" ry="20" fill="#000" opacity="0.5" />
-      {/* car body */}
-      <path
-        d="M90 290 Q120 200 230 190 L380 190 Q470 200 510 270 Q520 290 510 305 L90 305 Q80 300 90 290 Z"
-        fill="url(#body)"
-        stroke="rgba(255,255,255,0.06)"
-      />
-      {/* roof */}
-      <path
-        d="M210 200 Q260 150 320 150 L370 150 Q420 155 450 200 Z"
-        fill="#0f172a"
-        stroke="rgba(255,255,255,0.05)"
-      />
-      {/* window */}
-      <path
-        d="M225 200 Q265 165 320 165 L365 165 Q410 170 435 200 Z"
-        fill="#0b1220"
-      />
-      {/* window highlight */}
-      <path d="M260 175 Q300 168 340 172" stroke="rgba(255,255,255,0.18)" strokeWidth="2" fill="none" />
-      {/* door line */}
-      <path d="M310 200 L310 295" stroke="rgba(255,255,255,0.06)" />
-      {/* wheel arches */}
-      <circle cx="180" cy="305" r="38" fill="#05070A" />
-      <circle cx="430" cy="305" r="38" fill="#05070A" />
-      <circle cx="180" cy="305" r="26" fill="#0b1220" stroke="rgba(255,255,255,0.08)" />
-      <circle cx="430" cy="305" r="26" fill="#0b1220" stroke="rgba(255,255,255,0.08)" />
-      <circle cx="180" cy="305" r="6" fill="#10B981" />
-      <circle cx="430" cy="305" r="6" fill="#10B981" />
-      {/* shine sweep */}
-      <rect x="80" y="180" width="440" height="20" fill="url(#shine)">
-        <animate attributeName="x" from="-440" to="600" dur="5s" repeatCount="indefinite" />
-      </rect>
-      {/* sparkles */}
-      <g fill="#10B981">
-        <circle cx="500" cy="110" r="2.5" />
-        <circle cx="120" cy="90" r="1.8" />
-        <circle cx="540" cy="200" r="1.6" />
-        <circle cx="80" cy="240" r="1.4" />
-      </g>
-    </svg>
-  );
-}
