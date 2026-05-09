@@ -1,0 +1,145 @@
+import Reveal from "./Reveal";
+import { SparklesIcon } from "./Icon";
+
+type Pair = {
+  title: string;
+  description: string;
+  beforeLabel: string;
+  afterLabel: string;
+  gradient: string;
+};
+
+const PAIRS: Pair[] = [
+  {
+    title: "Sièges & tissus",
+    description: "Taches profondes, traces et zones marquées disparues.",
+    beforeLabel: "Sièges tachés",
+    afterLabel: "Sièges nettoyés",
+    gradient: "from-amber-700/60 to-amber-900/60",
+  },
+  {
+    title: "Moquette & tapis",
+    description: "Aspiration, shampouinage et désodorisation en profondeur.",
+    beforeLabel: "Moquette sale",
+    afterLabel: "Moquette propre",
+    gradient: "from-stone-600/60 to-stone-900/60",
+  },
+  {
+    title: "Tableau de bord",
+    description: "Plastiques rénovés, vitres claires et points de contact désinfectés.",
+    beforeLabel: "Tableau poussiéreux",
+    afterLabel: "Intérieur propre",
+    gradient: "from-slate-600/60 to-slate-900/60",
+  },
+  {
+    title: "Carrosserie",
+    description: "Lavage à la main, décontamination et finition brillante.",
+    beforeLabel: "Extérieur terne",
+    afterLabel: "Extérieur brillant",
+    gradient: "from-blue-700/60 to-slate-900/60",
+  },
+];
+
+export default function BeforeAfter() {
+  return (
+    <section id="avant-apres" className="relative py-20 sm:py-28">
+      <div className="container-x">
+        <Reveal className="mx-auto max-w-3xl text-center">
+          <p className="text-sm font-semibold uppercase tracking-[0.18em] text-brand-400">
+            Avant / Après
+          </p>
+          <h2 className="h-display mt-3 text-balance text-3xl font-bold text-white sm:text-4xl lg:text-5xl">
+            Des résultats visibles dès la première intervention.
+          </h2>
+          <p className="mt-4 text-white/70">
+            Chaque détail compte. On vous montre la différence sur les zones
+            qui font le plus de différence dans votre habitacle.
+          </p>
+        </Reveal>
+
+        <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-2">
+          {PAIRS.map((p, i) => (
+            <Reveal key={p.title} delay={i * 80}>
+              <BeforeAfterCard pair={p} />
+            </Reveal>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function BeforeAfterCard({ pair }: { pair: Pair }) {
+  return (
+    <div className="group overflow-hidden rounded-3xl border border-white/10 bg-white/[0.03] transition hover:border-white/20">
+      <div className="grid grid-cols-2 gap-px bg-white/5">
+        <PlaceholderTile
+          label={pair.beforeLabel}
+          tone="before"
+          gradient={pair.gradient}
+        />
+        <PlaceholderTile
+          label={pair.afterLabel}
+          tone="after"
+          gradient={pair.gradient}
+        />
+      </div>
+      <div className="p-5">
+        <div className="flex items-center gap-2">
+          <SparklesIcon size={14} className="text-brand-400" />
+          <h3 className="h-display text-base font-semibold text-white">{pair.title}</h3>
+        </div>
+        <p className="mt-1 text-sm text-white/65">{pair.description}</p>
+      </div>
+    </div>
+  );
+}
+
+function PlaceholderTile({
+  label,
+  tone,
+  gradient,
+}: {
+  label: string;
+  tone: "before" | "after";
+  gradient: string;
+}) {
+  const isAfter = tone === "after";
+  return (
+    <div
+      className={`relative aspect-[4/3] w-full overflow-hidden ${
+        isAfter ? "bg-gradient-to-br from-ink-800 to-ink-900" : `bg-gradient-to-br ${gradient}`
+      }`}
+      role="img"
+      aria-label={`${label} — placeholder, à remplacer par une photo réelle`}
+    >
+      {!isAfter ? (
+        <div className="absolute inset-0">
+          {/* dirty texture */}
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_30%,rgba(0,0,0,0.45),transparent_55%)]" />
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_70%,rgba(0,0,0,0.55),transparent_60%)]" />
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_80%,rgba(255,255,255,0.04),transparent_50%)]" />
+        </div>
+      ) : (
+        <div className="absolute inset-0">
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(16,185,129,0.18),transparent_55%)]" />
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_75%_80%,rgba(255,255,255,0.08),transparent_55%)]" />
+          {/* shine band */}
+          <div className="absolute -left-1/2 top-0 h-full w-[150%] -rotate-12 bg-gradient-to-r from-transparent via-white/10 to-transparent" />
+        </div>
+      )}
+      <span
+        className={`absolute left-3 top-3 rounded-full px-2.5 py-1 text-[11px] font-bold uppercase tracking-wider backdrop-blur ${
+          isAfter
+            ? "bg-brand-500 text-ink-950"
+            : "bg-black/45 text-white"
+        }`}
+      >
+        {isAfter ? "Après" : "Avant"}
+      </span>
+      <span className="absolute bottom-3 left-3 rounded-md bg-black/35 px-2 py-1 text-[11px] text-white/85 backdrop-blur">
+        {label}
+      </span>
+    </div>
+  );
+}
