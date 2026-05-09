@@ -12,6 +12,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "weekly",
       priority: 1,
     },
+    // Hub prestations
+    {
+      url: `${SITE.url}/services`,
+      lastModified: now,
+      changeFrequency: "weekly",
+      priority: 0.9,
+    },
     // Pages ville
     ...CITIES.map((c) => ({
       url: `${SITE.url}${cityPath(c)}`,

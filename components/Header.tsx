@@ -6,7 +6,7 @@ import { WhatsAppIcon, PhoneIcon, MenuIcon, CloseIcon, SparklesIcon } from "./Ic
 
 const NAV = [
   { href: "#formules", label: "Formules" },
-  { href: "#services", label: "Services" },
+  { href: "/services", label: "Prestations" },
   { href: "#avant-apres", label: "Avant / Après" },
   { href: "#fonctionnement", label: "Fonctionnement" },
   { href: "#faq", label: "FAQ" },

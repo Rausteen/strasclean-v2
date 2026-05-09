@@ -4,53 +4,22 @@ import { useState } from "react";
 import Reveal from "./Reveal";
 import { ChevronDownIcon, WhatsAppIcon } from "./Icon";
 import { SITE } from "@/lib/site";
+import { FAQS, FAQItem, faqJsonLd } from "@/lib/faq";
 
-const FAQS = [
-  {
-    q: "Est-ce que vous vous déplacez à domicile ?",
-    a: "Oui, c'est même le cœur de notre service. On intervient à votre domicile, sur votre lieu de travail ou à l'adresse de votre choix, à Strasbourg et dans les communes voisines.",
-  },
-  {
-    q: "Combien de temps dure un nettoyage ?",
-    a: "Comptez environ 1h à 1h30 pour la formule Confort, 2h à 3h pour la Premium, et jusqu'à 4h pour la Luxury Detailing. La durée dépend de la taille du véhicule et de son état.",
-  },
-  {
-    q: "Le prix peut-il changer ?",
-    a: "Les prix sont indiqués « à partir de » et peuvent varier selon la taille de la voiture (citadine, berline, SUV, utilitaire), l'état intérieur et les options demandées. On confirme toujours le tarif avant intervention.",
-  },
-  {
-    q: "Dois-je fournir l'eau ou l'électricité ?",
-    a: "Selon la formule et le lieu d'intervention, nous vous confirmerons les besoins exacts lors de la réservation. Pour la plupart des prestations à domicile, un simple accès à une prise électrique suffit.",
-  },
-  {
-    q: "Nettoyez-vous les poils d'animaux ?",
-    a: "Oui. Le traitement poils d'animaux est inclus dans la formule Luxury Detailing, et disponible en option sur les autres formules. On utilise un matériel adapté pour vraiment décoller les poils des tissus.",
-  },
-  {
-    q: "Faites-vous le lavage extérieur ?",
-    a: "Oui. Le lavage extérieur à la main, la décontamination de la carrosserie et le nettoyage des vitres extérieures sont inclus dans la formule Luxury Detailing.",
-  },
-  {
-    q: "Comment réserver ?",
-    a: "Le plus simple : envoyez-nous un message WhatsApp avec votre ville et idéalement une photo de votre véhicule. On vous confirme un créneau et la formule adaptée. Vous pouvez aussi nous appeler.",
-  },
-  {
-    q: "Intervenez-vous en dehors de Strasbourg ?",
-    a: "Oui. On couvre Schiltigheim, Illkirch, Bischheim, Ostwald, Lingolsheim, Hoenheim, Eckbolsheim, Oberhausbergen, Mundolsheim, Vendenheim, La Wantzenau, et les alentours. Si votre commune n'est pas listée, demandez-nous.",
-  },
-  {
-    q: "Puis-je envoyer des photos avant de réserver ?",
-    a: "Bien sûr, on encourage même cette démarche. Quelques photos de l'intérieur (sièges, moquette, coffre) nous permettent de vous conseiller la formule la plus adaptée et d'être précis sur le tarif.",
-  },
-  {
-    q: "Quels moyens de paiement acceptez-vous ?",
-    a: "Espèces, carte bancaire et virement. Le paiement se fait sur place, à la fin de la prestation, une fois que le résultat vous convient.",
-  },
-];
+type Props = {
+  /** Q&R supplémentaires fusionnées dans le FAQPage JSON-LD (non affichées). */
+  extraSchemaFAQs?: FAQItem[];
+};
 
-export default function FAQ() {
+export default function FAQ({ extraSchemaFAQs }: Props = {}) {
+  const allForSchema = [...FAQS, ...(extraSchemaFAQs ?? [])];
   return (
     <section id="faq" className="relative py-14 sm:py-24 lg:py-28">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd(allForSchema)) }}
+      />
+
       <div className="container-x">
         <div className="grid gap-10 lg:grid-cols-12 lg:gap-12">
           <Reveal className="lg:col-span-5">

@@ -276,7 +276,7 @@ function ServiceCityPage({ service, city }: { service: Service; city: City }) {
           variant="city"
         />
         <MidCTA />
-        <FAQ />
+        <FAQ extraSchemaFAQs={service.faq} />
         <FinalCTA />
       </main>
       <Footer />

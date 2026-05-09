@@ -54,6 +54,14 @@ export default function Footer() {
                   </Link>
                 </li>
               ))}
+              <li>
+                <Link
+                  href="/services"
+                  className="font-semibold text-brand-300 hover:text-brand-200"
+                >
+                  → Voir toutes les prestations
+                </Link>
+              </li>
             </ul>
           </div>
 
