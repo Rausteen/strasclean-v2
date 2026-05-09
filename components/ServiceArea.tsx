@@ -1,6 +1,8 @@
+import Link from "next/link";
 import Reveal from "./Reveal";
-import { ZONES, waLink } from "@/lib/site";
-import { MapPinIcon, WhatsAppIcon } from "./Icon";
+import { waLink } from "@/lib/site";
+import { CITIES, cityPath } from "@/lib/cities";
+import { MapPinIcon, WhatsAppIcon, ArrowRightIcon } from "./Icon";
 
 export default function ServiceArea() {
   return (
@@ -46,13 +48,21 @@ export default function ServiceArea() {
               </p>
 
               <ul className="mt-6 grid grid-cols-2 gap-2 sm:grid-cols-3">
-                {ZONES.map((z) => (
-                  <li
-                    key={z}
-                    className="flex items-center gap-2 rounded-xl border border-white/10 bg-white/[0.03] px-3 py-2.5 text-sm text-white/85 transition hover:border-brand-400/40 hover:bg-brand-500/10"
-                  >
-                    <MapPinIcon size={14} className="text-brand-400" />
-                    {z}
+                {CITIES.map((c) => (
+                  <li key={c.slug}>
+                    <Link
+                      href={cityPath(c)}
+                      className="group flex items-center justify-between gap-2 rounded-xl border border-white/10 bg-white/[0.03] px-3 py-2.5 text-sm text-white/85 transition hover:border-brand-400/40 hover:bg-brand-500/10 hover:text-white"
+                    >
+                      <span className="inline-flex items-center gap-2">
+                        <MapPinIcon size={14} className="text-brand-400" />
+                        {c.name}
+                      </span>
+                      <ArrowRightIcon
+                        size={12}
+                        className="text-white/40 transition group-hover:translate-x-0.5 group-hover:text-brand-400"
+                      />
+                    </Link>
                   </li>
                 ))}
                 <li className="flex items-center justify-center rounded-xl border border-dashed border-white/15 bg-white/[0.02] px-3 py-2.5 text-sm text-white/65">

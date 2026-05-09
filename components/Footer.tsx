@@ -1,4 +1,6 @@
-import { SITE, ZONES } from "@/lib/site";
+import Link from "next/link";
+import { SITE } from "@/lib/site";
+import { CITIES, cityPath } from "@/lib/cities";
 import { WhatsAppIcon, PhoneIcon, SparklesIcon } from "./Icon";
 
 export default function Footer() {
@@ -55,12 +57,14 @@ export default function Footer() {
               Zones desservies
             </h3>
             <ul className="mt-4 flex flex-wrap gap-2 text-xs text-white/65">
-              {ZONES.map((z) => (
-                <li
-                  key={z}
-                  className="rounded-full border border-white/10 bg-white/[0.03] px-3 py-1"
-                >
-                  {z}
+              {CITIES.map((c) => (
+                <li key={c.slug}>
+                  <Link
+                    href={cityPath(c)}
+                    className="inline-block rounded-full border border-white/10 bg-white/[0.03] px-3 py-1 transition hover:border-brand-400/40 hover:bg-brand-500/10 hover:text-white"
+                  >
+                    {c.name}
+                  </Link>
                 </li>
               ))}
               <li className="rounded-full border border-dashed border-white/15 bg-white/[0.02] px-3 py-1">

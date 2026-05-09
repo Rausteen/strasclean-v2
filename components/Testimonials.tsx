@@ -3,6 +3,23 @@ import { StarIcon } from "./Icon";
 
 type Review = { name: string; city: string; text: string; initials: string; tone: string };
 
+const TONES = [
+  "from-emerald-500/30 to-teal-500/30",
+  "from-violet-500/30 to-fuchsia-500/30",
+  "from-sky-500/30 to-cyan-500/30",
+  "from-amber-500/30 to-orange-500/30",
+  "from-rose-500/30 to-pink-500/30",
+  "from-indigo-500/30 to-blue-500/30",
+];
+
+function initialsOf(name: string) {
+  return name
+    .split(/\s+/)
+    .map((p) => p[0]?.toUpperCase() ?? "")
+    .slice(0, 2)
+    .join("");
+}
+
 const REVIEWS: Review[] = [
   {
     name: "Julien M.",
@@ -54,7 +71,25 @@ const REVIEWS: Review[] = [
   },
 ];
 
-export default function Testimonials() {
+type Props = {
+  /** Avis personnalisé optionnel (ex. : pour une page ville). Affiché en premier. */
+  cityReview?: { name: string; city: string; text: string };
+};
+
+export default function Testimonials({ cityReview }: Props = {}) {
+  const reviews: Review[] = cityReview
+    ? [
+        {
+          name: cityReview.name,
+          city: cityReview.city,
+          text: cityReview.text,
+          initials: initialsOf(cityReview.name),
+          tone: TONES[0],
+        },
+        ...REVIEWS.filter((r) => r.city !== cityReview.city).slice(0, 5),
+      ]
+    : REVIEWS;
+
   return (
     <section id="avis" className="relative py-14 sm:py-24 lg:py-28">
       <div className="container-x">
@@ -76,7 +111,7 @@ export default function Testimonials() {
         </Reveal>
 
         <div className="mt-12 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
-          {REVIEWS.map((r, i) => (
+          {reviews.map((r, i) => (
             <Reveal key={r.name} delay={i * 70}>
               <article className="card card-hover h-full">
                 <div className="flex items-center gap-3">
