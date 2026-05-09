@@ -1,12 +1,13 @@
 "use client";
 
+import * as React from "react";
 import { useEffect, useRef } from "react";
 
 type Props = {
   children: React.ReactNode;
   className?: string;
   delay?: number;
-  as?: keyof JSX.IntrinsicElements;
+  as?: keyof React.JSX.IntrinsicElements;
 };
 
 export default function Reveal({ children, className = "", delay = 0, as: Tag = "div" }: Props) {
