@@ -155,19 +155,19 @@ export default function FormulesPage() {
             <div className="space-y-12 sm:space-y-20">
               {PLANS.map((p, i) => (
                 <Reveal key={p.id} delay={i * 80}>
-                  <article
-                    id={p.id}
-                    className={`relative scroll-mt-24 overflow-hidden rounded-3xl border p-6 sm:p-9 ${
-                      p.highlight
-                        ? "border-brand-400/40 bg-gradient-to-br from-brand-500/10 to-ink-900 shadow-glow"
-                        : "border-white/10 bg-white/[0.03]"
-                    }`}
-                  >
+                  <article id={p.id} className="relative scroll-mt-24">
                     {p.badge && (
-                      <span className="absolute -top-3 left-9 whitespace-nowrap rounded-full bg-brand-500 px-3 py-1 text-[11px] font-bold uppercase tracking-wider text-ink-950 shadow-lg">
+                      <span className="absolute left-8 top-0 z-10 -translate-y-1/2 whitespace-nowrap rounded-full bg-brand-500 px-3 py-1 text-[11px] font-bold uppercase tracking-wider text-ink-950 shadow-lg">
                         {p.badge}
                       </span>
                     )}
+                    <div
+                      className={`relative overflow-hidden rounded-3xl border p-6 sm:p-9 ${
+                        p.highlight
+                          ? "border-brand-400/40 bg-gradient-to-br from-brand-500/10 to-ink-900 shadow-glow"
+                          : "border-white/10 bg-white/[0.03]"
+                      }`}
+                    >
 
                     <div className="grid gap-8 lg:grid-cols-12 lg:gap-12">
                       {/* Description */}
@@ -272,6 +272,7 @@ export default function FormulesPage() {
                           </a>
                         </p>
                       </div>
+                    </div>
                     </div>
                   </article>
                 </Reveal>

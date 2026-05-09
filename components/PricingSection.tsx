@@ -94,32 +94,31 @@ export default function PricingSection() {
 function PlanCard({ plan }: { plan: Plan }) {
   const popular = plan.highlight;
   return (
-    <div
-      id={plan.id}
-      className={`group relative h-full overflow-hidden rounded-3xl border p-6 transition-all duration-300 sm:p-7 scroll-mt-24 ${
-        popular
-          ? "border-brand-400/40 bg-gradient-to-b from-brand-500/10 to-ink-900 shadow-glow"
-          : "border-white/10 bg-white/[0.03] hover:-translate-y-1 hover:border-white/20"
-      }`}
-    >
-      {/* Glow */}
-      <div
-        aria-hidden
-        className={`pointer-events-none absolute inset-x-0 -top-24 h-40 bg-gradient-to-b ${plan.accent} blur-2xl`}
-      />
-
+    <div id={plan.id} className="group relative h-full scroll-mt-24">
       {plan.badge && (
-        <span className="absolute -top-3 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-full bg-brand-500 px-3 py-1 text-[11px] font-bold uppercase tracking-wider text-ink-950 shadow-lg">
+        <span className="absolute left-1/2 top-0 z-10 -translate-x-1/2 -translate-y-1/2 whitespace-nowrap rounded-full bg-brand-500 px-3 py-1 text-[11px] font-bold uppercase tracking-wider text-ink-950 shadow-lg">
           {plan.badge}
         </span>
       )}
+      <div
+        className={`relative h-full overflow-hidden rounded-3xl border p-6 transition-all duration-300 sm:p-7 ${
+          popular
+            ? "border-brand-400/40 bg-gradient-to-b from-brand-500/10 to-ink-900 shadow-glow"
+            : "border-white/10 bg-white/[0.03] group-hover:-translate-y-1 group-hover:border-white/20"
+        }`}
+      >
+        {/* Glow */}
+        <div
+          aria-hidden
+          className={`pointer-events-none absolute inset-x-0 -top-24 h-40 bg-gradient-to-b ${plan.accent} blur-2xl`}
+        />
 
-      <div className={`flex items-center gap-3 ${plan.badge ? "mt-1" : ""}`}>
-        <span className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-white/5 text-xl">
-          {plan.emoji}
-        </span>
-        <h3 className="h-display text-lg font-semibold text-white sm:text-xl">{plan.name}</h3>
-      </div>
+        <div className="flex items-center gap-3">
+          <span className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-white/5 text-xl">
+            {plan.emoji}
+          </span>
+          <h3 className="h-display text-lg font-semibold text-white sm:text-xl">{plan.name}</h3>
+        </div>
 
       <div className="mt-5 flex items-baseline gap-2">
         <span className="text-xs font-medium uppercase tracking-wider text-white/55">
@@ -164,6 +163,7 @@ function PlanCard({ plan }: { plan: Plan }) {
         >
           Voir les villes desservies <ArrowRightIcon size={14} />
         </Link>
+      </div>
       </div>
     </div>
   );
