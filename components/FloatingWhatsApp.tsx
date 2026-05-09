@@ -18,25 +18,31 @@ export default function FloatingWhatsApp() {
     <>
       {/* Mobile sticky bar */}
       <div
-        className={`fixed inset-x-0 bottom-0 z-40 border-t border-white/5 bg-ink-950/95 px-4 py-3 backdrop-blur transition-transform duration-300 lg:hidden ${
+        className={`fixed inset-x-0 bottom-0 z-40 border-t border-white/10 bg-ink-950/95 backdrop-blur-md transition-transform duration-300 lg:hidden ${
           visible ? "translate-y-0" : "translate-y-full"
         }`}
+        style={{
+          paddingTop: "10px",
+          paddingBottom: "calc(env(safe-area-inset-bottom, 0px) + 10px)",
+          paddingLeft: "max(env(safe-area-inset-left, 0px), 12px)",
+          paddingRight: "max(env(safe-area-inset-right, 0px), 12px)",
+        }}
       >
         <div className="mx-auto flex max-w-md gap-2">
           <a
             href={SITE.whatsappHref}
             target="_blank"
             rel="noopener noreferrer"
-            className="btn-wa flex-1 h-12 text-base"
+            className="btn-wa flex-1 h-12 text-[15px] font-semibold"
           >
             <WhatsAppIcon size={20} /> Réserver sur WhatsApp
           </a>
           <a
             href={SITE.phoneHref}
             aria-label="Appeler StrasClean"
-            className="grid h-12 w-12 shrink-0 place-items-center rounded-full border border-white/10 bg-white/5 text-white"
+            className="grid h-12 w-12 shrink-0 place-items-center rounded-full border border-white/10 bg-white/5 text-white active:scale-95"
           >
-            <PhoneIcon size={18} />
+            <PhoneIcon size={20} />
           </a>
         </div>
       </div>

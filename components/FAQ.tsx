@@ -50,7 +50,7 @@ const FAQS = [
 
 export default function FAQ() {
   return (
-    <section id="faq" className="relative py-20 sm:py-28">
+    <section id="faq" className="relative py-14 sm:py-24 lg:py-28">
       <div className="container-x">
         <div className="grid gap-10 lg:grid-cols-12 lg:gap-12">
           <Reveal className="lg:col-span-5">

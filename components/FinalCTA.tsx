@@ -4,10 +4,10 @@ import { WhatsAppIcon, PhoneIcon, MapPinIcon, BoltIcon, CheckIcon } from "./Icon
 
 export default function FinalCTA() {
   return (
-    <section id="reserver" className="relative py-20 sm:py-28">
+    <section id="reserver" className="relative py-14 sm:py-24 lg:py-28">
       <div className="container-x">
         <Reveal>
-          <div className="relative overflow-hidden rounded-[32px] border border-white/10 bg-gradient-to-br from-ink-800 via-ink-900 to-black p-10 text-center sm:p-16">
+          <div className="relative overflow-hidden rounded-[28px] border border-white/10 bg-gradient-to-br from-ink-800 via-ink-900 to-black p-7 text-center sm:rounded-[32px] sm:p-12 lg:p-16">
             <div className="pointer-events-none absolute inset-0 -z-10 bg-radial-fade" />
             <div className="pointer-events-none absolute inset-0 -z-10 bg-grid-light bg-[size:36px_36px] opacity-[0.2] [mask-image:radial-gradient(ellipse_at_center,black_30%,transparent_75%)]" />
             <div className="pointer-events-none absolute -bottom-32 left-1/2 h-[420px] w-[820px] -translate-x-1/2 rounded-full bg-brand-500/20 blur-3xl" />
@@ -20,7 +20,7 @@ export default function FinalCTA() {
               Disponible cette semaine
             </span>
 
-            <h2 className="h-display mx-auto mt-5 max-w-3xl text-balance text-4xl font-bold text-white sm:text-5xl">
+            <h2 className="h-display mx-auto mt-5 max-w-3xl text-balance text-[30px] font-bold leading-tight text-white sm:text-4xl lg:text-5xl">
               Prêt à retrouver une voiture propre,{" "}
               <span className="bg-gradient-to-r from-brand-300 to-brand-500 bg-clip-text text-transparent">
                 saine et agréable&nbsp;?
@@ -31,17 +31,17 @@ export default function FinalCTA() {
               secondes. On vous répond rapidement et on s'occupe de tout.
             </p>
 
-            <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
+            <div className="mx-auto mt-7 flex w-full max-w-md flex-col items-stretch justify-center gap-3 sm:max-w-none sm:flex-row">
               <a
                 href={SITE.whatsappHref}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="btn-wa h-12 px-7 text-base"
+                className="btn-wa h-14 px-7 text-base sm:h-12 sm:w-auto"
               >
                 <WhatsAppIcon size={20} />
                 Réserver sur WhatsApp
               </a>
-              <a href={SITE.phoneHref} className="btn-primary h-12 px-7 text-base">
+              <a href={SITE.phoneHref} className="btn-primary h-14 px-7 text-base sm:h-12 sm:w-auto">
                 <PhoneIcon size={18} />
                 Appeler maintenant
               </a>

@@ -20,8 +20,8 @@ export default function Hero() {
         <div className="absolute -top-32 left-1/2 h-[520px] w-[820px] -translate-x-1/2 rounded-full bg-brand-500/20 blur-3xl" />
       </div>
 
-      <div className="container-x pt-10 pb-16 sm:pt-16 sm:pb-24 lg:pt-20 lg:pb-28">
-        <div className="grid items-center gap-12 lg:grid-cols-2">
+      <div className="container-x pt-8 pb-14 sm:pt-16 sm:pb-24 lg:pt-20 lg:pb-28">
+        <div className="grid items-center gap-10 lg:grid-cols-2 lg:gap-12">
           {/* Copy */}
           <div className="animate-fade-up">
             <span className="chip">
@@ -32,45 +32,45 @@ export default function Hero() {
               Nettoyage auto à domicile à Strasbourg
             </span>
 
-            <h1 className="h-display mt-5 text-balance text-4xl font-bold leading-[1.05] text-white sm:text-5xl lg:text-6xl">
+            <h1 className="h-display mt-4 text-balance text-[34px] font-bold leading-[1.05] text-white sm:text-5xl lg:text-6xl">
               Votre voiture propre comme neuve,{" "}
               <span className="bg-gradient-to-r from-brand-300 via-brand-400 to-brand-500 bg-clip-text text-transparent">
                 sans vous déplacer.
               </span>
             </h1>
 
-            <p className="mt-5 max-w-xl text-balance text-base leading-relaxed text-white/70 sm:text-lg">
+            <p className="mt-4 max-w-xl text-balance text-[15px] leading-relaxed text-white/70 sm:mt-5 sm:text-lg">
               StrasClean se déplace chez vous pour nettoyer votre véhicule en
               profondeur, avec des formules adaptées à votre besoin&nbsp;:
               entretien rapide, rénovation intérieure ou detailing complet.
             </p>
 
-            <div className="mt-7 flex flex-col gap-3 sm:flex-row">
+            <div className="mt-6 flex flex-col gap-3 sm:mt-7 sm:flex-row">
               <a
                 href={SITE.whatsappHref}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="btn-wa h-12 px-6 text-base"
+                className="btn-wa h-14 w-full px-6 text-base sm:h-12 sm:w-auto"
               >
                 <WhatsAppIcon size={20} />
                 Réserver sur WhatsApp
               </a>
-              <a href={SITE.phoneHref} className="btn-ghost h-12 px-6 text-base">
+              <a href={SITE.phoneHref} className="btn-ghost h-14 w-full px-6 text-base sm:h-12 sm:w-auto">
                 <PhoneIcon size={18} />
                 Appeler maintenant
               </a>
             </div>
 
             {/* Trust */}
-            <ul className="mt-7 flex flex-wrap gap-x-5 gap-y-2 text-sm text-white/70">
+            <ul className="mt-6 flex flex-wrap gap-x-4 gap-y-2 text-[13px] text-white/70 sm:mt-7 sm:gap-x-5 sm:text-sm">
               {[
                 { icon: <HomeChip />, label: "Intervention à domicile" },
-                { icon: <MapPinIcon size={16} className="text-brand-400" />, label: "Strasbourg & alentours" },
-                { icon: <BoltIcon size={16} className="text-brand-400" />, label: "Réservation rapide" },
-                { icon: <CarIcon size={16} className="text-brand-400" />, label: "Intérieur / extérieur" },
-                { icon: <CheckIcon size={16} className="text-brand-400" />, label: "Paiement simple" },
+                { icon: <MapPinIcon size={14} className="text-brand-400" />, label: "Strasbourg & alentours" },
+                { icon: <BoltIcon size={14} className="text-brand-400" />, label: "Réservation rapide" },
+                { icon: <CarIcon size={14} className="text-brand-400" />, label: "Intérieur / extérieur" },
+                { icon: <CheckIcon size={14} className="text-brand-400" />, label: "Paiement simple" },
               ].map((t) => (
-                <li key={t.label} className="inline-flex items-center gap-2">
+                <li key={t.label} className="inline-flex items-center gap-1.5">
                   {t.icon}
                   {t.label}
                 </li>
@@ -78,8 +78,8 @@ export default function Hero() {
             </ul>
 
             {/* Availability strip */}
-            <div className="mt-7 inline-flex items-center gap-3 rounded-full border border-brand-500/30 bg-brand-500/10 px-4 py-2 text-sm text-brand-200">
-              <ClockIcon size={16} className="text-brand-300" />
+            <div className="mt-6 inline-flex items-center gap-2 rounded-full border border-brand-500/30 bg-brand-500/10 px-3 py-2 text-[13px] text-brand-200 sm:mt-7 sm:gap-3 sm:px-4 sm:text-sm">
+              <ClockIcon size={14} className="text-brand-300" />
               Créneaux disponibles cette semaine sur Strasbourg
             </div>
           </div>

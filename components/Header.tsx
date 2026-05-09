@@ -77,7 +77,7 @@ export default function Header() {
             href={SITE.whatsappHref}
             target="_blank"
             rel="noopener noreferrer"
-            className="btn-wa !px-4 !py-2 text-sm"
+            className="btn-wa !min-h-0 !px-3.5 !py-2 text-sm"
             aria-label="Réserver sur WhatsApp"
           >
             <WhatsAppIcon size={16} />
@@ -85,8 +85,9 @@ export default function Header() {
           </a>
           <button
             onClick={() => setOpen((s) => !s)}
-            aria-label="Ouvrir le menu"
-            className="grid h-10 w-10 place-items-center rounded-full border border-white/10 bg-white/5 text-white"
+            aria-label={open ? "Fermer le menu" : "Ouvrir le menu"}
+            aria-expanded={open}
+            className="grid h-10 w-10 place-items-center rounded-full border border-white/10 bg-white/5 text-white active:scale-95"
           >
             {open ? <CloseIcon size={18} /> : <MenuIcon size={18} />}
           </button>

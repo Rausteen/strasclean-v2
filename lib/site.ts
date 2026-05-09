@@ -8,11 +8,11 @@ export const SITE = {
   tagline: "Nettoyage voiture à domicile à Strasbourg",
   url: "https://strasclean.fr",
   // Contact
-  phoneDisplay: "+33 6 00 00 00 00",
-  phoneHref: "tel:+33600000000",
-  whatsappNumber: "33600000000",
+  phoneDisplay: "+33 7 67 05 24 35",
+  phoneHref: "tel:+33767052435",
+  whatsappNumber: "33767052435",
   whatsappHref:
-    "https://wa.me/33600000000?text=Bonjour%20StrasClean%2C%20je%20souhaite%20r%C3%A9server%20un%20nettoyage%20auto",
+    "https://wa.me/33767052435?text=Bonjour%20StrasClean%2C%20je%20souhaite%20r%C3%A9server%20un%20nettoyage%20auto",
   email: "contact@strasclean.fr",
   city: "Strasbourg",
   region: "Grand Est",

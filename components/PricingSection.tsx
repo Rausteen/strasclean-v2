@@ -86,7 +86,7 @@ const OPTIONS = [
 
 export default function PricingSection() {
   return (
-    <section id="formules" className="relative py-20 sm:py-28">
+    <section id="formules" className="relative py-14 sm:py-24 lg:py-28">
       <div className="pointer-events-none absolute inset-0 -z-10">
         <div className="absolute left-1/2 top-0 h-[400px] w-[800px] -translate-x-1/2 rounded-full bg-brand-500/10 blur-3xl" />
       </div>
@@ -106,7 +106,7 @@ export default function PricingSection() {
           </p>
         </Reveal>
 
-        <div className="mt-12 grid gap-6 lg:grid-cols-3">
+        <div className="mt-10 grid gap-6 sm:mt-12 md:grid-cols-2 lg:grid-cols-3">
           {PLANS.map((p, i) => (
             <Reveal key={p.id} delay={i * 100}>
               <PlanCard plan={p} />
@@ -138,7 +138,7 @@ export default function PricingSection() {
                 )}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="btn-wa"
+                className="btn-wa w-full sm:w-auto"
               >
                 <WhatsAppIcon size={16} /> Demander une option
               </a>
@@ -166,7 +166,7 @@ function PlanCard({ plan }: { plan: Plan }) {
   const popular = plan.highlight;
   return (
     <div
-      className={`group relative h-full overflow-hidden rounded-3xl border p-7 transition-all duration-300 ${
+      className={`group relative h-full overflow-hidden rounded-3xl border p-6 transition-all duration-300 sm:p-7 ${
         popular
           ? "border-brand-400/40 bg-gradient-to-b from-brand-500/10 to-ink-900 shadow-glow"
           : "border-white/10 bg-white/[0.03] hover:-translate-y-1 hover:border-white/20"
@@ -179,16 +179,16 @@ function PlanCard({ plan }: { plan: Plan }) {
       />
 
       {plan.badge && (
-        <span className="absolute right-5 top-5 rounded-full bg-brand-500 px-3 py-1 text-[11px] font-bold uppercase tracking-wider text-ink-950">
+        <span className="absolute -top-3 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-full bg-brand-500 px-3 py-1 text-[11px] font-bold uppercase tracking-wider text-ink-950 shadow-lg">
           {plan.badge}
         </span>
       )}
 
-      <div className="flex items-center gap-3">
-        <span className="grid h-10 w-10 place-items-center rounded-xl bg-white/5 text-xl">
+      <div className={`flex items-center gap-3 ${plan.badge ? "mt-1" : ""}`}>
+        <span className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-white/5 text-xl">
           {plan.emoji}
         </span>
-        <h3 className="h-display text-xl font-semibold text-white">{plan.name}</h3>
+        <h3 className="h-display text-lg font-semibold text-white sm:text-xl">{plan.name}</h3>
       </div>
 
       <div className="mt-5 flex items-baseline gap-2">
@@ -223,7 +223,7 @@ function PlanCard({ plan }: { plan: Plan }) {
           href={waLink(plan.ctaMessage)}
           target="_blank"
           rel="noopener noreferrer"
-          className={popular ? "btn-wa w-full" : "btn-primary w-full"}
+          className={`${popular ? "btn-wa" : "btn-primary"} h-12 w-full text-base`}
         >
           {popular ? <WhatsAppIcon size={18} /> : null}
           Réserver maintenant

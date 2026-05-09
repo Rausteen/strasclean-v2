@@ -10,6 +10,7 @@
 html {
   scroll-behavior: smooth;
   scroll-padding-top: 80px;
+  -webkit-text-size-adjust: 100%;
 }
 
 body {
@@ -17,6 +18,18 @@ body {
   color: var(--fg);
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
+  -webkit-tap-highlight-color: transparent;
+  /* Laisse de la place sous la sticky bar mobile (CTA WhatsApp + safe-area iPhone) */
+  padding-bottom: calc(env(safe-area-inset-bottom, 0px) + 84px);
+}
+@media (min-width: 1024px) {
+  body { padding-bottom: 0; }
+}
+
+/* Tap targets confortables sur mobile */
+@media (max-width: 640px) {
+  button, a, [role="button"] { -webkit-tap-highlight-color: rgba(255,255,255,0.05); }
+  .btn { min-height: 48px; }
 }
 
 /* Selection */
@@ -27,7 +40,7 @@ body {
 
 @layer components {
   .container-x {
-    @apply mx-auto w-full max-w-7xl px-5 sm:px-8;
+    @apply mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8;
   }
   .btn {
     @apply inline-flex items-center justify-center gap-2 rounded-full px-5 py-3 text-sm font-semibold transition-all duration-200 ease-out focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-ink-950;

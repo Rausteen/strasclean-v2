@@ -13,7 +13,7 @@ const problems = [
 
 export default function ProblemsSolution() {
   return (
-    <section className="relative py-20 sm:py-28">
+    <section className="relative py-14 sm:py-24 lg:py-28">
       <div className="container-x">
         <div className="grid gap-10 lg:grid-cols-12 lg:gap-16">
           <Reveal className="lg:col-span-5">
