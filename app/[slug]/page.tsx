@@ -176,8 +176,8 @@ function CityPage({ city }: { city: City }) {
         <CityHero city={city} />
         <TrustBar />
         <LocalSection city={city} />
-        <ServicesGrid city={city} />
         <PricingSection />
+        <ServicesGrid city={city} />
         <BeforeAfter />
         <HowItWorks />
         <Benefits />

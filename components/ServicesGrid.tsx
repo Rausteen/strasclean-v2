@@ -1,6 +1,6 @@
 import Link from "next/link";
 import Reveal from "./Reveal";
-import { City, inCity } from "@/lib/cities";
+import { City } from "@/lib/cities";
 import { SERVICES, servicePath } from "@/lib/services";
 import { ArrowRightIcon, ClockIcon } from "./Icon";
 
@@ -18,14 +18,15 @@ export default function ServicesGrid({ city }: { city: City }) {
       <div className="container-x">
         <Reveal className="mx-auto max-w-3xl text-center">
           <p className="text-sm font-semibold uppercase tracking-[0.18em] text-brand-400">
-            Nos prestations
+            Besoins spécifiques
           </p>
           <h2 className="h-display mt-3 text-balance text-3xl font-bold text-white sm:text-4xl lg:text-5xl">
-            Une prestation pour chaque besoin {inCity(city)}.
+            Vous savez déjà ce qu'il vous faut ?
           </h2>
           <p className="mt-4 text-white/70">
-            Choisissez la prestation qui correspond à votre véhicule.
-            Réservation en quelques secondes par WhatsApp.
+            Au-delà de nos formules complètes, voici nos prestations dédiées
+            aux besoins ciblés — un shampouinage seul, un traitement poils
+            d'animaux, un detailing complet — avec une page par ville.
           </p>
         </Reveal>
 
