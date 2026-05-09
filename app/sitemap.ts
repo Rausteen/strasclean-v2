@@ -12,9 +12,9 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "weekly",
       priority: 1,
     },
-    // Hub prestations
+    // Hub formules
     {
-      url: `${SITE.url}/services`,
+      url: `${SITE.url}/formules`,
       lastModified: now,
       changeFrequency: "weekly",
       priority: 0.9,

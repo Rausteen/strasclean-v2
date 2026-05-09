@@ -17,7 +17,6 @@ import FinalCTA from "@/components/FinalCTA";
 import Footer from "@/components/Footer";
 import FloatingWhatsApp from "@/components/FloatingWhatsApp";
 import OtherCities from "@/components/OtherCities";
-import ServicesGrid from "@/components/ServicesGrid";
 import ServiceLinks from "@/components/ServiceLinks";
 import { CITIES, City, CITY_URL_PREFIX, cityPath, inCity } from "@/lib/cities";
 import { SERVICES, Service, matchSlug, servicePath } from "@/lib/services";
@@ -177,7 +176,6 @@ function CityPage({ city }: { city: City }) {
         <TrustBar />
         <LocalSection city={city} />
         <PricingSection />
-        <ServicesGrid city={city} />
         <BeforeAfter />
         <HowItWorks />
         <Benefits />

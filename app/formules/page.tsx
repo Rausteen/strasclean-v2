@@ -12,29 +12,28 @@ import {
   PhoneIcon,
   ArrowRightIcon,
   MapPinIcon,
-  ClockIcon,
   CheckIcon,
 } from "@/components/Icon";
 import { SITE, waLink } from "@/lib/site";
-import { CITIES } from "@/lib/cities";
-import { SERVICES, servicePath } from "@/lib/services";
+import { CITIES, cityPath } from "@/lib/cities";
+import { PLANS } from "@/lib/plans";
 
-const TITLE = "Nos prestations — Nettoyage auto à domicile à Strasbourg";
+const TITLE = "Formules — Nettoyage auto à domicile à Strasbourg | StrasClean";
 const DESCRIPTION =
-  "Toutes les prestations StrasClean : detailing auto, shampouinage sièges, nettoyage poils d'animaux, nettoyage intérieur, lavage à domicile. Réservation rapide par WhatsApp.";
+  "Nos 3 formules de nettoyage auto à domicile à Strasbourg : Confort (39 €), Premium (79 €) et Luxury Detailing (119 €). Disponibles dans toute l'eurométropole. Réservation rapide par WhatsApp.";
 
 export const metadata: Metadata = {
   title: TITLE,
   description: DESCRIPTION,
-  alternates: { canonical: "/services" },
+  alternates: { canonical: "/formules" },
   openGraph: {
     type: "website",
-    url: `${SITE.url}/services`,
+    url: `${SITE.url}/formules`,
     siteName: SITE.name,
     title: TITLE,
     description: DESCRIPTION,
     locale: "fr_FR",
-    images: [{ url: "/og.svg", width: 1200, height: 630, alt: "StrasClean — nos prestations" }],
+    images: [{ url: "/og.svg", width: 1200, height: 630, alt: "StrasClean — nos formules" }],
   },
   twitter: {
     card: "summary_large_image",
@@ -43,25 +42,30 @@ export const metadata: Metadata = {
     images: ["/og.svg"],
   },
   keywords: [
-    "detailing auto Strasbourg",
-    "shampouinage sièges voiture Strasbourg",
+    "formules nettoyage voiture domicile Strasbourg",
+    "tarif lavage auto Strasbourg",
+    "formule detailing auto Strasbourg",
     "nettoyage intérieur voiture Strasbourg",
-    "lavage auto domicile Strasbourg",
-    "nettoyage poils d'animaux voiture Strasbourg",
   ],
 };
 
-export default function ServicesHubPage() {
-  // ItemList JSON-LD pour signaler explicitement la liste des prestations
+export default function FormulesPage() {
+  // Liste structurée des 3 offres pour Google
   const itemListJsonLd = {
     "@context": "https://schema.org",
     "@type": "ItemList",
-    name: "Prestations StrasClean",
-    itemListElement: SERVICES.map((s, i) => ({
+    name: "Formules StrasClean",
+    itemListElement: PLANS.map((p, i) => ({
       "@type": "ListItem",
       position: i + 1,
-      name: s.name,
-      url: `${SITE.url}${servicePath(s, CITIES[0])}`,
+      item: {
+        "@type": "Offer",
+        name: p.name,
+        priceCurrency: "EUR",
+        price: p.priceFrom,
+        url: `${SITE.url}/formules#${p.id}`,
+        description: p.tagline,
+      },
     })),
   };
 
@@ -69,7 +73,7 @@ export default function ServicesHubPage() {
     <>
       <Header />
       <main>
-        {/* Hero hub */}
+        {/* Hero */}
         <section className="relative overflow-hidden">
           <div className="pointer-events-none absolute inset-0 -z-10">
             <div className="absolute inset-0 bg-radial-fade" />
@@ -84,28 +88,44 @@ export default function ServicesHubPage() {
                   StrasClean
                 </Link>
                 <span className="mx-1.5 text-white/30">/</span>
-                <span className="text-white/75">Prestations</span>
+                <span className="text-white/75">Formules</span>
               </nav>
 
               <span className="chip mx-auto">
                 <span className="text-base leading-none">✨</span>
-                Toutes nos prestations
+                3 formules · 12 villes desservies
               </span>
 
               <h1 className="h-display mt-4 text-balance text-[34px] font-bold leading-[1.05] text-white sm:text-5xl lg:text-6xl">
-                Nos prestations de{" "}
+                Nos formules de{" "}
                 <span className="bg-gradient-to-r from-brand-300 via-brand-400 to-brand-500 bg-clip-text text-transparent">
                   nettoyage auto à domicile.
                 </span>
               </h1>
 
               <p className="mx-auto mt-4 max-w-2xl text-balance text-[15px] leading-relaxed text-white/70 sm:mt-5 sm:text-lg">
-                Choisissez la prestation qui correspond à votre véhicule, puis
-                la commune d'intervention. StrasClean se déplace dans toute
+                Trois formules claires, du simple entretien au detailing
+                complet. Choisissez la vôtre, puis la commune
+                d'intervention — StrasClean se déplace dans toute
                 l'eurométropole de Strasbourg.
               </p>
 
-              <div className="mx-auto mt-6 flex w-full max-w-md flex-col items-stretch gap-3 sm:mt-7 sm:max-w-none sm:flex-row sm:justify-center">
+              {/* Quick links to plans */}
+              <div className="mx-auto mt-7 flex flex-wrap items-center justify-center gap-2">
+                {PLANS.map((p) => (
+                  <a
+                    key={p.id}
+                    href={`#${p.id}`}
+                    className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm font-medium text-white/85 transition hover:border-brand-400/40 hover:bg-brand-500/10 hover:text-white"
+                  >
+                    <span>{p.emoji}</span>
+                    {p.name.replace("Formule ", "")}
+                    <span className="text-white/55">· {p.priceFrom} €</span>
+                  </a>
+                ))}
+              </div>
+
+              <div className="mx-auto mt-8 flex w-full max-w-md flex-col items-stretch gap-3 sm:max-w-none sm:flex-row sm:justify-center">
                 <a
                   href={SITE.whatsappHref}
                   target="_blank"
@@ -129,78 +149,100 @@ export default function ServicesHubPage() {
 
         <TrustBar />
 
-        {/* Liste des services avec villes */}
+        {/* Formules détaillées */}
         <section className="relative py-14 sm:py-24 lg:py-28">
           <div className="container-x">
-            <div className="space-y-10 sm:space-y-14">
-              {SERVICES.map((s, i) => (
-                <Reveal key={s.slug} delay={i * 60}>
+            <div className="space-y-12 sm:space-y-20">
+              {PLANS.map((p, i) => (
+                <Reveal key={p.id} delay={i * 80}>
                   <article
-                    id={s.slug}
-                    className="relative overflow-hidden rounded-3xl border border-white/10 bg-white/[0.03] p-6 sm:p-9"
+                    id={p.id}
+                    className={`relative scroll-mt-24 overflow-hidden rounded-3xl border p-6 sm:p-9 ${
+                      p.highlight
+                        ? "border-brand-400/40 bg-gradient-to-br from-brand-500/10 to-ink-900 shadow-glow"
+                        : "border-white/10 bg-white/[0.03]"
+                    }`}
                   >
+                    {p.badge && (
+                      <span className="absolute -top-3 left-9 whitespace-nowrap rounded-full bg-brand-500 px-3 py-1 text-[11px] font-bold uppercase tracking-wider text-ink-950 shadow-lg">
+                        {p.badge}
+                      </span>
+                    )}
+
                     <div className="grid gap-8 lg:grid-cols-12 lg:gap-12">
                       {/* Description */}
                       <div className="lg:col-span-5">
                         <div className="flex items-center gap-3">
-                          <span className="grid h-12 w-12 shrink-0 place-items-center rounded-xl bg-brand-500/10 text-2xl">
-                            {s.emoji}
+                          <span className="grid h-12 w-12 shrink-0 place-items-center rounded-xl bg-white/5 text-2xl">
+                            {p.emoji}
                           </span>
-                          <div>
-                            <h2 className="h-display text-xl font-bold text-white sm:text-2xl">
-                              {s.name}
-                            </h2>
-                            <p className="mt-0.5 inline-flex items-center gap-2 text-xs text-white/55">
-                              <ClockIcon size={12} />
-                              {s.duration}
-                              <span className="text-white/30">·</span>
-                              <span>À partir de {s.priceFrom} €</span>
-                            </p>
-                          </div>
+                          <h2 className="h-display text-2xl font-bold text-white">
+                            {p.name}
+                          </h2>
                         </div>
 
-                        <p className="mt-4 text-sm text-white/75 sm:text-base">
-                          {s.shortDesc}
+                        <div className="mt-5 flex items-baseline gap-2">
+                          <span className="text-xs font-medium uppercase tracking-wider text-white/55">
+                            à partir de
+                          </span>
+                        </div>
+                        <div className="flex items-baseline gap-2">
+                          <span className="h-display text-5xl font-extrabold text-white">
+                            {p.priceFrom}
+                          </span>
+                          <span className="text-2xl font-semibold text-white/70">€</span>
+                        </div>
+
+                        <p className="mt-4 text-sm leading-relaxed text-white/75 sm:text-base">
+                          {p.tagline}
                         </p>
 
-                        <ul className="mt-5 space-y-2.5">
-                          {s.whatsIncluded.slice(0, 4).map((item) => (
+                        <ul className="mt-6 space-y-3">
+                          {p.features.map((f) => (
                             <li
-                              key={item}
+                              key={f}
                               className="flex items-start gap-3 text-sm text-white/85"
                             >
-                              <span className="mt-0.5 grid h-5 w-5 shrink-0 place-items-center rounded-full bg-brand-500 text-ink-950">
+                              <span
+                                className={`mt-0.5 grid h-5 w-5 shrink-0 place-items-center rounded-full ${
+                                  p.highlight
+                                    ? "bg-brand-500 text-ink-950"
+                                    : "bg-white/10 text-brand-300"
+                                }`}
+                              >
                                 <CheckIcon size={12} />
                               </span>
-                              {item}
+                              {f}
                             </li>
                           ))}
                         </ul>
 
                         <a
-                          href={waLink(s.ctaMessage)}
+                          href={waLink(p.ctaMessage)}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="btn-wa mt-6"
+                          className={`mt-7 ${p.highlight ? "btn-wa" : "btn-primary"} h-12 w-full sm:w-auto`}
                         >
-                          <WhatsAppIcon size={16} /> Réserver cette prestation
+                          {p.highlight ? <WhatsAppIcon size={18} /> : null}
+                          Réserver la formule {p.name.replace("Formule ", "")}
                         </a>
                       </div>
 
-                      {/* Choix de la ville */}
+                      {/* City selector */}
                       <div className="lg:col-span-7">
                         <p className="text-xs font-semibold uppercase tracking-[0.18em] text-brand-400">
-                          Choisissez votre ville
+                          Disponible dans 12 villes
                         </p>
                         <p className="mt-2 text-sm text-white/65">
-                          Page dédiée à <strong className="text-white">{s.shortName.toLowerCase()}</strong> dans chaque commune desservie :
+                          Cette formule est proposée dans toutes les communes
+                          desservies par StrasClean. Choisissez la vôtre :
                         </p>
 
                         <ul className="mt-4 grid grid-cols-2 gap-2 sm:grid-cols-3">
                           {CITIES.map((c) => (
                             <li key={c.slug}>
                               <Link
-                                href={servicePath(s, c)}
+                                href={cityPath(c)}
                                 className="group flex items-center justify-between gap-2 rounded-xl border border-white/10 bg-white/[0.03] px-3 py-2.5 text-sm text-white/85 transition hover:-translate-y-0.5 hover:border-brand-400/40 hover:bg-brand-500/10 hover:text-white"
                               >
                                 <span className="inline-flex items-center gap-2 truncate">
@@ -215,12 +257,32 @@ export default function ServicesHubPage() {
                             </li>
                           ))}
                         </ul>
+
+                        <p className="mt-4 text-xs text-white/50">
+                          Votre commune n'est pas listée ?{" "}
+                          <a
+                            href={waLink(
+                              `Bonjour StrasClean, est-ce que vous intervenez dans ma ville pour la ${p.name} ?`,
+                            )}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-brand-300 hover:text-brand-200"
+                          >
+                            Demandez-nous sur WhatsApp.
+                          </a>
+                        </p>
                       </div>
                     </div>
                   </article>
                 </Reveal>
               ))}
             </div>
+
+            <p className="mx-auto mt-10 max-w-3xl text-center text-sm text-white/55">
+              Le tarif peut varier selon la taille du véhicule, l'état
+              intérieur et les options demandées. On confirme toujours le prix
+              avant intervention.
+            </p>
           </div>
         </section>
 

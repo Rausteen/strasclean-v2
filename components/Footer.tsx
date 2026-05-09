@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { SITE } from "@/lib/site";
 import { CITIES, cityPath } from "@/lib/cities";
-import { SERVICES, servicePath, DEFAULT_CITY } from "@/lib/services";
+import { PLANS } from "@/lib/plans";
 import { WhatsAppIcon, PhoneIcon, SparklesIcon } from "./Icon";
 
 export default function Footer() {
@@ -41,25 +41,23 @@ export default function Footer() {
 
           <div className="lg:col-span-3">
             <h3 className="text-sm font-semibold uppercase tracking-wider text-white/80">
-              Prestations
+              Formules
             </h3>
             <ul className="mt-4 space-y-2 text-sm text-white/65">
-              {SERVICES.map((s) => (
-                <li key={s.slug}>
-                  <Link
-                    href={servicePath(s, DEFAULT_CITY)}
-                    className="hover:text-white"
-                  >
-                    {s.name} {DEFAULT_CITY.name}
+              {PLANS.map((p) => (
+                <li key={p.id}>
+                  <Link href={`/formules#${p.id}`} className="hover:text-white">
+                    {p.name}{" "}
+                    <span className="text-white/45">· {p.priceFrom} €</span>
                   </Link>
                 </li>
               ))}
               <li>
                 <Link
-                  href="/services"
+                  href="/formules"
                   className="font-semibold text-brand-300 hover:text-brand-200"
                 >
-                  → Voir toutes les prestations
+                  → Voir toutes les formules
                 </Link>
               </li>
             </ul>
