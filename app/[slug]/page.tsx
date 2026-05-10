@@ -162,6 +162,20 @@ function CityPage({ city }: { city: City }) {
     areaServed: { "@type": "City", name: city.name },
   };
 
+  const breadcrumbJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "Accueil", item: SITE.url },
+      {
+        "@type": "ListItem",
+        position: 2,
+        name: `Nettoyage voiture à domicile ${inCity(city)}`,
+        item: `${SITE.url}${cityPath(city)}`,
+      },
+    ],
+  };
+
   const cityReview = {
     name: city.review.name,
     city: city.name,
@@ -190,6 +204,10 @@ function CityPage({ city }: { city: City }) {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
       />
     </>
   );
@@ -223,6 +241,26 @@ function ServiceCityPage({ service, city }: { service: Service; city: City }) {
       url: `${SITE.url}${servicePath(service, city)}`,
       availability: "https://schema.org/InStock",
     },
+  };
+
+  const breadcrumbJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "Accueil", item: SITE.url },
+      {
+        "@type": "ListItem",
+        position: 2,
+        name: city.name,
+        item: `${SITE.url}${cityPath(city)}`,
+      },
+      {
+        "@type": "ListItem",
+        position: 3,
+        name: `${service.name} ${inCity(city)}`,
+        item: `${SITE.url}${servicePath(service, city)}`,
+      },
+    ],
   };
 
   const cityReview = {
@@ -282,6 +320,10 @@ function ServiceCityPage({ service, city }: { service: Service; city: City }) {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
       />
     </>
   );

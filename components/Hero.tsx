@@ -114,7 +114,8 @@ function HeroVisual() {
               alt="Voiture nettoyée par StrasClean — rendu showroom à Strasbourg"
               fill
               priority
-              sizes="(max-width: 1024px) 100vw, 600px"
+              sizes="(max-width: 640px) 92vw, (max-width: 1024px) 80vw, 560px"
+              quality={82}
               className="object-cover"
             />
             {/* Subtle overlay to blend top/bottom edges with the dark UI */}

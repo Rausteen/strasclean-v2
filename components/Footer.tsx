@@ -72,6 +72,7 @@ export default function Footer() {
                 <li key={c.slug}>
                   <Link
                     href={cityPath(c)}
+                    prefetch={false}
                     className="inline-block rounded-full border border-white/10 bg-white/[0.03] px-3 py-1 transition hover:border-brand-400/40 hover:bg-brand-500/10 hover:text-white"
                   >
                     {c.name}

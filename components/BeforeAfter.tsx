@@ -138,7 +138,9 @@ function Tile({
           src={image}
           alt={alt}
           fill
-          sizes="(max-width: 768px) 50vw, 25vw"
+          loading="lazy"
+          sizes="(max-width: 640px) 50vw, (max-width: 1280px) 25vw, 320px"
+          quality={80}
           className="object-cover"
         />
       ) : isAfter ? (

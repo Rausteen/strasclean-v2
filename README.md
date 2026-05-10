@@ -1,9 +1,11 @@
 # StrasClean — Landing page
 
-Site web ultra-convertissant pour StrasClean, service de nettoyage auto à
+Site web local ultra-convertissant pour StrasClean, service de nettoyage auto à
 domicile à Strasbourg et alentours.
 
-Stack : Next.js 14 (App Router) · React 18 · TypeScript · Tailwind CSS.
+**Stack** : Next.js 15 (App Router) · React 19 · TypeScript · Tailwind CSS.
+**Pages générées** : 1 home + `/formules` + 12 pages ville + 60 pages
+service × ville = ~74 pages statiques (HTML pré-rendu au build).
 
 ## Lancer le projet
 
@@ -11,87 +13,152 @@ Stack : Next.js 14 (App Router) · React 18 · TypeScript · Tailwind CSS.
 npm install
 npm run dev      # http://localhost:3000
 npm run build    # build production
-npm run start    # lance le build
+npm run start    # lance le build (port 3000)
 ```
 
-## Modifier le numéro / WhatsApp / zones
+## Mise en ligne (production)
 
-Tout est centralisé dans `lib/site.ts` :
+### Option A — Vercel (recommandé, gratuit, zéro config)
 
-- `phoneDisplay` / `phoneHref` — numéro de téléphone (placeholder `+33 6 00 00 00 00`)
-- `whatsappNumber` / `whatsappHref` — lien WhatsApp (placeholder `33600000000`)
-- `email` — adresse email
-- `ZONES` — liste des communes desservies (header, hero, footer, section zone)
+1. Importer le repo sur https://vercel.com
+2. Vercel détecte Next.js → "Deploy"
+3. Ajouter le domaine `strasclean.fr` dans Settings → Domains (HTTPS auto)
+4. Mettre les variables d'environnement (voir plus bas) dans Settings → Environment Variables
+5. Chaque `git push` redéploie automatiquement
 
-Le helper `waLink(message)` génère un lien WhatsApp avec un message prérempli
-(utilisé sur les CTA des formules et de la section "options").
+### Option B — VPS / serveur SSH (OVH, Hetzner, etc.)
 
-## Remplacer les images placeholder
+```bash
+ssh root@<ip>
+git clone <repo> && cd strasclean-v2
+npm install
+npm run build
+# servir avec pm2 :
+npm i -g pm2
+pm2 start "npm run start" --name strasclean
+pm2 save && pm2 startup
+```
 
-Le site fonctionne sans aucune photo : tous les visuels sont des
-**SVG/gradients premium** générés inline.
+Pour mettre à jour : `git pull && npm run build && pm2 restart strasclean`.
 
-Pour ajouter de vraies photos :
+⚠️ **Important après mise en ligne** : mettre la vraie URL dans `lib/site.ts`
+(`url: "https://strasclean.fr"`) — c'est utilisé par le sitemap, l'Open Graph
+et le JSON-LD.
 
-- **Hero** — `components/Hero.tsx` : remplacer le composant `CarMock`
-  (SVG inline) par un `<Image src="/hero.jpg" .../>`.
-- **Avant / Après** — `components/BeforeAfter.tsx` : remplacer `PlaceholderTile`
-  par `<Image src="/avant-1.jpg" alt="..." />` et `<Image src="/apres-1.jpg" .../>`.
-- **OG image** — `public/og.svg` (référencée dans `app/layout.tsx`). Remplacer
-  par un `og.jpg` 1200×630 et mettre à jour le chemin dans la metadata.
-- **Favicon** — `public/favicon.svg`.
+## Variables d'environnement (analytics / pub)
 
-Place les images dans `public/` et utilise `next/image` pour la performance.
+Copier `.env.example` → `.env.local` (dev) ou les configurer chez l'hébergeur.
+**Tout est optionnel** — laisser vide = bloc non chargé.
 
-## Personnaliser le copywriting
+| Variable | Exemple | Rôle |
+|---|---|---|
+| `NEXT_PUBLIC_GA_ID` | `G-XXXXXXX` | Google Analytics 4 |
+| `NEXT_PUBLIC_GOOGLE_ADS_ID` | `AW-XXXXXXX` | Google Ads |
+| `NEXT_PUBLIC_GOOGLE_ADS_CONVERSION_LABEL` | `AW-XXXXXXX/abcd` | Conversion Ads précise sur clic WhatsApp/tel |
+| `NEXT_PUBLIC_META_PIXEL_ID` | `123456789012` | Meta / Facebook Pixel |
 
-- Hero / titres principaux : `components/Hero.tsx`, `components/FinalCTA.tsx`.
-- Formules et prix : `components/PricingSection.tsx` (constante `PLANS`).
-- Avis : `components/Testimonials.tsx` (constante `REVIEWS`).
-- FAQ : `components/FAQ.tsx` (constante `FAQS`).
-- SEO (title, description, OG, JSON-LD) : `app/layout.tsx`.
+Le tracking de conversion (clics **WhatsApp** + clics **téléphone**) est câblé
+automatiquement dès qu'un de ces IDs est défini — voir `components/Analytics.tsx`.
+
+## Contenu à personnaliser
+
+| Quoi | Où |
+|---|---|
+| Numéro de téléphone, WhatsApp, email, zones | `lib/site.ts` |
+| Formules (Confort / Premium / Luxury) — noms, prix, contenu | `lib/plans.ts` |
+| Prestations (shampouinage, detailing…) — slugs, prix, FAQ | `lib/services.ts` |
+| Villes desservies — codes postaux, quartiers, intro, avis | `lib/cities.ts` |
+| FAQ générale | `lib/faq.ts` |
+| Avis clients | `components/Testimonials.tsx` (constante `REVIEWS`) |
+| SEO global (title, description, OG, JSON-LD) | `app/layout.tsx` |
+| Hero / titres | `components/Hero.tsx`, `components/FinalCTA.tsx` |
+
+## Images
+
+| Image | Chemin attendu | Format |
+|---|---|---|
+| Hero | `public/hero.webp` | WebP, ~1600×1200, < 200 Ko |
+| Avant/Après sièges | `public/avant-apres/siegeavant.webp` / `siegeapres.webp` | WebP 4:3, < 200 Ko |
+| Avant/Après tapis | `public/avant-apres/tapisavant.webp` / `tapisapres.webp` | idem |
+| Avant/Après tableau de bord | `public/avant-apres/tableauavant.webp` / `tableauapres.webp` | idem |
+| Avant/Après carrosserie | `public/avant-apres/carrosserieavant.webp` / `carrosserieapres.webp` | idem |
+| Open Graph | `public/og.svg` (ou `og.jpg` 1200×630) | — |
+| Favicon | `public/favicon.svg` | — |
+
+Tant que `public/avant-apres/*.webp` n'existe pas, la section Avant/Après affiche
+des placeholders gradient. Dès que les fichiers sont là, elle bascule
+automatiquement (composant `components/BeforeAfter.tsx`). Compresser via
+https://squoosh.app (WebP, qualité 80).
+
+## SEO / référencement local — checklist mise en ligne
+
+- [ ] Site déployé avec domaine + HTTPS ; `lib/site.ts` → vraie URL
+- [ ] Google Search Console : propriété "Domaine" vérifiée (TXT DNS)
+- [ ] Sitemap `sitemap.xml` soumis dans Search Console
+- [ ] Inspection d'URL → demander l'indexation de la home, `/formules`, et des
+      pages ville prioritaires (Strasbourg, Schiltigheim, Illkirch)
+- [ ] Google Business Profile créé (catégorie "Service de nettoyage automobile",
+      zone d'intervention = les 12 communes), vérifié
+- [ ] Premiers avis Google demandés aux clients (lien direct par WhatsApp)
+- [ ] Fiches annuaires : Pages Jaunes, Yelp, Mappy, annuaire CCI Alsace
+- [ ] Rich Results Test (`search.google.com/test/rich-results`) → vérifier
+      `AutoDetailing`, `FAQPage`, `Service`, `BreadcrumbList`
+
+### Données structurées (JSON-LD) en place
+
+- `AutoDetailing` / `LocalBusiness` sur la home et chaque page ville (scopé ville)
+- `Service` + `Offer` sur chaque page service × ville
+- `FAQPage` sur toutes les pages avec FAQ (questions service incluses sur les
+  pages service × ville)
+- `BreadcrumbList` sur les pages ville et service × ville
+- `ItemList` sur `/formules`
+
+## Performance / production
+
+- Headers de sécurité (`X-Content-Type-Options`, `X-Frame-Options`,
+  `Referrer-Policy`, `Permissions-Policy`, HSTS) → `next.config.js`
+- Cache long (1 an, immutable) sur `/avant-apres/*` et `/hero.webp`
+- Images via `next/image` (AVIF/WebP, `sizes` responsive, `priority` sur le hero,
+  `loading="lazy"` ailleurs)
+- `prefetch={false}` sur les grandes grilles de liens internes (villes,
+  prestations) pour éviter le préchargement massif au scroll
+- `manifest.webmanifest` généré (`app/manifest.ts`)
+- `poweredByHeader: false`, pas de source maps en prod
 
 ## Structure
 
 ```
 app/
-  layout.tsx        # SEO global, fonts, JSON-LD AutoDetailing
-  page.tsx          # Assemblage de toutes les sections
-  globals.css       # Tailwind + composants utilitaires (.btn, .card…)
-  sitemap.ts        # Sitemap dynamique
+  layout.tsx              # SEO global, fonts, JSON-LD, <Analytics/>
+  page.tsx                # Home
+  [slug]/page.tsx         # Pages ville + service × ville (route dynamique)
+  formules/page.tsx       # Hub des 3 formules + villes
+  manifest.ts             # Web App Manifest
+  sitemap.ts              # Sitemap (home + /formules + villes + service×ville)
+  globals.css             # Tailwind + composants utilitaires (.btn, .card…)
 components/
-  Header.tsx
-  Hero.tsx
-  TrustBar.tsx
-  ProblemsSolution.tsx
-  PricingSection.tsx
-  BeforeAfter.tsx
-  HowItWorks.tsx
-  Benefits.tsx
-  ServiceArea.tsx
-  Testimonials.tsx
-  MidCTA.tsx
-  FAQ.tsx
-  FinalCTA.tsx
-  Footer.tsx
-  FloatingWhatsApp.tsx   # Sticky CTA mobile + bouton flottant desktop
-  Reveal.tsx             # Animation d'apparition au scroll
-  Icon.tsx               # Icônes SVG inline (zéro dépendance)
+  Header / Hero / TrustBar / ProblemsSolution / PricingSection / BeforeAfter
+  HowItWorks / Benefits / ServiceArea / Testimonials / MidCTA / FAQ / FinalCTA
+  Footer / FloatingWhatsApp / Reveal / Icon
+  CityHero / LocalSection / OtherCities          # pages ville
+  ServiceCityHero / ServiceDetail / ServiceLinks # pages service × ville
+  Analytics.tsx                                  # GA4 / Ads / Pixel + conv. tracking
 lib/
-  site.ts                # ⚙️ Config centrale (numéro, WhatsApp, zones)
+  site.ts      # ⚙️ contact, zones
+  plans.ts     # formules
+  services.ts  # prestations + routeur de slug
+  cities.ts    # villes
+  faq.ts       # FAQ + helper FAQPage JSON-LD
 public/
-  favicon.svg
-  og.svg                 # Open Graph par défaut
-  robots.txt
+  favicon.svg · og.svg · robots.txt
+  hero.webp · avant-apres/*.webp   # à fournir
 ```
 
-## Prochaines améliorations
+## Prochaines améliorations possibles
 
-- Ajouter de vraies photos avant/après et un slider interactif (drag handle).
-- Brancher Google Analytics 4 / Meta Pixel / TikTok Pixel pour Ads.
-- Ajouter un module avis Google embarqué (vrais reviews).
-- Page `/mentions-legales` et `/politique-de-confidentialite`.
-- Schema.org : ajouter `aggregateRating` quand les avis Google seront connectés.
-- Galerie multi-photos par formule (carrousel).
-- Variantes A/B sur le hero (H1, CTA) pour optimiser le taux de conversion.
-- Multi-langue (FR/DE) si pertinent côté frontalier.
+- Slider Avant/Après interactif (drag handle)
+- Module avis Google embarqué + `aggregateRating` dans le JSON-LD
+- Pages `/mentions-legales` et `/politique-de-confidentialite`
+- Pages "service × ville" supplémentaires (ex : décontamination carrosserie)
+- Variantes A/B sur le H1 du hero / des pages ville (Quality Score Ads)
+- Multi-langue FR/DE (clientèle frontalière)

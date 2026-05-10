@@ -52,6 +52,7 @@ export default function ServiceArea() {
                   <li key={c.slug}>
                     <Link
                       href={cityPath(c)}
+                      prefetch={false}
                       className="group flex items-center justify-between gap-2 rounded-xl border border-white/10 bg-white/[0.03] px-3 py-2.5 text-sm text-white/85 transition hover:border-brand-400/40 hover:bg-brand-500/10 hover:text-white"
                     >
                       <span className="inline-flex items-center gap-2">

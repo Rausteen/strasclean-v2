@@ -27,6 +27,7 @@ export default function OtherCities({ current }: { current?: City }) {
               <li key={c.slug}>
                 <Link
                   href={cityPath(c)}
+                  prefetch={false}
                   className="group flex h-full items-center justify-between gap-3 rounded-2xl border border-white/10 bg-white/[0.03] px-4 py-3 text-sm font-medium text-white/85 transition hover:-translate-y-0.5 hover:border-brand-400/40 hover:bg-brand-500/10 hover:text-white"
                 >
                   <span className="inline-flex items-center gap-2">
