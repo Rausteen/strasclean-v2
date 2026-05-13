@@ -53,12 +53,17 @@ Copier `.env.example` → `.env.local` (dev) ou les configurer chez l'hébergeur
 | Variable | Exemple | Rôle |
 |---|---|---|
 | `NEXT_PUBLIC_GA_ID` | `G-XXXXXXX` | Google Analytics 4 |
-| `NEXT_PUBLIC_GOOGLE_ADS_ID` | `AW-XXXXXXX` | Google Ads |
-| `NEXT_PUBLIC_GOOGLE_ADS_CONVERSION_LABEL` | `AW-XXXXXXX/abcd` | Conversion Ads précise sur clic WhatsApp/tel |
+| `NEXT_PUBLIC_GOOGLE_ADS_ID` | `AW-17962141009` | Google Ads (charge gtag) |
+| `NEXT_PUBLIC_GOOGLE_ADS_WA_LABEL` | `AW-17962141009/axtcCP3o0qwcENGKgvVC` | Conversion "Contact" sur clic WhatsApp |
+| `NEXT_PUBLIC_GOOGLE_ADS_PHONE_LABEL` | `AW-17962141009/xxxxxxxx` | Conversion "Phone call lead" sur clic téléphone |
 | `NEXT_PUBLIC_META_PIXEL_ID` | `123456789012` | Meta / Facebook Pixel |
 
-Le tracking de conversion (clics **WhatsApp** + clics **téléphone**) est câblé
-automatiquement dès qu'un de ces IDs est défini — voir `components/Analytics.tsx`.
+Chaque clic WhatsApp / téléphone déclenche automatiquement :
+- un événement GA4 (`whatsapp_click` / `phone_click` avec value 56 EUR)
+- une conversion Google Ads (si le label correspondant est défini)
+- un événement Meta Pixel `Lead` (si le pixel est configuré)
+
+Voir `components/Analytics.tsx` pour les détails.
 
 ## Contenu à personnaliser
 
