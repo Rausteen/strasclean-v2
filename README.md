@@ -57,6 +57,44 @@ Copier `.env.example` → `.env.local` (dev) ou les configurer chez l'hébergeur
 | `NEXT_PUBLIC_GOOGLE_ADS_WA_LABEL` | `AW-17962141009/axtcCP3o0qwcENGKgvVC` | Conversion "Contact" sur clic WhatsApp |
 | `NEXT_PUBLIC_GOOGLE_ADS_PHONE_LABEL` | `AW-17962141009/xxxxxxxx` | Conversion "Phone call lead" sur clic téléphone |
 | `NEXT_PUBLIC_META_PIXEL_ID` | `123456789012` | Meta / Facebook Pixel |
+| `ADMIN_PASSWORD` | `mot-de-passe-fort` | Mot de passe du dashboard `/admin` (côté serveur, non exposé) |
+| `SESSION_SECRET` | `32+ caractères aléatoires` | Secret HMAC pour signer la session admin |
+
+## Dashboard admin (`/admin`)
+
+Tracking server-side natif (indépendant de GA/Google Ads) qui enregistre
+chaque visite + chaque clic WhatsApp/téléphone dans une base SQLite locale
+(`data/analytics.db`).
+
+**Accès** : `https://strasclean.fr/admin` → mot de passe (variable `ADMIN_PASSWORD`).
+Session persistante 1 an, non listée dans le sitemap, `noindex,nofollow`.
+
+**Données capturées par visite** : timestamp, IP (X-Forwarded-For ok), User-Agent,
+device/OS/browser, referer, path, querystring complet, UTM (source/medium/campaign/
+content/term), `gclid`, `fbclid`, et **source classifiée** automatiquement parmi
+`ads` / `organic` / `direct` / `referral` / `social`.
+
+**Données capturées par clic** : timestamp, type (`whatsapp_click` / `phone_click`),
+page d'où provient le clic, href cible, IP, User-Agent, session ID (localStorage).
+
+**Mise en place sur ton VPS** :
+
+```bash
+ssh root@<ip>
+cd ~/strasclean-v2
+nano .env.local
+# Ajouter :
+#   ADMIN_PASSWORD=monPasswordFort
+#   SESSION_SECRET=$(openssl rand -hex 32)   # ou n'importe quelle chaîne 32+ chars
+npm install         # compile better-sqlite3 pour Linux
+mkdir -p data       # la base sera créée automatiquement au premier appel
+npm run build
+pm2 restart strasclean
+```
+
+⚠️ **RGPD** : IP + UA sont des données personnelles. Mentionne-les dans ta politique
+de confidentialité, et purge les données plus anciennes que 13 mois (cron à mettre
+en place : `DELETE FROM visits WHERE ts < <cutoff>;`).
 
 Chaque clic WhatsApp / téléphone déclenche automatiquement :
 - un événement GA4 (`whatsapp_click` / `phone_click` avec value 56 EUR)

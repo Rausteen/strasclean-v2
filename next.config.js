@@ -4,6 +4,9 @@ const nextConfig = {
   poweredByHeader: false,
   compress: true,
   productionBrowserSourceMaps: false,
+  // better-sqlite3 est un module natif Node : il ne doit pas être bundlé
+  // (sinon Next essaie de l'embarquer côté client → crash au build).
+  serverExternalPackages: ["better-sqlite3"],
   images: {
     formats: ["image/avif", "image/webp"],
     // Les photos en /public sont déjà optimisées : cache long côté CDN/navigateur

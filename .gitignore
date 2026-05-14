@@ -8,3 +8,10 @@ dist
 *.log
 .vscode
 .idea
+
+# Base SQLite de l'analytics admin (générée au runtime)
+data/
+*.db
+*.db-journal
+*.db-wal
+*.db-shm
