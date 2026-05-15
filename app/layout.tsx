@@ -117,11 +117,29 @@ export default async function RootLayout({ children }: { children: React.ReactNo
       ? {
           aggregateRating: {
             "@type": "AggregateRating",
-            ratingValue: place.rating,
-            reviewCount: place.totalCount,
-            bestRating: 5,
-            worstRating: 1,
+            ratingValue: place.rating.toFixed(1),
+            reviewCount: String(place.totalCount),
+            bestRating: "5",
+            worstRating: "1",
           },
+        }
+      : {}),
+    ...(place.reviews.length > 0
+      ? {
+          review: place.reviews.map((r) => ({
+            "@type": "Review",
+            author: { "@type": "Person", name: r.author_name },
+            reviewRating: {
+              "@type": "Rating",
+              ratingValue: String(r.rating),
+              bestRating: "5",
+              worstRating: "1",
+            },
+            reviewBody: r.text,
+            ...(r.time
+              ? { datePublished: new Date(r.time * 1000).toISOString().slice(0, 10) }
+              : {}),
+          })),
         }
       : {}),
   };
