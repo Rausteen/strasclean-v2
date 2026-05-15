@@ -15,7 +15,9 @@ const sora = Sora({
   subsets: ["latin"],
   variable: "--font-display",
   display: "swap",
-  weight: ["500", "600", "700", "800"],
+  // Seules ces graisses sont utilisées par .h-display (semibold/bold/extrabold).
+  // Retirer 500 économise un fichier de fonte sur mobile.
+  weight: ["600", "700", "800"],
 });
 
 const description =
@@ -107,6 +109,13 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 
   return (
     <html lang="fr" className={`${inter.variable} ${sora.variable}`}>
+      <head>
+        {/* Préconnexions vers les origines tierces pour économiser le
+            handshake TCP+TLS au premier hit (gtag, fonts, WhatsApp). */}
+        <link rel="preconnect" href="https://www.googletagmanager.com" crossOrigin="" />
+        <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
+        <link rel="dns-prefetch" href="https://wa.me" />
+      </head>
       <body className="bg-ink-950 text-white antialiased">
         {children}
         <script

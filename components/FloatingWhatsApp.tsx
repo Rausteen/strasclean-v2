@@ -21,7 +21,7 @@ export default function FloatingWhatsApp() {
     <>
       {/* Mobile sticky bar — TOUJOURS visible */}
       <div
-        className="fixed inset-x-0 bottom-0 z-40 border-t border-white/10 bg-ink-950/95 backdrop-blur-md lg:hidden"
+        className="fixed inset-x-0 bottom-0 z-40 border-t border-white/10 bg-ink-950 lg:hidden"
         style={{
           paddingTop: "10px",
           paddingBottom: "calc(env(safe-area-inset-bottom, 0px) + 10px)",

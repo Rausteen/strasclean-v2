@@ -46,23 +46,24 @@ function send(payload: Record<string, unknown>) {
   }
 }
 
+function scheduleIdle(cb: () => void) {
+  if (typeof window === "undefined") return;
+  if ("requestIdleCallback" in window) {
+    (window as Window).requestIdleCallback(cb, { timeout: 2000 });
+  } else {
+    setTimeout(cb, 0);
+  }
+}
+
 export default function Tracker() {
   useEffect(() => {
     // Ne pas tracker l'admin
     if (window.location.pathname.startsWith("/admin")) return;
 
+    // Le clic listener doit être attaché tout de suite — sinon on rate
+    // un clic ultra-rapide. Le pageview lui peut attendre l'idle.
     const sid = getOrCreateSessionId();
 
-    // ─── Page view ────────────────────────────────────────────────────
-    send({
-      type: "pageview",
-      sid,
-      path: window.location.pathname,
-      query: window.location.search,
-      referer: document.referrer || null,
-    });
-
-    // ─── Click tracking : WhatsApp + tel: ────────────────────────────
     function onClick(e: MouseEvent) {
       const target = e.target as HTMLElement | null;
       const a = target?.closest?.("a") as HTMLAnchorElement | null;
@@ -79,6 +80,18 @@ export default function Tracker() {
       });
     }
     document.addEventListener("click", onClick, true);
+
+    // Pageview : différé en idle pour ne pas se battre avec le LCP
+    scheduleIdle(() => {
+      send({
+        type: "pageview",
+        sid,
+        path: window.location.pathname,
+        query: window.location.search,
+        referer: document.referrer || null,
+      });
+    });
+
     return () => document.removeEventListener("click", onClick, true);
   }, []);
 

@@ -23,8 +23,8 @@ export default function Hero() {
 
       <div className="container-x pt-8 pb-14 sm:pt-16 sm:pb-24 lg:pt-20 lg:pb-28">
         <div className="grid items-center gap-10 lg:grid-cols-2 lg:gap-12">
-          {/* Copy */}
-          <div className="animate-fade-up">
+          {/* Copy — pas d'animation d'entrée : LCP doit être instantané */}
+          <div>
             <span className="chip">
               <span className="relative flex h-2 w-2">
                 <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-brand-400/70" />
@@ -124,7 +124,7 @@ function HeroVisual() {
   return (
     <div className="relative mx-auto w-full max-w-xl lg:ml-auto">
       {/* Main car card */}
-      <div className="relative animate-fade-up [animation-delay:120ms]">
+      <div className="relative">
         <div className="relative overflow-hidden rounded-3xl border border-white/10 bg-gradient-to-br from-ink-800 to-ink-900 p-6 shadow-card">
           {/* Photo */}
           <div className="relative aspect-[4/3] w-full overflow-hidden rounded-2xl bg-ink-950">
@@ -139,11 +139,11 @@ function HeroVisual() {
             />
             {/* Subtle overlay to blend top/bottom edges with the dark UI */}
             <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-black/10" />
-            <span className="absolute left-4 top-4 chip !bg-black/50 backdrop-blur-md">
+            <span className="absolute left-4 top-4 chip !bg-black/70 sm:!bg-black/50 sm:backdrop-blur-md">
               <SparklesIcon size={12} className="text-brand-400" />
               Rendu showroom
             </span>
-            <span className="absolute right-4 top-4 chip !bg-black/50 !text-brand-200 backdrop-blur-md">
+            <span className="absolute right-4 top-4 chip !bg-black/70 !text-brand-200 sm:!bg-black/50 sm:backdrop-blur-md">
               ★★★★★
             </span>
           </div>

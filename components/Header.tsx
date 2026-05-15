@@ -30,7 +30,9 @@ export default function Header() {
   return (
     <header
       className={`sticky top-0 z-50 transition-colors duration-300 ${
-        scrolled ? "bg-ink-950/80 backdrop-blur-md border-b border-white/5" : "bg-transparent"
+        scrolled
+          ? "border-b border-white/5 bg-ink-950/95 lg:bg-ink-950/80 lg:backdrop-blur-md"
+          : "bg-transparent"
       }`}
     >
       <div className="container-x flex h-16 items-center justify-between">
@@ -97,7 +99,7 @@ export default function Header() {
       {/* Mobile drawer */}
       {open && (
         <div className="lg:hidden">
-          <div className="border-t border-white/5 bg-ink-950/95 backdrop-blur">
+          <div className="border-t border-white/5 bg-ink-950">
             <div className="container-x flex flex-col gap-1 py-4">
               {NAV.map((n) => (
                 <a
