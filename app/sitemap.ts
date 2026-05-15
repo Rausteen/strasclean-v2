@@ -19,6 +19,19 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "weekly",
       priority: 0.9,
     },
+    // Pages légales (priorité basse, non commerciales)
+    {
+      url: `${SITE.url}/mentions-legales`,
+      lastModified: now,
+      changeFrequency: "yearly",
+      priority: 0.2,
+    },
+    {
+      url: `${SITE.url}/politique-de-confidentialite`,
+      lastModified: now,
+      changeFrequency: "yearly",
+      priority: 0.2,
+    },
     // Pages ville
     ...CITIES.map((c) => ({
       url: `${SITE.url}${cityPath(c)}`,

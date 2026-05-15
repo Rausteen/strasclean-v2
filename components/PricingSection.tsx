@@ -38,13 +38,33 @@ export default function PricingSection() {
           </p>
         </Reveal>
 
-        <div className="mt-10 grid gap-6 sm:mt-12 md:grid-cols-2 lg:grid-cols-3">
+        {/* Mobile (<md) : carrousel swipeable scroll-snap. Desktop (md+) : grid. */}
+        <div
+          className="
+            mt-10 sm:mt-12
+            -mx-4 flex gap-4 overflow-x-auto px-4 pb-4
+            snap-x snap-mandatory scroll-px-4 scroll-smooth scrollbar-hide
+            md:mx-0 md:grid md:grid-cols-2 md:gap-6 md:overflow-visible
+            md:px-0 md:pb-0 md:snap-none
+            lg:grid-cols-3
+          "
+          aria-label="Formules StrasClean — défilez horizontalement sur mobile"
+        >
           {PLANS.map((p, i) => (
-            <Reveal key={p.id} delay={i * 100}>
+            <Reveal
+              key={p.id}
+              delay={i * 100}
+              className="w-[85vw] max-w-sm shrink-0 snap-start md:w-auto md:max-w-none md:shrink"
+            >
               <PlanCard plan={p} />
             </Reveal>
           ))}
         </div>
+
+        {/* Hint mobile uniquement — disparaît sur desktop */}
+        <p className="mt-2 text-center text-[11px] uppercase tracking-wider text-white/40 md:hidden">
+          ← Glissez pour voir les 3 formules →
+        </p>
 
         {/* Tarif selon le type de véhicule */}
         <Reveal>

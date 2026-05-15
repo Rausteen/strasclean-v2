@@ -94,8 +94,10 @@ export default function Footer() {
         <div className="mt-12 flex flex-col items-start justify-between gap-3 border-t border-white/5 pt-6 text-xs text-white/45 sm:flex-row sm:items-center">
           <p>© {year} StrasClean. Tous droits réservés.</p>
           <div className="flex flex-wrap gap-x-5 gap-y-1">
-            <a href="#" className="hover:text-white/80">Mentions légales</a>
-            <a href="#" className="hover:text-white/80">Politique de confidentialité</a>
+            <Link href="/mentions-legales" className="hover:text-white/80">Mentions légales</Link>
+            <Link href="/politique-de-confidentialite" className="hover:text-white/80">
+              Politique de confidentialité
+            </Link>
             <a href={`mailto:${SITE.email}`} className="hover:text-white/80">{SITE.email}</a>
           </div>
         </div>

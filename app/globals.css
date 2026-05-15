@@ -78,6 +78,10 @@ body {
 ::-webkit-scrollbar-thumb { background: #1A2029; border-radius: 8px; }
 ::-webkit-scrollbar-thumb:hover { background: #262E3B; }
 
+/* Masquer la scrollbar sur les carrousels mobile (Safari/Chrome + Firefox) */
+.scrollbar-hide::-webkit-scrollbar { display: none; }
+.scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
+
 /* Reveal on scroll (CSS-only via IntersectionObserver in component) */
 .reveal {
   opacity: 0;
