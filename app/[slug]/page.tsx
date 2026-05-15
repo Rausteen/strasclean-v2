@@ -159,7 +159,7 @@ function CityPage({
 }) {
   const jsonLd = {
     "@context": "https://schema.org",
-    "@type": "AutoDetailing",
+    "@type": "LocalBusiness",
     name: `${SITE.name} — ${city.name}`,
     description: `Nettoyage auto à domicile ${inCity(city)}.`,
     url: `${SITE.url}${cityPath(city)}`,

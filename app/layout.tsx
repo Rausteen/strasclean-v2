@@ -85,7 +85,10 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   const place = await getGooglePlaceData();
   const jsonLd = {
     "@context": "https://schema.org",
-    "@type": "AutoDetailing",
+    // LocalBusiness est reconnu par Google Rich Results Test pour les
+    // rich snippets (étoiles + count). AutoDetailing existe sur schema.org
+    // mais n'est pas dans la liste blanche de Google → erreur de validation.
+    "@type": "LocalBusiness",
     name: SITE.name,
     description,
     url: SITE.url,
