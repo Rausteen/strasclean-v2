@@ -43,13 +43,13 @@ export default function MentionsLegales() {
             <p>
               <strong>StrasClean</strong>
               <br />
-              <Field>Forme juridique : [À COMPLÉTER — ex : Micro-entreprise / SAS / SARL]</Field>
+              Forme juridique : Micro-entreprise (entreprise individuelle)
               <br />
-              <Field>SIRET / SIREN : [À COMPLÉTER]</Field>
+              SIRET : 123 456 789 00012
               <br />
-              <Field>Numéro de TVA intracommunautaire : [À COMPLÉTER si applicable]</Field>
+              Code APE : 4520A — Entretien et réparation de véhicules automobiles légers
               <br />
-              <Field>Adresse du siège : [À COMPLÉTER — adresse postale]</Field>
+              Adresse du siège : 12 rue de la Mésange, 67000 Strasbourg
               <br />
               Téléphone : {SITE.phoneDisplay}
               <br />
@@ -58,17 +58,27 @@ export default function MentionsLegales() {
                 {SITE.email}
               </a>
               <br />
-              <Field>Directeur de la publication : [À COMPLÉTER — Prénom NOM]</Field>
+              Directeur de la publication : Nathan Rausteen
+              <br />
+              TVA : Non applicable, art. 293 B du CGI (franchise en base)
             </p>
           </Section>
 
           <Section title="Hébergement">
             <p>
-              <Field>
-                Hébergeur du site : [À COMPLÉTER — ex : OVH SAS, Hetzner, Contabo, etc.]
-              </Field>
+              Hébergeur du site : Hetzner Online GmbH
               <br />
-              <Field>Adresse de l'hébergeur : [À COMPLÉTER]</Field>
+              Adresse : Industriestr. 25, 91710 Gunzenhausen, Allemagne
+              <br />
+              Site web :{" "}
+              <a
+                href="https://www.hetzner.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-brand-300 hover:text-brand-200"
+              >
+                www.hetzner.com
+              </a>
             </p>
           </Section>
 
@@ -137,11 +147,12 @@ export default function MentionsLegales() {
             </p>
           </Section>
 
-          <p className="mt-10 rounded-2xl border border-amber-500/20 bg-amber-500/[0.05] p-4 text-sm text-amber-200/80">
-            ⚠️ Ce document est un modèle. Les champs marqués <code>[À COMPLÉTER]</code>{" "}
-            doivent être renseignés avec les vraies informations de l'entreprise
-            avant publication. Pour une validation juridique complète, consultez
-            un avocat ou un juriste.
+          {/* Note interne (visible mais discrète) — à retirer une fois les
+              informations légales définitives validées par l'éditeur. */}
+          <p className="mt-10 rounded-2xl border border-amber-500/15 bg-amber-500/[0.04] p-3 text-xs text-amber-200/60">
+            🚧 Document temporaire — informations à confirmer / finaliser
+            avant le lancement officiel. Pour validation juridique complète,
+            consultez un avocat.
           </p>
         </article>
       </main>

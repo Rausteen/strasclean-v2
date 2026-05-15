@@ -22,10 +22,14 @@ import ServiceLinks from "@/components/ServiceLinks";
 import { CITIES, City, CITY_URL_PREFIX, cityPath, inCity } from "@/lib/cities";
 import { SERVICES, Service, matchSlug, servicePath } from "@/lib/services";
 import { SITE } from "@/lib/site";
+import { getGoogleReviews } from "@/lib/reviews";
 
 type Params = { slug: string };
 
 export const dynamicParams = false;
+// Régénération en arrière-plan toutes les 6h (les pages ville/service
+// changent peu, on n'a pas besoin du même rythme que la home).
+export const revalidate = 21600;
 
 export function generateStaticParams(): Params[] {
   const cityParams = CITIES.map((c) => ({ slug: `${CITY_URL_PREFIX}-${c.slug}` }));
@@ -135,15 +139,24 @@ export default async function Page({
   const m = matchSlug(slug);
   if (!m) return notFound();
 
+  // Fetché une fois par render (et mis en cache 1h par Next via lib/reviews)
+  const googleReviews = await getGoogleReviews();
+
   return m.type === "city" ? (
-    <CityPage city={m.city} />
+    <CityPage city={m.city} googleReviews={googleReviews} />
   ) : (
-    <ServiceCityPage service={m.service} city={m.city} />
+    <ServiceCityPage service={m.service} city={m.city} googleReviews={googleReviews} />
   );
 }
 
 // ─── City page ───────────────────────────────────────────────────────────
-function CityPage({ city }: { city: City }) {
+function CityPage({
+  city,
+  googleReviews,
+}: {
+  city: City;
+  googleReviews: Awaited<ReturnType<typeof getGoogleReviews>>;
+}) {
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "AutoDetailing",
@@ -195,7 +208,7 @@ function CityPage({ city }: { city: City }) {
         <BeforeAfter />
         <HowItWorks />
         <Benefits />
-        <Testimonials cityReview={cityReview} />
+        <Testimonials cityReview={cityReview} googleReviews={googleReviews} />
         <MidCTA />
         <FAQ />
         <OtherCities current={city} />
@@ -216,7 +229,15 @@ function CityPage({ city }: { city: City }) {
 }
 
 // ─── Service × City page ─────────────────────────────────────────────────
-function ServiceCityPage({ service, city }: { service: Service; city: City }) {
+function ServiceCityPage({
+  service,
+  city,
+  googleReviews,
+}: {
+  service: Service;
+  city: City;
+  googleReviews: Awaited<ReturnType<typeof getGoogleReviews>>;
+}) {
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "Service",
@@ -299,7 +320,7 @@ function ServiceCityPage({ service, city }: { service: Service; city: City }) {
         <PricingSection />
         <BeforeAfter />
         <Benefits />
-        <Testimonials cityReview={cityReview} />
+        <Testimonials cityReview={cityReview} googleReviews={googleReviews} />
         <ServiceLinks
           eyebrow={`Autres prestations ${inCity(city)}`}
           title={`Tous nos services ${inCity(city)}.`}

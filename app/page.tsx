@@ -14,8 +14,15 @@ import FAQ from "@/components/FAQ";
 import FinalCTA from "@/components/FinalCTA";
 import Footer from "@/components/Footer";
 import FloatingWhatsApp from "@/components/FloatingWhatsApp";
+import { getGoogleReviews } from "@/lib/reviews";
 
-export default function Page() {
+// Régénération en arrière-plan toutes les heures pour refléter les
+// nouveaux avis Google sans avoir à rebuild.
+export const revalidate = 3600;
+
+export default async function Page() {
+  const googleReviews = await getGoogleReviews();
+
   return (
     <>
       <Header />
@@ -29,7 +36,7 @@ export default function Page() {
         <HowItWorks />
         <Benefits />
         <ServiceArea />
-        <Testimonials />
+        <Testimonials googleReviews={googleReviews} />
         <MidCTA />
         <FAQ />
         <FinalCTA />

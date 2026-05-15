@@ -59,6 +59,16 @@ Copier `.env.example` → `.env.local` (dev) ou les configurer chez l'hébergeur
 | `NEXT_PUBLIC_META_PIXEL_ID` | `123456789012` | Meta / Facebook Pixel |
 | `ADMIN_PASSWORD` | `mot-de-passe-fort` | Mot de passe du dashboard `/admin` (côté serveur, non exposé) |
 | `SESSION_SECRET` | `32+ caractères aléatoires` | Secret HMAC pour signer la session admin |
+| `GOOGLE_PLACES_API_KEY` | `AIzaSy…` | Clé API Google Cloud (Places API activée) — affiche les avis Google sur le site |
+| `GOOGLE_PLACE_ID` | `ChIJ…` | Place ID de ta fiche Google Business StrasClean |
+
+**Avis Google automatiques** — si `GOOGLE_PLACES_API_KEY` + `GOOGLE_PLACE_ID`
+sont définis, les avis Google (4★ et plus, max 6) remplacent automatiquement
+les avis fictifs sur la home et les pages ville. Mise à jour automatique
+toutes les heures sans rebuild (Next.js revalidate).
+
+Pour récupérer ton Place ID : <https://developers.google.com/maps/documentation/places/web-service/place-id>.
+Pour la clé API : Google Cloud Console → APIs & Services → Library → "Places API" → Enable, puis Credentials → Create API key (restreindre par adresse IP du VPS pour la sécurité).
 
 ## Dashboard admin (`/admin`)
 

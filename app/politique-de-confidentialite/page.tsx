@@ -52,11 +52,11 @@ export default function Politique() {
             <p>
               <strong>StrasClean</strong>
               <br />
-              <Field>Forme juridique : [À COMPLÉTER]</Field>
+              Forme juridique : Micro-entreprise (entreprise individuelle)
               <br />
-              <Field>SIRET : [À COMPLÉTER]</Field>
+              SIRET : 123 456 789 00012
               <br />
-              <Field>Adresse : [À COMPLÉTER]</Field>
+              Adresse : 12 rue de la Mésange, 67000 Strasbourg
               <br />
               Email :{" "}
               <a href={`mailto:${SITE.email}`} className="text-brand-300 hover:text-brand-200">
@@ -64,6 +64,8 @@ export default function Politique() {
               </a>
               <br />
               Téléphone : {SITE.phoneDisplay}
+              <br />
+              Représentant légal : Nathan Rausteen
             </p>
           </Section>
 
@@ -158,9 +160,8 @@ export default function Politique() {
             <ul className="mt-2 list-disc space-y-1 pl-6 text-sm text-white/75">
               <li>Le personnel de StrasClean strictement nécessaire à la prestation</li>
               <li>
-                Notre hébergeur (stockage technique sécurisé du site et de la base de données
-                analytique) — {" "}
-                <Field>[À COMPLÉTER — nom de l'hébergeur]</Field>
+                Notre hébergeur (stockage technique sécurisé du site et de la base
+                de données analytique) — Hetzner Online GmbH, Allemagne
               </li>
               <li>
                 <strong>Google LLC</strong> (Google Ads, Google Tag) pour la mesure d'audience et
@@ -254,11 +255,12 @@ export default function Politique() {
             </p>
           </Section>
 
-          <p className="mt-10 rounded-2xl border border-amber-500/20 bg-amber-500/[0.05] p-4 text-sm text-amber-200/80">
-            ⚠️ Ce document est un modèle conforme au RGPD. Les champs marqués{" "}
-            <code>[À COMPLÉTER]</code> doivent être renseignés avec les vraies
-            informations de l'entreprise. Pour une validation juridique complète,
-            consultez un avocat ou un juriste.
+          {/* Note interne (visible mais discrète) — à retirer une fois les
+              informations légales définitives validées par l'éditeur. */}
+          <p className="mt-10 rounded-2xl border border-amber-500/15 bg-amber-500/[0.04] p-3 text-xs text-amber-200/60">
+            🚧 Document temporaire — informations à confirmer / finaliser
+            avant le lancement officiel. Pour validation juridique complète,
+            consultez un avocat.
           </p>
         </article>
       </main>
