@@ -9,6 +9,11 @@ const inter = Inter({
   subsets: ["latin"],
   variable: "--font-inter",
   display: "swap",
+  // Inter est utilisée pour le body (texte courant) — pas pour le H1 LCP.
+  // On la sort du critical path : elle se télécharge après le premier
+  // paint, sans le bloquer. Pendant ce temps le fallback système s'affiche.
+  preload: false,
+  fallback: ["system-ui", "-apple-system", "Segoe UI", "Roboto", "sans-serif"],
 });
 
 const sora = Sora({
@@ -18,6 +23,7 @@ const sora = Sora({
   // Seules ces graisses sont utilisées par .h-display (semibold/bold/extrabold).
   // Retirer 500 économise un fichier de fonte sur mobile.
   weight: ["600", "700", "800"],
+  // Sora porte le H1 (élément LCP) → on garde le preload activé.
 });
 
 const description =

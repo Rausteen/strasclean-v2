@@ -65,7 +65,7 @@ export default function Politique() {
               <br />
               Téléphone : {SITE.phoneDisplay}
               <br />
-              Représentant légal : Nathan Rausteen
+              Représentant légal : Bruno Durant
             </p>
           </Section>
 
@@ -161,7 +161,7 @@ export default function Politique() {
               <li>Le personnel de StrasClean strictement nécessaire à la prestation</li>
               <li>
                 Notre hébergeur (stockage technique sécurisé du site et de la base
-                de données analytique) — Hetzner Online GmbH, Allemagne
+                de données analytique) — OVH SAS, 2 rue Kellermann, 59100 Roubaix, France
               </li>
               <li>
                 <strong>Google LLC</strong> (Google Ads, Google Tag) pour la mesure d'audience et
@@ -255,13 +255,6 @@ export default function Politique() {
             </p>
           </Section>
 
-          {/* Note interne (visible mais discrète) — à retirer une fois les
-              informations légales définitives validées par l'éditeur. */}
-          <p className="mt-10 rounded-2xl border border-amber-500/15 bg-amber-500/[0.04] p-3 text-xs text-amber-200/60">
-            🚧 Document temporaire — informations à confirmer / finaliser
-            avant le lancement officiel. Pour validation juridique complète,
-            consultez un avocat.
-          </p>
         </article>
       </main>
       <Footer />

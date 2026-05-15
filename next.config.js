@@ -7,6 +7,11 @@ const nextConfig = {
   // better-sqlite3 est un module natif Node : il ne doit pas être bundlé
   // (sinon Next essaie de l'embarquer côté client → crash au build).
   serverExternalPackages: ["better-sqlite3"],
+  experimental: {
+    // Inline le CSS critique directement dans le <head> du HTML → supprime
+    // une requête bloquante (~600 ms gagnés sur Slow 4G d'après web.dev).
+    inlineCss: true,
+  },
   images: {
     formats: ["image/avif", "image/webp"],
     // Les photos en /public sont déjà optimisées : cache long côté CDN/navigateur

@@ -58,7 +58,7 @@ export default function MentionsLegales() {
                 {SITE.email}
               </a>
               <br />
-              Directeur de la publication : Nathan Rausteen
+              Directeur de la publication : Bruno Durant
               <br />
               TVA : Non applicable, art. 293 B du CGI (franchise en base)
             </p>
@@ -66,18 +66,18 @@ export default function MentionsLegales() {
 
           <Section title="Hébergement">
             <p>
-              Hébergeur du site : Hetzner Online GmbH
+              Hébergeur du site : OVH SAS
               <br />
-              Adresse : Industriestr. 25, 91710 Gunzenhausen, Allemagne
+              Adresse : 2 rue Kellermann, 59100 Roubaix, France
               <br />
               Site web :{" "}
               <a
-                href="https://www.hetzner.com"
+                href="https://www.ovhcloud.com"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-brand-300 hover:text-brand-200"
               >
-                www.hetzner.com
+                www.ovhcloud.com
               </a>
             </p>
           </Section>
@@ -147,13 +147,6 @@ export default function MentionsLegales() {
             </p>
           </Section>
 
-          {/* Note interne (visible mais discrète) — à retirer une fois les
-              informations légales définitives validées par l'éditeur. */}
-          <p className="mt-10 rounded-2xl border border-amber-500/15 bg-amber-500/[0.04] p-3 text-xs text-amber-200/60">
-            🚧 Document temporaire — informations à confirmer / finaliser
-            avant le lancement officiel. Pour validation juridique complète,
-            consultez un avocat.
-          </p>
         </article>
       </main>
       <Footer />
