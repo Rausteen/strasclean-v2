@@ -130,21 +130,9 @@ export default function Testimonials({
 
   let reviews: Review[];
   if (hasGoogle) {
-    reviews = googleReviews!.map(mapGoogleReview);
-    if (cityReview) {
-      reviews = [
-        {
-          name: cityReview.name,
-          city: cityReview.city,
-          text: cityReview.text,
-          initials: initialsOf(cityReview.name),
-          tone: TONES[TONES.length - 1],
-          source: "fixture",
-        },
-        ...reviews,
-      ];
-    }
-    reviews = reviews.slice(0, 6);
+    // Google connecté → on n'utilise QUE des vrais avis. Le cityReview
+    // fictif est volontairement ignoré pour ne pas mélanger faux + vrais.
+    reviews = googleReviews!.map(mapGoogleReview).slice(0, 6);
   } else if (cityReview) {
     reviews = [
       {
