@@ -4,6 +4,7 @@ import "./globals.css";
 import { SITE } from "@/lib/site";
 import Analytics from "@/components/Analytics";
 import Tracker from "@/components/Tracker";
+import { getGooglePlaceData } from "@/lib/reviews";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -80,7 +81,8 @@ export const viewport: Viewport = {
   initialScale: 1,
 };
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default async function RootLayout({ children }: { children: React.ReactNode }) {
+  const place = await getGooglePlaceData();
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "AutoDetailing",
@@ -111,6 +113,17 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       "La Wantzenau",
     ],
     sameAs: [],
+    ...(place.rating && place.totalCount
+      ? {
+          aggregateRating: {
+            "@type": "AggregateRating",
+            ratingValue: place.rating,
+            reviewCount: place.totalCount,
+            bestRating: 5,
+            worstRating: 1,
+          },
+        }
+      : {}),
   };
 
   return (

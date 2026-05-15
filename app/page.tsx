@@ -14,14 +14,14 @@ import FAQ from "@/components/FAQ";
 import FinalCTA from "@/components/FinalCTA";
 import Footer from "@/components/Footer";
 import FloatingWhatsApp from "@/components/FloatingWhatsApp";
-import { getGoogleReviews } from "@/lib/reviews";
+import { getGooglePlaceData } from "@/lib/reviews";
 
 // Régénération en arrière-plan toutes les heures pour refléter les
 // nouveaux avis Google sans avoir à rebuild.
 export const revalidate = 3600;
 
 export default async function Page() {
-  const googleReviews = await getGoogleReviews();
+  const place = await getGooglePlaceData();
 
   return (
     <>
@@ -36,7 +36,11 @@ export default async function Page() {
         <HowItWorks />
         <Benefits />
         <ServiceArea />
-        <Testimonials googleReviews={googleReviews} />
+        <Testimonials
+          googleReviews={place.reviews}
+          googleRating={place.rating}
+          googleTotalCount={place.totalCount}
+        />
         <MidCTA />
         <FAQ />
         <FinalCTA />

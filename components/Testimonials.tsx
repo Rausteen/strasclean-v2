@@ -102,11 +102,20 @@ function mapGoogleReview(g: GoogleReview, i: number): Review {
 type Props = {
   /** Avis personnalisé optionnel (ex. : pour une page ville). Affiché en premier. */
   cityReview?: { name: string; city: string; text: string };
-  /** Avis Google récupérés via lib/reviews → getGoogleReviews(). */
+  /** Avis Google récupérés via lib/reviews → getGooglePlaceData(). */
   googleReviews?: GoogleReview[];
+  /** Note moyenne Google (1-5). Affichée en titre si fournie. */
+  googleRating?: number;
+  /** Nombre total d'avis Google (peut être > googleReviews.length). */
+  googleTotalCount?: number;
 };
 
-export default function Testimonials({ cityReview, googleReviews }: Props = {}) {
+export default function Testimonials({
+  cityReview,
+  googleReviews,
+  googleRating,
+  googleTotalCount,
+}: Props = {}) {
   const hasGoogle = googleReviews && googleReviews.length > 0;
 
   let reviews: Review[];
@@ -149,16 +158,35 @@ export default function Testimonials({ cityReview, googleReviews }: Props = {}) 
           <p className="text-sm font-semibold uppercase tracking-[0.18em] text-brand-400">
             Avis clients
           </p>
-          <div className="mt-4 inline-flex items-center gap-2">
-            <span className="flex items-center gap-0.5 text-amber-300">
-              {Array.from({ length: 5 }).map((_, i) => (
-                <StarIcon key={i} size={16} />
-              ))}
-            </span>
-            <span className="text-sm text-white/70">
-              {hasGoogle ? "Avis vérifiés Google" : "Avis vérifiés clients StrasClean"}
-            </span>
-          </div>
+
+          {hasGoogle && googleRating !== undefined && googleTotalCount !== undefined ? (
+            // Bandeau "preuve sociale" en cas d'avis Google connectés
+            <div className="mt-4 inline-flex flex-wrap items-center justify-center gap-x-3 gap-y-1 rounded-full border border-brand-500/30 bg-brand-500/[0.08] px-4 py-2">
+              <span className="flex items-center gap-0.5 text-amber-300">
+                {Array.from({ length: 5 }).map((_, i) => (
+                  <StarIcon key={i} size={18} />
+                ))}
+              </span>
+              <span className="text-base font-bold text-white">
+                {googleRating.toFixed(1).replace(".", ",")}/5
+              </span>
+              <span className="text-sm text-white/70">
+                · {googleTotalCount} avis Google
+              </span>
+            </div>
+          ) : (
+            <div className="mt-4 inline-flex items-center gap-2">
+              <span className="flex items-center gap-0.5 text-amber-300">
+                {Array.from({ length: 5 }).map((_, i) => (
+                  <StarIcon key={i} size={16} />
+                ))}
+              </span>
+              <span className="text-sm text-white/70">
+                Avis vérifiés clients StrasClean
+              </span>
+            </div>
+          )}
+
           <h2 className="h-display mt-4 text-balance text-3xl font-bold text-white sm:text-4xl lg:text-5xl">
             Ils ont retrouvé une voiture propre.
           </h2>

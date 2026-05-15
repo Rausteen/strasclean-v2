@@ -22,7 +22,7 @@ import ServiceLinks from "@/components/ServiceLinks";
 import { CITIES, City, CITY_URL_PREFIX, cityPath, inCity } from "@/lib/cities";
 import { SERVICES, Service, matchSlug, servicePath } from "@/lib/services";
 import { SITE } from "@/lib/site";
-import { getGoogleReviews } from "@/lib/reviews";
+import { getGooglePlaceData } from "@/lib/reviews";
 
 type Params = { slug: string };
 
@@ -140,22 +140,22 @@ export default async function Page({
   if (!m) return notFound();
 
   // Fetché une fois par render (et mis en cache 1h par Next via lib/reviews)
-  const googleReviews = await getGoogleReviews();
+  const place = await getGooglePlaceData();
 
   return m.type === "city" ? (
-    <CityPage city={m.city} googleReviews={googleReviews} />
+    <CityPage city={m.city} place={place} />
   ) : (
-    <ServiceCityPage service={m.service} city={m.city} googleReviews={googleReviews} />
+    <ServiceCityPage service={m.service} city={m.city} place={place} />
   );
 }
 
 // ─── City page ───────────────────────────────────────────────────────────
 function CityPage({
   city,
-  googleReviews,
+  place,
 }: {
   city: City;
-  googleReviews: Awaited<ReturnType<typeof getGoogleReviews>>;
+  place: Awaited<ReturnType<typeof getGooglePlaceData>>;
 }) {
   const jsonLd = {
     "@context": "https://schema.org",
@@ -174,6 +174,17 @@ function CityPage({
       addressCountry: SITE.country,
     },
     areaServed: { "@type": "City", name: city.name },
+    ...(place.rating && place.totalCount
+      ? {
+          aggregateRating: {
+            "@type": "AggregateRating",
+            ratingValue: place.rating,
+            reviewCount: place.totalCount,
+            bestRating: 5,
+            worstRating: 1,
+          },
+        }
+      : {}),
   };
 
   const breadcrumbJsonLd = {
@@ -208,7 +219,12 @@ function CityPage({
         <BeforeAfter />
         <HowItWorks />
         <Benefits />
-        <Testimonials cityReview={cityReview} googleReviews={googleReviews} />
+        <Testimonials
+          cityReview={cityReview}
+          googleReviews={place.reviews}
+          googleRating={place.rating}
+          googleTotalCount={place.totalCount}
+        />
         <MidCTA />
         <FAQ />
         <OtherCities current={city} />
@@ -232,11 +248,11 @@ function CityPage({
 function ServiceCityPage({
   service,
   city,
-  googleReviews,
+  place,
 }: {
   service: Service;
   city: City;
-  googleReviews: Awaited<ReturnType<typeof getGoogleReviews>>;
+  place: Awaited<ReturnType<typeof getGooglePlaceData>>;
 }) {
   const jsonLd = {
     "@context": "https://schema.org",
@@ -320,7 +336,12 @@ function ServiceCityPage({
         <PricingSection />
         <BeforeAfter />
         <Benefits />
-        <Testimonials cityReview={cityReview} googleReviews={googleReviews} />
+        <Testimonials
+          cityReview={cityReview}
+          googleReviews={place.reviews}
+          googleRating={place.rating}
+          googleTotalCount={place.totalCount}
+        />
         <ServiceLinks
           eyebrow={`Autres prestations ${inCity(city)}`}
           title={`Tous nos services ${inCity(city)}.`}
