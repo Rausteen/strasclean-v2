@@ -108,6 +108,8 @@ type Props = {
   googleRating?: number;
   /** Nombre total d'avis Google (peut être > googleReviews.length). */
   googleTotalCount?: number;
+  /** URL publique de la fiche Google (pour le CTA "voir tous les avis"). */
+  googleProfileUrl?: string;
 };
 
 export default function Testimonials({
@@ -115,8 +117,16 @@ export default function Testimonials({
   googleReviews,
   googleRating,
   googleTotalCount,
+  googleProfileUrl,
 }: Props = {}) {
   const hasGoogle = googleReviews && googleReviews.length > 0;
+  // On ajoute le CTA "voir tous les avis" si Google a plus d'avis que ce
+  // que l'API expose, ou simplement si on a un lien valide vers la fiche.
+  const showSeeAllCta =
+    hasGoogle &&
+    googleProfileUrl &&
+    typeof googleTotalCount === "number" &&
+    googleTotalCount >= (googleReviews?.length ?? 0);
 
   let reviews: Review[];
   if (hasGoogle) {
@@ -221,6 +231,41 @@ export default function Testimonials({
               </article>
             </Reveal>
           ))}
+
+          {/* 6ᵉ tuile : CTA "voir tous les avis" sur la fiche Google.
+              Apparaît seulement quand Google est connecté ET qu'on a un
+              total ≥ au nombre d'avis affichés (donc Google = source). */}
+          {showSeeAllCta && (
+            <Reveal delay={reviews.length * 70}>
+              <a
+                href={googleProfileUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group flex h-full flex-col items-center justify-center rounded-2xl border border-brand-500/30 bg-gradient-to-br from-brand-500/10 via-ink-800 to-ink-900 p-6 text-center transition hover:-translate-y-1 hover:border-brand-400/60"
+                aria-label={`Voir les ${googleTotalCount} avis Google de StrasClean`}
+              >
+                <span className="flex items-center gap-0.5 text-amber-300">
+                  {Array.from({ length: 5 }).map((_, i) => (
+                    <StarIcon key={i} size={22} />
+                  ))}
+                </span>
+                <p className="h-display mt-3 text-4xl font-extrabold text-white">
+                  {(googleRating ?? 5).toFixed(1).replace(".", ",")}
+                  <span className="text-2xl text-white/55">/5</span>
+                </p>
+                <p className="mt-1 text-sm text-white/70">
+                  {googleTotalCount} avis Google vérifiés
+                </p>
+                <span className="mt-5 inline-flex items-center gap-1.5 rounded-full border border-white/15 bg-white/5 px-4 py-2 text-sm font-semibold text-white transition group-hover:border-brand-400/40 group-hover:bg-brand-500/10 group-hover:text-brand-200">
+                  Voir tous les avis
+                  <span aria-hidden className="transition group-hover:translate-x-0.5">→</span>
+                </span>
+                <p className="mt-3 text-[11px] uppercase tracking-wider text-white/40">
+                  Lien vers Google Maps
+                </p>
+              </a>
+            </Reveal>
+          )}
         </div>
       </div>
     </section>

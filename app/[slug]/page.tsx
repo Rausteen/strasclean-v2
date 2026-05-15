@@ -224,6 +224,7 @@ function CityPage({
           googleReviews={place.reviews}
           googleRating={place.rating}
           googleTotalCount={place.totalCount}
+          googleProfileUrl={place.profileUrl}
         />
         <MidCTA />
         <FAQ />
@@ -341,6 +342,7 @@ function ServiceCityPage({
           googleReviews={place.reviews}
           googleRating={place.rating}
           googleTotalCount={place.totalCount}
+          googleProfileUrl={place.profileUrl}
         />
         <ServiceLinks
           eyebrow={`Autres prestations ${inCity(city)}`}

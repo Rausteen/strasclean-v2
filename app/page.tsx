@@ -40,6 +40,7 @@ export default async function Page() {
           googleReviews={place.reviews}
           googleRating={place.rating}
           googleTotalCount={place.totalCount}
+          googleProfileUrl={place.profileUrl}
         />
         <MidCTA />
         <FAQ />

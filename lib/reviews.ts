@@ -41,6 +41,8 @@ export type PlaceData = {
   rating?: number;
   /** Nombre total d'avis Google (peut être > au nombre d'avis renvoyés) */
   totalCount?: number;
+  /** URL Google Maps publique de la fiche (pour le CTA "voir tous les avis") */
+  profileUrl?: string;
 };
 
 const EMPTY: PlaceData = { reviews: [] };
@@ -153,10 +155,12 @@ export async function getGooglePlaceData(): Promise<PlaceData> {
     if (data.reviews.length === 0) {
       data = await fetchLegacy(placeId, apiKey);
     }
-    // 4★ minimum, max 6 (limite Google côté détails de toute façon)
     return {
       ...data,
-      reviews: data.reviews.filter((r) => r.rating >= 4).slice(0, 6),
+      // 4★ minimum, max 5 (limite stricte de Google côté Place Details)
+      reviews: data.reviews.filter((r) => r.rating >= 4).slice(0, 5),
+      // URL publique de la fiche pour le CTA "voir tous les avis"
+      profileUrl: `https://www.google.com/maps/place/?q=place_id:${placeId}`,
     };
   } catch {
     return EMPTY;
