@@ -19,7 +19,7 @@ const OPTIONS = [
 
 export default function PricingSection() {
   return (
-    <section id="formules" className="relative py-14 sm:py-24 lg:py-28">
+    <section id="formules" className="relative overflow-hidden py-14 sm:py-24 lg:py-28">
       <div className="pointer-events-none absolute inset-0 -z-10">
         <div className="absolute left-1/2 top-0 h-[400px] w-[800px] -translate-x-1/2 rounded-full bg-brand-500/10 blur-3xl" />
       </div>

@@ -11,6 +11,11 @@ html {
   scroll-behavior: smooth;
   scroll-padding-top: 80px;
   -webkit-text-size-adjust: 100%;
+  /* Aucun débordement horizontal possible — protège contre les blobs
+     décoratifs / cards qui pourraient dépasser. `clip` (pas `hidden`)
+     pour ne pas créer un nouveau contexte de scroll, ce qui casserait
+     le `position: sticky` du Header. */
+  overflow-x: clip;
 }
 
 body {
@@ -19,6 +24,7 @@ body {
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
   -webkit-tap-highlight-color: transparent;
+  overflow-x: clip;
   /* Laisse de la place sous la sticky bar mobile (CTA WhatsApp + safe-area iPhone) */
   padding-bottom: calc(env(safe-area-inset-bottom, 0px) + 84px);
 }
