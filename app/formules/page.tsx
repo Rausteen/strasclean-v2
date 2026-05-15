@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import Header from "@/components/Header";
+import MobileOfferStrip from "@/components/MobileOfferStrip";
 import TrustBar from "@/components/TrustBar";
 import FAQ from "@/components/FAQ";
 import FinalCTA from "@/components/FinalCTA";
@@ -73,6 +74,7 @@ export default function FormulesPage() {
   return (
     <>
       <Header />
+      <MobileOfferStrip />
       <main>
         {/* Hero */}
         <section className="relative overflow-hidden">

@@ -5,10 +5,13 @@ import { SITE } from "@/lib/site";
 import { WhatsAppIcon, PhoneIcon } from "./Icon";
 
 export default function FloatingWhatsApp() {
-  const [visible, setVisible] = useState(false);
+  // Desktop : on attend que l'utilisateur scrolle pour ne pas concurrencer
+  // le CTA du header. Mobile : TOUJOURS visible — c'est notre meilleure
+  // chance de conversion sur un trafic à 90% mobile.
+  const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
-    const onScroll = () => setVisible(window.scrollY > 480);
+    const onScroll = () => setScrolled(window.scrollY > 480);
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
@@ -16,11 +19,9 @@ export default function FloatingWhatsApp() {
 
   return (
     <>
-      {/* Mobile sticky bar */}
+      {/* Mobile sticky bar — TOUJOURS visible */}
       <div
-        className={`fixed inset-x-0 bottom-0 z-40 border-t border-white/10 bg-ink-950/95 backdrop-blur-md transition-transform duration-300 lg:hidden ${
-          visible ? "translate-y-0" : "translate-y-full"
-        }`}
+        className="fixed inset-x-0 bottom-0 z-40 border-t border-white/10 bg-ink-950/95 backdrop-blur-md lg:hidden"
         style={{
           paddingTop: "10px",
           paddingBottom: "calc(env(safe-area-inset-bottom, 0px) + 10px)",
@@ -33,7 +34,7 @@ export default function FloatingWhatsApp() {
             href={SITE.whatsappHref}
             target="_blank"
             rel="noopener noreferrer"
-            className="btn-wa flex-1 h-12 text-[15px] font-semibold"
+            className="btn-wa flex-1 h-12 text-[15px] font-semibold active:scale-[0.98]"
           >
             <WhatsAppIcon size={20} /> Réserver sur WhatsApp
           </a>
@@ -54,7 +55,7 @@ export default function FloatingWhatsApp() {
         rel="noopener noreferrer"
         aria-label="Réserver sur WhatsApp"
         className={`fixed bottom-6 right-6 z-40 hidden lg:inline-flex items-center gap-2 rounded-full bg-whatsapp px-5 py-3.5 text-sm font-semibold text-white shadow-glow transition hover:bg-whatsapp-dark hover:scale-[1.03] ${
-          visible ? "opacity-100" : "pointer-events-none opacity-0"
+          scrolled ? "opacity-100" : "pointer-events-none opacity-0"
         }`}
       >
         <span className="relative flex h-3 w-3">
@@ -67,3 +68,4 @@ export default function FloatingWhatsApp() {
     </>
   );
 }
+

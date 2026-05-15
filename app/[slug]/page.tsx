@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Header from "@/components/Header";
+import MobileOfferStrip from "@/components/MobileOfferStrip";
 import CityHero from "@/components/CityHero";
 import ServiceCityHero from "@/components/ServiceCityHero";
 import TrustBar from "@/components/TrustBar";
@@ -185,6 +186,7 @@ function CityPage({ city }: { city: City }) {
   return (
     <>
       <Header />
+      <MobileOfferStrip />
       <main>
         <CityHero city={city} />
         <TrustBar />
@@ -288,6 +290,7 @@ function ServiceCityPage({ service, city }: { service: Service; city: City }) {
   return (
     <>
       <Header />
+      <MobileOfferStrip />
       <main>
         <ServiceCityHero service={service} city={city} />
         <TrustBar />

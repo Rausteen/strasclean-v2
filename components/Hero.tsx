@@ -8,7 +8,7 @@ import {
   SparklesIcon,
   CheckIcon,
   BoltIcon,
-  ClockIcon,
+  StarIcon,
 } from "./Icon";
 
 export default function Hero() {
@@ -46,30 +46,55 @@ export default function Hero() {
               entretien rapide, rénovation intérieure ou detailing complet.
             </p>
 
-            <div className="mt-6 flex flex-col gap-3 sm:mt-7 sm:flex-row">
+            <div className="mt-5 flex flex-col gap-3 sm:mt-7 sm:flex-row">
               <a
                 href={SITE.whatsappHref}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="btn-wa h-14 w-full px-6 text-base sm:h-12 sm:w-auto"
+                className="btn-wa h-14 w-full px-6 text-base active:scale-[0.98] sm:h-12 sm:w-auto"
               >
                 <WhatsAppIcon size={20} />
                 Réserver sur WhatsApp
               </a>
-              <a href={SITE.phoneHref} className="btn-ghost h-14 w-full px-6 text-base sm:h-12 sm:w-auto">
+              <a
+                href={SITE.phoneHref}
+                className="btn-ghost h-14 w-full px-6 text-base active:scale-[0.98] sm:h-12 sm:w-auto"
+              >
                 <PhoneIcon size={18} />
-                Appeler maintenant
+                <span className="sm:hidden">Appeler {SITE.phoneDisplay}</span>
+                <span className="hidden sm:inline">Appeler maintenant</span>
               </a>
             </div>
 
-            {/* Trust */}
-            <ul className="mt-6 flex flex-wrap gap-x-4 gap-y-2 text-[13px] text-white/70 sm:mt-7 sm:gap-x-5 sm:text-sm">
+            {/* Preuve sociale + dispo — fusionnés en un seul bandeau dense */}
+            <div className="mt-4 flex flex-wrap items-center gap-x-4 gap-y-2 text-[13px] sm:mt-5 sm:text-sm">
+              <span className="inline-flex items-center gap-1.5">
+                <span className="flex items-center gap-0.5 text-amber-300">
+                  <StarIcon size={14} />
+                  <StarIcon size={14} />
+                  <StarIcon size={14} />
+                  <StarIcon size={14} />
+                  <StarIcon size={14} />
+                </span>
+                <span className="font-semibold text-white">Service local de confiance</span>
+              </span>
+              <span className="inline-flex items-center gap-1.5 text-brand-200">
+                <span className="relative flex h-2 w-2">
+                  <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-brand-400/70" />
+                  <span className="relative inline-flex h-2 w-2 rounded-full bg-brand-400" />
+                </span>
+                Dispo cette semaine
+              </span>
+            </div>
+
+            {/* Trust strip (allégée, sans doublon avec la preuve sociale) */}
+            <ul className="mt-5 flex flex-wrap gap-x-4 gap-y-2 text-[13px] text-white/70 sm:mt-6 sm:gap-x-5 sm:text-sm">
               {[
-                { icon: <HomeChip />, label: "Intervention à domicile" },
+                { icon: <HomeChip />, label: "À domicile" },
                 { icon: <MapPinIcon size={14} className="text-brand-400" />, label: "Strasbourg & alentours" },
-                { icon: <BoltIcon size={14} className="text-brand-400" />, label: "Réservation rapide" },
+                { icon: <BoltIcon size={14} className="text-brand-400" />, label: "Réponse rapide" },
                 { icon: <CarIcon size={14} className="text-brand-400" />, label: "Intérieur / extérieur" },
-                { icon: <CheckIcon size={14} className="text-brand-400" />, label: "Paiement simple" },
+                { icon: <CheckIcon size={14} className="text-brand-400" />, label: "Paiement sur place" },
               ].map((t) => (
                 <li key={t.label} className="inline-flex items-center gap-1.5">
                   {t.icon}
@@ -77,12 +102,6 @@ export default function Hero() {
                 </li>
               ))}
             </ul>
-
-            {/* Availability strip */}
-            <div className="mt-6 inline-flex items-center gap-2 rounded-full border border-brand-500/30 bg-brand-500/10 px-3 py-2 text-[13px] text-brand-200 sm:mt-7 sm:gap-3 sm:px-4 sm:text-sm">
-              <ClockIcon size={14} className="text-brand-300" />
-              Créneaux disponibles cette semaine sur Strasbourg
-            </div>
           </div>
 
           {/* Visual */}

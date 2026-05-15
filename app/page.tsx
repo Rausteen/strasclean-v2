@@ -1,4 +1,5 @@
 import Header from "@/components/Header";
+import MobileOfferStrip from "@/components/MobileOfferStrip";
 import Hero from "@/components/Hero";
 import TrustBar from "@/components/TrustBar";
 import ProblemsSolution from "@/components/ProblemsSolution";
@@ -18,6 +19,7 @@ export default function Page() {
   return (
     <>
       <Header />
+      <MobileOfferStrip />
       <main>
         <Hero />
         <TrustBar />
