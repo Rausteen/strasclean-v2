@@ -7,6 +7,7 @@ import FinalCTA from "@/components/FinalCTA";
 import Footer from "@/components/Footer";
 import FloatingWhatsApp from "@/components/FloatingWhatsApp";
 import Reveal from "@/components/Reveal";
+import VehiclePricing from "@/components/VehiclePricing";
 import {
   WhatsAppIcon,
   PhoneIcon,
@@ -280,10 +281,16 @@ export default function FormulesPage() {
               ))}
             </div>
 
-            <p className="mx-auto mt-10 max-w-3xl text-center text-sm text-white/55">
-              Le tarif peut varier selon la taille du véhicule, l'état
-              intérieur et les options demandées. On confirme toujours le prix
-              avant intervention.
+            <Reveal>
+              <div className="mt-12">
+                <VehiclePricing />
+              </div>
+            </Reveal>
+
+            <p className="mx-auto mt-8 max-w-3xl text-center text-sm text-white/55">
+              Le tarif final peut varier selon l'état intérieur du véhicule et
+              les options demandées. On confirme toujours le prix avant
+              intervention.
             </p>
           </div>
         </section>

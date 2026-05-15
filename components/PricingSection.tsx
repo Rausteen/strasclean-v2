@@ -2,15 +2,18 @@ import Link from "next/link";
 import Reveal from "./Reveal";
 import { waLink } from "@/lib/site";
 import { PLANS, Plan } from "@/lib/plans";
-import { CheckIcon, WhatsAppIcon, ArrowRightIcon, PawIcon, SprayIcon, CarIcon } from "./Icon";
+import VehiclePricing from "./VehiclePricing";
+import { CheckIcon, WhatsAppIcon, ArrowRightIcon, PawIcon, SprayIcon } from "./Icon";
 
+// Options ciblées sur l'état du véhicule (la taille est déjà gérée par le
+// bandeau VehiclePricing affiché plus haut → on ne la duplique pas ici).
 const OPTIONS = [
   { icon: <PawIcon size={16} />, label: "Poils d'animaux" },
   { icon: <SprayIcon size={16} />, label: "Taches tenaces" },
   { icon: <SprayIcon size={16} />, label: "Sièges très sales" },
   { icon: <SprayIcon size={16} />, label: "Coffre très sale" },
   { icon: <SprayIcon size={16} />, label: "Traitement odeurs" },
-  { icon: <CarIcon size={16} />, label: "SUV / utilitaire" },
+  { icon: <SprayIcon size={16} />, label: "Désinfection renforcée" },
 ];
 
 export default function PricingSection() {
@@ -43,9 +46,16 @@ export default function PricingSection() {
           ))}
         </div>
 
+        {/* Tarif selon le type de véhicule */}
+        <Reveal>
+          <div className="mt-10">
+            <VehiclePricing />
+          </div>
+        </Reveal>
+
         <p className="mx-auto mt-8 max-w-3xl text-center text-sm text-white/55">
-          Le tarif peut varier selon la taille du véhicule, l'état intérieur et
-          les options demandées.
+          Le tarif final peut varier selon l'état intérieur du véhicule et les
+          options demandées.
         </p>
 
         {/* Options */}

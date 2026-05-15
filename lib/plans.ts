@@ -91,3 +91,23 @@ export const PLANS: Plan[] = [
 ];
 
 export const findPlan = (id: string) => PLANS.find((p) => p.id === id);
+
+// ─── Supplément selon le type de véhicule ────────────────────────────────
+//  Le prix affiché de chaque formule correspond à une citadine. Pour les
+//  véhicules plus volumineux, un léger supplément forfaitaire est appliqué.
+//  Centralisé ici pour rester cohérent partout (PricingSection, /formules).
+
+export type VehicleType = {
+  id: "citadine" | "berline" | "suv" | "utilitaire";
+  label: string;
+  emoji: string;
+  /** Supplément en € au-dessus du prix de base "citadine" */
+  surcharge: number;
+};
+
+export const VEHICLE_TYPES: VehicleType[] = [
+  { id: "citadine", label: "Citadine", emoji: "🚗", surcharge: 0 },
+  { id: "berline", label: "Berline", emoji: "🚙", surcharge: 10 },
+  { id: "suv", label: "SUV", emoji: "🚐", surcharge: 20 },
+  { id: "utilitaire", label: "Utilitaire", emoji: "🚛", surcharge: 30 },
+];
