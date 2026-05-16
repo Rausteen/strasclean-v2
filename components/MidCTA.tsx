@@ -25,7 +25,7 @@ export default function MidCTA() {
               <div className="flex flex-col gap-3 sm:flex-row lg:col-span-4 lg:flex-col">
                 <a
                   href={waLink(
-                    "Bonjour StrasClean 👋 Voici une photo de ma voiture, pouvez-vous me conseiller une formule ? Vos disponibilités cette semaine ?"
+                    "Bonjour StrasClean 👋 Voici une photo de ma voiture. Pouvez-vous me conseiller la formule la plus adaptée et me donner vos prochains créneaux ?"
                   )}
                   target="_blank"
                   rel="noopener noreferrer"

@@ -17,7 +17,7 @@ export default function ServiceCityHero({
   service: Service;
   city: City;
 }) {
-  const message = `${service.ctaMessage} à ${city.name}. Vos disponibilités cette semaine ?`;
+  const message = `${service.ctaMessage} à ${city.name}. Quels sont vos prochains créneaux ?${service.ctaSuffix ? ` ${service.ctaSuffix}` : ""}`;
 
   return (
     <section id="top" className="relative overflow-hidden">

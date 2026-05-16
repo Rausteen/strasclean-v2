@@ -266,7 +266,7 @@ export default function FormulesPage() {
                           Votre commune n'est pas listée ?{" "}
                           <a
                             href={waLink(
-                              `Bonjour StrasClean 👋 Est-ce que vous intervenez dans ma ville pour la ${p.name} ?`,
+                              `Bonjour StrasClean 👋 Je suis à [ville/quartier]. Est-ce que vous intervenez chez moi pour la ${p.name} ? Quels sont vos prochains créneaux ?`,
                             )}
                             target="_blank"
                             rel="noopener noreferrer"

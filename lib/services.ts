@@ -42,8 +42,18 @@ export type Service = {
   whyChoose: { title: string; desc: string }[];
   /** Q&R spécifiques au service */
   faq: { q: string; a: string }[];
-  /** Message WhatsApp pré-rempli (la ville est ajoutée automatiquement à la fin) */
+  /**
+   * Message WhatsApp pré-rempli (la ville est ajoutée automatiquement à la fin
+   * via les wrappers ServiceDetail/ServiceCityHero). Ne PAS terminer par un
+   * point ni par "à Strasbourg" — le wrapper construit :
+   *   `${ctaMessage} à {Ville}. Quels sont vos prochains créneaux ?${ctaSuffix ? ` ${ctaSuffix}` : ""}`
+   */
   ctaMessage: string;
+  /**
+   * Phrase optionnelle ajoutée après "Quels sont vos prochains créneaux ?"
+   * (typiquement "Je peux envoyer des photos…" ou "Véhicule : [modèle].").
+   */
+  ctaSuffix?: string;
 };
 
 export const SERVICES: Service[] = [
@@ -95,6 +105,7 @@ export const SERVICES: Service[] = [
       },
     ],
     ctaMessage: "Bonjour StrasClean 👋 Je voudrais un shampouinage des sièges de ma voiture",
+    ctaSuffix: "Je peux envoyer des photos des sièges.",
   },
 
   {
@@ -145,6 +156,7 @@ export const SERVICES: Service[] = [
       },
     ],
     ctaMessage: "Bonjour StrasClean 👋 Je voudrais réserver un detailing auto complet",
+    ctaSuffix: "Je peux envoyer des photos du véhicule.",
   },
 
   {
@@ -196,6 +208,7 @@ export const SERVICES: Service[] = [
     ],
     ctaMessage:
       "Bonjour StrasClean 👋 Ma voiture est pleine de poils d'animaux, je voudrais un traitement complet",
+    ctaSuffix: "Je peux envoyer des photos.",
   },
 
   {
@@ -246,6 +259,7 @@ export const SERVICES: Service[] = [
       },
     ],
     ctaMessage: "Bonjour StrasClean 👋 Je voudrais un nettoyage intérieur de ma voiture",
+    ctaSuffix: "Véhicule : [modèle].",
   },
 
   {
@@ -350,7 +364,7 @@ export const SERVICES: Service[] = [
         a: "Idéal toutes les 2-4 semaines pour garder une carrosserie présentable. Beaucoup de clients prennent un rendez-vous récurrent à ce tarif.",
       },
     ],
-    ctaMessage: "Bonjour StrasClean 👋 Je voudrais un lavage extérieur de ma voiture (dès 29 €)",
+    ctaMessage: "Bonjour StrasClean 👋 Je voudrais un lavage extérieur de ma voiture dès 29 €",
   },
 
   // ─── 7. Remise à neuf pour revente (129 €) ──────────────────────────────
@@ -408,7 +422,8 @@ export const SERVICES: Service[] = [
       },
     ],
     ctaMessage:
-      "Bonjour StrasClean 👋 Je vais mettre ma voiture en vente, je voudrais une remise à neuf complète (dès 129 €)",
+      "Bonjour StrasClean 👋 Je vais mettre ma voiture en vente et je voudrais une remise à neuf complète dès 129 €",
+    ctaSuffix: "Je peux envoyer des photos.",
   },
 ];
 
