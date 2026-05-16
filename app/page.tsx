@@ -9,6 +9,7 @@ import BeforeAfter from "@/components/BeforeAfter";
 import HowItWorks from "@/components/HowItWorks";
 import Benefits from "@/components/Benefits";
 import ServiceArea from "@/components/ServiceArea";
+import HomeServicesPromo from "@/components/HomeServicesPromo";
 import Testimonials from "@/components/Testimonials";
 import MidCTA from "@/components/MidCTA";
 import FAQ from "@/components/FAQ";
@@ -38,6 +39,7 @@ export default async function Page() {
         <HowItWorks />
         <Benefits />
         <ServiceArea />
+        <HomeServicesPromo />
         <Testimonials
           googleReviews={place.reviews}
           googleRating={place.rating}

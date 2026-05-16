@@ -3,6 +3,7 @@ import { SITE } from "@/lib/site";
 import { CITIES, cityPath } from "@/lib/cities";
 import { SERVICES, servicePath } from "@/lib/services";
 import { USE_CASES, useCasePath } from "@/lib/usecases";
+import { HOME_SERVICES, homeServicePath } from "@/lib/homeServices";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const now = new Date();
@@ -52,6 +53,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
     // Pages "pain point" / cas d'usage (forte intention commerciale)
     ...USE_CASES.map((uc) => ({
       url: `${SITE.url}${useCasePath(uc)}`,
+      lastModified: now,
+      changeFrequency: "monthly" as const,
+      priority: 0.85,
+    })),
+    // Pages "Maison" — canapé, tapis, matelas, fauteuil/chaise
+    ...HOME_SERVICES.map((s) => ({
+      url: `${SITE.url}${homeServicePath(s)}`,
       lastModified: now,
       changeFrequency: "monthly" as const,
       priority: 0.85,

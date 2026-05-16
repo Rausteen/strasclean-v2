@@ -24,6 +24,7 @@ import UseCasePage from "@/components/UseCasePage";
 import { CITIES, City, CITY_URL_PREFIX, cityPath, inCity } from "@/lib/cities";
 import { SERVICES, Service, matchSlug, servicePath } from "@/lib/services";
 import { USE_CASES, UseCase, useCasePath } from "@/lib/usecases";
+import { HOME_SERVICES } from "@/lib/homeServices";
 import { SITE } from "@/lib/site";
 import { getGooglePlaceData } from "@/lib/reviews";
 
@@ -40,7 +41,13 @@ export function generateStaticParams(): Params[] {
     CITIES.map((c) => ({ slug: `${s.slug}-${c.slug}` })),
   );
   const useCaseParams = USE_CASES.map((uc) => ({ slug: uc.slug }));
-  return [...cityParams, ...serviceCityParams, ...useCaseParams];
+  const homeServiceParams = HOME_SERVICES.map((s) => ({ slug: s.slug }));
+  return [
+    ...cityParams,
+    ...serviceCityParams,
+    ...useCaseParams,
+    ...homeServiceParams,
+  ];
 }
 
 export async function generateMetadata({

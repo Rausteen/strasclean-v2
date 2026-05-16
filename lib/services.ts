@@ -16,6 +16,7 @@
 
 import { CITIES, City, CITY_URL_PREFIX } from "./cities";
 import { USE_CASES, UseCase, findUseCase } from "./usecases";
+import { HOME_SERVICES, findHomeService } from "./homeServices";
 
 export type Service = {
   /** Slug d'URL — kebab-case, sans accent. Doit être un keyword SEO complet. */
@@ -447,6 +448,12 @@ export function matchSlug(slug: string): SlugMatch | null {
   // 3) Page "cas d'usage" / pain point : slug complet et unique
   const uc = findUseCase(slug);
   if (uc) return { type: "usecase", useCase: uc };
+
+  // 4) Page service Maison (canapé, tapis, matelas, fauteuil/chaise) :
+  //    on les expose via le même type "usecase" pour bénéficier du rendu
+  //    existant (UseCasePage) — c'est strictement la même structure de page.
+  const hs = findHomeService(slug);
+  if (hs) return { type: "usecase", useCase: hs };
 
   return null;
 }

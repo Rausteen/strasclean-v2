@@ -2,6 +2,7 @@ import Link from "next/link";
 import { SITE } from "@/lib/site";
 import { CITIES, cityPath } from "@/lib/cities";
 import { PLANS } from "@/lib/plans";
+import { HOME_SERVICES, homeServicePath } from "@/lib/homeServices";
 import { WhatsAppIcon, PhoneIcon, SparklesIcon } from "./Icon";
 
 export default function Footer() {
@@ -39,9 +40,9 @@ export default function Footer() {
             </div>
           </div>
 
-          <div className="lg:col-span-3">
+          <div className="lg:col-span-2">
             <h3 className="text-sm font-semibold uppercase tracking-wider text-white/80">
-              Formules
+              Formules auto
             </h3>
             <ul className="mt-4 space-y-2 text-sm text-white/65">
               {PLANS.map((p) => (
@@ -63,7 +64,27 @@ export default function Footer() {
             </ul>
           </div>
 
-          <div className="lg:col-span-5">
+          <div className="lg:col-span-2">
+            <h3 className="text-sm font-semibold uppercase tracking-wider text-amber-300/90">
+              StrasClean Maison
+            </h3>
+            <ul className="mt-4 space-y-2 text-sm text-white/65">
+              {HOME_SERVICES.map((s) => (
+                <li key={s.slug}>
+                  <Link
+                    href={homeServicePath(s)}
+                    prefetch={false}
+                    className="hover:text-white"
+                  >
+                    {s.shortName}{" "}
+                    <span className="text-white/45">· dès {s.pricing.priceFrom} €</span>
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <div className="lg:col-span-4">
             <h3 className="text-sm font-semibold uppercase tracking-wider text-white/80">
               Zones desservies
             </h3>
