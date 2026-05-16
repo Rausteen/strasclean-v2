@@ -1,5 +1,6 @@
 import Link from "next/link";
 import Header from "./Header";
+import MobileOfferStrip from "./MobileOfferStrip";
 import TrustBar from "./TrustBar";
 import TestimonialsMaison from "./TestimonialsMaison";
 import FAQ from "./FAQ";
@@ -15,8 +16,6 @@ import {
   ClockIcon,
   MapPinIcon,
   SparklesIcon,
-  HomeIcon,
-  ArrowRightIcon,
 } from "./Icon";
 import { SITE, waLink } from "@/lib/site";
 import { UseCase } from "@/lib/usecases";
@@ -35,26 +34,7 @@ export default function HomeServicePage({ service, place }: Props) {
   return (
     <>
       <Header />
-      {/* Bandeau contexte Maison — discret mais clair */}
-      <div className="border-b border-amber-500/15 bg-amber-500/[0.05]">
-        <div className="container-x flex items-center justify-between gap-3 py-2 text-xs">
-          <div className="inline-flex items-center gap-2 text-amber-200/90">
-            <HomeIcon size={14} />
-            <span className="font-semibold">StrasClean Maison</span>
-            <span className="hidden text-amber-200/55 sm:inline">
-              · Nettoyage canapé, tapis, matelas, fauteuils
-            </span>
-          </div>
-          <Link
-            href="/strasclean-maison"
-            className="inline-flex items-center gap-1 font-medium text-amber-200/80 hover:text-amber-200"
-          >
-            Toute l'offre Maison
-            <ArrowRightIcon size={12} />
-          </Link>
-        </div>
-      </div>
-
+      <MobileOfferStrip />
       <main>
         {/* HERO — palette ambre */}
         <section id="top" className="relative overflow-hidden">
