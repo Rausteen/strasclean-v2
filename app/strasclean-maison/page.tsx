@@ -308,6 +308,8 @@ export default async function HubMaisonPage() {
 
         <MaisonPriceCalculator />
 
+        <HomeBeforeAfter />
+
         {/* COMMENT ÇA SE PASSE */}
         <section id="process" className="relative overflow-hidden bg-white/[0.02] py-14 sm:py-24 lg:py-28">
           <div className="container-x">
@@ -338,8 +340,6 @@ export default async function HubMaisonPage() {
             </div>
           </div>
         </section>
-
-        <HomeBeforeAfter />
 
         <MaisonTrustSection
           googleRating={place.rating}
