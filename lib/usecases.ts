@@ -55,6 +55,8 @@ export type UseCase = {
     priceFrom: string;
     duration: string;
   };
+  /** Grille de tarifs détaillée optionnelle (utilisée sur les pages Maison) */
+  tariffs?: { label: string; price: string; note?: string }[];
   /** Slug du service StrasClean lié (pour lien interne) */
   recommendedServiceSlug?: string;
   /** Q&R spécifiques à ce cas d'usage */

@@ -71,8 +71,8 @@ export default async function HubMaisonPage() {
             <div className="absolute -top-32 left-1/2 h-[520px] w-[820px] -translate-x-1/2 rounded-full bg-amber-500/20 blur-3xl" />
           </div>
 
-          <div className="container-x pt-8 pb-14 sm:pt-16 sm:pb-24 lg:pt-20 lg:pb-28">
-            <div className="grid items-center gap-10 lg:grid-cols-2 lg:gap-12">
+          <div className="container-x pt-6 pb-12 sm:pt-14 sm:pb-20 lg:pt-20 lg:pb-24">
+            <div className="grid items-center gap-8 lg:grid-cols-2 lg:gap-12">
               <div>
                 <span className="inline-flex items-center gap-1.5 rounded-full border border-amber-500/30 bg-amber-500/10 px-3 py-1 text-sm font-medium text-amber-200">
                   <HomeIcon size={14} />
@@ -131,8 +131,8 @@ export default async function HubMaisonPage() {
                 </ul>
               </div>
 
-              {/* Visual placeholder */}
-              <div className="relative mx-auto w-full max-w-md lg:ml-auto">
+              {/* Visual placeholder — caché sur mobile pour gagner de l'espace */}
+              <div className="relative mx-auto hidden w-full max-w-md lg:ml-auto lg:block">
                 <div className="relative overflow-hidden rounded-3xl border border-white/10 bg-gradient-to-br from-ink-800 to-ink-900 p-5 shadow-card">
                   <div className="relative aspect-[4/3] w-full overflow-hidden rounded-2xl bg-gradient-to-br from-amber-200/20 via-orange-300/15 to-amber-500/10">
                     <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_30%,rgba(255,255,255,0.12),transparent_60%)]" />
@@ -188,35 +188,55 @@ export default async function HubMaisonPage() {
               </p>
             </Reveal>
 
-            <div className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+            <div className="mt-10 grid gap-4 sm:mt-12 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-4">
               {HOME_SERVICES.map((s, i) => (
                 <Reveal key={s.slug} delay={i * 60}>
                   <Link
                     href={homeServicePath(s)}
                     className="group flex h-full flex-col rounded-3xl border border-white/10 bg-white/[0.03] p-5 transition hover:-translate-y-1 hover:border-amber-400/40 hover:bg-amber-500/[0.06]"
                   >
-                    <span className="grid h-14 w-14 place-items-center rounded-2xl bg-amber-500/10 text-3xl">
-                      {s.emoji}
-                    </span>
+                    <div className="flex items-start justify-between gap-3">
+                      <span className="grid h-12 w-12 place-items-center rounded-2xl bg-amber-500/10 text-2xl">
+                        {s.emoji}
+                      </span>
+                      <span className="inline-flex items-center gap-1 rounded-full bg-amber-500/10 px-2 py-0.5 text-[11px] font-medium text-amber-200">
+                        <ClockIcon size={11} />
+                        {s.pricing.duration}
+                      </span>
+                    </div>
+
                     <h3 className="h-display mt-4 text-lg font-semibold text-white">
                       {s.shortName}
                     </h3>
-                    <p className="mt-1 text-sm leading-snug text-white/65">
-                      {s.hero.chip === "StrasClean Maison" ? "" : s.hero.chip}
+                    <p className="mt-1 text-sm leading-snug text-white/60">
                       {tagline(s.shortName)}
                     </p>
-                    <ul className="mt-3 space-y-1 text-xs text-white/55">
-                      <li className="inline-flex items-center gap-1.5">
-                        <ClockIcon size={12} />
-                        {s.pricing.duration}
-                      </li>
-                    </ul>
+
+                    {/* Mini grille tarifs (top 3) */}
+                    {s.tariffs && s.tariffs.length > 0 && (
+                      <ul className="mt-4 space-y-1.5 text-xs">
+                        {s.tariffs.slice(0, 3).map((t) => (
+                          <li
+                            key={t.label}
+                            className="flex items-center justify-between gap-2"
+                          >
+                            <span className="truncate text-white/65">
+                              {t.label}
+                            </span>
+                            <span className="shrink-0 font-bold text-amber-300">
+                              {t.price}
+                            </span>
+                          </li>
+                        ))}
+                      </ul>
+                    )}
+
                     <div className="mt-auto flex items-center justify-between pt-4">
-                      <span className="text-base font-bold text-amber-300">
-                        dès {s.pricing.priceFrom} €
+                      <span className="text-sm font-bold text-amber-300">
+                        Dès {s.pricing.priceFrom} €
                       </span>
                       <span className="inline-flex items-center gap-1 text-xs text-white/55 group-hover:text-amber-300">
-                        Voir
+                        Voir le détail
                         <ArrowRightIcon
                           size={12}
                           className="transition group-hover:translate-x-0.5"

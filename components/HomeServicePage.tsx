@@ -36,7 +36,7 @@ export default function HomeServicePage({ service, place }: Props) {
       <Header />
       <MobileOfferStrip />
       <main>
-        {/* HERO — palette ambre */}
+        {/* HERO — responsive, visuel caché sur mobile (gain d'espace) */}
         <section id="top" className="relative overflow-hidden">
           <div className="pointer-events-none absolute inset-0 -z-10">
             <div className="absolute inset-0 bg-radial-fade" />
@@ -44,23 +44,15 @@ export default function HomeServicePage({ service, place }: Props) {
             <div className="absolute -top-32 left-1/2 h-[520px] w-[820px] -translate-x-1/2 rounded-full bg-amber-500/20 blur-3xl" />
           </div>
 
-          <div className="container-x pt-8 pb-14 sm:pt-16 sm:pb-24 lg:pt-20 lg:pb-28">
-            <div className="grid items-center gap-10 lg:grid-cols-12 lg:gap-12">
-              {/* Texte */}
-              <div className="lg:col-span-7">
-                <nav aria-label="Fil d'ariane" className="mb-5 text-xs">
-                  <Link
-                    href="/"
-                    className="font-medium text-white/55 hover:text-white/80"
-                  >
-                    StrasClean
-                  </Link>
-                  <span className="mx-1.5 text-white/30">/</span>
+          <div className="container-x pt-6 pb-12 sm:pt-14 sm:pb-20 lg:pt-20 lg:pb-24">
+            <div className="grid items-center gap-8 lg:grid-cols-2 lg:gap-12">
+              <div>
+                <nav aria-label="Fil d'ariane" className="mb-4 text-xs">
                   <Link
                     href="/strasclean-maison"
                     className="font-medium text-white/55 hover:text-white/80"
                   >
-                    Maison
+                    StrasClean Maison
                   </Link>
                   <span className="mx-1.5 text-white/30">/</span>
                   <span className="text-white/75">{service.shortName}</span>
@@ -71,7 +63,7 @@ export default function HomeServicePage({ service, place }: Props) {
                   {service.hero.chip}
                 </span>
 
-                <h1 className="h-display mt-4 text-balance text-[32px] font-bold leading-[1.05] text-white sm:text-5xl lg:text-6xl">
+                <h1 className="h-display mt-4 text-balance text-[30px] font-bold leading-[1.05] text-white sm:text-5xl lg:text-6xl">
                   {h1Plain}{" "}
                   <span className="bg-gradient-to-r from-amber-200 via-amber-300 to-amber-500 bg-clip-text text-transparent">
                     {service.hero.h1Highlight}
@@ -82,7 +74,7 @@ export default function HomeServicePage({ service, place }: Props) {
                   {service.hero.subtitle}
                 </p>
 
-                <div className="mt-6 flex flex-col gap-3 sm:mt-7 sm:flex-row">
+                <div className="mt-6 flex flex-col gap-3 sm:flex-row">
                   <a
                     href={waLink(message)}
                     target="_blank"
@@ -97,18 +89,18 @@ export default function HomeServicePage({ service, place }: Props) {
                     className="btn-ghost h-14 w-full px-6 text-base sm:h-12 sm:w-auto"
                   >
                     <PhoneIcon size={18} />
-                    Appeler maintenant
+                    Appeler
                   </a>
                 </div>
 
-                <ul className="mt-6 flex flex-wrap items-center gap-x-4 gap-y-2 text-[13px] text-white/65 sm:mt-7 sm:text-sm">
+                <ul className="mt-6 flex flex-wrap items-center gap-x-4 gap-y-2 text-[13px] text-white/65 sm:text-sm">
                   <li className="inline-flex items-center gap-1.5">
                     <ClockIcon size={14} className="text-amber-300" />
-                    Durée : {service.pricing.duration}
+                    {service.pricing.duration}
                   </li>
                   <li className="inline-flex items-center gap-1.5">
                     <CheckIcon size={14} className="text-amber-300" />
-                    À partir de {service.pricing.priceFrom} €
+                    Dès {service.pricing.priceFrom} €
                   </li>
                   <li className="inline-flex items-center gap-1.5">
                     <MapPinIcon size={14} className="text-amber-300" />
@@ -117,8 +109,8 @@ export default function HomeServicePage({ service, place }: Props) {
                 </ul>
               </div>
 
-              {/* Visual placeholder Maison */}
-              <div className="lg:col-span-5">
+              {/* Visual placeholder — caché sur mobile pour gagner de l'espace */}
+              <div className="hidden lg:block">
                 <HeroVisual service={service} />
               </div>
             </div>
@@ -127,85 +119,133 @@ export default function HomeServicePage({ service, place }: Props) {
 
         <TrustBar />
 
-        {/* PROBLÈME */}
-        <section className="relative overflow-hidden py-14 sm:py-24 lg:py-28">
+        {/* TARIFS — section dédiée, mise en avant juste après le hero */}
+        {service.tariffs && service.tariffs.length > 0 && (
+          <section className="relative py-12 sm:py-20">
+            <div className="container-x">
+              <div className="mx-auto max-w-3xl">
+                <Reveal>
+                  <div className="rounded-3xl border border-amber-400/30 bg-gradient-to-br from-amber-500/10 via-ink-800 to-ink-900 p-5 sm:p-8">
+                    <div className="flex items-center justify-between gap-3">
+                      <div>
+                        <p className="text-xs font-semibold uppercase tracking-[0.18em] text-amber-300">
+                          Tarifs
+                        </p>
+                        <h2 className="h-display mt-1 text-2xl font-bold text-white sm:text-3xl">
+                          Combien ça coûte ?
+                        </h2>
+                      </div>
+                      <a
+                        href={waLink(message)}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="hidden sm:inline-flex items-center gap-2 rounded-full bg-amber-400 px-4 py-2 text-xs font-bold text-ink-950 transition hover:bg-amber-300"
+                      >
+                        <WhatsAppIcon size={14} />
+                        Devis précis
+                      </a>
+                    </div>
+
+                    <ul className="mt-5 divide-y divide-white/5">
+                      {service.tariffs.map((t) => (
+                        <li
+                          key={t.label}
+                          className="flex items-center justify-between gap-3 py-3"
+                        >
+                          <div className="min-w-0">
+                            <p className="text-sm font-semibold text-white sm:text-base">
+                              {t.label}
+                            </p>
+                            {t.note && (
+                              <p className="mt-0.5 text-xs text-white/55">
+                                {t.note}
+                              </p>
+                            )}
+                          </div>
+                          <span className="shrink-0 text-base font-bold text-amber-300 sm:text-lg">
+                            {t.price}
+                          </span>
+                        </li>
+                      ))}
+                    </ul>
+
+                    <p className="mt-4 border-t border-white/10 pt-3 text-[11px] text-white/45">
+                      Tarifs indicatifs en état standard. État très sale ou
+                      taches importantes : on confirme avant intervention, jamais
+                      de surcoût surprise.
+                    </p>
+
+                    <a
+                      href={waLink(message)}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="btn-wa mt-5 h-12 w-full sm:hidden"
+                    >
+                      <WhatsAppIcon size={18} />
+                      Réserver
+                    </a>
+                  </div>
+                </Reveal>
+              </div>
+            </div>
+          </section>
+        )}
+
+        {/* PROBLÈME — version compacte (bullets only) */}
+        <section className="relative py-12 sm:py-20">
           <div className="container-x">
-            <div className="grid gap-10 lg:grid-cols-12 lg:gap-16">
-              <Reveal className="lg:col-span-5">
+            <div className="mx-auto max-w-4xl">
+              <Reveal className="text-center">
                 <p className="text-sm font-semibold uppercase tracking-[0.18em] text-amber-300">
-                  Le problème
+                  Le constat
                 </p>
-                <h2 className="h-display mt-3 text-balance text-3xl font-bold text-white sm:text-4xl">
+                <h2 className="h-display mt-2 text-balance text-2xl font-bold text-white sm:text-3xl lg:text-4xl">
                   {service.problem.title}
                 </h2>
-                <ul className="mt-8 grid gap-3">
-                  {service.problem.bullets.map((b) => (
-                    <li
-                      key={b}
-                      className="flex items-start gap-3 rounded-xl border border-white/10 bg-white/[0.03] px-4 py-3 text-sm text-white/85"
-                    >
+                {service.problem.paragraphs[0] && (
+                  <p className="mx-auto mt-3 max-w-2xl text-[15px] leading-relaxed text-white/70">
+                    {service.problem.paragraphs[0]}
+                  </p>
+                )}
+              </Reveal>
+
+              <ul className="mt-8 grid gap-3 sm:grid-cols-2">
+                {service.problem.bullets.map((b, i) => (
+                  <Reveal key={b} delay={i * 40}>
+                    <li className="flex items-start gap-3 rounded-xl border border-white/10 bg-white/[0.03] px-4 py-3 text-sm text-white/85">
                       <span className="mt-0.5 grid h-7 w-7 shrink-0 place-items-center rounded-lg bg-rose-500/10 text-rose-300">
                         ✕
                       </span>
-                      {b}
+                      <span>{b}</span>
                     </li>
-                  ))}
-                </ul>
-              </Reveal>
-
-              <Reveal className="lg:col-span-7" delay={120}>
-                <div className="relative h-full rounded-3xl border border-white/10 bg-white/[0.03] p-7 sm:p-9">
-                  <div className="space-y-4 text-[15px] leading-relaxed text-white/80">
-                    {service.problem.paragraphs.map((p, i) => (
-                      <p key={i}>{p}</p>
-                    ))}
-                  </div>
-                </div>
-              </Reveal>
+                  </Reveal>
+                ))}
+              </ul>
             </div>
           </div>
         </section>
 
-        {/* POURQUOI LE DIY ÉCHOUE */}
-        <section className="relative overflow-hidden py-14 sm:py-24 lg:py-28">
-          <div className="container-x">
-            <Reveal className="mx-auto max-w-3xl text-center">
-              <p className="text-sm font-semibold uppercase tracking-[0.18em] text-amber-300">
-                Pourquoi le DIY échoue
-              </p>
-              <h2 className="h-display mt-3 text-balance text-3xl font-bold text-white sm:text-4xl lg:text-5xl">
-                {service.whyDiy.title}
-              </h2>
-              <div className="mx-auto mt-6 max-w-2xl space-y-4 text-left text-[15px] leading-relaxed text-white/75 sm:text-center">
-                {service.whyDiy.paragraphs.map((p, i) => (
-                  <p key={i}>{p}</p>
-                ))}
-              </div>
-            </Reveal>
-          </div>
-        </section>
-
-        {/* SOLUTION + PROCESS */}
-        <section className="relative overflow-hidden py-14 sm:py-24 lg:py-28">
+        {/* SOLUTION + PROCESS — étapes en cards (allégé) */}
+        <section className="relative overflow-hidden py-12 sm:py-20">
           <div className="pointer-events-none absolute inset-0 -z-10">
             <div className="absolute left-1/2 top-0 h-[400px] w-[700px] -translate-x-1/2 rounded-full bg-amber-500/10 blur-3xl" />
           </div>
           <div className="container-x">
             <Reveal className="mx-auto max-w-3xl text-center">
               <p className="text-sm font-semibold uppercase tracking-[0.18em] text-amber-300">
-                Notre solution
+                Comment ça se passe
               </p>
-              <h2 className="h-display mt-3 text-balance text-3xl font-bold text-white sm:text-4xl lg:text-5xl">
+              <h2 className="h-display mt-2 text-balance text-2xl font-bold text-white sm:text-3xl lg:text-4xl">
                 {service.solution.title}
               </h2>
-              <p className="mx-auto mt-4 max-w-2xl text-balance text-[15px] leading-relaxed text-white/75 sm:text-base">
+              <p className="mx-auto mt-3 max-w-2xl text-[15px] leading-relaxed text-white/70">
                 {service.solution.intro}
               </p>
             </Reveal>
 
-            <div className="mt-10 grid gap-4 sm:mt-12 sm:grid-cols-2 lg:grid-cols-3">
+            <div className="mt-8 grid gap-3 sm:mt-10 sm:grid-cols-2 lg:grid-cols-3">
               {service.solution.steps.map((step, i) => (
-                <Reveal key={step.title} delay={i * 60}>
+                <Reveal key={step.title} delay={i * 50}>
                   <article className="card card-hover h-full">
                     <div className="flex items-center gap-3">
                       <span className="h-display grid h-9 w-9 shrink-0 place-items-center rounded-xl bg-amber-500/15 text-amber-300 font-bold">
@@ -222,38 +262,29 @@ export default function HomeServicePage({ service, place }: Props) {
                 </Reveal>
               ))}
             </div>
-
-            {/* Bandeau tarif + CTA WhatsApp */}
-            <Reveal>
-              <div className="mt-12 grid items-center gap-5 rounded-3xl border border-amber-400/30 bg-gradient-to-br from-amber-500/15 via-ink-800 to-ink-900 p-6 sm:p-8 lg:grid-cols-12">
-                <div className="lg:col-span-7">
-                  <p className="text-sm font-semibold uppercase tracking-[0.18em] text-amber-300">
-                    Intervention complète
-                  </p>
-                  <p className="mt-2 text-[15px] text-white/85">
-                    Une seule intervention à domicile à Strasbourg —{" "}
-                    <strong className="text-white">
-                      à partir de {service.pricing.priceFrom} €
-                    </strong>{" "}
-                    · durée {service.pricing.duration}. On vient avec tout le
-                    matériel, on confirme le tarif final avant de commencer.
-                  </p>
-                </div>
-                <div className="lg:col-span-5">
-                  <a
-                    href={waLink(message)}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="btn-wa h-12 w-full"
-                  >
-                    <WhatsAppIcon size={18} />
-                    Réserver sur WhatsApp
-                  </a>
-                </div>
-              </div>
-            </Reveal>
           </div>
         </section>
+
+        {/* POURQUOI PRO — bandeau compact (remplace la longue section "Pourquoi le DIY échoue") */}
+        {service.whyDiy.paragraphs[0] && (
+          <section className="relative py-12 sm:py-20">
+            <div className="container-x">
+              <Reveal className="mx-auto max-w-3xl">
+                <div className="rounded-3xl border border-white/10 bg-white/[0.03] p-6 sm:p-8">
+                  <p className="text-sm font-semibold uppercase tracking-[0.18em] text-amber-300">
+                    Pourquoi pro vs. DIY
+                  </p>
+                  <h3 className="h-display mt-2 text-xl font-bold text-white sm:text-2xl">
+                    {service.whyDiy.title}
+                  </h3>
+                  <p className="mt-3 text-[15px] leading-relaxed text-white/75">
+                    {service.whyDiy.paragraphs[0]}
+                  </p>
+                </div>
+              </Reveal>
+            </div>
+          </section>
+        )}
 
         <HomeBeforeAfter />
 
@@ -272,47 +303,18 @@ export default function HomeServicePage({ service, place }: Props) {
           extraSchemaFAQs={MAISON_GLOBAL_FAQS}
         />
 
-        {/* FAQ visuelle spécifique */}
-        <section className="relative overflow-hidden pb-14 sm:pb-24">
-          <div className="container-x">
-            <Reveal className="mx-auto max-w-3xl">
-              <div className="rounded-3xl border border-white/10 bg-white/[0.03] p-6 sm:p-8">
-                <div className="flex items-center gap-2 text-amber-300">
-                  <SparklesIcon size={16} />
-                  <p className="text-sm font-semibold uppercase tracking-[0.18em]">
-                    Questions sur {service.shortName.toLowerCase()}
-                  </p>
-                </div>
-                <ul className="mt-5 grid gap-3 sm:grid-cols-2">
-                  {service.faq.map((q) => (
-                    <li
-                      key={q.q}
-                      className="rounded-2xl border border-white/10 bg-white/[0.02] p-5"
-                    >
-                      <p className="text-sm font-semibold text-white">{q.q}</p>
-                      <p className="mt-2 text-sm leading-relaxed text-white/70">
-                        {q.a}
-                      </p>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </Reveal>
-          </div>
-        </section>
-
-        {/* CTA final Maison */}
-        <section className="relative overflow-hidden py-14 sm:py-20">
+        {/* CTA final */}
+        <section className="relative overflow-hidden py-12 sm:py-20">
           <div className="container-x">
             <Reveal>
-              <div className="relative overflow-hidden rounded-3xl border border-amber-400/30 bg-gradient-to-br from-amber-500/15 via-ink-800 to-ink-900 p-8 text-center sm:p-12">
+              <div className="relative overflow-hidden rounded-3xl border border-amber-400/30 bg-gradient-to-br from-amber-500/15 via-ink-800 to-ink-900 p-6 text-center sm:p-12">
                 <div className="pointer-events-none absolute -right-20 -top-24 h-64 w-64 rounded-full bg-amber-500/25 blur-3xl" />
                 <h2 className="h-display mx-auto max-w-2xl text-balance text-2xl font-bold text-white sm:text-3xl lg:text-4xl">
                   Prêt à redonner vie à votre intérieur ?
                 </h2>
-                <p className="mx-auto mt-3 max-w-xl text-white/75">
-                  Envoyez-nous quelques photos sur WhatsApp, on vous confirme un
-                  devis et un créneau rapide.
+                <p className="mx-auto mt-3 max-w-xl text-[15px] text-white/75">
+                  Envoyez quelques photos sur WhatsApp, on confirme un devis et
+                  un créneau.
                 </p>
                 <div className="mt-6 flex flex-col items-stretch justify-center gap-3 sm:flex-row">
                   <a
@@ -324,10 +326,7 @@ export default function HomeServicePage({ service, place }: Props) {
                     <WhatsAppIcon size={18} />
                     Réserver sur WhatsApp
                   </a>
-                  <a
-                    href={SITE.phoneHref}
-                    className="btn-ghost h-12 px-6"
-                  >
+                  <a href={SITE.phoneHref} className="btn-ghost h-12 px-6">
                     <PhoneIcon size={16} />
                     {SITE.phoneDisplay}
                   </a>
@@ -343,7 +342,8 @@ export default function HomeServicePage({ service, place }: Props) {
   );
 }
 
-/** Visuel placeholder du hero, propre tant qu'on n'a pas de vraies photos. */
+/** Visuel placeholder du hero, propre en attendant les vraies photos.
+ *  N'est rendu QUE sur desktop (lg+) — sur mobile on gagne de l'espace. */
 function HeroVisual({ service }: { service: UseCase }) {
   return (
     <div className="relative mx-auto w-full max-w-md lg:ml-auto">
@@ -351,9 +351,7 @@ function HeroVisual({ service }: { service: UseCase }) {
         <div className="relative aspect-[4/3] w-full overflow-hidden rounded-2xl bg-gradient-to-br from-amber-200/20 via-orange-300/15 to-amber-500/10">
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_30%,rgba(255,255,255,0.12),transparent_60%)]" />
           <div className="absolute inset-0 grid place-items-center">
-            <span className="text-[120px] opacity-60 sm:text-[160px]">
-              {service.emoji}
-            </span>
+            <span className="text-[160px] opacity-60">{service.emoji}</span>
           </div>
           <span className="absolute left-4 top-4 inline-flex items-center gap-1.5 rounded-full bg-black/55 px-2.5 py-1 text-[11px] font-semibold text-amber-200 backdrop-blur-md">
             <SparklesIcon size={12} />
