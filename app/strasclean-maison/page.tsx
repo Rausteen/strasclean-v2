@@ -241,8 +241,11 @@ export default async function HubMaisonPage() {
                 </ul>
               </div>
 
-              {/* Visual placeholder — caché sur mobile pour gagner de l'espace */}
-              <div className="relative mx-auto hidden w-full max-w-md lg:ml-auto lg:block">
+              {/* Visual hero — affiché sur tous les écrans (vraie photo
+                  /maison/hero/hub.webp si présente, sinon fallback grid
+                  4 emojis). Avant c'était caché mobile, mais maintenant
+                  qu'il y a une vraie photo c'est l'élément visuel principal. */}
+              <div className="relative mx-auto w-full max-w-md lg:ml-auto">
                 <div className="relative overflow-hidden rounded-3xl border border-white/10 bg-gradient-to-br from-ink-800 to-ink-900 p-5 shadow-card">
                   <div className="relative aspect-[4/3] w-full overflow-hidden rounded-2xl bg-gradient-to-br from-amber-200/20 via-orange-300/15 to-amber-500/10">
                     {hubHeroSrc ? (
@@ -252,7 +255,7 @@ export default async function HubMaisonPage() {
                           alt="StrasClean Maison — nettoyage canapé, tapis, matelas à domicile à Strasbourg"
                           fill
                           priority
-                          sizes="(max-width: 1024px) 0px, 448px"
+                          sizes="(max-width: 640px) 92vw, (max-width: 1024px) 80vw, 448px"
                           quality={82}
                           className="object-cover"
                         />

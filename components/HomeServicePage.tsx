@@ -299,8 +299,11 @@ export default function HomeServicePage({ service, place, city }: Props) {
                 </ul>
               </div>
 
-              {/* Visual placeholder — caché sur mobile pour gagner de l'espace */}
-              <div className="hidden lg:block">
+              {/* Visual hero — affiché sur tous les écrans depuis qu'on a
+                  de vraies photos (avant c'était caché mobile car simple
+                  emoji placeholder). Le HeroVisual gère son propre fallback
+                  emoji si la photo /maison/hero/{key}.webp n'existe pas. */}
+              <div>
                 <HeroVisual service={service} />
               </div>
             </div>
@@ -567,7 +570,7 @@ function HeroVisual({ service }: { service: UseCase }) {
                 alt={`${service.shortName} — StrasClean Maison`}
                 fill
                 priority
-                sizes="(max-width: 1024px) 0px, 448px"
+                sizes="(max-width: 640px) 92vw, (max-width: 1024px) 80vw, 448px"
                 quality={82}
                 className="object-cover"
               />
