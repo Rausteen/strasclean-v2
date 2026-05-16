@@ -15,7 +15,7 @@ export const SITE = {
   // l'utilisateur peut l'envoyer SANS RIEN AJOUTER. Plus de friction = +taux
   // de conversion clic WA → message envoyé.
   whatsappHref:
-    "https://wa.me/33767052435?text=Bonjour%20StrasClean%20%F0%9F%91%8B%20Je%20voudrais%20un%20devis%20pour%20le%20nettoyage%20de%20ma%20voiture.%20Quels%20sont%20vos%20prochains%20cr%C3%A9neaux%20%3F",
+    "https://wa.me/33767052435?text=Bonjour%20StrasClean%20%F0%9F%91%8B%20Je%20voudrais%20un%20devis%20pour%20le%20nettoyage%20de%20ma%20voiture.%20Je%20suis%20%C3%A0%20%5Bville%2Fquartier%5D.%20Quels%20sont%20vos%20prochains%20cr%C3%A9neaux%20%3F%20Je%20peux%20envoyer%20des%20photos%20si%20besoin.",
   email: "contact@strasclean.fr",
   city: "Strasbourg",
   region: "Grand Est",

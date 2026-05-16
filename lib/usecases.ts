@@ -639,7 +639,7 @@ export const USE_CASES: UseCase[] = [
       },
     ],
     ctaMessage:
-      "Bonjour StrasClean 👋 J'ai des traces blanches sur mes vitres / ma carrosserie. Je voudrais savoir si vous pouvez les retirer à domicile à Strasbourg. Je peux envoyer des photos.",
+      "Bonjour StrasClean 👋 J'ai des traces blanches sur mes vitres / ma carrosserie. Pouvez-vous me dire si vous pouvez les retirer à domicile à Strasbourg ? Je peux envoyer des photos. Quels sont vos prochains créneaux ?",
   },
 
   // ─── 7. Nettoyage SUV à domicile ──────────────────────────────────────

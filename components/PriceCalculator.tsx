@@ -81,7 +81,7 @@ export default function PriceCalculator() {
 
   const waHref = result
     ? waLink(
-        `Bonjour StrasClean 👋 Je voudrais réserver la formule ${result.f.name} pour ma ${result.v.name.toLowerCase()} — devis ${result.total} €. Quels sont vos prochains créneaux ?`,
+        `Bonjour StrasClean 👋 Je voudrais réserver la formule ${result.f.name} pour ma ${result.v.name.toLowerCase()} — devis ${result.total} €. Je suis à [ville/quartier]. Quels sont vos prochains créneaux ?`,
       )
     : null;
 

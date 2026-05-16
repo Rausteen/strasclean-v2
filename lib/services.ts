@@ -46,9 +46,14 @@ export type Service = {
    * Message WhatsApp pré-rempli (la ville est ajoutée automatiquement à la fin
    * via les wrappers ServiceDetail/ServiceCityHero). Ne PAS terminer par un
    * point ni par "à Strasbourg" — le wrapper construit :
-   *   `${ctaMessage} à {Ville}. Quels sont vos prochains créneaux ?${ctaSuffix ? ` ${ctaSuffix}` : ""}`
+   *   `${ctaMessage} à {Ville}${ctaCitySuffix ?? ""}. Quels sont vos prochains créneaux ?${ctaSuffix ? ` ${ctaSuffix}` : ""}`
    */
   ctaMessage: string;
+  /**
+   * Petit suffixe inséré JUSTE après la ville et avant le point — utile pour
+   * écrire "à Strasbourg, à domicile" (ctaCitySuffix = ", à domicile").
+   */
+  ctaCitySuffix?: string;
   /**
    * Phrase optionnelle ajoutée après "Quels sont vos prochains créneaux ?"
    * (typiquement "Je peux envoyer des photos…" ou "Véhicule : [modèle].").
@@ -309,7 +314,8 @@ export const SERVICES: Service[] = [
         a: "Comptez 1h15 à 2h pour un combiné intérieur + extérieur — on travaille en équipe de 2, donc deux fois plus rapide qu'un detailer solo.",
       },
     ],
-    ctaMessage: "Bonjour StrasClean 👋 Je voudrais un lavage complet de ma voiture à domicile",
+    ctaMessage: "Bonjour StrasClean 👋 Je voudrais un lavage complet de ma voiture",
+    ctaCitySuffix: ", à domicile",
   },
 
   // ─── 6. Lavage extérieur (entrée de gamme à 29 €) ──────────────────────
@@ -422,7 +428,7 @@ export const SERVICES: Service[] = [
       },
     ],
     ctaMessage:
-      "Bonjour StrasClean 👋 Je vais mettre ma voiture en vente et je voudrais une remise à neuf complète dès 129 €",
+      "Bonjour StrasClean 👋 Je vais mettre ma voiture en vente et je voudrais une préparation complète revente dès 129 €",
     ctaSuffix: "Je peux envoyer des photos.",
   },
 ];
