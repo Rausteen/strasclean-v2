@@ -33,17 +33,30 @@ const nextConfig = {
         value: "max-age=63072000; includeSubDomains; preload",
       },
     ];
+    // Cache 1 an immutable pour tous les assets statiques utilisés en
+    // décor (heros, avant/après, OG). Hashed via Next/Image ou versionnés
+    // implicitement par leur path immutable.
+    const longCache = [
+      { key: "Cache-Control", value: "public, max-age=31536000, immutable" },
+    ];
     return [
       { source: "/:path*", headers: securityHeaders },
-      {
-        // Assets statiques : cache 1 an, immutable
-        source: "/avant-apres/:all*",
-        headers: [{ key: "Cache-Control", value: "public, max-age=31536000, immutable" }],
-      },
-      {
-        source: "/hero.webp",
-        headers: [{ key: "Cache-Control", value: "public, max-age=31536000, immutable" }],
-      },
+      // === Auto ===
+      { source: "/avant-apres/:all*", headers: longCache },
+      { source: "/hero.webp", headers: longCache },
+      // === Maison === (équivalents pour la verticale ambre)
+      { source: "/maison/:all*", headers: longCache },
+      // === OG images ===
+      { source: "/og.svg", headers: longCache },
+      { source: "/og-maison.svg", headers: longCache },
+      { source: "/og.webp", headers: longCache },
+      { source: "/og-maison.webp", headers: longCache },
+      // === Logos / favicon / manifest icons ===
+      { source: "/og-logos/:all*", headers: longCache },
+      { source: "/favicon.svg", headers: longCache },
+      { source: "/logo-horizontal.svg", headers: longCache },
+      { source: "/logo-icon.svg", headers: longCache },
+      { source: "/logo-square.svg", headers: longCache },
     ];
   },
 };
