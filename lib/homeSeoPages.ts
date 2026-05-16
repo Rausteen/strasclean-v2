@@ -18,9 +18,11 @@
 //   - /nettoyage-canape-cuir-strasbourg            (premium cuir)
 // ─────────────────────────────────────────────────────────────────────────
 
-import type { UseCase } from "./usecases";
+import type { HomeService } from "./homeServices";
 
-export const HOME_SEO_PAGES: UseCase[] = [
+// Les pages SEO Maison utilisent le même schéma que les services Maison
+// (HomeService) — ce sont des angles SEO autour des mêmes prestations.
+export const HOME_SEO_PAGES: HomeService[] = [
   // ─── 1. Prix canapé ───────────────────────────────────────────────────
   {
     slug: "prix-nettoyage-canape-strasbourg",
@@ -88,9 +90,8 @@ export const HOME_SEO_PAGES: UseCase[] = [
         },
       ],
     },
-    pricing: { priceFrom: "39", duration: "1 h à 1h30" },
+    pricing: { priceFrom: "79", duration: "1 h à 1h30" },
     tariffs: [
-      { label: "Fauteuil / 1 place", price: "39 €" },
       { label: "Canapé 2 places", price: "79 €" },
       { label: "Canapé 3 places", price: "109 €" },
       { label: "Canapé d'angle", price: "149 €" },
@@ -739,7 +740,7 @@ export const HOME_SEO_PAGES: UseCase[] = [
 ];
 
 /** Construit l'URL d'une page SEO Maison */
-export const homeSeoPath = (s: UseCase) => `/${s.slug}`;
+export const homeSeoPath = (s: HomeService) => `/${s.slug}`;
 
 /** Trouve une page SEO Maison par son slug exact */
 export const findHomeSeoPage = (slug: string) =>

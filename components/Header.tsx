@@ -53,8 +53,10 @@ export default function Header() {
         >
           <span className="flex items-center gap-2">
             <span
-              className={`grid h-9 w-9 place-items-center rounded-xl bg-gradient-to-br shadow-glow ${
-                onMaison ? "from-amber-300 to-amber-500" : "from-brand-400 to-brand-600"
+              className={`grid h-9 w-9 place-items-center rounded-xl bg-gradient-to-br ${
+                onMaison
+                  ? "from-amber-300 to-amber-500 shadow-glow-amber"
+                  : "from-brand-400 to-brand-600 shadow-glow"
               }`}
             >
               <SparklesIcon size={18} className="text-ink-950" />

@@ -130,6 +130,31 @@ export default function HomeServicePage({ service, place, city }: Props) {
           },
         }
       : {}),
+    // Reviews schema — propage les avis filtrés Maison (place.reviews est
+    // déjà filtré à la section). Les rich snippets ⭐ apparaîtront dans
+    // Google dès qu'un avis Maison sera tagué dans l'admin.
+    ...(place.reviews && place.reviews.length > 0
+      ? {
+          review: place.reviews.map((r) => ({
+            "@type": "Review",
+            author: { "@type": "Person", name: r.author_name },
+            reviewRating: {
+              "@type": "Rating",
+              ratingValue: String(r.rating),
+              bestRating: "5",
+              worstRating: "1",
+            },
+            reviewBody: r.text,
+            ...(r.time
+              ? {
+                  datePublished: new Date(r.time * 1000)
+                    .toISOString()
+                    .slice(0, 10),
+                }
+              : {}),
+          })),
+        }
+      : {}),
   };
 
   const breadcrumbJsonLd = isCity
@@ -188,7 +213,7 @@ export default function HomeServicePage({ service, place, city }: Props) {
           <div className="pointer-events-none absolute inset-0 -z-10">
             <div className="absolute inset-0 bg-radial-fade" />
             <div className="absolute inset-0 bg-grid-light bg-[size:48px_48px] opacity-[0.30] [mask-image:radial-gradient(ellipse_at_center,black_30%,transparent_75%)]" />
-            <div className="absolute -top-32 left-1/2 h-[520px] w-[820px] -translate-x-1/2 rounded-full bg-amber-500/20 blur-3xl" />
+            <div className="absolute -top-32 left-1/2 h-[520px] w-[820px] -translate-x-1/2 rounded-full bg-amber-500/20 blur-2xl sm:blur-3xl" />
           </div>
 
           <div className="container-x pt-6 pb-12 sm:pt-14 sm:pb-20 lg:pt-20 lg:pb-24">
@@ -358,7 +383,7 @@ export default function HomeServicePage({ service, place, city }: Props) {
         {/* SOLUTION + PROCESS — étapes en cards (allégé) */}
         <section className="relative overflow-hidden py-12 sm:py-20">
           <div className="pointer-events-none absolute inset-0 -z-10">
-            <div className="absolute left-1/2 top-0 h-[400px] w-[700px] -translate-x-1/2 rounded-full bg-amber-500/10 blur-3xl" />
+            <div className="absolute left-1/2 top-0 h-[400px] w-[700px] -translate-x-1/2 rounded-full bg-amber-500/10 blur-2xl sm:blur-3xl" />
           </div>
           <div className="container-x">
             <Reveal className="mx-auto max-w-3xl text-center">

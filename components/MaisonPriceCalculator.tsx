@@ -39,7 +39,6 @@ const SERVICES: ServiceDef[] = [
     emoji: "🛋️",
     name: "Canapé",
     variants: [
-      { id: "1", label: "Fauteuil / 1 place", price: 39 },
       { id: "2", label: "Canapé 2 places", price: 79 },
       { id: "3", label: "Canapé 3 places", price: 109 },
       { id: "angle", label: "Canapé d'angle", price: 149 },
@@ -163,7 +162,7 @@ export default function MaisonPriceCalculator() {
       className="relative overflow-hidden py-14 sm:py-20 lg:py-24"
     >
       <div className="pointer-events-none absolute inset-0 -z-10">
-        <div className="absolute left-1/2 top-0 h-[420px] w-[760px] -translate-x-1/2 rounded-full bg-amber-500/15 blur-3xl" />
+        <div className="absolute left-1/2 top-0 h-[420px] w-[760px] -translate-x-1/2 rounded-full bg-amber-500/15 blur-2xl sm:blur-3xl" />
       </div>
 
       <div className="container-x">
@@ -193,7 +192,7 @@ export default function MaisonPriceCalculator() {
                     onClick={() => selectService(s.id)}
                     className={`group relative flex h-full flex-col items-start gap-1 rounded-2xl border px-3 py-3 text-left transition ${
                       active
-                        ? "border-amber-400/60 bg-amber-500/15 shadow-glow"
+                        ? "border-amber-400/60 bg-amber-500/15 shadow-glow-amber"
                         : "border-white/10 bg-white/[0.03] hover:border-white/25 hover:bg-white/[0.06]"
                     }`}
                   >
@@ -229,7 +228,7 @@ export default function MaisonPriceCalculator() {
                     disabled={!service}
                     className={`relative flex items-start gap-3 rounded-2xl border p-3 text-left transition disabled:cursor-not-allowed disabled:opacity-50 ${
                       active
-                        ? "border-amber-400/60 bg-amber-500/15 shadow-glow"
+                        ? "border-amber-400/60 bg-amber-500/15 shadow-glow-amber"
                         : "border-white/10 bg-white/[0.03] hover:border-white/25 hover:bg-white/[0.06]"
                     }`}
                   >

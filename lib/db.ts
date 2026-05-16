@@ -56,12 +56,27 @@ function openDb(): Database.Database {
       href TEXT,
       ip TEXT,
       user_agent TEXT,
-      source TEXT
+      source TEXT,
+      section TEXT
     );
     CREATE INDEX IF NOT EXISTS events_ts ON events(ts DESC);
     CREATE INDEX IF NOT EXISTS events_type ON events(type);
     CREATE INDEX IF NOT EXISTS events_session ON events(session_id);
+  `);
 
+  // Migration douce : si la table events existait avant qu'on ajoute la
+  // colonne section, on l'ajoute maintenant (SQLite n'accepte pas
+  // ADD COLUMN IF NOT EXISTS, d'où le try/catch).
+  try {
+    db.exec(`ALTER TABLE events ADD COLUMN section TEXT`);
+  } catch {
+    // Colonne déjà présente — ignore
+  }
+
+  // Index sur section, créé APRES la garantie que la colonne existe.
+  db.exec(`CREATE INDEX IF NOT EXISTS events_section ON events(section);`);
+
+  db.exec(`
     CREATE TABLE IF NOT EXISTS hidden_ips (
       ip TEXT PRIMARY KEY,
       label TEXT,
@@ -113,6 +128,9 @@ export type Event = {
   ip: string | null;
   user_agent: string | null;
   source: string | null;
+  /** 'auto' | 'maison' — dérivé du path côté serveur, permet de filtrer
+   *  les conversions par section dans le dashboard et Google Ads. */
+  section: string | null;
 };
 
 // ─── Inserts ────────────────────────────────────────────────────────────
@@ -129,9 +147,9 @@ const insertVisitStmt = db.prepare(`
 
 const insertEventStmt = db.prepare(`
   INSERT INTO events
-    (ts, session_id, type, path, href, ip, user_agent, source)
+    (ts, session_id, type, path, href, ip, user_agent, source, section)
   VALUES
-    (@ts, @session_id, @type, @path, @href, @ip, @user_agent, @source)
+    (@ts, @session_id, @type, @path, @href, @ip, @user_agent, @source, @section)
 `);
 
 export function recordVisit(v: Omit<Visit, "id">) {
@@ -273,6 +291,29 @@ export function getKpis() {
     ),
     phoneClicksTotal: row(
       `SELECT COUNT(*) as c FROM events WHERE type = 'phone_click'${hidden.sql}`,
+      ...hidden.params,
+    ),
+
+    // Conversions split par section (Auto / Maison) — utile pour mesurer
+    // le CPL différencié si tu lances 2 campagnes Ads.
+    whatsappAuto7d: row(
+      `SELECT COUNT(*) as c FROM events WHERE ts >= ? AND type = 'whatsapp_click' AND (section = 'auto' OR section IS NULL)${hidden.sql}`,
+      cutoff7d,
+      ...hidden.params,
+    ),
+    whatsappMaison7d: row(
+      `SELECT COUNT(*) as c FROM events WHERE ts >= ? AND type = 'whatsapp_click' AND section = 'maison'${hidden.sql}`,
+      cutoff7d,
+      ...hidden.params,
+    ),
+    phoneAuto7d: row(
+      `SELECT COUNT(*) as c FROM events WHERE ts >= ? AND type = 'phone_click' AND (section = 'auto' OR section IS NULL)${hidden.sql}`,
+      cutoff7d,
+      ...hidden.params,
+    ),
+    phoneMaison7d: row(
+      `SELECT COUNT(*) as c FROM events WHERE ts >= ? AND type = 'phone_click' AND section = 'maison'${hidden.sql}`,
+      cutoff7d,
       ...hidden.params,
     ),
   };

@@ -16,6 +16,20 @@
 import type { UseCase } from "./usecases";
 import type { FAQItem } from "./faq";
 
+/**
+ * HomeService — type d'une prestation Maison.
+ *
+ * Pour l'instant, structurellement identique à UseCase (problème + DIY +
+ * solution + tariffs + FAQ + hero). On garde l'alias pour clarifier la
+ * sémantique côté Maison (vs. les "pain points" auto qui sont aussi des
+ * UseCase) et faciliter une divergence future si Maison gagne des champs
+ * spécifiques (B2B pricing, photos clients, partenaires…).
+ *
+ * Migration future éventuelle : si on veut séparer strictement, on
+ * créera un type indépendant et on adapte HomeServicePage en conséquence.
+ */
+export type HomeService = UseCase;
+
 /** FAQ globale Maison — utilisée sur le hub /strasclean-maison ET fusionnée
  *  dans le JSON-LD des pages services Maison pour enrichir le SEO. */
 export const MAISON_GLOBAL_FAQS: FAQItem[] = [
@@ -45,7 +59,7 @@ export const MAISON_GLOBAL_FAQS: FAQItem[] = [
   },
 ];
 
-export const HOME_SERVICES: UseCase[] = [
+export const HOME_SERVICES: HomeService[] = [
   // ─── Canapé ───────────────────────────────────────────────────────────
   {
     slug: "nettoyage-canape-strasbourg",
@@ -113,7 +127,6 @@ export const HOME_SERVICES: UseCase[] = [
     },
     pricing: { priceFrom: "79", duration: "1 h à 1h30" },
     tariffs: [
-      { label: "Fauteuil / 1 place", price: "39 €" },
       { label: "Canapé 2 places", price: "79 €" },
       { label: "Canapé 3 places", price: "109 €" },
       { label: "Canapé d'angle", price: "149 €" },
@@ -461,7 +474,7 @@ export const HOME_SERVICES: UseCase[] = [
 
 /** Construit l'URL d'une page service Maison (par défaut Strasbourg, slug
  *  inclut '-strasbourg'). */
-export const homeServicePath = (s: UseCase) => `/${s.slug}`;
+export const homeServicePath = (s: HomeService) => `/${s.slug}`;
 
 /** Trouve un service Maison par son slug exact */
 export const findHomeService = (slug: string) =>
@@ -479,13 +492,13 @@ import { CITIES, type City } from "./cities";
 
 /** Slug "base" d'un service Maison sans suffixe ville
  *  ex: 'nettoyage-canape-strasbourg' → 'nettoyage-canape' */
-export const homeServiceBaseSlug = (s: UseCase) =>
+export const homeServiceBaseSlug = (s: HomeService) =>
   s.slug.replace(/-strasbourg$/, "");
 
 /** URL d'une page service Maison × ville
  *  - Strasbourg → reste sur le slug natif (déjà '-strasbourg')
  *  - autre ville → '{base}-{city.slug}' */
-export const homeServiceCityPath = (s: UseCase, city: City) => {
+export const homeServiceCityPath = (s: HomeService, city: City) => {
   if (city.slug === "strasbourg") return homeServicePath(s);
   return `/${homeServiceBaseSlug(s)}-${city.slug}`;
 };
@@ -495,7 +508,7 @@ export const homeServiceCityPath = (s: UseCase, city: City) => {
  *  Strasbourg est volontairement exclue car gérée par findHomeService(). */
 export function matchHomeServiceCity(
   slug: string,
-): { service: UseCase; city: City } | null {
+): { service: HomeService; city: City } | null {
   for (const service of HOME_SERVICES) {
     const base = homeServiceBaseSlug(service);
     for (const city of CITIES) {
@@ -511,11 +524,11 @@ export function matchHomeServiceCity(
 /** Liste exhaustive des combinaisons service × ville (hors Strasbourg).
  *  Utilisée par generateStaticParams + sitemap. */
 export function listHomeServiceCityCombos(): {
-  service: UseCase;
+  service: HomeService;
   city: City;
   slug: string;
 }[] {
-  const out: { service: UseCase; city: City; slug: string }[] = [];
+  const out: { service: HomeService; city: City; slug: string }[] = [];
   for (const service of HOME_SERVICES) {
     const base = homeServiceBaseSlug(service);
     for (const city of CITIES) {

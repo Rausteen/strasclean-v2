@@ -129,6 +129,26 @@ export default async function DashboardPage({
         <Kpi label="Clics téléphone 7j" value={k.phoneClicks7d} hint={`${k.phoneClicksTotal} au total`} tone="brand" />
       </section>
 
+      {/* Conversions split Auto / Maison */}
+      <section className="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+        <Kpi
+          label="WhatsApp Auto 7j"
+          value={k.whatsappAuto7d}
+          tone="brand"
+        />
+        <Kpi
+          label="WhatsApp Maison 7j"
+          value={k.whatsappMaison7d}
+          tone="amber"
+        />
+        <Kpi label="Téléphone Auto 7j" value={k.phoneAuto7d} tone="brand" />
+        <Kpi
+          label="Téléphone Maison 7j"
+          value={k.phoneMaison7d}
+          tone="amber"
+        />
+      </section>
+
       {/* Sources 7j */}
       <section className="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
         <Kpi label="Ads 7j" value={k.visitsAds7d} tone="amber" />

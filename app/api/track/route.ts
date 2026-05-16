@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { recordVisit, recordEvent } from "@/lib/db";
 import { parseUserAgent, classifySource } from "@/lib/ua";
+import { isMaisonPathname } from "@/lib/section";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -69,6 +70,10 @@ export async function POST(req: NextRequest) {
     });
   } else if (type === "whatsapp_click" || type === "phone_click") {
     const href = (payload.href as string) || null;
+    // Section dérivée du path : permet de filtrer les conversions Maison
+    // vs Auto dans le dashboard et de différencier les conversions Google Ads
+    // par compte (2 comptes Ads possibles, 1 par section).
+    const section = isMaisonPathname(path) ? "maison" : "auto";
     recordEvent({
       ts: Date.now(),
       session_id: sid,
@@ -78,6 +83,7 @@ export async function POST(req: NextRequest) {
       ip,
       user_agent: ua,
       source: null,
+      section,
     });
   } else {
     return NextResponse.json({ ok: false, reason: "unknown type" }, { status: 400 });

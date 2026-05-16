@@ -107,6 +107,31 @@ export default async function HubMaisonPage() {
         },
       })),
     },
+    // Reviews schema — propage les avis Maison tagués (vide tant qu'aucun
+    // n'a été tagué Maison/both dans l'admin, ce qui est OK : Google
+    // ignorera juste le champ et continuera d'afficher aggregateRating).
+    ...(maisonReviews.length > 0
+      ? {
+          review: maisonReviews.map((r) => ({
+            "@type": "Review",
+            author: { "@type": "Person", name: r.author_name },
+            reviewRating: {
+              "@type": "Rating",
+              ratingValue: String(r.rating),
+              bestRating: "5",
+              worstRating: "1",
+            },
+            reviewBody: r.text,
+            ...(r.time
+              ? {
+                  datePublished: new Date(r.time * 1000)
+                    .toISOString()
+                    .slice(0, 10),
+                }
+              : {}),
+          })),
+        }
+      : {}),
   };
 
   const breadcrumbJsonLd = {
@@ -133,7 +158,7 @@ export default async function HubMaisonPage() {
           <div className="pointer-events-none absolute inset-0 -z-10">
             <div className="absolute inset-0 bg-radial-fade" />
             <div className="absolute inset-0 bg-grid-light bg-[size:48px_48px] opacity-[0.30] [mask-image:radial-gradient(ellipse_at_center,black_30%,transparent_75%)]" />
-            <div className="absolute -top-32 left-1/2 h-[520px] w-[820px] -translate-x-1/2 rounded-full bg-amber-500/20 blur-3xl" />
+            <div className="absolute -top-32 left-1/2 h-[520px] w-[820px] -translate-x-1/2 rounded-full bg-amber-500/20 blur-2xl sm:blur-3xl" />
           </div>
 
           <div className="container-x pt-6 pb-12 sm:pt-14 sm:pb-20 lg:pt-20 lg:pb-24">

@@ -139,6 +139,14 @@ export default function Footer() {
                   → Toute l'offre Maison
                 </Link>
               </li>
+              <li>
+                <Link
+                  href="/strasclean-maison/qui-sommes-nous"
+                  className="text-white/55 hover:text-white"
+                >
+                  Qui sommes-nous
+                </Link>
+              </li>
             </ul>
 
             {/* Pages SEO Maison (tarifs détaillés, Airbnb, cuir) — discret

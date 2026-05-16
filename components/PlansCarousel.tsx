@@ -10,6 +10,10 @@ import {
 
 type Props = {
   children: ReactNode;
+  /** Couleur du dot actif — défaut "brand" (vert auto), "amber" pour Maison */
+  accent?: "brand" | "amber";
+  /** Nombre de colonnes en desktop (lg+) — défaut 3 (auto formules) */
+  desktopCols?: 3 | 4;
 };
 
 /**
@@ -26,11 +30,19 @@ type Props = {
  *
  * Sur md+ : grille standard 2 → 3 colonnes.
  */
-export default function PlansCarousel({ children }: Props) {
+export default function PlansCarousel({
+  children,
+  accent = "brand",
+  desktopCols = 3,
+}: Props) {
   const scrollRef = useRef<HTMLDivElement>(null);
   const [activeIdx, setActiveIdx] = useState(0);
   const slides = Children.toArray(children);
   const count = slides.length;
+  const activeDotColor =
+    accent === "amber" ? "bg-amber-400" : "bg-brand-400";
+  const desktopColsClass =
+    desktopCols === 4 ? "lg:grid-cols-4" : "lg:grid-cols-3";
 
   // Suivi de la position pour mettre à jour les dots
   useEffect(() => {
@@ -123,13 +135,13 @@ export default function PlansCarousel({ children }: Props) {
           et des ombres (le navigateur clippe l'axe Y dès que X est en auto). */}
       <div
         ref={scrollRef}
-        className="
+        className={`
           -mx-4 flex gap-4 overflow-x-auto px-4 pt-6 pb-12
           snap-x snap-mandatory scroll-px-4 scroll-smooth scrollbar-hide
           md:mx-0 md:grid md:grid-cols-2 md:gap-6 md:overflow-visible
           md:px-0 md:pt-0 md:pb-0 md:snap-none
-          lg:grid-cols-3
-        "
+          ${desktopColsClass}
+        `}
         aria-roledescription="carousel"
       >
         {slides.map((child, i) => (
@@ -165,7 +177,9 @@ export default function PlansCarousel({ children }: Props) {
               aria-label={`Voir la formule ${i + 1}`}
               onClick={() => goTo(i)}
               className={`h-1.5 rounded-full transition-all duration-300 active:scale-95 ${
-                isActive ? "w-7 bg-brand-400" : "w-2 bg-white/25 hover:bg-white/40"
+                isActive
+                  ? `w-7 ${activeDotColor}`
+                  : "w-2 bg-white/25 hover:bg-white/40"
               }`}
             />
           );

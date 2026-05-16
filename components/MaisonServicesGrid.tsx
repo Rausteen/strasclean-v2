@@ -1,5 +1,6 @@
 import Link from "next/link";
 import Reveal from "./Reveal";
+import PlansCarousel from "./PlansCarousel";
 import { HOME_SERVICES, homeServicePath } from "@/lib/homeServices";
 import { waLink } from "@/lib/site";
 import {
@@ -40,7 +41,7 @@ export default function MaisonServicesGrid({
       className="relative overflow-hidden py-14 sm:py-20 lg:py-24"
     >
       <div className="pointer-events-none absolute inset-0 -z-10">
-        <div className="absolute left-1/2 top-0 h-[460px] w-[760px] -translate-x-1/2 rounded-full bg-amber-500/12 blur-3xl" />
+        <div className="absolute left-1/2 top-0 h-[460px] w-[760px] -translate-x-1/2 rounded-full bg-amber-500/12 blur-2xl sm:blur-3xl" />
       </div>
 
       <div className="container-x">
@@ -54,16 +55,19 @@ export default function MaisonServicesGrid({
           <p className="mt-4 text-white/65">{description}</p>
         </Reveal>
 
-        <div className="mt-10 grid gap-5 pt-6 sm:mt-12 sm:grid-cols-2 lg:grid-cols-4 lg:gap-4">
-          {HOME_SERVICES.map((s, i) => (
-            <Reveal key={s.slug} delay={i * 60}>
+        {/* Carrousel swipeable mobile / grille 4 colonnes desktop —
+            même UX que la section Formules auto. */}
+        <div className="mt-10 sm:mt-12">
+          <PlansCarousel accent="amber" desktopCols={4}>
+            {HOME_SERVICES.map((s) => (
               <MaisonServiceCard
+                key={s.slug}
                 service={s}
                 popular={s.slug === POPULAR_SLUG}
                 current={currentSlug === s.slug}
               />
-            </Reveal>
-          ))}
+            ))}
+          </PlansCarousel>
         </div>
 
         {/* Bandeau zone */}
@@ -110,7 +114,7 @@ function MaisonServiceCard({
           current
             ? "border-white/20 bg-white/[0.05]"
             : popular
-              ? "border-amber-400/40 bg-gradient-to-b from-amber-500/15 to-ink-900 shadow-glow"
+              ? "border-amber-400/40 bg-gradient-to-b from-amber-500/15 to-ink-900 shadow-glow-amber"
               : "border-white/10 bg-white/[0.03] group-hover:-translate-y-1 group-hover:border-amber-400/30"
         }`}
       >
@@ -126,7 +130,10 @@ function MaisonServiceCard({
 
         {/* Header : emoji + nom */}
         <div className="flex items-center gap-3">
-          <span className="grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-amber-500/15 text-2xl">
+          <span
+            aria-hidden="true"
+            className="grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-amber-500/15 text-2xl"
+          >
             {s.emoji}
           </span>
           <h3 className="h-display text-lg font-semibold text-white sm:text-xl">
@@ -206,6 +213,7 @@ function MaisonServiceCard({
             <Link
               href={homeServicePath(s)}
               prefetch={false}
+              aria-label={`Voir le détail de ${s.shortName.toLowerCase()}`}
               className="inline-flex items-center justify-center gap-1.5 text-sm font-medium text-white/70 transition hover:text-white"
             >
               Voir le détail

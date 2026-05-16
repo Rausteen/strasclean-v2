@@ -77,6 +77,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "monthly" as const,
       priority: 0.8,
     })),
+    // Page "Qui sommes-nous" Maison (E-E-A-T pour Google)
+    {
+      url: `${SITE.url}/strasclean-maison/qui-sommes-nous`,
+      lastModified: now,
+      changeFrequency: "monthly" as const,
+      priority: 0.7,
+    },
     // Pages service × ville Maison (44 nouvelles URLs : 4 services × 11
     // communes hors Strasbourg)
     ...listHomeServiceCityCombos().map(({ service, city }) => ({

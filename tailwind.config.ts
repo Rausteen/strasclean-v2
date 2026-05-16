@@ -40,6 +40,8 @@ const config: Config = {
         soft: "0 8px 30px rgba(0,0,0,0.06)",
         card: "0 10px 40px -10px rgba(0,0,0,0.35)",
         glow: "0 0 0 1px rgba(16,185,129,.25), 0 20px 60px -20px rgba(16,185,129,.45)",
+        "glow-amber":
+          "0 0 0 1px rgba(245,158,11,.30), 0 20px 60px -20px rgba(245,158,11,.50)",
       },
       backgroundImage: {
         "grid-light":
