@@ -110,10 +110,18 @@ export default function Header() {
         </div>
       </div>
 
-      {/* SOUS-STRIP — pill Auto/Maison toujours visible, position stable */}
+      {/* SOUS-STRIP — pill Auto/Maison toujours visible, position stable.
+          À propos en lien discret à droite : accessible depuis chaque page,
+          y compris sur mobile où la NAV desktop est masquée. */}
       <div className="border-t border-white/5 bg-ink-950/60 backdrop-blur-sm">
-        <div className="container-x flex h-10 items-center justify-center">
+        <div className="container-x relative flex h-10 items-center justify-center">
           <SectionToggle onMaison={onMaison} />
+          <Link
+            href="/qui-sommes-nous"
+            className="absolute right-4 text-[11px] font-medium text-white/55 transition hover:text-white sm:right-6 sm:text-xs"
+          >
+            À propos
+          </Link>
         </div>
       </div>
     </header>
