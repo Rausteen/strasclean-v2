@@ -5,13 +5,19 @@ import {
   getKpis,
   getRecentVisits,
   getRecentEvents,
+  countVisits,
+  countEvents,
   getTopPaths,
   getTopReferers,
+  getHiddenIps,
 } from "@/lib/db";
 import LogoutButton from "./LogoutButton";
+import { HideIpButton, UnhideIpButton } from "./HideIpButton";
 
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
+
+const PAGE_SIZE = 20;
 
 function fmt(ts: number) {
   const d = new Date(ts);
@@ -46,14 +52,36 @@ function sourceBadge(src: string | null) {
   );
 }
 
-export default async function DashboardPage() {
+function parsePage(v: string | string[] | undefined): number {
+  if (!v) return 1;
+  const s = Array.isArray(v) ? v[0] : v;
+  const n = parseInt(s, 10);
+  if (!Number.isFinite(n) || n < 1) return 1;
+  return n;
+}
+
+export default async function DashboardPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ vp?: string; ep?: string }>;
+}) {
   if (!(await isAuthenticated())) redirect("/admin/login");
 
+  const sp = await searchParams;
+  const visitsPage = parsePage(sp.vp);
+  const eventsPage = parsePage(sp.ep);
+
   const k = getKpis();
-  const visits = getRecentVisits(200);
-  const events = getRecentEvents(200);
+  const visitsTotal = countVisits();
+  const eventsTotal = countEvents();
+  const visits = getRecentVisits(PAGE_SIZE, (visitsPage - 1) * PAGE_SIZE);
+  const events = getRecentEvents(PAGE_SIZE, (eventsPage - 1) * PAGE_SIZE);
   const topPaths = getTopPaths(10);
   const topReferers = getTopReferers(10);
+  const hiddenIps = getHiddenIps();
+
+  const visitsPages = Math.max(1, Math.ceil(visitsTotal / PAGE_SIZE));
+  const eventsPages = Math.max(1, Math.ceil(eventsTotal / PAGE_SIZE));
 
   return (
     <div className="container-x py-8">
@@ -63,6 +91,11 @@ export default async function DashboardPage() {
           <h1 className="h-display text-2xl font-bold sm:text-3xl">Dashboard StrasClean</h1>
           <p className="mt-1 text-sm text-white/60">
             Trafic, sources, clics de contact. Données 100% server-side, hors Google Ads.
+            {hiddenIps.length > 0 && (
+              <span className="ml-2 text-amber-300/80">
+                · {hiddenIps.length} IP{hiddenIps.length > 1 ? "s" : ""} masquée{hiddenIps.length > 1 ? "s" : ""}
+              </span>
+            )}
           </p>
         </div>
         <div className="flex gap-2">
@@ -121,11 +154,40 @@ export default async function DashboardPage() {
         </Panel>
       </section>
 
+      {/* IPs cachées */}
+      {hiddenIps.length > 0 && (
+        <section className="mt-8">
+          <Panel title={`IPs masquées (${hiddenIps.length})`}>
+            <p className="mb-3 text-xs text-white/55">
+              Toutes les visites/clics de ces IPs sont exclus des statistiques affichées ci-dessus.
+            </p>
+            <ul className="grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
+              {hiddenIps.map((h) => (
+                <li
+                  key={h.ip}
+                  className="flex items-center justify-between gap-3 rounded-xl border border-white/10 bg-white/[0.03] px-3 py-2"
+                >
+                  <div className="min-w-0 flex-1">
+                    <p className="truncate font-mono text-xs text-white/85">{h.ip}</p>
+                    {h.label && (
+                      <p className="truncate text-[11px] text-white/50">{h.label}</p>
+                    )}
+                  </div>
+                  <UnhideIpButton ip={h.ip} />
+                </li>
+              ))}
+            </ul>
+          </Panel>
+        </section>
+      )}
+
       {/* Visites récentes */}
       <section className="mt-8">
-        <Panel title={`Visites récentes (${visits.length})`}>
+        <Panel
+          title={`Visites récentes — page ${visitsPage}/${visitsPages} (${visitsTotal} au total)`}
+        >
           <div className="-mx-2 overflow-x-auto">
-            <table className="w-full min-w-[900px] text-xs">
+            <table className="w-full min-w-[960px] text-xs">
               <thead className="text-left text-white/55 uppercase tracking-wider">
                 <tr>
                   <th className="px-2 py-2">Date</th>
@@ -140,7 +202,7 @@ export default async function DashboardPage() {
               </thead>
               <tbody className="divide-y divide-white/5">
                 {visits.length === 0 && (
-                  <tr><td colSpan={8} className="py-6 text-center text-white/50">Aucune visite enregistrée pour l'instant.</td></tr>
+                  <tr><td colSpan={8} className="py-6 text-center text-white/50">Aucune visite sur cette page.</td></tr>
                 )}
                 {visits.map((v) => (
                   <tr key={v.id} className="hover:bg-white/[0.02]">
@@ -155,21 +217,29 @@ export default async function DashboardPage() {
                     </td>
                     <td className="px-2 py-2 text-white/75">{v.device}</td>
                     <td className="px-2 py-2 text-white/75">{v.os} · {v.browser}</td>
-                    <td className="px-2 py-2 text-white/55 font-mono">{v.ip ?? "—"}</td>
+                    <td className="px-2 py-2 text-white/55">
+                      <div className="flex items-center gap-2">
+                        <span className="font-mono">{v.ip ?? "—"}</span>
+                        <HideIpButton ip={v.ip} />
+                      </div>
+                    </td>
                     <td className="px-2 py-2 text-white/55 max-w-[200px] truncate" title={v.referer ?? ""}>{v.referer ?? "—"}</td>
                   </tr>
                 ))}
               </tbody>
             </table>
           </div>
+          <Pagination current={visitsPage} total={visitsPages} param="vp" otherParam="ep" otherValue={eventsPage} />
         </Panel>
       </section>
 
       {/* Clics récents */}
       <section className="mt-8">
-        <Panel title={`Clics récents — WhatsApp / Téléphone (${events.length})`}>
+        <Panel
+          title={`Clics récents — WhatsApp / Téléphone — page ${eventsPage}/${eventsPages} (${eventsTotal} au total)`}
+        >
           <div className="-mx-2 overflow-x-auto">
-            <table className="w-full min-w-[700px] text-xs">
+            <table className="w-full min-w-[760px] text-xs">
               <thead className="text-left text-white/55 uppercase tracking-wider">
                 <tr>
                   <th className="px-2 py-2">Date</th>
@@ -181,7 +251,7 @@ export default async function DashboardPage() {
               </thead>
               <tbody className="divide-y divide-white/5">
                 {events.length === 0 && (
-                  <tr><td colSpan={5} className="py-6 text-center text-white/50">Aucun clic enregistré pour l'instant.</td></tr>
+                  <tr><td colSpan={5} className="py-6 text-center text-white/50">Aucun clic sur cette page.</td></tr>
                 )}
                 {events.map((e) => (
                   <tr key={e.id} className="hover:bg-white/[0.02]">
@@ -196,13 +266,19 @@ export default async function DashboardPage() {
                       </span>
                     </td>
                     <td className="px-2 py-2 max-w-[240px] truncate" title={e.path ?? ""}>{shortPath(e.path)}</td>
-                    <td className="px-2 py-2 text-white/55 font-mono">{e.ip ?? "—"}</td>
+                    <td className="px-2 py-2 text-white/55">
+                      <div className="flex items-center gap-2">
+                        <span className="font-mono">{e.ip ?? "—"}</span>
+                        <HideIpButton ip={e.ip} />
+                      </div>
+                    </td>
                     <td className="px-2 py-2 text-white/55 max-w-[280px] truncate" title={e.user_agent ?? ""}>{e.user_agent ?? "—"}</td>
                   </tr>
                 ))}
               </tbody>
             </table>
           </div>
+          <Pagination current={eventsPage} total={eventsPages} param="ep" otherParam="vp" otherValue={visitsPage} />
         </Panel>
       </section>
 
@@ -210,6 +286,53 @@ export default async function DashboardPage() {
         Stockage local SQLite — <code>data/analytics.db</code>. Mention RGPD à ajouter dans la politique de confidentialité (IP/UA conservés ~13 mois).
       </p>
     </div>
+  );
+}
+
+function Pagination({
+  current,
+  total,
+  param,
+  otherParam,
+  otherValue,
+}: {
+  current: number;
+  total: number;
+  param: "vp" | "ep";
+  otherParam: "vp" | "ep";
+  otherValue: number;
+}) {
+  if (total <= 1) return null;
+  const link = (n: number) => `?${param}=${n}&${otherParam}=${otherValue}`;
+  const prev = Math.max(1, current - 1);
+  const next = Math.min(total, current + 1);
+
+  return (
+    <nav className="mt-4 flex items-center justify-between border-t border-white/5 pt-3 text-xs">
+      <Link
+        href={link(prev)}
+        className={`rounded-lg border border-white/10 px-3 py-1.5 ${
+          current === 1
+            ? "pointer-events-none text-white/30"
+            : "text-white/80 hover:bg-white/5"
+        }`}
+      >
+        ← Précédent
+      </Link>
+      <span className="text-white/55">
+        Page {current} / {total}
+      </span>
+      <Link
+        href={link(next)}
+        className={`rounded-lg border border-white/10 px-3 py-1.5 ${
+          current === total
+            ? "pointer-events-none text-white/30"
+            : "text-white/80 hover:bg-white/5"
+        }`}
+      >
+        Suivant →
+      </Link>
+    </nav>
   );
 }
 

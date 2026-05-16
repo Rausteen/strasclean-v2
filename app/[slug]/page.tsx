@@ -8,6 +8,7 @@ import TrustBar from "@/components/TrustBar";
 import LocalSection from "@/components/LocalSection";
 import ServiceDetail from "@/components/ServiceDetail";
 import PricingSection from "@/components/PricingSection";
+import PriceCalculator from "@/components/PriceCalculator";
 import BeforeAfter from "@/components/BeforeAfter";
 import HowItWorks from "@/components/HowItWorks";
 import Benefits from "@/components/Benefits";
@@ -267,6 +268,7 @@ function CityPage({
         <TrustBar />
         <LocalSection city={city} />
         <PricingSection />
+        <PriceCalculator />
         <BeforeAfter />
         <HowItWorks />
         <Benefits />
@@ -386,6 +388,7 @@ function ServiceCityPage({
         <ServiceDetail service={service} city={city} />
         <LocalSection city={city} />
         <PricingSection />
+        <PriceCalculator />
         <BeforeAfter />
         <Benefits />
         <Testimonials
