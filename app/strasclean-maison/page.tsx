@@ -24,7 +24,7 @@ import {
   MapPinIcon,
   StarIcon,
 } from "@/components/Icon";
-import { SITE, waLink } from "@/lib/site";
+import { SITE, waLink, openingHoursJsonLd } from "@/lib/site";
 import { HOME_SERVICES, MAISON_GLOBAL_FAQS } from "@/lib/homeServices";
 import { getGooglePlaceData, filterReviewsBySection } from "@/lib/reviews";
 import { getReviewTagsMap } from "@/lib/db";
@@ -78,6 +78,8 @@ export default async function HubMaisonPage() {
       addressCountry: SITE.country,
     },
     areaServed: { "@type": "City", name: SITE.city },
+    openingHoursSpecification: openingHoursJsonLd(),
+    ...(SITE.socials.length > 0 ? { sameAs: SITE.socials } : {}),
     ...(place.rating && place.totalCount
       ? {
           aggregateRating: {
@@ -319,7 +321,7 @@ export default async function HubMaisonPage() {
           <div className="container-x">
             <Reveal>
               <div className="relative overflow-hidden rounded-3xl border border-amber-400/30 bg-gradient-to-br from-amber-500/15 via-ink-800 to-ink-900 p-8 text-center sm:p-12">
-                <div className="pointer-events-none absolute -right-20 -top-24 h-64 w-64 rounded-full bg-amber-500/25 blur-3xl" />
+                <div className="pointer-events-none absolute -right-20 -top-24 h-64 w-64 rounded-full bg-amber-500/25 blur-2xl sm:blur-3xl" />
                 <h2 className="h-display mx-auto max-w-2xl text-balance text-2xl font-bold text-white sm:text-3xl lg:text-4xl">
                   Une question ? Un devis ? On répond rapidement.
                 </h2>

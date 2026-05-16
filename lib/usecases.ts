@@ -71,8 +71,7 @@ export const USE_CASES: UseCase[] = [
     slug: "enlever-poils-chien-voiture-strasbourg",
     shortName: "Poils de chien",
     emoji: "🐶",
-    metaTitle:
-      "Enlever les poils de chien dans la voiture à Strasbourg — StrasClean",
+    metaTitle: "Enlever poils de chien voiture Strasbourg — StrasClean",
     metaDescription:
       "Poils de chien incrustés dans le tissu, le coffre, les sièges ? StrasClean intervient à domicile à Strasbourg avec un protocole pro (turbo-brosse, adhésifs, désinfection) qui décolle tous les poils — même les plus tenaces. À partir de 69 €.",
     hero: {
@@ -160,8 +159,7 @@ export const USE_CASES: UseCase[] = [
     slug: "enlever-odeur-tabac-voiture-strasbourg",
     shortName: "Odeur de tabac",
     emoji: "🚬",
-    metaTitle:
-      "Enlever l'odeur de tabac dans la voiture à Strasbourg — StrasClean",
+    metaTitle: "Enlever odeur tabac voiture Strasbourg — StrasClean",
     metaDescription:
       "L'odeur de tabac s'incruste partout : sièges, plafonnier, plastiques. StrasClean élimine vraiment l'odeur (pas qui la masque) à votre domicile à Strasbourg via extraction profonde + traitement à l'ozone. À partir de 89 €.",
     hero: {
@@ -258,8 +256,7 @@ export const USE_CASES: UseCase[] = [
     slug: "preparer-voiture-revente-strasbourg",
     shortName: "Préparer revente",
     emoji: "💰",
-    metaTitle:
-      "Préparer sa voiture pour la revente à Strasbourg — StrasClean",
+    metaTitle: "Préparer voiture pour la revente Strasbourg — StrasClean",
     metaDescription:
       "Une voiture impeccable se vend 5 à 15 % plus cher et 2× plus vite. StrasClean prépare votre véhicule à domicile à Strasbourg avant la mise en vente — extérieur + intérieur + conseils photos. À partir de 119 €.",
     hero: {
@@ -359,8 +356,7 @@ export const USE_CASES: UseCase[] = [
     slug: "enlever-odeur-vomi-voiture-strasbourg",
     shortName: "Odeur de vomi",
     emoji: "🤢",
-    metaTitle:
-      "Enlever l'odeur de vomi dans la voiture à Strasbourg — StrasClean",
+    metaTitle: "Enlever odeur vomi voiture Strasbourg — StrasClean",
     metaDescription:
       "Vomi sur les sièges, le tapis ou la moquette ? StrasClean intervient à domicile à Strasbourg avec un protocole pro (extraction, désinfection, ozonation) qui supprime taches et odeur jusque dans la mousse. À partir de 89 €.",
     hero: {
@@ -457,8 +453,7 @@ export const USE_CASES: UseCase[] = [
     slug: "nettoyer-tache-cafe-siege-voiture-strasbourg",
     shortName: "Tache de café",
     emoji: "☕",
-    metaTitle:
-      "Enlever une tache de café sur un siège de voiture à Strasbourg — StrasClean",
+    metaTitle: "Tache de café siège voiture Strasbourg — StrasClean",
     metaDescription:
       "Café renversé sur le siège tissu ou cuir de votre voiture ? StrasClean intervient à domicile à Strasbourg avec injection-extraction pro pour faire disparaître complètement la tache, même séchée. À partir de 49 €.",
     hero: {
@@ -551,8 +546,7 @@ export const USE_CASES: UseCase[] = [
     slug: "enlever-traces-eau-vitres-voiture-strasbourg",
     shortName: "Traces d'eau vitres",
     emoji: "💧",
-    metaTitle:
-      "Enlever les traces d'eau sur les vitres de voiture à Strasbourg — StrasClean",
+    metaTitle: "Traces d'eau vitres voiture Strasbourg — StrasClean",
     metaDescription:
       "Traces blanches de calcaire ou auréoles d'eau de pluie sur vos vitres et carrosserie ? StrasClean traite la décontamination minérale à domicile à Strasbourg. Vitres et carrosserie cristallines. À partir de 39 €.",
     hero: {
@@ -649,8 +643,7 @@ export const USE_CASES: UseCase[] = [
     slug: "nettoyage-suv-domicile-strasbourg",
     shortName: "Nettoyage SUV",
     emoji: "🚙",
-    metaTitle:
-      "Nettoyage SUV à domicile à Strasbourg — StrasClean",
+    metaTitle: "Nettoyage SUV à domicile Strasbourg — StrasClean",
     metaDescription:
       "Votre SUV (Tucson, X3, Q5, GLC, 3008, etc.) demande un protocole adapté : plus de surface, sièges 3e rang, coffre famille. StrasClean intervient à domicile à Strasbourg avec un forfait SUV dédié. À partir de 89 €.",
     hero: {
@@ -747,8 +740,7 @@ export const USE_CASES: UseCase[] = [
     slug: "nettoyage-utilitaire-domicile-strasbourg",
     shortName: "Nettoyage utilitaire",
     emoji: "🚐",
-    metaTitle:
-      "Nettoyage utilitaire à domicile à Strasbourg — StrasClean",
+    metaTitle: "Nettoyage utilitaire Strasbourg — StrasClean",
     metaDescription:
       "Kangoo, Trafic, Master, Berlingo, Partner, Boxer ? StrasClean nettoie votre utilitaire pro à votre dépôt ou chantier à Strasbourg. Cabine + zone de chargement + résidus pro. Devis adapté pour pros et artisans. À partir de 79 €.",
     hero: {
@@ -845,8 +837,7 @@ export const USE_CASES: UseCase[] = [
     slug: "nettoyage-voiture-electrique-strasbourg",
     shortName: "Voiture électrique",
     emoji: "⚡",
-    metaTitle:
-      "Nettoyage voiture électrique à domicile à Strasbourg — StrasClean",
+    metaTitle: "Nettoyage voiture électrique Strasbourg — StrasClean",
     metaDescription:
       "Tesla, ID.3/4, e-208, Megane E-Tech, Zoé ? Nettoyage adapté à votre véhicule électrique à domicile à Strasbourg : produits compatibles, précautions batterie HV, écrans tactiles. À partir de 49 €.",
     hero: {
@@ -943,8 +934,7 @@ export const USE_CASES: UseCase[] = [
     slug: "nettoyage-voiture-luxe-strasbourg",
     shortName: "Voiture de luxe",
     emoji: "💎",
-    metaTitle:
-      "Nettoyage voiture de luxe à domicile à Strasbourg — StrasClean",
+    metaTitle: "Nettoyage voiture de luxe Strasbourg — StrasClean",
     metaDescription:
       "Porsche, Mercedes AMG, BMW M, Audi RS, Range Rover ? Detailing premium à domicile à Strasbourg avec produits haut de gamme, lavage à la main et finition concours. À partir de 169 €.",
     hero: {
@@ -1049,8 +1039,7 @@ export const USE_CASES: UseCase[] = [
     slug: "prix-nettoyage-voiture-domicile-strasbourg",
     shortName: "Prix nettoyage",
     emoji: "💶",
-    metaTitle:
-      "Prix nettoyage voiture à domicile à Strasbourg — Tarifs StrasClean 2026",
+    metaTitle: "Prix nettoyage voiture Strasbourg — StrasClean",
     metaDescription:
       "Combien coûte un nettoyage de voiture à domicile à Strasbourg ? Tarifs détaillés par formule (39-119 €), par taille de véhicule (citadine, berline, SUV, utilitaire) et par prestation à la carte. Sans frais cachés.",
     hero: {

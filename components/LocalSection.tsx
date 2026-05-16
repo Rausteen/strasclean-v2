@@ -36,7 +36,7 @@ export default function LocalSection({ city }: { city: City }) {
           <Reveal className="lg:col-span-6" delay={120}>
             <div className="relative h-full overflow-hidden rounded-3xl border border-white/10 bg-gradient-to-br from-ink-800 to-ink-900 p-7 sm:p-9">
               <div className="absolute inset-0 -z-10 bg-grid-light bg-[size:36px_36px] opacity-[0.25]" />
-              <div className="absolute -right-20 -top-24 h-64 w-64 rounded-full bg-brand-500/15 blur-3xl" />
+              <div className="absolute -right-20 -top-24 h-64 w-64 rounded-full bg-brand-500/15 blur-2xl sm:blur-3xl" />
 
               <h3 className="h-display text-xl font-semibold text-white">
                 Quartiers desservis {inCity(city)}

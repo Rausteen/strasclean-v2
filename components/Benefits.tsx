@@ -63,7 +63,7 @@ export default function Benefits() {
   return (
     <section className="relative overflow-hidden py-14 sm:py-24 lg:py-28">
       <div className="pointer-events-none absolute inset-0 -z-10">
-        <div className="absolute right-1/4 top-0 h-[400px] w-[700px] rounded-full bg-brand-500/10 blur-3xl" />
+        <div className="absolute right-1/4 top-0 h-[400px] w-[700px] rounded-full bg-brand-500/10 blur-2xl sm:blur-3xl" />
       </div>
       <div className="container-x">
         <Reveal className="mx-auto max-w-3xl text-center">

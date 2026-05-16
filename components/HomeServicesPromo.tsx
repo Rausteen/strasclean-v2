@@ -10,7 +10,7 @@ export default function HomeServicesPromo() {
       className="relative overflow-hidden py-14 sm:py-24 lg:py-28"
     >
       <div className="pointer-events-none absolute inset-0 -z-10">
-        <div className="absolute left-1/4 top-0 h-[420px] w-[760px] rounded-full bg-amber-500/10 blur-3xl" />
+        <div className="absolute left-1/4 top-0 h-[420px] w-[760px] rounded-full bg-amber-500/10 blur-2xl sm:blur-3xl" />
       </div>
 
       <div className="container-x">

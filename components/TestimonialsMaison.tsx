@@ -53,7 +53,7 @@ export default function TestimonialsMaison({
   return (
     <section id="avis" className="relative overflow-hidden py-14 sm:py-24 lg:py-28">
       <div className="pointer-events-none absolute inset-0 -z-10">
-        <div className="absolute right-1/4 top-0 h-[360px] w-[640px] rounded-full bg-amber-500/8 blur-3xl" />
+        <div className="absolute right-1/4 top-0 h-[360px] w-[640px] rounded-full bg-amber-500/8 blur-2xl sm:blur-3xl" />
       </div>
       <div className="container-x">
         <Reveal className="mx-auto max-w-3xl text-center">

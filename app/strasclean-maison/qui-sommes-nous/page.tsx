@@ -17,7 +17,7 @@ import {
   MapPinIcon,
   ArrowRightIcon,
 } from "@/components/Icon";
-import { SITE, waLink } from "@/lib/site";
+import { SITE, waLink, openingHoursJsonLd } from "@/lib/site";
 import { getGooglePlaceData } from "@/lib/reviews";
 
 export const revalidate = 86400;
@@ -72,6 +72,8 @@ export default async function QuiSommesNousPage() {
         addressCountry: SITE.country,
       },
       areaServed: { "@type": "City", name: SITE.city },
+      openingHoursSpecification: openingHoursJsonLd(),
+      ...(SITE.socials.length > 0 ? { sameAs: SITE.socials } : {}),
     },
   };
 
@@ -105,7 +107,7 @@ export default async function QuiSommesNousPage() {
           <div className="pointer-events-none absolute inset-0 -z-10">
             <div className="absolute inset-0 bg-radial-fade" />
             <div className="absolute inset-0 bg-grid-light bg-[size:48px_48px] opacity-[0.30] [mask-image:radial-gradient(ellipse_at_center,black_30%,transparent_75%)]" />
-            <div className="absolute -top-32 left-1/2 h-[460px] w-[760px] -translate-x-1/2 rounded-full bg-amber-500/20 blur-3xl" />
+            <div className="absolute -top-32 left-1/2 h-[460px] w-[760px] -translate-x-1/2 rounded-full bg-amber-500/20 blur-2xl sm:blur-3xl" />
           </div>
 
           <div className="container-x pt-8 pb-12 sm:pt-16 sm:pb-20 lg:pt-20 lg:pb-24">
@@ -323,7 +325,7 @@ export default async function QuiSommesNousPage() {
           <div className="container-x">
             <Reveal>
               <div className="relative overflow-hidden rounded-3xl border border-amber-400/30 bg-gradient-to-br from-amber-500/15 via-ink-800 to-ink-900 p-6 text-center sm:p-12">
-                <div className="pointer-events-none absolute -right-20 -top-24 h-64 w-64 rounded-full bg-amber-500/25 blur-3xl" />
+                <div className="pointer-events-none absolute -right-20 -top-24 h-64 w-64 rounded-full bg-amber-500/25 blur-2xl sm:blur-3xl" />
                 <h2 className="h-display mx-auto max-w-2xl text-balance text-2xl font-bold text-white sm:text-3xl lg:text-4xl">
                   Une question sur notre équipe ou nos méthodes ?
                 </h2>

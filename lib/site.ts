@@ -20,7 +20,64 @@ export const SITE = {
   city: "Strasbourg",
   region: "Grand Est",
   country: "FR",
+  /**
+   * URLs publiques de la marque sur les réseaux et fiches externes.
+   * Renseignées dans le JSON-LD LocalBusiness (champ sameAs) pour
+   * confirmer à Google la cohérence d'identité multi-canale.
+   *
+   * À MAINTENIR : ajoute ici toute nouvelle URL pro (Facebook, Insta,
+   * LinkedIn, Pages Jaunes, etc.) au fil du temps.
+   */
+  socials: [
+    // Fiche Google Business (la plus importante pour le SEO local)
+    "https://maps.app.goo.gl/?q=StrasClean+Strasbourg",
+    // 👇 décommente / ajoute les profils existants
+    // "https://www.facebook.com/strasclean",
+    // "https://www.instagram.com/strasclean",
+    // "https://www.linkedin.com/company/strasclean",
+  ],
+  /**
+   * Horaires d'intervention StrasClean.
+   * Format Schema.org `openingHoursSpecification` simplifié :
+   * { days: ["Mon", "Tue", ...], opens: "HH:MM", closes: "HH:MM" }.
+   * Plusieurs entries possibles si horaires différents selon les jours.
+   */
+  openingHours: [
+    {
+      days: ["Mon", "Tue", "Wed", "Thu", "Fri"],
+      opens: "08:00",
+      closes: "20:00",
+    },
+    {
+      days: ["Sat"],
+      opens: "09:00",
+      closes: "19:00",
+    },
+    // Pas de dimanche par défaut. Si tu travailles dimanche, ajoute :
+    // { days: ["Sun"], opens: "10:00", closes: "18:00" },
+  ],
 } as const;
+
+/** Helper qui transforme SITE.openingHours en JSON-LD
+ *  openingHoursSpecification compatible Schema.org. */
+export function openingHoursJsonLd() {
+  // Mapping court → forme longue Schema.org
+  const fullName: Record<string, string> = {
+    Mon: "Monday",
+    Tue: "Tuesday",
+    Wed: "Wednesday",
+    Thu: "Thursday",
+    Fri: "Friday",
+    Sat: "Saturday",
+    Sun: "Sunday",
+  };
+  return SITE.openingHours.map((h) => ({
+    "@type": "OpeningHoursSpecification",
+    dayOfWeek: h.days.map((d) => fullName[d] ?? d),
+    opens: h.opens,
+    closes: h.closes,
+  }));
+}
 
 export const ZONES: string[] = [
   "Strasbourg",

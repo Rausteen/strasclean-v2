@@ -447,10 +447,27 @@ function buildWhatsappMessage(
   total: number,
   isPerM2: boolean,
 ): string {
-  const optionsText =
-    options.length > 0 ? ` Options : ${options.join(", ")}.` : "";
+  // Message court (< 140 chars idéalement) — sur mobile WA, les longues
+  // phrases passent à la ligne et paraissent spammy.
   const totalText = isPerM2 ? `${total} €/m²` : `${total} €`;
-  return `Bonjour StrasClean 👋 Je voudrais réserver ${serviceName.toLowerCase()} — ${variantLabel.toLowerCase()} (devis ${totalText}).${optionsText} Je suis à [ville/quartier]. Quels sont vos prochains créneaux ?`;
+  // On garde juste le nom court de chaque option (ex: "Cuir", "Anti-acariens")
+  // pour que l'admin sache quoi préparer sans surcharger le message.
+  const optionsText =
+    options.length > 0 ? ` + ${shortenOptions(options).join(", ")}` : "";
+  return `Bonjour StrasClean 👋 Devis ${variantLabel.toLowerCase()} — ${totalText}${optionsText}. Je suis à [ville/quartier]. Vos prochains créneaux ?`;
+}
+
+/** Raccourcit les labels d'options pour le message WA :
+ *  "Cuir (pH-neutre + nutrition) (+15 €)" → "Cuir"
+ *  "Anti-acariens renforcé" → "Anti-acariens" */
+function shortenOptions(labels: string[]): string[] {
+  return labels.map((l) => {
+    // Retire la parenthèse explicative + le prix entre parenthèses
+    const withoutParen = l.replace(/\s*\([^)]*\)/g, "").trim();
+    // Garde max 2 mots clés (ex: "Anti-acariens renforcé" → "Anti-acariens")
+    const words = withoutParen.split(/\s+/);
+    return words.slice(0, 2).join(" ");
+  });
 }
 
 /** Bouton intermédiaire éventuel — utilisé par le hero du hub pour mener

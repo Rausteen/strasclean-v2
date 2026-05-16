@@ -31,7 +31,7 @@ import {
   listHomeServiceCityCombos,
 } from "@/lib/homeServices";
 import { HOME_SEO_PAGES } from "@/lib/homeSeoPages";
-import { SITE } from "@/lib/site";
+import { SITE, openingHoursJsonLd } from "@/lib/site";
 import { getGooglePlaceData, filterReviewsBySection } from "@/lib/reviews";
 import { getReviewTagsMap } from "@/lib/db";
 
@@ -276,6 +276,8 @@ function CityPage({
       addressCountry: SITE.country,
     },
     areaServed: { "@type": "City", name: city.name },
+    openingHoursSpecification: openingHoursJsonLd(),
+    ...(SITE.socials.length > 0 ? { sameAs: SITE.socials } : {}),
     ...(place.rating && place.totalCount
       ? {
           aggregateRating: {

@@ -36,7 +36,7 @@ export default function MaisonTrustSection({
   return (
     <section className="relative overflow-hidden py-14 sm:py-20">
       <div className="pointer-events-none absolute inset-0 -z-10">
-        <div className="absolute left-1/2 top-0 h-[360px] w-[660px] -translate-x-1/2 rounded-full bg-amber-500/10 blur-3xl" />
+        <div className="absolute left-1/2 top-0 h-[360px] w-[660px] -translate-x-1/2 rounded-full bg-amber-500/10 blur-2xl sm:blur-3xl" />
       </div>
 
       <div className="container-x">

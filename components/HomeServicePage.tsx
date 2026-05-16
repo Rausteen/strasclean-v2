@@ -19,7 +19,7 @@ import {
   MapPinIcon,
   SparklesIcon,
 } from "./Icon";
-import { SITE, waLink } from "@/lib/site";
+import { SITE, waLink, openingHoursJsonLd } from "@/lib/site";
 import { UseCase } from "@/lib/usecases";
 import { MAISON_GLOBAL_FAQS, homeServiceCityPath } from "@/lib/homeServices";
 import type { PlaceData } from "@/lib/reviews";
@@ -88,6 +88,8 @@ export default function HomeServicePage({ service, place, city }: Props) {
         addressCountry: SITE.country,
       },
       areaServed: { "@type": "City", name: SITE.city },
+      openingHoursSpecification: openingHoursJsonLd(),
+      ...(SITE.socials.length > 0 ? { sameAs: SITE.socials } : {}),
       ...(place.rating && place.totalCount
         ? {
             aggregateRating: {
@@ -321,7 +323,7 @@ export default function HomeServicePage({ service, place, city }: Props) {
                     StrasClean intervient {cityPreposition} {cityName} (
                     {city!.postalCodes.join(", ")}) — environ {city!.distanceKm}{" "}
                     km du centre de Strasbourg. Déplacement inclus dans le tarif
-                    annoncé. {city!.intro}
+                    annoncé. {city!.maisonIntro ?? city!.intro}
                   </p>
                   {city!.neighborhoods && city!.neighborhoods.length > 0 && (
                     <p className="mt-3 text-sm text-white/60">
@@ -466,7 +468,7 @@ export default function HomeServicePage({ service, place, city }: Props) {
           <div className="container-x">
             <Reveal>
               <div className="relative overflow-hidden rounded-3xl border border-amber-400/30 bg-gradient-to-br from-amber-500/15 via-ink-800 to-ink-900 p-6 text-center sm:p-12">
-                <div className="pointer-events-none absolute -right-20 -top-24 h-64 w-64 rounded-full bg-amber-500/25 blur-3xl" />
+                <div className="pointer-events-none absolute -right-20 -top-24 h-64 w-64 rounded-full bg-amber-500/25 blur-2xl sm:blur-3xl" />
                 <h2 className="h-display mx-auto max-w-2xl text-balance text-2xl font-bold text-white sm:text-3xl lg:text-4xl">
                   Prêt à redonner vie à votre intérieur ?
                 </h2>

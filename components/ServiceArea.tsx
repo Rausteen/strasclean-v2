@@ -59,7 +59,7 @@ export default function ServiceArea({ variant = "auto" }: Props = {}) {
               <div
                 className={`absolute -right-20 -top-24 h-64 w-64 rounded-full ${
                   isMaison ? "bg-amber-500/15" : "bg-brand-500/15"
-                } blur-3xl`}
+                } blur-2xl sm:blur-3xl`}
               />
 
               <h3 className="h-display text-xl font-semibold text-white">

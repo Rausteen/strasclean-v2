@@ -65,7 +65,7 @@ export const HOME_SERVICES: HomeService[] = [
     slug: "nettoyage-canape-strasbourg",
     shortName: "Nettoyage canapé",
     emoji: "🛋️",
-    metaTitle: "Nettoyage canapé à domicile à Strasbourg — StrasClean",
+    metaTitle: "Nettoyage canapé à domicile Strasbourg — StrasClean",
     metaDescription:
       "Canapé tissu, cuir, alcantara ? StrasClean intervient à domicile à Strasbourg avec injection-extraction professionnelle. Canapé 2 places dès 79 €, 3 places dès 109 €. Séchage rapide.",
     hero: {
@@ -267,7 +267,7 @@ export const HOME_SERVICES: HomeService[] = [
     slug: "nettoyage-matelas-strasbourg",
     shortName: "Nettoyage matelas",
     emoji: "🛏️",
-    metaTitle: "Nettoyage matelas à domicile à Strasbourg — StrasClean",
+    metaTitle: "Nettoyage matelas à domicile Strasbourg — StrasClean",
     metaDescription:
       "Acariens, taches, transpiration ? StrasClean nettoie votre matelas à domicile à Strasbourg avec une aspiration HEPA + désinfection. Matelas 1 personne dès 49 €, 2 personnes dès 79 €.",
     hero: {

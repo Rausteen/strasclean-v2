@@ -10,7 +10,7 @@ export default function FinalCTA() {
           <div className="relative overflow-hidden rounded-[28px] border border-white/10 bg-gradient-to-br from-ink-800 via-ink-900 to-black p-7 text-center sm:rounded-[32px] sm:p-12 lg:p-16">
             <div className="pointer-events-none absolute inset-0 -z-10 bg-radial-fade" />
             <div className="pointer-events-none absolute inset-0 -z-10 bg-grid-light bg-[size:36px_36px] opacity-[0.2] [mask-image:radial-gradient(ellipse_at_center,black_30%,transparent_75%)]" />
-            <div className="pointer-events-none absolute -bottom-32 left-1/2 h-[420px] w-[820px] -translate-x-1/2 rounded-full bg-brand-500/20 blur-3xl" />
+            <div className="pointer-events-none absolute -bottom-32 left-1/2 h-[420px] w-[820px] -translate-x-1/2 rounded-full bg-brand-500/20 blur-2xl sm:blur-3xl" />
 
             <span className="chip mx-auto">
               <span className="relative flex h-2 w-2">

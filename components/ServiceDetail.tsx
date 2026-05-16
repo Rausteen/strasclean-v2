@@ -62,7 +62,7 @@ export default function ServiceDetail({
           {/* Pourquoi */}
           <Reveal delay={120}>
             <div className="relative h-full overflow-hidden rounded-3xl border border-white/10 bg-gradient-to-br from-brand-500/10 to-ink-900 p-7 sm:p-8">
-              <div className="pointer-events-none absolute -right-20 -top-24 h-56 w-56 rounded-full bg-brand-500/15 blur-3xl" />
+              <div className="pointer-events-none absolute -right-20 -top-24 h-56 w-56 rounded-full bg-brand-500/15 blur-2xl sm:blur-3xl" />
               <h3 className="h-display text-xl font-semibold text-white">
                 Pourquoi {service.shortName.toLowerCase()} avec StrasClean
               </h3>

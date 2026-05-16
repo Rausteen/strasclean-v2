@@ -28,8 +28,7 @@ export const HOME_SEO_PAGES: HomeService[] = [
     slug: "prix-nettoyage-canape-strasbourg",
     shortName: "Prix nettoyage canapé",
     emoji: "💶",
-    metaTitle:
-      "Prix nettoyage canapé à Strasbourg — Tarifs détaillés 2026 — StrasClean",
+    metaTitle: "Prix nettoyage canapé Strasbourg — StrasClean",
     metaDescription:
       "Combien coûte un nettoyage de canapé à domicile à Strasbourg ? Tarifs par taille (1 place 39 €, 2 places 79 €, 3 places 109 €, angle 149 €), options cuir, comparatif pressing. Sans frais cachés.",
     hero: {
@@ -146,8 +145,7 @@ export const HOME_SEO_PAGES: HomeService[] = [
     slug: "prix-nettoyage-tapis-strasbourg",
     shortName: "Prix nettoyage tapis",
     emoji: "💶",
-    metaTitle:
-      "Prix nettoyage tapis à Strasbourg — Tarifs au m² 2026 — StrasClean",
+    metaTitle: "Prix nettoyage tapis Strasbourg — StrasClean",
     metaDescription:
       "Combien coûte un nettoyage de tapis à domicile à Strasbourg ? Petit tapis 49 €, moyen 69 €, grand 99 €, ou 9 €/m² au-delà. Sans transport, sans pressing.",
     hero: {
@@ -260,8 +258,7 @@ export const HOME_SEO_PAGES: HomeService[] = [
     slug: "prix-nettoyage-matelas-strasbourg",
     shortName: "Prix nettoyage matelas",
     emoji: "💶",
-    metaTitle:
-      "Prix nettoyage matelas à Strasbourg — Tarifs 2026 — StrasClean",
+    metaTitle: "Prix nettoyage matelas Strasbourg — StrasClean",
     metaDescription:
       "Combien coûte un nettoyage de matelas à domicile à Strasbourg ? 1 personne 49 €, 2 personnes 79 €, king size 99 €. Anti-acariens, recto-verso, taches.",
     hero: {
@@ -378,8 +375,7 @@ export const HOME_SEO_PAGES: HomeService[] = [
     slug: "prix-nettoyage-fauteuil-chaise-strasbourg",
     shortName: "Prix fauteuils & chaises",
     emoji: "💶",
-    metaTitle:
-      "Prix nettoyage fauteuils et chaises à Strasbourg — Tarifs au lot — StrasClean",
+    metaTitle: "Prix chaises & fauteuils Strasbourg — StrasClean",
     metaDescription:
       "Combien coûte un nettoyage de chaises et fauteuils à domicile à Strasbourg ? Chaise dès 12 €, lot 4 = 49 €, lot 6 = 69 €, fauteuil 39 €. Tarifs dégressifs pour pros.",
     hero: {
@@ -511,8 +507,7 @@ export const HOME_SEO_PAGES: HomeService[] = [
     slug: "nettoyage-airbnb-strasbourg",
     shortName: "Nettoyage Airbnb",
     emoji: "🏠",
-    metaTitle:
-      "Nettoyage Airbnb à Strasbourg — Canapé, matelas, tapis entre locataires — StrasClean",
+    metaTitle: "Nettoyage Airbnb Strasbourg — StrasClean",
     metaDescription:
       "Hôte Airbnb à Strasbourg ? StrasClean nettoie canapés, matelas, tapis et fauteuils entre vos locataires. Intervention dans la journée, facture pro, contrat d'entretien possible.",
     hero: {
@@ -641,8 +636,7 @@ export const HOME_SEO_PAGES: HomeService[] = [
     slug: "nettoyage-canape-cuir-strasbourg",
     shortName: "Canapé cuir",
     emoji: "🛋️",
-    metaTitle:
-      "Nettoyage canapé cuir à Strasbourg — Protocole pH-neutre — StrasClean",
+    metaTitle: "Nettoyage canapé cuir Strasbourg — StrasClean",
     metaDescription:
       "Canapé cuir terni, marqué ou qui craquelle ? StrasClean intervient à domicile à Strasbourg avec un protocole pH-neutre + baume nourrissant. Pleine fleur, Nappa, semi-aniline. Dès 99 €.",
     hero: {
