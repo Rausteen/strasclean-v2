@@ -1,14 +1,15 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { SITE } from "@/lib/site";
+import { usePathname } from "next/navigation";
+import { SITE, waLink } from "@/lib/site";
 import { WhatsAppIcon, PhoneIcon } from "./Icon";
+import { isMaisonPathname } from "@/lib/section";
 
 export default function FloatingWhatsApp() {
-  // Desktop : on attend que l'utilisateur scrolle pour ne pas concurrencer
-  // le CTA du header. Mobile : TOUJOURS visible — c'est notre meilleure
-  // chance de conversion sur un trafic à 90% mobile.
   const [scrolled, setScrolled] = useState(false);
+  const pathname = usePathname() || "/";
+  const isMaison = isMaisonPathname(pathname);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 480);
@@ -16,6 +17,13 @@ export default function FloatingWhatsApp() {
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
+
+  // Message contextualisé selon la section
+  const waHref = isMaison
+    ? waLink(
+        "Bonjour StrasClean 👋 Je voudrais un devis pour un nettoyage à domicile (canapé / tapis / matelas / fauteuils). Quels sont vos prochains créneaux ?",
+      )
+    : SITE.whatsappHref;
 
   return (
     <>
@@ -31,7 +39,7 @@ export default function FloatingWhatsApp() {
       >
         <div className="mx-auto flex max-w-md gap-2">
           <a
-            href={SITE.whatsappHref}
+            href={waHref}
             target="_blank"
             rel="noopener noreferrer"
             className="btn-wa flex-1 h-12 text-[15px] font-semibold active:scale-[0.98]"
@@ -50,7 +58,7 @@ export default function FloatingWhatsApp() {
 
       {/* Desktop floating button */}
       <a
-        href={SITE.whatsappHref}
+        href={waHref}
         target="_blank"
         rel="noopener noreferrer"
         aria-label="Réserver sur WhatsApp"
@@ -68,4 +76,3 @@ export default function FloatingWhatsApp() {
     </>
   );
 }
-

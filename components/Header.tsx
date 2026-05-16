@@ -13,32 +13,16 @@ import {
   CarIcon,
   HomeIcon,
 } from "./Icon";
-
-const NAV_AUTO = [
-  { href: "#formules", label: "Formules" },
-  { href: "#avant-apres", label: "Avant / Après" },
-  { href: "#fonctionnement", label: "Fonctionnement" },
-  { href: "#avis", label: "Avis" },
-  { href: "#faq", label: "FAQ" },
-];
-
-const HOME_SLUGS = [
-  "nettoyage-canape-strasbourg",
-  "nettoyage-tapis-domicile-strasbourg",
-  "nettoyage-matelas-strasbourg",
-  "nettoyage-fauteuil-chaise-strasbourg",
-];
-
-function isMaisonPath(pathname: string): boolean {
-  if (pathname === "/strasclean-maison" || pathname === "/maison") return true;
-  return HOME_SLUGS.some((s) => pathname === `/${s}`);
-}
+import { isMaisonPathname, NAV_AUTO, NAV_MAISON } from "@/lib/section";
 
 export default function Header() {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
   const pathname = usePathname() || "/";
-  const onMaison = isMaisonPath(pathname);
+  const onMaison = isMaisonPathname(pathname);
+
+  // NAV anchors selon section
+  const nav = onMaison ? NAV_MAISON : NAV_AUTO;
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 12);
@@ -59,54 +43,48 @@ export default function Header() {
           : "bg-transparent"
       }`}
     >
-      <div className="container-x flex h-16 items-center justify-between gap-4">
+      <div className="container-x flex h-16 items-center gap-3">
         {/* Logo */}
         <Link
           href="/"
           aria-label="StrasClean accueil"
-          className="group flex shrink-0 items-center gap-2"
+          className="shrink-0"
         >
-          <span
-            className={`grid h-9 w-9 place-items-center rounded-xl bg-gradient-to-br shadow-glow ${
-              onMaison ? "from-amber-300 to-amber-500" : "from-brand-400 to-brand-600"
-            }`}
-          >
-            <SparklesIcon size={18} className="text-ink-950" />
-          </span>
-          <span className="h-display text-lg font-bold tracking-tight text-white">
-            Stras
-            <span className={onMaison ? "text-amber-400" : "text-brand-400"}>
-              Clean
+          <span className="flex items-center gap-2">
+            <span
+              className={`grid h-9 w-9 place-items-center rounded-xl bg-gradient-to-br shadow-glow ${
+                onMaison ? "from-amber-300 to-amber-500" : "from-brand-400 to-brand-600"
+              }`}
+            >
+              <SparklesIcon size={18} className="text-ink-950" />
+            </span>
+            <span className="h-display text-lg font-bold tracking-tight text-white">
+              Stras
+              <span className={onMaison ? "text-amber-400" : "text-brand-400"}>
+                Clean
+              </span>
             </span>
           </span>
         </Link>
 
-        {/* Toggle Auto / Maison — au centre desktop */}
-        <div className="hidden flex-1 justify-center lg:flex">
-          <SectionToggle onMaison={onMaison} />
-        </div>
+        {/* Toggle Auto / Maison — position stable juste après le logo */}
+        <SectionToggle onMaison={onMaison} />
 
-        {/* NAV ancres (auto uniquement) — discret */}
-        {!onMaison && (
-          <nav className="hidden items-center gap-5 xl:flex">
-            {NAV_AUTO.map((n) => (
-              <a
-                key={n.href}
-                href={n.href}
-                className="text-sm font-medium text-white/65 transition hover:text-white"
-              >
-                {n.label}
-              </a>
-            ))}
-          </nav>
-        )}
+        {/* NAV anchors centrale (auto ou maison) */}
+        <nav className="ml-auto hidden items-center gap-6 xl:flex">
+          {nav.map((n) => (
+            <Link
+              key={n.href}
+              href={n.href}
+              className="text-sm font-medium text-white/65 transition hover:text-white"
+            >
+              {n.label}
+            </Link>
+          ))}
+        </nav>
 
-        {/* CTAs desktop */}
-        <div className="hidden shrink-0 items-center gap-2 lg:flex">
-          <a href={SITE.phoneHref} className="btn-ghost">
-            <PhoneIcon size={16} />
-            Appeler
-          </a>
+        {/* CTAs desktop — compactés en 1 seul bouton WA pour désencombrer */}
+        <div className="ml-auto hidden shrink-0 items-center gap-2 lg:flex xl:ml-3">
           <a
             href={SITE.whatsappHref}
             target="_blank"
@@ -119,7 +97,7 @@ export default function Header() {
         </div>
 
         {/* Mobile */}
-        <div className="flex shrink-0 items-center gap-2 lg:hidden">
+        <div className="ml-auto flex shrink-0 items-center gap-2 lg:hidden">
           <a
             href={SITE.whatsappHref}
             target="_blank"
@@ -146,24 +124,19 @@ export default function Header() {
         <div className="lg:hidden">
           <div className="border-t border-white/5 bg-ink-950">
             <div className="container-x flex flex-col gap-3 py-4">
-              {/* Toggle Auto / Maison mobile */}
-              <SectionToggle onMaison={onMaison} onNavigate={() => setOpen(false)} />
-
-              {/* NAV ancres si on est sur l'auto */}
-              {!onMaison && (
-                <div className="mt-1 flex flex-col gap-1">
-                  {NAV_AUTO.map((n) => (
-                    <a
-                      key={n.href}
-                      href={n.href}
-                      onClick={() => setOpen(false)}
-                      className="rounded-xl px-3 py-2.5 text-base font-medium text-white/85 hover:bg-white/5"
-                    >
-                      {n.label}
-                    </a>
-                  ))}
-                </div>
-              )}
+              {/* NAV section courante */}
+              <div className="flex flex-col gap-1">
+                {nav.map((n) => (
+                  <Link
+                    key={n.href}
+                    href={n.href}
+                    onClick={() => setOpen(false)}
+                    className="rounded-xl px-3 py-2.5 text-base font-medium text-white/85 hover:bg-white/5"
+                  >
+                    {n.label}
+                  </Link>
+                ))}
+              </div>
 
               <div className="mt-2 grid grid-cols-2 gap-2">
                 <a href={SITE.phoneHref} className="btn-ghost w-full">
@@ -186,19 +159,12 @@ export default function Header() {
   );
 }
 
-function SectionToggle({
-  onMaison,
-  onNavigate,
-}: {
-  onMaison: boolean;
-  onNavigate?: () => void;
-}) {
+function SectionToggle({ onMaison }: { onMaison: boolean }) {
   return (
-    <div className="inline-flex items-center rounded-full border border-white/10 bg-white/[0.04] p-1 text-sm">
+    <div className="inline-flex shrink-0 items-center rounded-full border border-white/10 bg-white/[0.04] p-0.5 text-xs sm:text-sm">
       <Link
         href="/"
-        onClick={onNavigate}
-        className={`inline-flex items-center gap-1.5 rounded-full px-3.5 py-1.5 font-semibold transition ${
+        className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-1.5 font-semibold transition sm:px-3.5 ${
           !onMaison
             ? "bg-brand-500 text-ink-950 shadow"
             : "text-white/70 hover:text-white"
@@ -209,8 +175,7 @@ function SectionToggle({
       </Link>
       <Link
         href="/strasclean-maison"
-        onClick={onNavigate}
-        className={`inline-flex items-center gap-1.5 rounded-full px-3.5 py-1.5 font-semibold transition ${
+        className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-1.5 font-semibold transition sm:px-3.5 ${
           onMaison
             ? "bg-amber-400 text-ink-950 shadow"
             : "text-white/70 hover:text-white"

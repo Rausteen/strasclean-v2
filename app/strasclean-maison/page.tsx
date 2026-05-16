@@ -4,7 +4,7 @@ import Header from "@/components/Header";
 import TrustBar from "@/components/TrustBar";
 import Footer from "@/components/Footer";
 import FloatingWhatsApp from "@/components/FloatingWhatsApp";
-import Testimonials from "@/components/Testimonials";
+import TestimonialsMaison from "@/components/TestimonialsMaison";
 import FAQ from "@/components/FAQ";
 import HomeBeforeAfter from "@/components/HomeBeforeAfter";
 import ServiceArea from "@/components/ServiceArea";
@@ -21,7 +21,11 @@ import {
   StarIcon,
 } from "@/components/Icon";
 import { SITE, waLink } from "@/lib/site";
-import { HOME_SERVICES, homeServicePath } from "@/lib/homeServices";
+import {
+  HOME_SERVICES,
+  homeServicePath,
+  MAISON_GLOBAL_FAQS,
+} from "@/lib/homeServices";
 import { getGooglePlaceData } from "@/lib/reviews";
 
 export const revalidate = 3600;
@@ -183,7 +187,7 @@ export default async function HubMaisonPage() {
         <TrustBar />
 
         {/* GRILLE PRESTATIONS */}
-        <section className="relative overflow-hidden py-14 sm:py-24 lg:py-28">
+        <section id="prestations" className="relative overflow-hidden py-14 sm:py-24 lg:py-28">
           <div className="container-x">
             <Reveal className="mx-auto max-w-3xl text-center">
               <p className="text-sm font-semibold uppercase tracking-[0.18em] text-amber-300">
@@ -242,7 +246,7 @@ export default async function HubMaisonPage() {
         </section>
 
         {/* COMMENT ÇA SE PASSE */}
-        <section className="relative overflow-hidden bg-white/[0.02] py-14 sm:py-24 lg:py-28">
+        <section id="process" className="relative overflow-hidden bg-white/[0.02] py-14 sm:py-24 lg:py-28">
           <div className="container-x">
             <Reveal className="mx-auto max-w-3xl text-center">
               <p className="text-sm font-semibold uppercase tracking-[0.18em] text-amber-300">
@@ -305,45 +309,16 @@ export default async function HubMaisonPage() {
           </div>
         </section>
 
-        <Testimonials
-          googleReviews={place.reviews}
+        <TestimonialsMaison
           googleRating={place.rating}
           googleTotalCount={place.totalCount}
           googleProfileUrl={place.profileUrl}
+          googleReviews={place.reviews}
         />
 
-        <ServiceArea />
+        <ServiceArea variant="maison" />
 
-        <FAQ extraSchemaFAQs={FAQ_MAISON} />
-
-        {/* FAQ visuelle Maison */}
-        <section className="relative overflow-hidden pb-14 sm:pb-24">
-          <div className="container-x">
-            <Reveal className="mx-auto max-w-3xl">
-              <div className="rounded-3xl border border-white/10 bg-white/[0.03] p-6 sm:p-8">
-                <div className="flex items-center gap-2 text-amber-300">
-                  <SparklesIcon size={16} />
-                  <p className="text-sm font-semibold uppercase tracking-[0.18em]">
-                    Questions Maison
-                  </p>
-                </div>
-                <ul className="mt-5 grid gap-3 sm:grid-cols-2">
-                  {FAQ_MAISON.map((q) => (
-                    <li
-                      key={q.q}
-                      className="rounded-2xl border border-white/10 bg-white/[0.02] p-5"
-                    >
-                      <p className="text-sm font-semibold text-white">{q.q}</p>
-                      <p className="mt-2 text-sm leading-relaxed text-white/70">
-                        {q.a}
-                      </p>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </Reveal>
-          </div>
-        </section>
+        <FAQ variant="maison" mainFAQs={MAISON_GLOBAL_FAQS} />
 
         {/* CTA final */}
         <section className="relative overflow-hidden py-14 sm:py-20">
@@ -448,32 +423,5 @@ const WHY = [
     icon: <StarIcon size={18} />,
     title: "B2C + B2B léger",
     desc: "Particuliers, mais aussi Airbnb, hôtels, restaurants, bureaux. Facture pro avec TVA.",
-  },
-];
-
-const FAQ_MAISON = [
-  {
-    q: "Vous intervenez à mon domicile à Strasbourg ?",
-    a: "Oui — c'est l'essence du service. On vient avec tout le matériel mobile, on travaille directement chez vous (ou à votre local pro). Strasbourg + 12 communes alentours, déplacement inclus.",
-  },
-  {
-    q: "Combien de temps avant de pouvoir utiliser mon canapé / matelas / tapis ?",
-    a: "Grâce à l'extraction haute puissance, le textile ressort presque sec. Comptez 2 à 4 heures pour un séchage complet à température ambiante. Vous récupérez l'usage de votre intérieur le jour même.",
-  },
-  {
-    q: "Vous traitez tous types de tissus ?",
-    a: "Oui — coton, polyester, lin, microfibre, alcantara, velours, cuir, simili. Le produit est adapté à chaque matière. Pour les tissus très précieux (vieux tapis persan, cuir Nappa), protocole spécifique sur demande.",
-  },
-  {
-    q: "Vous avez une offre pour les pros (Airbnb, hôtels, restaurants) ?",
-    a: "Oui, on développe une offre B2B : nettoyage entre locataires Airbnb (intervention dans la journée), entretien régulier d'hôtels, restaurants, bureaux, cabinets. Tarif dégressif selon volume, facture pro avec TVA, contrat d'entretien possible.",
-  },
-  {
-    q: "Quels moyens de paiement ?",
-    a: "Espèces, carte bancaire, virement, facture pro avec TVA. Paiement sur place après validation du résultat.",
-  },
-  {
-    q: "Combien de temps avant d'avoir un créneau ?",
-    a: "Généralement 2-5 jours selon notre planning. Pour les cas urgents (Airbnb avec arrivée, tache fraîche), on essaie de caler dans la journée ou le lendemain. Envoyez-nous un message WhatsApp avec une photo, on vous répond rapidement.",
   },
 ];

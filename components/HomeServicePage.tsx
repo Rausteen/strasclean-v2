@@ -1,7 +1,7 @@
 import Link from "next/link";
 import Header from "./Header";
 import TrustBar from "./TrustBar";
-import Testimonials from "./Testimonials";
+import TestimonialsMaison from "./TestimonialsMaison";
 import FAQ from "./FAQ";
 import Footer from "./Footer";
 import FloatingWhatsApp from "./FloatingWhatsApp";
@@ -20,6 +20,7 @@ import {
 } from "./Icon";
 import { SITE, waLink } from "@/lib/site";
 import { UseCase } from "@/lib/usecases";
+import { MAISON_GLOBAL_FAQS } from "@/lib/homeServices";
 import type { PlaceData } from "@/lib/reviews";
 
 type Props = {
@@ -276,16 +277,20 @@ export default function HomeServicePage({ service, place }: Props) {
 
         <HomeBeforeAfter />
 
-        <Testimonials
-          googleReviews={place.reviews}
+        <TestimonialsMaison
           googleRating={place.rating}
           googleTotalCount={place.totalCount}
           googleProfileUrl={place.profileUrl}
+          googleReviews={place.reviews}
         />
 
         <HomeServiceCrossSell excludeSlug={service.slug} />
 
-        <FAQ extraSchemaFAQs={service.faq} />
+        <FAQ
+          variant="maison"
+          mainFAQs={service.faq}
+          extraSchemaFAQs={MAISON_GLOBAL_FAQS}
+        />
 
         {/* FAQ visuelle spécifique */}
         <section className="relative overflow-hidden pb-14 sm:pb-24">

@@ -21,6 +21,36 @@
 // ─────────────────────────────────────────────────────────────────────────
 
 import type { UseCase } from "./usecases";
+import type { FAQItem } from "./faq";
+
+/** FAQ globale Maison — utilisée sur le hub /strasclean-maison ET fusionnée
+ *  dans le JSON-LD des pages services Maison pour enrichir le SEO. */
+export const MAISON_GLOBAL_FAQS: FAQItem[] = [
+  {
+    q: "Vous intervenez à mon domicile à Strasbourg ?",
+    a: "Oui — c'est l'essence du service. On vient avec tout le matériel mobile, on travaille directement chez vous (ou à votre local pro). Strasbourg + 12 communes alentours, déplacement inclus dans le tarif annoncé.",
+  },
+  {
+    q: "Combien de temps avant de pouvoir utiliser mon canapé / matelas / tapis ?",
+    a: "Grâce à l'extraction haute puissance, le textile ressort presque sec. Comptez 2 à 4 heures pour un séchage complet à température ambiante. Vous récupérez l'usage de votre intérieur le jour même.",
+  },
+  {
+    q: "Vous traitez tous types de tissus ?",
+    a: "Oui — coton, polyester, lin, microfibre, alcantara, velours, cuir, simili. Le produit est adapté à chaque matière. Pour les tissus très précieux (vieux tapis persan, cuir Nappa), protocole spécifique sur demande.",
+  },
+  {
+    q: "Vous avez une offre pour les pros (Airbnb, hôtels, restaurants) ?",
+    a: "Oui, on développe une offre B2B : nettoyage entre locataires Airbnb (intervention dans la journée), entretien régulier d'hôtels, restaurants, bureaux, cabinets. Tarif dégressif selon volume, facture pro avec TVA, contrat d'entretien possible.",
+  },
+  {
+    q: "Quels moyens de paiement ?",
+    a: "Espèces, carte bancaire, virement, facture pro avec TVA. Paiement sur place après validation du résultat.",
+  },
+  {
+    q: "Combien de temps avant d'avoir un créneau ?",
+    a: "Généralement 2-5 jours selon notre planning. Pour les cas urgents (Airbnb avec arrivée, tache fraîche), on essaie de caler dans la journée ou le lendemain. Envoyez un message WhatsApp avec une photo, on vous répond rapidement.",
+  },
+];
 
 export const HOME_SERVICES: UseCase[] = [
   // ─── Canapé ───────────────────────────────────────────────────────────

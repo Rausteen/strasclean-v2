@@ -30,7 +30,7 @@ const PAIRS = [
 
 export default function HomeBeforeAfter() {
   return (
-    <section className="relative overflow-hidden py-14 sm:py-24 lg:py-28">
+    <section id="avant-apres" className="relative overflow-hidden py-14 sm:py-24 lg:py-28">
       <div className="container-x">
         <Reveal className="mx-auto max-w-3xl text-center">
           <p className="text-sm font-semibold uppercase tracking-[0.18em] text-amber-300">
