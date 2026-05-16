@@ -459,9 +459,69 @@ export const HOME_SERVICES: UseCase[] = [
   },
 ];
 
-/** Construit l'URL d'une page service Maison */
+/** Construit l'URL d'une page service Maison (par défaut Strasbourg, slug
+ *  inclut '-strasbourg'). */
 export const homeServicePath = (s: UseCase) => `/${s.slug}`;
 
 /** Trouve un service Maison par son slug exact */
 export const findHomeService = (slug: string) =>
   HOME_SERVICES.find((s) => s.slug === slug);
+
+// ─── Pages service × ville Maison ─────────────────────────────────────────
+// Chaque service Maison existe pour Strasbourg (slug natif, ex. 'nettoyage-
+// canape-strasbourg') ET pour chacune des 11 autres communes desservies
+// (ex. 'nettoyage-canape-schiltigheim').
+//
+// On dérive le "slug de base" en retirant le suffixe '-strasbourg' du slug
+// natif du service, puis on appose le slug de la ville cible.
+
+import { CITIES, type City } from "./cities";
+
+/** Slug "base" d'un service Maison sans suffixe ville
+ *  ex: 'nettoyage-canape-strasbourg' → 'nettoyage-canape' */
+export const homeServiceBaseSlug = (s: UseCase) =>
+  s.slug.replace(/-strasbourg$/, "");
+
+/** URL d'une page service Maison × ville
+ *  - Strasbourg → reste sur le slug natif (déjà '-strasbourg')
+ *  - autre ville → '{base}-{city.slug}' */
+export const homeServiceCityPath = (s: UseCase, city: City) => {
+  if (city.slug === "strasbourg") return homeServicePath(s);
+  return `/${homeServiceBaseSlug(s)}-${city.slug}`;
+};
+
+/** Tente de matcher un slug en (service, city) pour une ville autre que
+ *  Strasbourg. Renvoie null si le slug ne correspond à aucune combinaison.
+ *  Strasbourg est volontairement exclue car gérée par findHomeService(). */
+export function matchHomeServiceCity(
+  slug: string,
+): { service: UseCase; city: City } | null {
+  for (const service of HOME_SERVICES) {
+    const base = homeServiceBaseSlug(service);
+    for (const city of CITIES) {
+      if (city.slug === "strasbourg") continue;
+      if (slug === `${base}-${city.slug}`) {
+        return { service, city };
+      }
+    }
+  }
+  return null;
+}
+
+/** Liste exhaustive des combinaisons service × ville (hors Strasbourg).
+ *  Utilisée par generateStaticParams + sitemap. */
+export function listHomeServiceCityCombos(): {
+  service: UseCase;
+  city: City;
+  slug: string;
+}[] {
+  const out: { service: UseCase; city: City; slug: string }[] = [];
+  for (const service of HOME_SERVICES) {
+    const base = homeServiceBaseSlug(service);
+    for (const city of CITIES) {
+      if (city.slug === "strasbourg") continue;
+      out.push({ service, city, slug: `${base}-${city.slug}` });
+    }
+  }
+  return out;
+}

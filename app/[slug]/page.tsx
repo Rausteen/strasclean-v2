@@ -25,7 +25,11 @@ import HomeServicePage from "@/components/HomeServicePage";
 import { CITIES, City, CITY_URL_PREFIX, cityPath, inCity } from "@/lib/cities";
 import { SERVICES, Service, matchSlug, servicePath } from "@/lib/services";
 import { USE_CASES, UseCase, useCasePath } from "@/lib/usecases";
-import { HOME_SERVICES } from "@/lib/homeServices";
+import {
+  HOME_SERVICES,
+  homeServiceCityPath,
+  listHomeServiceCityCombos,
+} from "@/lib/homeServices";
 import { HOME_SEO_PAGES } from "@/lib/homeSeoPages";
 import { SITE } from "@/lib/site";
 import { getGooglePlaceData, filterReviewsBySection } from "@/lib/reviews";
@@ -46,12 +50,16 @@ export function generateStaticParams(): Params[] {
   const useCaseParams = USE_CASES.map((uc) => ({ slug: uc.slug }));
   const homeServiceParams = HOME_SERVICES.map((s) => ({ slug: s.slug }));
   const homeSeoParams = HOME_SEO_PAGES.map((s) => ({ slug: s.slug }));
+  const homeServiceCityParams = listHomeServiceCityCombos().map((c) => ({
+    slug: c.slug,
+  }));
   return [
     ...cityParams,
     ...serviceCityParams,
     ...useCaseParams,
     ...homeServiceParams,
     ...homeSeoParams,
+    ...homeServiceCityParams,
   ];
 }
 
@@ -106,35 +114,59 @@ export async function generateMetadata({
     };
   }
 
-  if (m.type === "usecase" || m.type === "home-service") {
-    const uc = m.type === "usecase" ? m.useCase : m.homeService;
+  if (
+    m.type === "usecase" ||
+    m.type === "home-service" ||
+    m.type === "home-service-city"
+  ) {
+    const uc =
+      m.type === "usecase"
+        ? m.useCase
+        : m.homeService;
+    const city = m.type === "home-service-city" ? m.city : null;
+
     // Les pages Maison utilisent l'OG image dédiée (palette ambre, emojis
     // canapé/tapis/matelas/fauteuil) ; les pages Auto gardent /og.svg.
-    const ogImage = m.type === "home-service" ? "/og-maison.svg" : "/og.svg";
+    const ogImage =
+      m.type === "home-service" || m.type === "home-service-city"
+        ? "/og-maison.svg"
+        : "/og.svg";
+
+    // Pour les pages service × ville, on construit dynamiquement titre,
+    // description et URL canonique (le data natif est Strasbourg).
+    const cityName = city?.name ?? "Strasbourg";
+    const title = city
+      ? `${uc.shortName} ${city.preposition} ${cityName} — StrasClean Maison`
+      : uc.metaTitle;
+    const description = city
+      ? `${uc.shortName} à domicile ${city.preposition} ${cityName} (${city.postalCodes.join(", ")}). Tarifs détaillés, injection-extraction professionnelle, séchage rapide. À partir de ${uc.pricing.priceFrom} €.`
+      : uc.metaDescription;
+    const canonical = city ? homeServiceCityPath(uc, city) : useCasePath(uc);
+
     return {
-      title: uc.metaTitle,
-      description: uc.metaDescription,
-      alternates: { canonical: useCasePath(uc) },
+      title,
+      description,
+      alternates: { canonical },
       openGraph: {
         type: "website",
-        url: `${SITE.url}${useCasePath(uc)}`,
+        url: `${SITE.url}${canonical}`,
         siteName: SITE.name,
-        title: uc.metaTitle,
-        description: uc.metaDescription,
+        title,
+        description,
         locale: "fr_FR",
         images: [
           {
             url: ogImage,
             width: 1200,
             height: 630,
-            alt: `StrasClean — ${uc.shortName}`,
+            alt: `StrasClean — ${uc.shortName}${city ? " " + city.preposition + " " + cityName : ""}`,
           },
         ],
       },
       twitter: {
         card: "summary_large_image",
-        title: uc.metaTitle,
-        description: uc.metaDescription,
+        title,
+        description,
         images: [ogImage],
       },
     };
@@ -208,6 +240,14 @@ export default async function Page({
     return <ServiceCityPage service={m.service} city={m.city} place={autoPlace} />;
   if (m.type === "home-service")
     return <HomeServicePage service={m.homeService} place={maisonPlace} />;
+  if (m.type === "home-service-city")
+    return (
+      <HomeServicePage
+        service={m.homeService}
+        place={maisonPlace}
+        city={m.city}
+      />
+    );
   return <UseCasePage useCase={m.useCase} place={autoPlace} />;
 }
 

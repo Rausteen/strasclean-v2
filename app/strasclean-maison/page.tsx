@@ -10,6 +10,8 @@ import FAQ from "@/components/FAQ";
 import HomeBeforeAfter from "@/components/HomeBeforeAfter";
 import ServiceArea from "@/components/ServiceArea";
 import MaisonServicesGrid from "@/components/MaisonServicesGrid";
+import MaisonTrustSection from "@/components/MaisonTrustSection";
+import MaisonPriceCalculator from "@/components/MaisonPriceCalculator";
 import Reveal from "@/components/Reveal";
 import {
   WhatsAppIcon,
@@ -236,6 +238,8 @@ export default async function HubMaisonPage() {
 
         <MaisonServicesGrid />
 
+        <MaisonPriceCalculator />
+
         {/* COMMENT ÇA SE PASSE */}
         <section id="process" className="relative overflow-hidden bg-white/[0.02] py-14 sm:py-24 lg:py-28">
           <div className="container-x">
@@ -269,36 +273,10 @@ export default async function HubMaisonPage() {
 
         <HomeBeforeAfter />
 
-        {/* POURQUOI STRASCLEAN MAISON */}
-        <section className="relative overflow-hidden py-14 sm:py-24 lg:py-28">
-          <div className="container-x">
-            <Reveal className="mx-auto max-w-3xl text-center">
-              <p className="text-sm font-semibold uppercase tracking-[0.18em] text-amber-300">
-                Pourquoi nous choisir
-              </p>
-              <h2 className="h-display mt-3 text-balance text-3xl font-bold text-white sm:text-4xl">
-                Le pro du textile à domicile.
-              </h2>
-            </Reveal>
-            <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-              {WHY.map((w, i) => (
-                <Reveal key={w.title} delay={i * 60}>
-                  <article className="card card-hover h-full">
-                    <span className="grid h-11 w-11 place-items-center rounded-xl bg-amber-500/10 text-amber-300">
-                      {w.icon}
-                    </span>
-                    <h3 className="h-display mt-4 text-base font-semibold text-white">
-                      {w.title}
-                    </h3>
-                    <p className="mt-2 text-sm leading-relaxed text-white/65">
-                      {w.desc}
-                    </p>
-                  </article>
-                </Reveal>
-              ))}
-            </div>
-          </div>
-        </section>
+        <MaisonTrustSection
+          googleRating={place.rating}
+          googleTotalCount={place.totalCount}
+        />
 
         <TestimonialsMaison
           googleRating={place.rating}
@@ -374,38 +352,5 @@ const STEPS = [
   {
     title: "Séchage rapide",
     desc: "Le textile ressort presque sec grâce à l'extraction haute puissance. Utilisable le jour même.",
-  },
-];
-
-const WHY = [
-  {
-    icon: <SparklesIcon size={18} />,
-    title: "Matériel pro",
-    desc: "Injecteur-extracteur professionnel, le même que pour le detailing auto. Bien au-delà d'un shampoing maison.",
-  },
-  {
-    icon: <ClockIcon size={18} />,
-    title: "Séchage rapide",
-    desc: "Le textile ressort presque sec — utilisable le jour même grâce à l'extraction haute puissance.",
-  },
-  {
-    icon: <CheckIcon size={18} />,
-    title: "Produits adaptés",
-    desc: "Tissu, alcantara, cuir : on adapte le produit à chaque matière pour ne rien abîmer.",
-  },
-  {
-    icon: <HomeIcon size={18} />,
-    title: "À domicile",
-    desc: "Pas de transport, pas de pressing. On vient chez vous avec tout le matériel.",
-  },
-  {
-    icon: <MapPinIcon size={18} />,
-    title: "Strasbourg & alentours",
-    desc: "12 communes desservies autour de Strasbourg. Déplacement inclus dans le tarif annoncé.",
-  },
-  {
-    icon: <StarIcon size={18} />,
-    title: "B2C + B2B léger",
-    desc: "Particuliers, mais aussi Airbnb, hôtels, restaurants, bureaux. Facture pro avec TVA.",
   },
 ];

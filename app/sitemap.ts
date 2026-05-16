@@ -3,7 +3,12 @@ import { SITE } from "@/lib/site";
 import { CITIES, cityPath } from "@/lib/cities";
 import { SERVICES, servicePath } from "@/lib/services";
 import { USE_CASES, useCasePath } from "@/lib/usecases";
-import { HOME_SERVICES, homeServicePath } from "@/lib/homeServices";
+import {
+  HOME_SERVICES,
+  homeServicePath,
+  listHomeServiceCityCombos,
+  homeServiceCityPath,
+} from "@/lib/homeServices";
 import { HOME_SEO_PAGES, homeSeoPath } from "@/lib/homeSeoPages";
 
 export default function sitemap(): MetadataRoute.Sitemap {
@@ -71,6 +76,14 @@ export default function sitemap(): MetadataRoute.Sitemap {
       lastModified: now,
       changeFrequency: "monthly" as const,
       priority: 0.8,
+    })),
+    // Pages service × ville Maison (44 nouvelles URLs : 4 services × 11
+    // communes hors Strasbourg)
+    ...listHomeServiceCityCombos().map(({ service, city }) => ({
+      url: `${SITE.url}${homeServiceCityPath(service, city)}`,
+      lastModified: now,
+      changeFrequency: "monthly" as const,
+      priority: 0.75,
     })),
   ];
 }

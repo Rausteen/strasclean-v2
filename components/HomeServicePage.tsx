@@ -9,6 +9,8 @@ import FloatingWhatsApp from "./FloatingWhatsApp";
 import Reveal from "./Reveal";
 import HomeBeforeAfter from "./HomeBeforeAfter";
 import MaisonServicesGrid from "./MaisonServicesGrid";
+import MaisonTrustSection from "./MaisonTrustSection";
+import MaisonPriceCalculator from "./MaisonPriceCalculator";
 import {
   WhatsAppIcon,
   PhoneIcon,
@@ -19,24 +21,57 @@ import {
 } from "./Icon";
 import { SITE, waLink } from "@/lib/site";
 import { UseCase } from "@/lib/usecases";
-import { MAISON_GLOBAL_FAQS } from "@/lib/homeServices";
+import { MAISON_GLOBAL_FAQS, homeServiceCityPath } from "@/lib/homeServices";
 import type { PlaceData } from "@/lib/reviews";
+import type { City } from "@/lib/cities";
 
 type Props = {
   service: UseCase;
   place: PlaceData;
+  /** Si fourni : variant "service × ville" — adapte H1, intro, breadcrumb,
+   *  URL canonique. Si absent : rendu Strasbourg (slug natif). */
+  city?: City;
 };
 
-export default function HomeServicePage({ service, place }: Props) {
-  const message = service.ctaMessage;
+export default function HomeServicePage({ service, place, city }: Props) {
+  const isCity = !!city && city.slug !== "strasbourg";
+  const cityName = city?.name ?? "Strasbourg";
+  const cityPreposition = city?.preposition ?? "à";
+
+  // En variant ville, on construit un message WA qui mentionne la ville
+  // (au lieu du Strasbourg implicite dans le ctaMessage natif).
+  const message = isCity
+    ? service.ctaMessage.replace(/à Strasbourg/g, `${cityPreposition} ${cityName}`)
+    : service.ctaMessage;
+
   const h1Plain = service.hero.h1.replace(service.hero.h1Highlight, "").trim();
-  const pageUrl = `${SITE.url}/${service.slug}`;
+  // Pour les pages ville, on remplace "à Strasbourg" du H1Highlight par la ville
+  const h1Highlight = isCity
+    ? service.hero.h1Highlight.replace(
+        /à Strasbourg/g,
+        `${cityPreposition} ${cityName}`,
+      )
+    : service.hero.h1Highlight;
+  const h1FullPlain = isCity
+    ? service.hero.h1
+        .replace(/à Strasbourg/g, `${cityPreposition} ${cityName}`)
+        .replace(h1Highlight, "")
+        .trim()
+    : h1Plain;
+  const subtitle = isCity
+    ? service.hero.subtitle.replace(/à Strasbourg/g, `${cityPreposition} ${cityName}`)
+    : service.hero.subtitle;
+
+  // URL canonique : Strasbourg native, sinon variant
+  const pageUrl = isCity
+    ? `${SITE.url}${homeServiceCityPath(service, city)}`
+    : `${SITE.url}/${service.slug}`;
 
   // ─── JSON-LD : Service + LocalBusiness + Breadcrumb + FAQ ───────────
   const serviceJsonLd: Record<string, unknown> = {
     "@context": "https://schema.org",
     "@type": "Service",
-    name: service.shortName,
+    name: isCity ? `${service.shortName} ${cityPreposition} ${cityName}` : service.shortName,
     description: service.metaDescription,
     serviceType: service.shortName,
     url: pageUrl,
@@ -65,7 +100,7 @@ export default function HomeServicePage({ service, place }: Props) {
           }
         : {}),
     },
-    areaServed: { "@type": "City", name: SITE.city },
+    areaServed: { "@type": "City", name: cityName },
     offers: {
       "@type": "Offer",
       priceCurrency: "EUR",
@@ -97,25 +132,51 @@ export default function HomeServicePage({ service, place }: Props) {
       : {}),
   };
 
-  const breadcrumbJsonLd = {
-    "@context": "https://schema.org",
-    "@type": "BreadcrumbList",
-    itemListElement: [
-      { "@type": "ListItem", position: 1, name: "Accueil", item: SITE.url },
-      {
-        "@type": "ListItem",
-        position: 2,
-        name: "StrasClean Maison",
-        item: `${SITE.url}/strasclean-maison`,
-      },
-      {
-        "@type": "ListItem",
-        position: 3,
-        name: service.shortName,
-        item: pageUrl,
-      },
-    ],
-  };
+  const breadcrumbJsonLd = isCity
+    ? {
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        itemListElement: [
+          { "@type": "ListItem", position: 1, name: "Accueil", item: SITE.url },
+          {
+            "@type": "ListItem",
+            position: 2,
+            name: "StrasClean Maison",
+            item: `${SITE.url}/strasclean-maison`,
+          },
+          {
+            "@type": "ListItem",
+            position: 3,
+            name: service.shortName,
+            item: `${SITE.url}/${service.slug}`,
+          },
+          {
+            "@type": "ListItem",
+            position: 4,
+            name: cityName,
+            item: pageUrl,
+          },
+        ],
+      }
+    : {
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        itemListElement: [
+          { "@type": "ListItem", position: 1, name: "Accueil", item: SITE.url },
+          {
+            "@type": "ListItem",
+            position: 2,
+            name: "StrasClean Maison",
+            item: `${SITE.url}/strasclean-maison`,
+          },
+          {
+            "@type": "ListItem",
+            position: 3,
+            name: service.shortName,
+            item: pageUrl,
+          },
+        ],
+      };
 
   return (
     <>
@@ -140,8 +201,21 @@ export default function HomeServicePage({ service, place }: Props) {
                   >
                     StrasClean Maison
                   </Link>
+                  {isCity && (
+                    <>
+                      <span className="mx-1.5 text-white/30">/</span>
+                      <Link
+                        href={`/${service.slug}`}
+                        className="font-medium text-white/55 hover:text-white/80"
+                      >
+                        {service.shortName}
+                      </Link>
+                    </>
+                  )}
                   <span className="mx-1.5 text-white/30">/</span>
-                  <span className="text-white/75">{service.shortName}</span>
+                  <span className="text-white/75">
+                    {isCity ? cityName : service.shortName}
+                  </span>
                 </nav>
 
                 <span className="inline-flex items-center gap-1.5 rounded-full border border-amber-500/30 bg-amber-500/10 px-3 py-1 text-sm font-medium text-amber-200">
@@ -150,14 +224,14 @@ export default function HomeServicePage({ service, place }: Props) {
                 </span>
 
                 <h1 className="h-display mt-4 text-balance text-[30px] font-bold leading-[1.05] text-white sm:text-5xl lg:text-6xl">
-                  {h1Plain}{" "}
+                  {h1FullPlain}{" "}
                   <span className="bg-gradient-to-r from-amber-200 via-amber-300 to-amber-500 bg-clip-text text-transparent">
-                    {service.hero.h1Highlight}
+                    {h1Highlight}
                   </span>
                 </h1>
 
                 <p className="mt-4 max-w-xl text-balance text-[15px] leading-relaxed text-white/70 sm:mt-5 sm:text-lg">
-                  {service.hero.subtitle}
+                  {subtitle}
                 </p>
 
                 <div className="mt-6 flex flex-col gap-3 sm:flex-row">
@@ -190,7 +264,7 @@ export default function HomeServicePage({ service, place }: Props) {
                   </li>
                   <li className="inline-flex items-center gap-1.5">
                     <MapPinIcon size={14} className="text-amber-300" />
-                    Strasbourg & alentours
+                    {isCity ? `${cityName} (${city!.postalCodes[0]})` : "Strasbourg & alentours"}
                   </li>
                 </ul>
               </div>
@@ -205,6 +279,36 @@ export default function HomeServicePage({ service, place }: Props) {
 
         <TrustBar />
 
+        {/* Section ville-spécifique pour les pages service × ville (anti-
+            cannibalisation SEO : chaque page a un paragraphe unique). */}
+        {isCity && (
+          <section className="py-6 sm:py-10">
+            <div className="container-x">
+              <Reveal className="mx-auto max-w-3xl">
+                <div className="rounded-2xl border border-amber-500/20 bg-amber-500/[0.04] p-5 sm:p-6">
+                  <div className="flex items-center gap-2">
+                    <MapPinIcon size={16} className="text-amber-300" />
+                    <p className="text-xs font-semibold uppercase tracking-[0.18em] text-amber-300">
+                      {service.shortName} {cityPreposition} {cityName}
+                    </p>
+                  </div>
+                  <p className="mt-3 text-[15px] leading-relaxed text-white/80">
+                    StrasClean intervient {cityPreposition} {cityName} (
+                    {city!.postalCodes.join(", ")}) — environ {city!.distanceKm}{" "}
+                    km du centre de Strasbourg. Déplacement inclus dans le tarif
+                    annoncé. {city!.intro}
+                  </p>
+                  {city!.neighborhoods && city!.neighborhoods.length > 0 && (
+                    <p className="mt-3 text-sm text-white/60">
+                      Quartiers desservis : {city!.neighborhoods.join(" · ")}.
+                    </p>
+                  )}
+                </div>
+              </Reveal>
+            </div>
+          </section>
+        )}
+
         {/* Grille premium des 4 prestations Maison — la card courante est
             marquée "Vous êtes ici", les autres en cross-sell. Affiche les
             tarifs complets de chaque prestation. */}
@@ -214,6 +318,8 @@ export default function HomeServicePage({ service, place }: Props) {
           title="Toutes nos prestations textile à domicile."
           description="Tarifs détaillés ci-dessous. La prestation actuelle est mise en évidence — les 3 autres sont disponibles dans la même intervention si vous voulez tout faire d'un coup."
         />
+
+        <MaisonPriceCalculator />
 
         {/* PROBLÈME — version compacte (bullets only) */}
         <section className="relative py-12 sm:py-20">
@@ -311,6 +417,11 @@ export default function HomeServicePage({ service, place }: Props) {
         )}
 
         <HomeBeforeAfter />
+
+        <MaisonTrustSection
+          googleRating={place.rating}
+          googleTotalCount={place.totalCount}
+        />
 
         <TestimonialsMaison
           googleRating={place.rating}

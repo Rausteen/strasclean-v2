@@ -16,7 +16,11 @@
 
 import { CITIES, City, CITY_URL_PREFIX } from "./cities";
 import { USE_CASES, UseCase, findUseCase } from "./usecases";
-import { HOME_SERVICES, findHomeService } from "./homeServices";
+import {
+  HOME_SERVICES,
+  findHomeService,
+  matchHomeServiceCity,
+} from "./homeServices";
 import { HOME_SEO_PAGES, findHomeSeoPage } from "./homeSeoPages";
 
 export type Service = {
@@ -423,12 +427,14 @@ export const servicePath = (s: Service, c: City) => `/${s.slug}-${c.slug}`;
 /** Trouve un service par son slug */
 export const findService = (slug: string) => SERVICES.find((s) => s.slug === slug);
 
-/** Résultat du routeur de slug : ville, service×ville, cas d'usage, ou prestation Maison. */
+/** Résultat du routeur de slug : ville, service×ville, cas d'usage,
+ *  prestation Maison, ou prestation Maison × ville. */
 export type SlugMatch =
   | { type: "city"; city: City }
   | { type: "service-city"; service: Service; city: City }
   | { type: "usecase"; useCase: UseCase }
-  | { type: "home-service"; homeService: UseCase };
+  | { type: "home-service"; homeService: UseCase }
+  | { type: "home-service-city"; homeService: UseCase; city: City };
 
 /**
  * Identifie le type d'une URL StrasClean et renvoie les entités correspondantes.
@@ -461,6 +467,11 @@ export function matchSlug(slug: string): SlugMatch | null {
   //    services Maison, mais isolées de la grille MaisonServicesGrid.
   const hsp = findHomeSeoPage(slug);
   if (hsp) return { type: "home-service", homeService: hsp };
+
+  // 6) Page service Maison × ville (autre que Strasbourg) — généré
+  //    automatiquement pour les 4 services × 11 communes alentours.
+  const hsc = matchHomeServiceCity(slug);
+  if (hsc) return { type: "home-service-city", homeService: hsc.service, city: hsc.city };
 
   return null;
 }
