@@ -4,7 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { SITE, waLink } from "@/lib/site";
 import { CITIES, cityPath } from "@/lib/cities";
-import { HOME_SERVICES, homeServicePath } from "@/lib/homeServices";
+import { HOME_SERVICES, homeServicePath, homeServiceCityPath } from "@/lib/homeServices";
 import { WhatsAppIcon, PhoneIcon, SparklesIcon, MapPinIcon } from "./Icon";
 import { isMaisonPathname } from "@/lib/section";
 
@@ -126,7 +126,9 @@ export default function Footer() {
           </div>
         </div>
 
-        {/* Liste compacte des villes (pour le SEO local + maillage) */}
+        {/* Liste compacte des villes (pour le SEO local + maillage).
+            Sur Maison, chaque lien pointe vers la page Maison de la commune
+            (canapé = service le plus populaire), pas vers la page Auto. */}
         <div className="mt-10 border-t border-white/5 pt-6">
           <p className="text-xs font-semibold uppercase tracking-wider text-white/55">
             Communes desservies
@@ -135,7 +137,11 @@ export default function Footer() {
             {CITIES.map((c, i) => (
               <li key={c.slug}>
                 <Link
-                  href={cityPath(c)}
+                  href={
+                    isMaison
+                      ? homeServiceCityPath(HOME_SERVICES[0], c)
+                      : cityPath(c)
+                  }
                   prefetch={false}
                   className="hover:text-white"
                 >
