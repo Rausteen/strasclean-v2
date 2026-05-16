@@ -45,10 +45,14 @@ export default function Header() {
     >
       {/* TOPBAR principale — logo / nav / CTA */}
       <div className="container-x flex h-16 items-center gap-3">
-        {/* Logo */}
+        {/* Logo — pointe vers le hub de la section courante (Auto ou Maison)
+            pour ne pas faire basculer l'utilisateur d'un univers à l'autre
+            par accident. */}
         <Link
-          href="/"
-          aria-label="StrasClean accueil"
+          href={onMaison ? "/strasclean-maison" : "/"}
+          aria-label={
+            onMaison ? "StrasClean Maison — accueil" : "StrasClean — accueil"
+          }
           className="shrink-0"
         >
           <span className="flex items-center gap-2">
