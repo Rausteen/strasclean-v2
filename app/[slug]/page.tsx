@@ -26,6 +26,7 @@ import { CITIES, City, CITY_URL_PREFIX, cityPath, inCity } from "@/lib/cities";
 import { SERVICES, Service, matchSlug, servicePath } from "@/lib/services";
 import { USE_CASES, UseCase, useCasePath } from "@/lib/usecases";
 import { HOME_SERVICES } from "@/lib/homeServices";
+import { HOME_SEO_PAGES } from "@/lib/homeSeoPages";
 import { SITE } from "@/lib/site";
 import { getGooglePlaceData, filterReviewsBySection } from "@/lib/reviews";
 import { getReviewTagsMap } from "@/lib/db";
@@ -44,11 +45,13 @@ export function generateStaticParams(): Params[] {
   );
   const useCaseParams = USE_CASES.map((uc) => ({ slug: uc.slug }));
   const homeServiceParams = HOME_SERVICES.map((s) => ({ slug: s.slug }));
+  const homeSeoParams = HOME_SEO_PAGES.map((s) => ({ slug: s.slug }));
   return [
     ...cityParams,
     ...serviceCityParams,
     ...useCaseParams,
     ...homeServiceParams,
+    ...homeSeoParams,
   ];
 }
 

@@ -4,6 +4,7 @@ import { CITIES, cityPath } from "@/lib/cities";
 import { SERVICES, servicePath } from "@/lib/services";
 import { USE_CASES, useCasePath } from "@/lib/usecases";
 import { HOME_SERVICES, homeServicePath } from "@/lib/homeServices";
+import { HOME_SEO_PAGES, homeSeoPath } from "@/lib/homeSeoPages";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const now = new Date();
@@ -63,6 +64,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
       lastModified: now,
       changeFrequency: "monthly" as const,
       priority: 0.85,
+    })),
+    // Pages SEO Maison — prix, Airbnb, cuir
+    ...HOME_SEO_PAGES.map((s) => ({
+      url: `${SITE.url}${homeSeoPath(s)}`,
+      lastModified: now,
+      changeFrequency: "monthly" as const,
+      priority: 0.8,
     })),
   ];
 }

@@ -17,6 +17,7 @@
 import { CITIES, City, CITY_URL_PREFIX } from "./cities";
 import { USE_CASES, UseCase, findUseCase } from "./usecases";
 import { HOME_SERVICES, findHomeService } from "./homeServices";
+import { HOME_SEO_PAGES, findHomeSeoPage } from "./homeSeoPages";
 
 export type Service = {
   /** Slug d'URL — kebab-case, sans accent. Doit être un keyword SEO complet. */
@@ -455,6 +456,11 @@ export function matchSlug(slug: string): SlugMatch | null {
   //    avec les formules / before-after / process auto).
   const hs = findHomeService(slug);
   if (hs) return { type: "home-service", homeService: hs };
+
+  // 5) Page SEO Maison (prix, Airbnb, cuir, etc.) — même rendu que les
+  //    services Maison, mais isolées de la grille MaisonServicesGrid.
+  const hsp = findHomeSeoPage(slug);
+  if (hsp) return { type: "home-service", homeService: hsp };
 
   return null;
 }
