@@ -1,3 +1,6 @@
+import fs from "node:fs";
+import path from "node:path";
+import Image from "next/image";
 import Link from "next/link";
 import Header from "./Header";
 import MobileOfferStrip from "./MobileOfferStrip";
@@ -519,15 +522,71 @@ function extractNumericPrice(label: string): string {
 
 /** Visuel placeholder du hero, propre en attendant les vraies photos.
  *  N'est rendu QUE sur desktop (lg+) — sur mobile on gagne de l'espace. */
+/** Dérive la clé du fichier hero à partir du slug d'un service ou d'une
+ *  page SEO. Ex: 'nettoyage-canape-strasbourg' → 'canape',
+ *  'prix-nettoyage-matelas-strasbourg' → 'matelas'. Sinon null. */
+function heroKeyForSlug(slug: string): string | null {
+  // Ordre important : on teste les patterns les plus spécifiques d'abord
+  if (slug.includes("fauteuil-chaise") || slug.includes("airbnb"))
+    return "fauteuil-chaise";
+  if (slug.includes("canape")) return "canape";
+  if (slug.includes("tapis")) return "tapis";
+  if (slug.includes("matelas")) return "matelas";
+  return null;
+}
+
+const HERO_EXT_ORDER = ["webp", "jpg", "jpeg", "png"] as const;
+const HERO_PHOTO_DIR = path.join(process.cwd(), "public", "maison", "hero");
+
+/** Cherche /public/maison/hero/{key}.{ext}. Renvoie le chemin public si
+ *  trouvé, null sinon. */
+function findHeroPhoto(slug: string): string | null {
+  const key = heroKeyForSlug(slug);
+  if (!key) return null;
+  for (const ext of HERO_EXT_ORDER) {
+    const filename = `${key}.${ext}`;
+    const full = path.join(HERO_PHOTO_DIR, filename);
+    if (fs.existsSync(full)) {
+      return `/maison/hero/${filename}`;
+    }
+  }
+  return null;
+}
+
 function HeroVisual({ service }: { service: UseCase }) {
+  const heroSrc = findHeroPhoto(service.slug);
+
   return (
     <div className="relative mx-auto w-full max-w-md lg:ml-auto">
       <div className="relative overflow-hidden rounded-3xl border border-white/10 bg-gradient-to-br from-ink-800 to-ink-900 p-5 shadow-card">
         <div className="relative aspect-[4/3] w-full overflow-hidden rounded-2xl bg-gradient-to-br from-amber-200/20 via-orange-300/15 to-amber-500/10">
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_30%,rgba(255,255,255,0.12),transparent_60%)]" />
-          <div className="absolute inset-0 grid place-items-center">
-            <span className="text-[160px] opacity-60">{service.emoji}</span>
-          </div>
+          {heroSrc ? (
+            <>
+              <Image
+                src={heroSrc}
+                alt={`${service.shortName} — StrasClean Maison`}
+                fill
+                priority
+                sizes="(max-width: 1024px) 0px, 448px"
+                quality={82}
+                className="object-cover"
+              />
+              {/* léger fondu sombre pour la lisibilité des chips */}
+              <div className="pointer-events-none absolute inset-x-0 top-0 h-16 bg-gradient-to-b from-black/40 to-transparent" />
+            </>
+          ) : (
+            <>
+              <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_30%,rgba(255,255,255,0.12),transparent_60%)]" />
+              <div className="absolute inset-0 grid place-items-center">
+                <span
+                  aria-hidden="true"
+                  className="text-[160px] opacity-60"
+                >
+                  {service.emoji}
+                </span>
+              </div>
+            </>
+          )}
           <span className="absolute left-4 top-4 inline-flex items-center gap-1.5 rounded-full bg-black/55 px-2.5 py-1 text-[11px] font-semibold text-amber-200 backdrop-blur-md">
             <SparklesIcon size={12} />
             À domicile

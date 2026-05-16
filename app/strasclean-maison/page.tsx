@@ -1,5 +1,8 @@
+import fs from "node:fs";
+import path from "node:path";
 import type { Metadata } from "next";
 import Link from "next/link";
+import Image from "next/image";
 import Header from "@/components/Header";
 import MobileOfferStrip from "@/components/MobileOfferStrip";
 import TrustBar from "@/components/TrustBar";
@@ -53,7 +56,21 @@ export const metadata: Metadata = {
 const MESSAGE =
   "Bonjour StrasClean 👋 Je voudrais un devis pour un nettoyage à domicile (canapé / tapis / matelas / fauteuils). Quels sont vos prochains créneaux ?";
 
+/** Résout /public/maison/hero/hub.{webp,jpg,jpeg,png} au build.
+ *  Renvoie le chemin public si trouvé, null sinon. */
+function findHubHeroPhoto(): string | null {
+  const exts = ["webp", "jpg", "jpeg", "png"] as const;
+  const dir = path.join(process.cwd(), "public", "maison", "hero");
+  for (const ext of exts) {
+    if (fs.existsSync(path.join(dir, `hub.${ext}`))) {
+      return `/maison/hero/hub.${ext}`;
+    }
+  }
+  return null;
+}
+
 export default async function HubMaisonPage() {
+  const hubHeroSrc = findHubHeroPhoto();
   const place = await getGooglePlaceData();
   const tags = getReviewTagsMap();
   const maisonReviews = filterReviewsBySection(place.reviews, tags, "maison");
@@ -228,13 +245,33 @@ export default async function HubMaisonPage() {
               <div className="relative mx-auto hidden w-full max-w-md lg:ml-auto lg:block">
                 <div className="relative overflow-hidden rounded-3xl border border-white/10 bg-gradient-to-br from-ink-800 to-ink-900 p-5 shadow-card">
                   <div className="relative aspect-[4/3] w-full overflow-hidden rounded-2xl bg-gradient-to-br from-amber-200/20 via-orange-300/15 to-amber-500/10">
-                    <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_30%,rgba(255,255,255,0.12),transparent_60%)]" />
-                    <div className="absolute inset-0 grid grid-cols-2 grid-rows-2 place-items-center text-7xl opacity-60">
-                      <span>🛋️</span>
-                      <span>🧶</span>
-                      <span>🛏️</span>
-                      <span>🪑</span>
-                    </div>
+                    {hubHeroSrc ? (
+                      <>
+                        <Image
+                          src={hubHeroSrc}
+                          alt="StrasClean Maison — nettoyage canapé, tapis, matelas à domicile à Strasbourg"
+                          fill
+                          priority
+                          sizes="(max-width: 1024px) 0px, 448px"
+                          quality={82}
+                          className="object-cover"
+                        />
+                        <div className="pointer-events-none absolute inset-x-0 top-0 h-16 bg-gradient-to-b from-black/40 to-transparent" />
+                      </>
+                    ) : (
+                      <>
+                        <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_30%,rgba(255,255,255,0.12),transparent_60%)]" />
+                        <div
+                          aria-hidden="true"
+                          className="absolute inset-0 grid grid-cols-2 grid-rows-2 place-items-center text-7xl opacity-60"
+                        >
+                          <span>🛋️</span>
+                          <span>🧶</span>
+                          <span>🛏️</span>
+                          <span>🪑</span>
+                        </div>
+                      </>
+                    )}
                     <span className="absolute left-4 top-4 inline-flex items-center gap-1.5 rounded-full bg-black/55 px-2.5 py-1 text-[11px] font-semibold text-amber-200 backdrop-blur-md">
                       <HomeIcon size={12} />
                       Maison
