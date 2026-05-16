@@ -9,6 +9,7 @@ import TestimonialsMaison from "@/components/TestimonialsMaison";
 import FAQ from "@/components/FAQ";
 import HomeBeforeAfter from "@/components/HomeBeforeAfter";
 import ServiceArea from "@/components/ServiceArea";
+import MaisonServicesGrid from "@/components/MaisonServicesGrid";
 import Reveal from "@/components/Reveal";
 import {
   WhatsAppIcon,
@@ -22,11 +23,7 @@ import {
   StarIcon,
 } from "@/components/Icon";
 import { SITE, waLink } from "@/lib/site";
-import {
-  HOME_SERVICES,
-  homeServicePath,
-  MAISON_GLOBAL_FAQS,
-} from "@/lib/homeServices";
+import { MAISON_GLOBAL_FAQS } from "@/lib/homeServices";
 import { getGooglePlaceData, filterReviewsBySection } from "@/lib/reviews";
 import { getReviewTagsMap } from "@/lib/db";
 
@@ -171,84 +168,7 @@ export default async function HubMaisonPage() {
 
         <TrustBar />
 
-        {/* GRILLE PRESTATIONS */}
-        <section id="prestations" className="relative overflow-hidden py-14 sm:py-24 lg:py-28">
-          <div className="container-x">
-            <Reveal className="mx-auto max-w-3xl text-center">
-              <p className="text-sm font-semibold uppercase tracking-[0.18em] text-amber-300">
-                Nos prestations Maison
-              </p>
-              <h2 className="h-display mt-3 text-balance text-3xl font-bold text-white sm:text-4xl lg:text-5xl">
-                Tout votre intérieur, en une intervention.
-              </h2>
-              <p className="mt-4 text-white/65">
-                Même matériel professionnel que pour l'auto (injecteur-extracteur),
-                produits adaptés à chaque matière (tissu, cuir, alcantara), séchage
-                rapide grâce à l'extraction haute puissance.
-              </p>
-            </Reveal>
-
-            <div className="mt-10 grid gap-4 sm:mt-12 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-4">
-              {HOME_SERVICES.map((s, i) => (
-                <Reveal key={s.slug} delay={i * 60}>
-                  <Link
-                    href={homeServicePath(s)}
-                    className="group flex h-full flex-col rounded-3xl border border-white/10 bg-white/[0.03] p-5 transition hover:-translate-y-1 hover:border-amber-400/40 hover:bg-amber-500/[0.06]"
-                  >
-                    <div className="flex items-start justify-between gap-3">
-                      <span className="grid h-12 w-12 place-items-center rounded-2xl bg-amber-500/10 text-2xl">
-                        {s.emoji}
-                      </span>
-                      <span className="inline-flex items-center gap-1 rounded-full bg-amber-500/10 px-2 py-0.5 text-[11px] font-medium text-amber-200">
-                        <ClockIcon size={11} />
-                        {s.pricing.duration}
-                      </span>
-                    </div>
-
-                    <h3 className="h-display mt-4 text-lg font-semibold text-white">
-                      {s.shortName}
-                    </h3>
-                    <p className="mt-1 text-sm leading-snug text-white/60">
-                      {tagline(s.shortName)}
-                    </p>
-
-                    {/* Mini grille tarifs (top 3) */}
-                    {s.tariffs && s.tariffs.length > 0 && (
-                      <ul className="mt-4 space-y-1.5 text-xs">
-                        {s.tariffs.slice(0, 3).map((t) => (
-                          <li
-                            key={t.label}
-                            className="flex items-center justify-between gap-2"
-                          >
-                            <span className="truncate text-white/65">
-                              {t.label}
-                            </span>
-                            <span className="shrink-0 font-bold text-amber-300">
-                              {t.price}
-                            </span>
-                          </li>
-                        ))}
-                      </ul>
-                    )}
-
-                    <div className="mt-auto flex items-center justify-between pt-4">
-                      <span className="text-sm font-bold text-amber-300">
-                        Dès {s.pricing.priceFrom} €
-                      </span>
-                      <span className="inline-flex items-center gap-1 text-xs text-white/55 group-hover:text-amber-300">
-                        Voir le détail
-                        <ArrowRightIcon
-                          size={12}
-                          className="transition group-hover:translate-x-0.5"
-                        />
-                      </span>
-                    </div>
-                  </Link>
-                </Reveal>
-              ))}
-            </div>
-          </div>
-        </section>
+        <MaisonServicesGrid />
 
         {/* COMMENT ÇA SE PASSE */}
         <section id="process" className="relative overflow-hidden bg-white/[0.02] py-14 sm:py-24 lg:py-28">
@@ -362,21 +282,6 @@ export default async function HubMaisonPage() {
       <FloatingWhatsApp />
     </>
   );
-}
-
-function tagline(name: string): string {
-  switch (name) {
-    case "Nettoyage canapé":
-      return " Tissu, cuir, alcantara — séchage rapide.";
-    case "Nettoyage tapis":
-      return " Sans déplacement, sans auréole.";
-    case "Nettoyage matelas":
-      return " Acariens, taches, transpiration.";
-    case "Fauteuils & chaises":
-      return " Lot complet en une intervention.";
-    default:
-      return "";
-  }
 }
 
 const STEPS = [

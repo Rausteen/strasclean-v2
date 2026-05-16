@@ -8,7 +8,7 @@ import Footer from "./Footer";
 import FloatingWhatsApp from "./FloatingWhatsApp";
 import Reveal from "./Reveal";
 import HomeBeforeAfter from "./HomeBeforeAfter";
-import HomeServiceCrossSell from "./HomeServiceCrossSell";
+import MaisonServicesGrid from "./MaisonServicesGrid";
 import {
   WhatsAppIcon,
   PhoneIcon,
@@ -119,77 +119,15 @@ export default function HomeServicePage({ service, place }: Props) {
 
         <TrustBar />
 
-        {/* TARIFS — section dédiée, mise en avant juste après le hero */}
-        {service.tariffs && service.tariffs.length > 0 && (
-          <section className="relative py-12 sm:py-20">
-            <div className="container-x">
-              <div className="mx-auto max-w-3xl">
-                <Reveal>
-                  <div className="rounded-3xl border border-amber-400/30 bg-gradient-to-br from-amber-500/10 via-ink-800 to-ink-900 p-5 sm:p-8">
-                    <div className="flex items-center justify-between gap-3">
-                      <div>
-                        <p className="text-xs font-semibold uppercase tracking-[0.18em] text-amber-300">
-                          Tarifs
-                        </p>
-                        <h2 className="h-display mt-1 text-2xl font-bold text-white sm:text-3xl">
-                          Combien ça coûte ?
-                        </h2>
-                      </div>
-                      <a
-                        href={waLink(message)}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="hidden sm:inline-flex items-center gap-2 rounded-full bg-amber-400 px-4 py-2 text-xs font-bold text-ink-950 transition hover:bg-amber-300"
-                      >
-                        <WhatsAppIcon size={14} />
-                        Devis précis
-                      </a>
-                    </div>
-
-                    <ul className="mt-5 divide-y divide-white/5">
-                      {service.tariffs.map((t) => (
-                        <li
-                          key={t.label}
-                          className="flex items-center justify-between gap-3 py-3"
-                        >
-                          <div className="min-w-0">
-                            <p className="text-sm font-semibold text-white sm:text-base">
-                              {t.label}
-                            </p>
-                            {t.note && (
-                              <p className="mt-0.5 text-xs text-white/55">
-                                {t.note}
-                              </p>
-                            )}
-                          </div>
-                          <span className="shrink-0 text-base font-bold text-amber-300 sm:text-lg">
-                            {t.price}
-                          </span>
-                        </li>
-                      ))}
-                    </ul>
-
-                    <p className="mt-4 border-t border-white/10 pt-3 text-[11px] text-white/45">
-                      Tarifs indicatifs en état standard. État très sale ou
-                      taches importantes : on confirme avant intervention, jamais
-                      de surcoût surprise.
-                    </p>
-
-                    <a
-                      href={waLink(message)}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="btn-wa mt-5 h-12 w-full sm:hidden"
-                    >
-                      <WhatsAppIcon size={18} />
-                      Réserver
-                    </a>
-                  </div>
-                </Reveal>
-              </div>
-            </div>
-          </section>
-        )}
+        {/* Grille premium des 4 prestations Maison — la card courante est
+            marquée "Vous êtes ici", les autres en cross-sell. Affiche les
+            tarifs complets de chaque prestation. */}
+        <MaisonServicesGrid
+          currentSlug={service.slug}
+          eyebrow="Nos prestations Maison"
+          title="Toutes nos prestations textile à domicile."
+          description="Tarifs détaillés ci-dessous. La prestation actuelle est mise en évidence — les 3 autres sont disponibles dans la même intervention si vous voulez tout faire d'un coup."
+        />
 
         {/* PROBLÈME — version compacte (bullets only) */}
         <section className="relative py-12 sm:py-20">
@@ -294,8 +232,6 @@ export default function HomeServicePage({ service, place }: Props) {
           googleProfileUrl={place.profileUrl}
           googleReviews={place.reviews}
         />
-
-        <HomeServiceCrossSell excludeSlug={service.slug} />
 
         <FAQ
           variant="maison"
