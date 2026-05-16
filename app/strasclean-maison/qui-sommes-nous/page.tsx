@@ -113,7 +113,7 @@ export default async function QuiSommesNousPage() {
               <nav aria-label="Fil d'ariane" className="mb-4 text-xs">
                 <Link
                   href="/strasclean-maison"
-                  className="font-medium text-white/55 hover:text-white/80"
+                  className="font-medium text-white/65 hover:text-white/80"
                 >
                   StrasClean Maison
                 </Link>

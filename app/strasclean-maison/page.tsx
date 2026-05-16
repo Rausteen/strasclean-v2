@@ -11,7 +11,7 @@ import HomeBeforeAfter from "@/components/HomeBeforeAfter";
 import ServiceArea from "@/components/ServiceArea";
 import MaisonServicesGrid from "@/components/MaisonServicesGrid";
 import MaisonTrustSection from "@/components/MaisonTrustSection";
-import MaisonPriceCalculator from "@/components/MaisonPriceCalculator";
+import MaisonPriceCalculator from "@/components/MaisonPriceCalculatorLazy";
 import Reveal from "@/components/Reveal";
 import {
   WhatsAppIcon,

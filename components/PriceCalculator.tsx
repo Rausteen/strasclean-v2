@@ -146,11 +146,11 @@ export default function PriceCalculator() {
                         {v.name}
                       </span>
                     </span>
-                    <span className="text-[11px] leading-snug text-white/55">
+                    <span className="text-[11px] leading-snug text-white/65">
                       {v.examples}
                     </span>
                     {v.surcharge > 0 && (
-                      <span className="mt-1 inline-flex items-center rounded-full bg-white/5 px-2 py-0.5 text-[10px] font-medium text-white/55">
+                      <span className="mt-1 inline-flex items-center rounded-full bg-white/5 px-2 py-0.5 text-[10px] font-medium text-white/65">
                         +{v.surcharge} €
                       </span>
                     )}
@@ -172,7 +172,7 @@ export default function PriceCalculator() {
                 className={`grid h-6 w-6 place-items-center rounded-full text-[11px] font-bold ${
                   vehicle
                     ? "bg-brand-500 text-ink-950"
-                    : "bg-white/10 text-white/55"
+                    : "bg-white/10 text-white/65"
                 }`}
               >
                 2
@@ -222,7 +222,7 @@ export default function PriceCalculator() {
                           dès {f.basePrice} €
                         </span>
                       </span>
-                      <span className="mt-1 block text-xs leading-snug text-white/55">
+                      <span className="mt-1 block text-xs leading-snug text-white/65">
                         {f.desc}
                       </span>
                       <span className="mt-1.5 inline-block text-[11px] text-white/45">
@@ -256,12 +256,12 @@ export default function PriceCalculator() {
                       <span className="h-display text-4xl font-extrabold text-white sm:text-5xl">
                         {result.total} €
                       </span>
-                      <span className="text-xs text-white/55">
+                      <span className="text-xs text-white/65">
                         ({result.f.basePrice} €
                         {result.v.surcharge > 0 ? ` + ${result.v.surcharge} € ${result.v.name.toLowerCase()}` : ""})
                       </span>
                     </p>
-                    <p className="mt-2 text-xs text-white/55">
+                    <p className="mt-2 text-xs text-white/65">
                       Durée estimée : {result.f.duration} · Paiement sur place
                     </p>
                   </div>
@@ -283,7 +283,7 @@ export default function PriceCalculator() {
                 </p>
               </div>
             ) : (
-              <div className="rounded-2xl border border-dashed border-white/15 bg-white/[0.02] p-6 text-center text-sm text-white/55">
+              <div className="rounded-2xl border border-dashed border-white/15 bg-white/[0.02] p-6 text-center text-sm text-white/65">
                 {!vehicle
                   ? "Choisissez d'abord votre type de véhicule"
                   : "Choisissez maintenant votre formule"}

@@ -60,7 +60,7 @@ export default function MaisonTrustSection({
               <p className="h-display mt-3 text-4xl font-extrabold text-white">
                 100+
               </p>
-              <p className="mt-1 text-xs text-white/55">
+              <p className="mt-1 text-xs text-white/65">
                 véhicules nettoyés en équipe
               </p>
             </article>
@@ -77,7 +77,7 @@ export default function MaisonTrustSection({
                   <StarIcon size={22} />
                 </span>
               </p>
-              <p className="mt-1 text-xs text-white/55">
+              <p className="mt-1 text-xs text-white/65">
                 {hasGoogle
                   ? `${googleTotalCount} avis vérifiés`
                   : "avis vérifiés"}
@@ -93,7 +93,7 @@ export default function MaisonTrustSection({
               <p className="h-display mt-3 text-4xl font-extrabold text-white">
                 12
               </p>
-              <p className="mt-1 text-xs text-white/55">desservies à domicile</p>
+              <p className="mt-1 text-xs text-white/65">desservies à domicile</p>
             </article>
           </Reveal>
         </div>

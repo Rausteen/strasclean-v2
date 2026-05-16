@@ -202,7 +202,7 @@ export default function Testimonials({
                   </span>
                   <div className="min-w-0">
                     <p className="truncate text-sm font-semibold text-white">{r.name}</p>
-                    <p className="truncate text-xs text-white/55">{r.city}</p>
+                    <p className="truncate text-xs text-white/65">{r.city}</p>
                   </div>
                   <span className="ml-auto flex items-center gap-0.5 text-amber-300">
                     {Array.from({ length: Math.round(r.rating ?? 5) }).map((_, j) => (
@@ -239,7 +239,7 @@ export default function Testimonials({
                 </span>
                 <p className="h-display mt-3 text-4xl font-extrabold text-white">
                   {(googleRating ?? 5).toFixed(1).replace(".", ",")}
-                  <span className="text-2xl text-white/55">/5</span>
+                  <span className="text-2xl text-white/65">/5</span>
                 </p>
                 <p className="mt-1 text-sm text-white/70">
                   {googleTotalCount} avis Google vérifiés

@@ -59,7 +59,7 @@ export default function LocalSection({ city }: { city: City }) {
 
               <div className="mt-6 grid grid-cols-2 gap-3">
                 <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-4">
-                  <p className="text-xs font-medium uppercase tracking-wider text-white/55">
+                  <p className="text-xs font-medium uppercase tracking-wider text-white/65">
                     Codes postaux
                   </p>
                   <p className="mt-2 text-sm font-semibold text-white">
@@ -67,7 +67,7 @@ export default function LocalSection({ city }: { city: City }) {
                   </p>
                 </div>
                 <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-4">
-                  <p className="text-xs font-medium uppercase tracking-wider text-white/55">
+                  <p className="text-xs font-medium uppercase tracking-wider text-white/65">
                     Distance
                   </p>
                   <p className="mt-2 text-sm font-semibold text-white">

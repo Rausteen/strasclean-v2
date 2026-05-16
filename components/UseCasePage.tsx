@@ -58,7 +58,7 @@ export default function UseCasePage({ useCase: uc, place }: Props) {
           <div className="container-x pt-8 pb-14 sm:pt-16 sm:pb-24 lg:pt-20 lg:pb-28">
             <div className="mx-auto max-w-3xl text-center">
               <nav aria-label="Fil d'ariane" className="mb-5 text-xs">
-                <Link href="/" className="font-medium text-white/55 hover:text-white/80">
+                <Link href="/" className="font-medium text-white/65 hover:text-white/80">
                   StrasClean
                 </Link>
                 <span className="mx-1.5 text-white/30">/</span>

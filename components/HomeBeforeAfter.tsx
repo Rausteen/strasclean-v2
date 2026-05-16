@@ -172,7 +172,7 @@ export default function HomeBeforeAfter() {
                 </div>
                 <div className="p-4">
                   <p className="text-sm font-semibold text-white">{p.label}</p>
-                  <p className="mt-1 text-xs text-white/55">{p.sub}</p>
+                  <p className="mt-1 text-xs text-white/65">{p.sub}</p>
                 </div>
               </article>
             </Reveal>

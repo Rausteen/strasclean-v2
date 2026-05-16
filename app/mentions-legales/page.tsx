@@ -26,7 +26,7 @@ export default function MentionsLegales() {
       <MobileOfferStrip />
       <main className="container-x py-10 sm:py-16">
         <nav aria-label="Fil d'ariane" className="mb-6 text-xs">
-          <Link href="/" className="font-medium text-white/55 hover:text-white/80">
+          <Link href="/" className="font-medium text-white/65 hover:text-white/80">
             StrasClean
           </Link>
           <span className="mx-1.5 text-white/30">/</span>
@@ -37,7 +37,7 @@ export default function MentionsLegales() {
           <h1 className="h-display text-3xl font-bold text-white sm:text-4xl">
             Mentions légales
           </h1>
-          <p className="mt-2 text-sm text-white/55">Dernière mise à jour : {updated}</p>
+          <p className="mt-2 text-sm text-white/65">Dernière mise à jour : {updated}</p>
 
           <Section title="Éditeur du site">
             <p>

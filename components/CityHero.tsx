@@ -27,7 +27,7 @@ export default function CityHero({ city }: { city: City }) {
           <nav aria-label="Fil d'ariane" className="mb-5">
             <Link
               href="/"
-              className="inline-flex items-center gap-1.5 text-xs font-medium text-white/55 hover:text-white/80"
+              className="inline-flex items-center gap-1.5 text-xs font-medium text-white/65 hover:text-white/80"
             >
               ← StrasClean
             </Link>

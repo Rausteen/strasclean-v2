@@ -57,7 +57,7 @@ export default function PricingSection() {
           </div>
         </Reveal>
 
-        <p className="mx-auto mt-8 max-w-3xl text-center text-sm text-white/55">
+        <p className="mx-auto mt-8 max-w-3xl text-center text-sm text-white/65">
           Le tarif final peut varier selon l'état intérieur du véhicule et les
           options demandées.
         </p>
@@ -136,7 +136,7 @@ export default function PricingSection() {
                       <span className="block truncate text-sm font-semibold text-white">
                         {s.name}
                       </span>
-                      <span className="mt-0.5 inline-flex items-center gap-1.5 text-[11px] text-white/55">
+                      <span className="mt-0.5 inline-flex items-center gap-1.5 text-[11px] text-white/65">
                         <ClockIcon size={11} />
                         {s.duration}
                         <span className="text-white/30">·</span>
@@ -190,7 +190,7 @@ function PlanCard({ plan }: { plan: Plan }) {
         </div>
 
       <div className="mt-5 flex items-baseline gap-2">
-        <span className="text-xs font-medium uppercase tracking-wider text-white/55">
+        <span className="text-xs font-medium uppercase tracking-wider text-white/65">
           à partir de
         </span>
       </div>

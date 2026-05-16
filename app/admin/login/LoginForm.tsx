@@ -36,7 +36,7 @@ export default function LoginForm() {
   return (
     <form onSubmit={onSubmit} className="space-y-4">
       <div>
-        <label className="text-xs font-medium uppercase tracking-wider text-white/55">
+        <label className="text-xs font-medium uppercase tracking-wider text-white/65">
           Mot de passe
         </label>
         <input

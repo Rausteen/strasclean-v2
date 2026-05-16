@@ -98,7 +98,7 @@ export default function TestimonialsMaison({
                       <p className="truncate text-sm font-semibold text-white">
                         {r.author_name}
                       </p>
-                      <p className="text-[11px] text-white/55">
+                      <p className="text-[11px] text-white/65">
                         {r.relative_time_description ?? "Avis Google"}
                       </p>
                     </div>
@@ -129,7 +129,7 @@ export default function TestimonialsMaison({
                     <StarIcon size={20} />
                   </span>
                 </p>
-                <p className="mt-1 text-xs text-white/55">
+                <p className="mt-1 text-xs text-white/65">
                   {hasGoogle
                     ? `${googleTotalCount} avis vérifiés`
                     : "Avis vérifiés"}
@@ -143,7 +143,7 @@ export default function TestimonialsMaison({
                   Équipe
                 </p>
                 <p className="mt-3 text-3xl font-bold text-white">2</p>
-                <p className="mt-1 text-xs text-white/55">
+                <p className="mt-1 text-xs text-white/65">
                   pros sur chaque intervention
                 </p>
               </div>
@@ -155,7 +155,7 @@ export default function TestimonialsMaison({
                   Domicile
                 </p>
                 <p className="mt-3 text-3xl font-bold text-white">100%</p>
-                <p className="mt-1 text-xs text-white/55">
+                <p className="mt-1 text-xs text-white/65">
                   à votre adresse, sans déplacement
                 </p>
               </div>

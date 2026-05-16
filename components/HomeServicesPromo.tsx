@@ -59,7 +59,7 @@ export default function HomeServicesPromo() {
                   <span className="text-sm font-bold text-amber-300">
                     dès {s.pricing.priceFrom} €
                   </span>
-                  <span className="inline-flex items-center gap-1 text-xs text-white/55 group-hover:text-amber-300">
+                  <span className="inline-flex items-center gap-1 text-xs text-white/65 group-hover:text-amber-300">
                     Voir
                     <ArrowRightIcon
                       size={12}

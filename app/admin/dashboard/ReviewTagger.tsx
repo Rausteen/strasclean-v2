@@ -99,7 +99,7 @@ function ReviewRow({
           <button
             onClick={() => setTag("clear")}
             disabled={loading}
-            className="ml-1 rounded-full border border-white/10 px-2.5 py-1 text-[10px] font-medium text-white/55 hover:border-white/25 hover:text-white/85 disabled:opacity-50"
+            className="ml-1 rounded-full border border-white/10 px-2.5 py-1 text-[10px] font-medium text-white/65 hover:border-white/25 hover:text-white/85 disabled:opacity-50"
           >
             Retirer
           </button>

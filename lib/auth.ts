@@ -3,7 +3,13 @@ import crypto from "node:crypto";
 import { cookies } from "next/headers";
 
 const COOKIE_NAME = "strasclean_admin";
-const SESSION_DURATION_MS = 365 * 24 * 60 * 60 * 1000; // 1 an
+// Session admin : 30 jours, prolongée automatiquement à chaque appel
+// authentifié (sliding expiration). Fenêtre de compromission plus courte
+// qu'1 an, mais l'admin actif ne se déconnecte pas tant qu'il visite.
+const SESSION_DURATION_MS = 30 * 24 * 60 * 60 * 1000;
+// Si le cookie expire dans moins de 7 jours, on en émet un nouveau lors
+// de la prochaine vérification d'auth (refresh transparent).
+const SESSION_REFRESH_THRESHOLD_MS = 7 * 24 * 60 * 60 * 1000;
 
 const DEV_FALLBACK_SECRET =
   "dev-only-fallback-please-set-SESSION_SECRET-in-env-local-32chars+";
@@ -112,7 +118,24 @@ export async function isAuthenticated(): Promise<boolean> {
   if (!token) return false;
   const payload = verify(token);
   if (!payload) return false;
-  return payload.exp > Date.now();
+
+  const now = Date.now();
+  if (payload.exp <= now) return false;
+
+  // Sliding expiration : si le cookie expire dans moins de SESSION_REFRESH_THRESHOLD_MS,
+  // on en émet un nouveau qui repart de SESSION_DURATION_MS. L'admin actif
+  // ne se déconnecte jamais, mais un cookie inactif > 30 jours expire.
+  const remainingMs = payload.exp - now;
+  if (remainingMs < SESSION_REFRESH_THRESHOLD_MS) {
+    try {
+      await createSessionCookie();
+    } catch {
+      // En lecture seule (ex: dans un middleware), on ne peut pas écrire
+      // le cookie. C'est OK — la session reste valide jusqu'à exp.
+    }
+  }
+
+  return true;
 }
 
 /**

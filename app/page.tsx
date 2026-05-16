@@ -4,7 +4,7 @@ import Hero from "@/components/Hero";
 import TrustBar from "@/components/TrustBar";
 import ProblemsSolution from "@/components/ProblemsSolution";
 import PricingSection from "@/components/PricingSection";
-import PriceCalculator from "@/components/PriceCalculator";
+import PriceCalculator from "@/components/PriceCalculatorLazy";
 import BeforeAfter from "@/components/BeforeAfter";
 import HowItWorks from "@/components/HowItWorks";
 import Benefits from "@/components/Benefits";

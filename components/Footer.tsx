@@ -75,7 +75,7 @@ export default function Footer() {
           <div className="lg:col-span-2">
             <h3
               className={`text-sm font-semibold uppercase tracking-wider ${
-                isMaison ? "text-white/55" : "text-white/80"
+                isMaison ? "text-white/65" : "text-white/80"
               }`}
             >
               Formules auto
@@ -94,7 +94,7 @@ export default function Footer() {
                   href="/formules"
                   className={`font-semibold ${
                     isMaison
-                      ? "text-white/55 hover:text-white"
+                      ? "text-white/65 hover:text-white"
                       : "text-brand-300 hover:text-brand-200"
                   }`}
                 >
@@ -107,7 +107,7 @@ export default function Footer() {
           <div className="lg:col-span-2">
             <h3
               className={`text-sm font-semibold uppercase tracking-wider ${
-                isMaison ? "text-amber-300/90" : "text-white/55"
+                isMaison ? "text-amber-300/90" : "text-white/65"
               }`}
             >
               StrasClean Maison
@@ -133,7 +133,7 @@ export default function Footer() {
                   className={`font-semibold ${
                     isMaison
                       ? "text-amber-300 hover:text-amber-200"
-                      : "text-white/55 hover:text-white"
+                      : "text-white/65 hover:text-white"
                   }`}
                 >
                   → Toute l'offre Maison
@@ -142,7 +142,7 @@ export default function Footer() {
               <li>
                 <Link
                   href="/strasclean-maison/qui-sommes-nous"
-                  className="text-white/55 hover:text-white"
+                  className="text-white/65 hover:text-white"
                 >
                   Qui sommes-nous
                 </Link>
@@ -154,7 +154,7 @@ export default function Footer() {
             <h4 className="mt-6 text-[11px] font-semibold uppercase tracking-wider text-white/40">
               Tarifs & spécialités
             </h4>
-            <ul className="mt-3 space-y-1.5 text-xs text-white/55">
+            <ul className="mt-3 space-y-1.5 text-xs text-white/65">
               {HOME_SEO_PAGES.map((s) => (
                 <li key={s.slug}>
                   <Link

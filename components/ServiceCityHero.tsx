@@ -31,13 +31,13 @@ export default function ServiceCityHero({
         <div className="mx-auto max-w-3xl text-center">
           {/* Breadcrumb */}
           <nav aria-label="Fil d'ariane" className="mb-5 text-xs">
-            <Link href="/" className="font-medium text-white/55 hover:text-white/80">
+            <Link href="/" className="font-medium text-white/65 hover:text-white/80">
               StrasClean
             </Link>
             <span className="mx-1.5 text-white/30">/</span>
             <Link
               href={cityPath(city)}
-              className="font-medium text-white/55 hover:text-white/80"
+              className="font-medium text-white/65 hover:text-white/80"
             >
               {city.name}
             </Link>

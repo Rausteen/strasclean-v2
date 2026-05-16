@@ -48,7 +48,7 @@ function sourceBadge(src: string | null) {
     referral: { label: "Referral", cls: "bg-sky-500/15 text-sky-200 border-sky-500/30" },
     social: { label: "Social", cls: "bg-fuchsia-500/15 text-fuchsia-200 border-fuchsia-500/30" },
   };
-  const m = map[src ?? ""] ?? { label: src ?? "?", cls: "bg-white/5 text-white/55 border-white/10" };
+  const m = map[src ?? ""] ?? { label: src ?? "?", cls: "bg-white/5 text-white/65 border-white/10" };
   return (
     <span className={`inline-flex items-center rounded-full border px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider ${m.cls}`}>
       {m.label}
@@ -193,7 +193,7 @@ export default async function DashboardPage({
       {hiddenIps.length > 0 && (
         <section className="mt-8">
           <Panel title={`IPs masquées (${hiddenIps.length})`}>
-            <p className="mb-3 text-xs text-white/55">
+            <p className="mb-3 text-xs text-white/65">
               Toutes les visites/clics de ces IPs sont exclus des statistiques affichées ci-dessus.
             </p>
             <ul className="grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
@@ -221,7 +221,7 @@ export default async function DashboardPage({
         <Panel
           title={`Avis Google — tagger par section (${reviewsForTagger.length})`}
         >
-          <p className="mb-4 text-xs text-white/55">
+          <p className="mb-4 text-xs text-white/65">
             Chaque avis affiche par défaut côté Auto (notre activité historique).
             Tague-le <span className="text-amber-300">Maison</span> ou{" "}
             <span className="text-sky-300">Les deux</span> dès qu'il concerne le
@@ -245,7 +245,7 @@ export default async function DashboardPage({
         >
           <div className="-mx-2 overflow-x-auto">
             <table className="w-full min-w-[960px] text-xs">
-              <thead className="text-left text-white/55 uppercase tracking-wider">
+              <thead className="text-left text-white/65 uppercase tracking-wider">
                 <tr>
                   <th className="px-2 py-2">Date</th>
                   <th className="px-2 py-2">Source</th>
@@ -274,13 +274,13 @@ export default async function DashboardPage({
                     </td>
                     <td className="px-2 py-2 text-white/75">{v.device}</td>
                     <td className="px-2 py-2 text-white/75">{v.os} · {v.browser}</td>
-                    <td className="px-2 py-2 text-white/55">
+                    <td className="px-2 py-2 text-white/65">
                       <div className="flex items-center gap-2">
                         <span className="font-mono">{v.ip ?? "—"}</span>
                         <HideIpButton ip={v.ip} />
                       </div>
                     </td>
-                    <td className="px-2 py-2 text-white/55 max-w-[200px] truncate" title={v.referer ?? ""}>{v.referer ?? "—"}</td>
+                    <td className="px-2 py-2 text-white/65 max-w-[200px] truncate" title={v.referer ?? ""}>{v.referer ?? "—"}</td>
                   </tr>
                 ))}
               </tbody>
@@ -297,7 +297,7 @@ export default async function DashboardPage({
         >
           <div className="-mx-2 overflow-x-auto">
             <table className="w-full min-w-[760px] text-xs">
-              <thead className="text-left text-white/55 uppercase tracking-wider">
+              <thead className="text-left text-white/65 uppercase tracking-wider">
                 <tr>
                   <th className="px-2 py-2">Date</th>
                   <th className="px-2 py-2">Type</th>
@@ -323,13 +323,13 @@ export default async function DashboardPage({
                       </span>
                     </td>
                     <td className="px-2 py-2 max-w-[240px] truncate" title={e.path ?? ""}>{shortPath(e.path)}</td>
-                    <td className="px-2 py-2 text-white/55">
+                    <td className="px-2 py-2 text-white/65">
                       <div className="flex items-center gap-2">
                         <span className="font-mono">{e.ip ?? "—"}</span>
                         <HideIpButton ip={e.ip} />
                       </div>
                     </td>
-                    <td className="px-2 py-2 text-white/55 max-w-[280px] truncate" title={e.user_agent ?? ""}>{e.user_agent ?? "—"}</td>
+                    <td className="px-2 py-2 text-white/65 max-w-[280px] truncate" title={e.user_agent ?? ""}>{e.user_agent ?? "—"}</td>
                   </tr>
                 ))}
               </tbody>
@@ -376,7 +376,7 @@ function Pagination({
       >
         ← Précédent
       </Link>
-      <span className="text-white/55">
+      <span className="text-white/65">
         Page {current} / {total}
       </span>
       <Link
@@ -414,9 +414,9 @@ function Kpi({
           : "border-white/10 bg-white/[0.03]";
   return (
     <div className={`rounded-2xl border p-5 ${ring}`}>
-      <p className="text-xs font-medium uppercase tracking-wider text-white/55">{label}</p>
+      <p className="text-xs font-medium uppercase tracking-wider text-white/65">{label}</p>
       <p className="mt-2 h-display text-3xl font-extrabold text-white">{value}</p>
-      {hint && <p className="mt-1 text-xs text-white/55">{hint}</p>}
+      {hint && <p className="mt-1 text-xs text-white/65">{hint}</p>}
     </div>
   );
 }

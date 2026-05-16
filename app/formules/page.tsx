@@ -87,7 +87,7 @@ export default function FormulesPage() {
           <div className="container-x pt-8 pb-14 sm:pt-16 sm:pb-24 lg:pt-20 lg:pb-28">
             <div className="mx-auto max-w-3xl text-center">
               <nav aria-label="Fil d'ariane" className="mb-5 text-xs">
-                <Link href="/" className="font-medium text-white/55 hover:text-white/80">
+                <Link href="/" className="font-medium text-white/65 hover:text-white/80">
                   StrasClean
                 </Link>
                 <span className="mx-1.5 text-white/30">/</span>
@@ -123,7 +123,7 @@ export default function FormulesPage() {
                   >
                     <span>{p.emoji}</span>
                     {p.name.replace("Formule ", "")}
-                    <span className="text-white/55">· {p.priceFrom} €</span>
+                    <span className="text-white/65">· {p.priceFrom} €</span>
                   </a>
                 ))}
               </div>
@@ -185,7 +185,7 @@ export default function FormulesPage() {
                         </div>
 
                         <div className="mt-5 flex items-baseline gap-2">
-                          <span className="text-xs font-medium uppercase tracking-wider text-white/55">
+                          <span className="text-xs font-medium uppercase tracking-wider text-white/65">
                             à partir de
                           </span>
                         </div>
@@ -289,7 +289,7 @@ export default function FormulesPage() {
               </div>
             </Reveal>
 
-            <p className="mx-auto mt-8 max-w-3xl text-center text-sm text-white/55">
+            <p className="mx-auto mt-8 max-w-3xl text-center text-sm text-white/65">
               Le tarif final peut varier selon l'état intérieur du véhicule et
               les options demandées. On confirme toujours le prix avant
               intervention.

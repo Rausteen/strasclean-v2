@@ -367,7 +367,7 @@ export default function MaisonPriceCalculator() {
                         {result.total} €{isPerM2 ? "/m²" : ""}
                       </span>
                     </p>
-                    <p className="mt-2 text-xs text-white/55">
+                    <p className="mt-2 text-xs text-white/65">
                       {result.base} €{isPerM2 ? "/m²" : ""}
                       {result.optionsTotal > 0
                         ? ` + ${result.optionsTotal} € d'options`
@@ -375,7 +375,7 @@ export default function MaisonPriceCalculator() {
                       {" · paiement sur place"}
                     </p>
                     {result.selectedOptions.length > 0 && (
-                      <ul className="mt-3 space-y-0.5 text-[11px] text-white/55">
+                      <ul className="mt-3 space-y-0.5 text-[11px] text-white/65">
                         {result.selectedOptions.map((o) => (
                           <li key={o.id}>
                             + {o.label}{" "}
@@ -404,7 +404,7 @@ export default function MaisonPriceCalculator() {
                 </p>
               </div>
             ) : (
-              <div className="rounded-2xl border border-dashed border-white/15 bg-white/[0.02] p-6 text-center text-sm text-white/55">
+              <div className="rounded-2xl border border-dashed border-white/15 bg-white/[0.02] p-6 text-center text-sm text-white/65">
                 {!service
                   ? "Choisissez d'abord votre prestation"
                   : "Choisissez maintenant la taille / quantité"}
@@ -430,7 +430,7 @@ function Step({
     <div className="flex items-center gap-2">
       <span
         className={`grid h-6 w-6 place-items-center rounded-full text-[11px] font-bold ${
-          active ? "bg-amber-400 text-ink-950" : "bg-white/10 text-white/55"
+          active ? "bg-amber-400 text-ink-950" : "bg-white/10 text-white/65"
         }`}
       >
         {number}

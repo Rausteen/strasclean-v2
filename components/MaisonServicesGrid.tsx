@@ -72,7 +72,7 @@ export default function MaisonServicesGrid({
 
         {/* Bandeau zone */}
         <Reveal>
-          <p className="mt-10 flex flex-wrap items-center justify-center gap-x-2 gap-y-1 text-center text-sm text-white/55">
+          <p className="mt-10 flex flex-wrap items-center justify-center gap-x-2 gap-y-1 text-center text-sm text-white/65">
             <MapPinIcon size={14} className="text-amber-400" />
             Strasbourg + 12 communes alentours desservies — déplacement inclus
             dans le tarif annoncé.
@@ -143,7 +143,7 @@ function MaisonServiceCard({
 
         {/* Prix d'appel + durée */}
         <div className="mt-5 flex items-baseline gap-2">
-          <span className="text-xs font-medium uppercase tracking-wider text-white/55">
+          <span className="text-xs font-medium uppercase tracking-wider text-white/65">
             à partir de
           </span>
         </div>
@@ -155,7 +155,7 @@ function MaisonServiceCard({
             €
           </span>
         </div>
-        <p className="mt-2 inline-flex items-center gap-1.5 text-xs text-white/55">
+        <p className="mt-2 inline-flex items-center gap-1.5 text-xs text-white/65">
           <ClockIcon size={12} className="text-amber-300" />
           {s.pricing.duration}
         </p>

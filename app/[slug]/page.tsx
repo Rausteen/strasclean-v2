@@ -8,7 +8,7 @@ import TrustBar from "@/components/TrustBar";
 import LocalSection from "@/components/LocalSection";
 import ServiceDetail from "@/components/ServiceDetail";
 import PricingSection from "@/components/PricingSection";
-import PriceCalculator from "@/components/PriceCalculator";
+import PriceCalculator from "@/components/PriceCalculatorLazy";
 import BeforeAfter from "@/components/BeforeAfter";
 import HowItWorks from "@/components/HowItWorks";
 import Benefits from "@/components/Benefits";

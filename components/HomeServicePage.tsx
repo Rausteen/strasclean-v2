@@ -10,7 +10,7 @@ import Reveal from "./Reveal";
 import HomeBeforeAfter from "./HomeBeforeAfter";
 import MaisonServicesGrid from "./MaisonServicesGrid";
 import MaisonTrustSection from "./MaisonTrustSection";
-import MaisonPriceCalculator from "./MaisonPriceCalculator";
+import MaisonPriceCalculator from "./MaisonPriceCalculatorLazy";
 import {
   WhatsAppIcon,
   PhoneIcon,
@@ -222,7 +222,7 @@ export default function HomeServicePage({ service, place, city }: Props) {
                 <nav aria-label="Fil d'ariane" className="mb-4 text-xs">
                   <Link
                     href="/strasclean-maison"
-                    className="font-medium text-white/55 hover:text-white/80"
+                    className="font-medium text-white/65 hover:text-white/80"
                   >
                     StrasClean Maison
                   </Link>
@@ -231,7 +231,7 @@ export default function HomeServicePage({ service, place, city }: Props) {
                       <span className="mx-1.5 text-white/30">/</span>
                       <Link
                         href={`/${service.slug}`}
-                        className="font-medium text-white/55 hover:text-white/80"
+                        className="font-medium text-white/65 hover:text-white/80"
                       >
                         {service.shortName}
                       </Link>
