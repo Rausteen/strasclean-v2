@@ -1,11 +1,16 @@
 import { NextRequest, NextResponse } from "next/server";
-import { isAuthenticated } from "@/lib/auth";
+import { isAuthenticated, checkSameOrigin } from "@/lib/auth";
 import { hideIp, unhideIp } from "@/lib/db";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
 export async function POST(req: NextRequest) {
+  // Anti-CSRF : refuse les requêtes cross-origin (combiné avec
+  // sameSite=lax sur le cookie auth, double protection).
+  if (!checkSameOrigin(req)) {
+    return NextResponse.json({ ok: false, error: "Forbidden" }, { status: 403 });
+  }
   if (!(await isAuthenticated())) {
     return NextResponse.json({ ok: false, error: "Unauthorized" }, { status: 401 });
   }

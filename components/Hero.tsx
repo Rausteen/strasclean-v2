@@ -1,5 +1,22 @@
+import fs from "node:fs";
+import path from "node:path";
 import Image from "next/image";
 import { SITE } from "@/lib/site";
+
+/** Vérifie au build si /public/hero.webp (ou variant) est présent.
+ *  Sinon, le hero affiche un placeholder gradient discret au lieu d'une
+ *  image cassée. Important pour les déploiements où l'image n'a pas
+ *  encore été uploadée sur le VPS. */
+const HERO_IMAGE_PATH = (() => {
+  const exts = ["webp", "jpg", "jpeg", "png"] as const;
+  const dir = path.join(process.cwd(), "public");
+  for (const ext of exts) {
+    if (fs.existsSync(path.join(dir, `hero.${ext}`))) {
+      return `/hero.${ext}`;
+    }
+  }
+  return null;
+})();
 import {
   WhatsAppIcon,
   PhoneIcon,
@@ -126,17 +143,30 @@ function HeroVisual() {
       {/* Main car card */}
       <div className="relative">
         <div className="relative overflow-hidden rounded-3xl border border-white/10 bg-gradient-to-br from-ink-800 to-ink-900 p-6 shadow-card">
-          {/* Photo */}
+          {/* Photo (avec fallback gradient si /public/hero.webp absent) */}
           <div className="relative aspect-[4/3] w-full overflow-hidden rounded-2xl bg-ink-950">
-            <Image
-              src="/hero.webp"
-              alt="Voiture nettoyée par StrasClean — rendu showroom à Strasbourg"
-              fill
-              priority
-              sizes="(max-width: 640px) 92vw, (max-width: 1024px) 80vw, 560px"
-              quality={82}
-              className="object-cover"
-            />
+            {HERO_IMAGE_PATH ? (
+              <Image
+                src={HERO_IMAGE_PATH}
+                alt="Voiture nettoyée par StrasClean — rendu showroom à Strasbourg"
+                fill
+                priority
+                sizes="(max-width: 640px) 92vw, (max-width: 1024px) 80vw, 560px"
+                quality={82}
+                className="object-cover"
+              />
+            ) : (
+              <div className="absolute inset-0 bg-gradient-to-br from-brand-700/40 via-ink-800 to-ink-900">
+                <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_30%,rgba(16,185,129,0.18),transparent_55%)]" />
+                <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_75%,rgba(255,255,255,0.06),transparent_55%)]" />
+                <span
+                  aria-hidden="true"
+                  className="absolute inset-0 grid place-items-center text-[140px] opacity-25"
+                >
+                  🚗
+                </span>
+              </div>
+            )}
             {/* Subtle overlay to blend top/bottom edges with the dark UI */}
             <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-black/10" />
             <span className="absolute left-4 top-4 chip !bg-black/70 sm:!bg-black/50 sm:backdrop-blur-md">

@@ -1,18 +1,33 @@
+import fs from "node:fs";
+import path from "node:path";
 import Image from "next/image";
 import Reveal from "./Reveal";
 import { SparklesIcon } from "./Icon";
+
+// ─────────────────────────────────────────────────────────────────────────
+//  BeforeAfter — bloc "avant/après" Auto.
+//
+//  Détecte automatiquement les vraies photos clients si elles existent dans
+//  /public/avant-apres/, sinon affiche un placeholder gradient cohérent.
+//
+//  Fichiers attendus :
+//   /public/avant-apres/siegeavant.webp + siegeapres.webp
+//   /public/avant-apres/tapisavant.webp + tapisapres.webp
+//   /public/avant-apres/tableauavant.webp + tableauapres.webp
+//   /public/avant-apres/carrosserieavant.webp + carrosserieapres.webp
+//
+//  Si une photo manque (workflow d'upload sur VPS), le placeholder gradient
+//  prend le relais — pas de broken image dans la page.
+// ─────────────────────────────────────────────────────────────────────────
 
 type Pair = {
   title: string;
   description: string;
   beforeLabel: string;
   afterLabel: string;
-  /** Couleurs du placeholder Avant si l'image n'est pas encore en place */
   gradient: string;
-  /** Chemin de la photo "avant" — public/avant-apres/...webp */
-  beforeImage?: string;
-  /** Chemin de la photo "après" — public/avant-apres/...webp */
-  afterImage?: string;
+  /** Nom de fichier sans extension (cherché dans /public/avant-apres/) */
+  imageStem: string;
 };
 
 const PAIRS: Pair[] = [
@@ -22,8 +37,7 @@ const PAIRS: Pair[] = [
     beforeLabel: "Sièges tachés",
     afterLabel: "Sièges nettoyés",
     gradient: "from-amber-700/60 to-amber-900/60",
-    beforeImage: "/avant-apres/siegeavant.webp",
-    afterImage: "/avant-apres/siegeapres.webp",
+    imageStem: "siege",
   },
   {
     title: "Moquette & tapis",
@@ -31,8 +45,7 @@ const PAIRS: Pair[] = [
     beforeLabel: "Tapis sales",
     afterLabel: "Tapis propres",
     gradient: "from-stone-600/60 to-stone-900/60",
-    beforeImage: "/avant-apres/tapisavant.webp",
-    afterImage: "/avant-apres/tapisapres.webp",
+    imageStem: "tapis",
   },
   {
     title: "Tableau de bord",
@@ -40,8 +53,7 @@ const PAIRS: Pair[] = [
     beforeLabel: "Tableau poussiéreux",
     afterLabel: "Intérieur propre",
     gradient: "from-slate-600/60 to-slate-900/60",
-    beforeImage: "/avant-apres/tableauavant.webp",
-    afterImage: "/avant-apres/tableauapres.webp",
+    imageStem: "tableau",
   },
   {
     title: "Carrosserie",
@@ -49,12 +61,33 @@ const PAIRS: Pair[] = [
     beforeLabel: "Extérieur terne",
     afterLabel: "Extérieur brillant",
     gradient: "from-blue-700/60 to-slate-900/60",
-    beforeImage: "/avant-apres/carrosserieavant.webp",
-    afterImage: "/avant-apres/carrosserieapres.webp",
+    imageStem: "carrosserie",
   },
 ];
 
+const EXT_ORDER = ["webp", "jpg", "jpeg", "png"] as const;
+const PHOTO_DIR = path.join(process.cwd(), "public", "avant-apres");
+
+/** Cherche le fichier {stem}{suffix}.{ext} dans /public/avant-apres/. */
+function findPhoto(stem: string, suffix: "avant" | "apres"): string | null {
+  for (const ext of EXT_ORDER) {
+    const filename = `${stem}${suffix}.${ext}`;
+    const full = path.join(PHOTO_DIR, filename);
+    if (fs.existsSync(full)) {
+      return `/avant-apres/${filename}`;
+    }
+  }
+  return null;
+}
+
 export default function BeforeAfter() {
+  // Résolution au build/render : si l'image n'est pas dans /public/,
+  // le placeholder gradient prend le relais (graceful degradation).
+  const pairs = PAIRS.map((p) => ({
+    ...p,
+    beforeImage: findPhoto(p.imageStem, "avant"),
+    afterImage: findPhoto(p.imageStem, "apres"),
+  }));
   return (
     <section id="avant-apres" className="relative py-14 sm:py-24 lg:py-28">
       <div className="container-x">
@@ -72,7 +105,7 @@ export default function BeforeAfter() {
         </Reveal>
 
         <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-2">
-          {PAIRS.map((p, i) => (
+          {pairs.map((p, i) => (
             <Reveal key={p.title} delay={i * 80}>
               <BeforeAfterCard pair={p} />
             </Reveal>
@@ -83,7 +116,12 @@ export default function BeforeAfter() {
   );
 }
 
-function BeforeAfterCard({ pair }: { pair: Pair }) {
+type ResolvedPair = Pair & {
+  beforeImage: string | null;
+  afterImage: string | null;
+};
+
+function BeforeAfterCard({ pair }: { pair: ResolvedPair }) {
   return (
     <div className="group overflow-hidden rounded-3xl border border-white/10 bg-white/[0.03] transition hover:border-white/20">
       <div className="grid grid-cols-2 gap-px bg-white/5">
@@ -91,14 +129,14 @@ function BeforeAfterCard({ pair }: { pair: Pair }) {
           label={pair.beforeLabel}
           tone="before"
           gradient={pair.gradient}
-          image={pair.beforeImage}
+          image={pair.beforeImage ?? undefined}
           alt={`${pair.title} — avant nettoyage StrasClean`}
         />
         <Tile
           label={pair.afterLabel}
           tone="after"
           gradient={pair.gradient}
-          image={pair.afterImage}
+          image={pair.afterImage ?? undefined}
           alt={`${pair.title} — après nettoyage StrasClean`}
         />
       </div>

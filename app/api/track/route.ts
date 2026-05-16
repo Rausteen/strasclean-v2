@@ -2,6 +2,9 @@ import { NextRequest, NextResponse } from "next/server";
 import { recordVisit, recordEvent } from "@/lib/db";
 import { parseUserAgent, classifySource } from "@/lib/ua";
 import { isMaisonPathname } from "@/lib/section";
+import { checkRateLimit } from "@/lib/ratelimit";
+
+const MAX_PAYLOAD_BYTES = 8 * 1024; // 8 KB max — un événement track tient en <1 KB
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -28,14 +31,42 @@ function parseQueryParams(query: string): Record<string, string> {
 }
 
 export async function POST(req: NextRequest) {
+  const ip = getClientIp(req);
+
+  // Rate limit anti-spam : 100 events/min par IP. Largement au-dessus du
+  // trafic légitime (pageview + clicks ≈ 5-10 events / session), bloque
+  // les bots qui voudraient saturer la DB.
+  const rl = checkRateLimit(ip, {
+    bucket: "track",
+    maxAttempts: 100,
+    windowMs: 60 * 1000,
+    lockoutMs: 5 * 60 * 1000,
+  });
+  if (!rl.allowed) {
+    return NextResponse.json(
+      { ok: false, error: "Rate limit exceeded" },
+      {
+        status: 429,
+        headers: { "Retry-After": String(rl.retryAfterSeconds) },
+      },
+    );
+  }
+
+  // Validation de la taille du payload (header Content-Length)
+  const contentLength = req.headers.get("content-length");
+  if (contentLength && parseInt(contentLength, 10) > MAX_PAYLOAD_BYTES) {
+    return NextResponse.json(
+      { ok: false, error: "Payload too large" },
+      { status: 413 },
+    );
+  }
+
   let payload: Record<string, unknown>;
   try {
     payload = await req.json();
   } catch {
     return NextResponse.json({ ok: false }, { status: 400 });
   }
-
-  const ip = getClientIp(req);
   const ua = req.headers.get("user-agent");
   const parsed = parseUserAgent(ua);
   const type = String(payload.type || "");

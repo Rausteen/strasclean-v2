@@ -1,11 +1,14 @@
 import { NextRequest, NextResponse } from "next/server";
-import { isAuthenticated } from "@/lib/auth";
+import { isAuthenticated, checkSameOrigin } from "@/lib/auth";
 import { setReviewTag, clearReviewTag } from "@/lib/db";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
 export async function POST(req: NextRequest) {
+  if (!checkSameOrigin(req)) {
+    return NextResponse.json({ ok: false, error: "Forbidden" }, { status: 403 });
+  }
   if (!(await isAuthenticated())) {
     return NextResponse.json(
       { ok: false, error: "Unauthorized" },
