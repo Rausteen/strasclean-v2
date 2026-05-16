@@ -45,7 +45,7 @@ export const PLANS: Plan[] = [
       "Déodorisation professionnelle",
     ],
     ctaMessage:
-      "Bonjour StrasClean 👋 Je voudrais réserver la formule Confort dès 39 € pour un nettoyage intérieur. Je suis à [ville/quartier]. Quels sont vos prochains créneaux ? Je peux envoyer des photos si besoin.",
+      "Bonjour StrasClean 👋 Je voudrais réserver la formule Confort dès 39 €. Quels sont vos prochains créneaux ?",
     accent: "from-white/10 to-white/0",
   },
   {
@@ -65,7 +65,7 @@ export const PLANS: Plan[] = [
       "Désinfection bactéricide + désodorisation renforcée",
     ],
     ctaMessage:
-      "Bonjour StrasClean 👋 Je voudrais réserver la formule Premium dès 79 € pour un nettoyage complet en profondeur. Je suis à [ville/quartier]. Quels sont vos prochains créneaux ? Je peux envoyer des photos si besoin.",
+      "Bonjour StrasClean 👋 Je voudrais réserver la formule Premium dès 79 €. Quels sont vos prochains créneaux ?",
     accent: "from-brand-500/30 to-brand-500/0",
   },
   {
@@ -85,7 +85,7 @@ export const PLANS: Plan[] = [
       "Parfum de finition",
     ],
     ctaMessage:
-      "Bonjour StrasClean 👋 Je voudrais réserver la formule Luxury Detailing dès 119 € pour un nettoyage intérieur + extérieur. Je suis à [ville/quartier]. Quels sont vos prochains créneaux ? Je peux envoyer des photos si besoin.",
+      "Bonjour StrasClean 👋 Je voudrais réserver la formule Luxury Detailing dès 119 €. Quels sont vos prochains créneaux ?",
     accent: "from-violet-500/20 to-violet-500/0",
   },
 ];

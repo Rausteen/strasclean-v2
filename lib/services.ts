@@ -46,19 +46,9 @@ export type Service = {
    * Message WhatsApp pré-rempli (la ville est ajoutée automatiquement à la fin
    * via les wrappers ServiceDetail/ServiceCityHero). Ne PAS terminer par un
    * point ni par "à Strasbourg" — le wrapper construit :
-   *   `${ctaMessage} à {Ville}${ctaCitySuffix ?? ""}. Quels sont vos prochains créneaux ?${ctaSuffix ? ` ${ctaSuffix}` : ""}`
+   *   `${ctaMessage} à {Ville}. Quels sont vos prochains créneaux ?`
    */
   ctaMessage: string;
-  /**
-   * Petit suffixe inséré JUSTE après la ville et avant le point — utile pour
-   * écrire "à Strasbourg, à domicile" (ctaCitySuffix = ", à domicile").
-   */
-  ctaCitySuffix?: string;
-  /**
-   * Phrase optionnelle ajoutée après "Quels sont vos prochains créneaux ?"
-   * (typiquement "Je peux envoyer des photos…" ou "Véhicule : [modèle].").
-   */
-  ctaSuffix?: string;
 };
 
 export const SERVICES: Service[] = [
@@ -110,7 +100,6 @@ export const SERVICES: Service[] = [
       },
     ],
     ctaMessage: "Bonjour StrasClean 👋 Je voudrais un shampouinage des sièges de ma voiture",
-    ctaSuffix: "Je peux envoyer des photos des sièges.",
   },
 
   {
@@ -161,7 +150,6 @@ export const SERVICES: Service[] = [
       },
     ],
     ctaMessage: "Bonjour StrasClean 👋 Je voudrais réserver un detailing auto complet",
-    ctaSuffix: "Je peux envoyer des photos du véhicule.",
   },
 
   {
@@ -211,9 +199,7 @@ export const SERVICES: Service[] = [
         a: "Tout dépend de la fréquence des trajets. Beaucoup de clients font un gros traitement 1 à 2 fois par an, avec un entretien plus léger entre les deux.",
       },
     ],
-    ctaMessage:
-      "Bonjour StrasClean 👋 Ma voiture est pleine de poils d'animaux, je voudrais un traitement complet",
-    ctaSuffix: "Je peux envoyer des photos.",
+    ctaMessage: "Bonjour StrasClean 👋 Je voudrais un traitement poils d'animaux",
   },
 
   {
@@ -263,8 +249,7 @@ export const SERVICES: Service[] = [
         a: "Le nettoyage intérieur (Confort) est de l'entretien. La Premium ajoute un shampouinage complet des sièges et de la moquette — utile quand la voiture est très sale ou tachée.",
       },
     ],
-    ctaMessage: "Bonjour StrasClean 👋 Je voudrais un nettoyage intérieur de ma voiture",
-    ctaSuffix: "Véhicule : [modèle].",
+    ctaMessage: "Bonjour StrasClean 👋 Je voudrais un nettoyage intérieur",
   },
 
   {
@@ -314,8 +299,7 @@ export const SERVICES: Service[] = [
         a: "Comptez 1h15 à 2h pour un combiné intérieur + extérieur — on travaille en équipe de 2, donc deux fois plus rapide qu'un detailer solo.",
       },
     ],
-    ctaMessage: "Bonjour StrasClean 👋 Je voudrais un lavage complet de ma voiture",
-    ctaCitySuffix: ", à domicile",
+    ctaMessage: "Bonjour StrasClean 👋 Je voudrais un lavage complet à domicile",
   },
 
   // ─── 6. Lavage extérieur (entrée de gamme à 29 €) ──────────────────────
@@ -370,7 +354,7 @@ export const SERVICES: Service[] = [
         a: "Idéal toutes les 2-4 semaines pour garder une carrosserie présentable. Beaucoup de clients prennent un rendez-vous récurrent à ce tarif.",
       },
     ],
-    ctaMessage: "Bonjour StrasClean 👋 Je voudrais un lavage extérieur de ma voiture dès 29 €",
+    ctaMessage: "Bonjour StrasClean 👋 Je voudrais un lavage extérieur dès 29 €",
   },
 
   // ─── 7. Remise à neuf pour revente (129 €) ──────────────────────────────
@@ -427,9 +411,7 @@ export const SERVICES: Service[] = [
         a: "Le Luxury Detailing est un service haut de gamme généraliste. La Remise à neuf revente est ciblée sur les besoins d'un véhicule à vendre : polissage des optiques, conseils photos d'annonce, accent sur le rendu « impression de neuf ».",
       },
     ],
-    ctaMessage:
-      "Bonjour StrasClean 👋 Je vais mettre ma voiture en vente et je voudrais une préparation complète revente dès 129 €",
-    ctaSuffix: "Je peux envoyer des photos.",
+    ctaMessage: "Bonjour StrasClean 👋 Je voudrais une préparation revente dès 129 €",
   },
 ];
 

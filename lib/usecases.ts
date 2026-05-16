@@ -150,7 +150,7 @@ export const USE_CASES: UseCase[] = [
       },
     ],
     ctaMessage:
-      "Bonjour StrasClean 👋 Je transporte mon chien régulièrement et je voudrais un traitement complet poils d'animaux à Strasbourg. Quels sont vos prochains créneaux ? Je peux envoyer des photos de l'intérieur.",
+      "Bonjour StrasClean 👋 Je voudrais un traitement poils d'animaux à Strasbourg. Quels sont vos prochains créneaux ?",
   },
 
   // ─── 2. Enlever l'odeur de tabac ──────────────────────────────────────
@@ -248,7 +248,7 @@ export const USE_CASES: UseCase[] = [
       },
     ],
     ctaMessage:
-      "Bonjour StrasClean 👋 Ma voiture a une odeur de tabac persistante. Je voudrais un traitement complet à domicile à Strasbourg. Quels sont vos prochains créneaux ? Je peux vous envoyer quelques infos sur le véhicule.",
+      "Bonjour StrasClean 👋 Je voudrais traiter une odeur de tabac dans ma voiture à Strasbourg. Quels sont vos prochains créneaux ?",
   },
 
   // ─── 3. Préparer voiture pour revente ─────────────────────────────────
@@ -349,7 +349,7 @@ export const USE_CASES: UseCase[] = [
       },
     ],
     ctaMessage:
-      "Bonjour StrasClean 👋 Je vais mettre ma voiture en vente et je voudrais une préparation complète revente à domicile à Strasbourg. Quels sont vos prochains créneaux ? Je peux envoyer des photos pour un devis précis.",
+      "Bonjour StrasClean 👋 Je voudrais préparer ma voiture pour la revente à Strasbourg. Quels sont vos prochains créneaux ?",
   },
 
   // ─── 4. Enlever odeur de vomi ─────────────────────────────────────────
@@ -447,7 +447,7 @@ export const USE_CASES: UseCase[] = [
       },
     ],
     ctaMessage:
-      "Bonjour StrasClean 👋 J'ai eu un accident de vomi dans ma voiture et j'aurais besoin d'un traitement urgent à domicile à Strasbourg. Avez-vous un créneau rapide ? Je peux envoyer une photo.",
+      "Bonjour StrasClean 👋 J'ai eu un accident de vomi dans ma voiture. Avez-vous un créneau rapide ?",
   },
 
   // ─── 5. Nettoyer tache café sur siège ─────────────────────────────────
@@ -541,7 +541,7 @@ export const USE_CASES: UseCase[] = [
       },
     ],
     ctaMessage:
-      "Bonjour StrasClean 👋 J'ai renversé du café sur un siège et je voudrais un détachage à domicile à Strasbourg. Quels sont vos prochains créneaux ? Je peux envoyer une photo de la tache.",
+      "Bonjour StrasClean 👋 J'ai une tache de café sur un siège. Quels sont vos prochains créneaux ?",
   },
 
   // ─── 6. Enlever traces d'eau sur vitres ───────────────────────────────
@@ -639,7 +639,7 @@ export const USE_CASES: UseCase[] = [
       },
     ],
     ctaMessage:
-      "Bonjour StrasClean 👋 J'ai des traces blanches sur mes vitres / ma carrosserie. Pouvez-vous me dire si vous pouvez les retirer à domicile à Strasbourg ? Je peux envoyer des photos. Quels sont vos prochains créneaux ?",
+      "Bonjour StrasClean 👋 J'ai des traces blanches sur mes vitres / ma carrosserie. Quels sont vos prochains créneaux ?",
   },
 
   // ─── 7. Nettoyage SUV à domicile ──────────────────────────────────────
@@ -737,7 +737,7 @@ export const USE_CASES: UseCase[] = [
       },
     ],
     ctaMessage:
-      "Bonjour StrasClean 👋 J'ai un SUV et je voudrais un nettoyage complet à domicile à Strasbourg. Quels sont vos prochains créneaux ? Véhicule : [modèle].",
+      "Bonjour StrasClean 👋 Je voudrais un nettoyage complet pour mon SUV à Strasbourg. Quels sont vos prochains créneaux ?",
   },
 
   // ─── 8. Nettoyage utilitaire à domicile ───────────────────────────────
@@ -835,7 +835,7 @@ export const USE_CASES: UseCase[] = [
       },
     ],
     ctaMessage:
-      "Bonjour StrasClean 👋 J'ai un utilitaire pro et je voudrais un nettoyage complet avec facture. Quels sont vos prochains créneaux à Strasbourg ? Véhicule : [modèle].",
+      "Bonjour StrasClean 👋 Je voudrais un nettoyage complet pour mon utilitaire pro à Strasbourg. Quels sont vos prochains créneaux ?",
   },
 
   // ─── 9. Nettoyage voiture électrique ──────────────────────────────────
@@ -933,7 +933,7 @@ export const USE_CASES: UseCase[] = [
       },
     ],
     ctaMessage:
-      "Bonjour StrasClean 👋 J'ai une voiture électrique et je voudrais un nettoyage complet adapté à domicile à Strasbourg. Quels sont vos prochains créneaux ?",
+      "Bonjour StrasClean 👋 Je voudrais un nettoyage complet pour ma voiture électrique à Strasbourg. Quels sont vos prochains créneaux ?",
   },
 
   // ─── 10. Nettoyage voiture de luxe ────────────────────────────────────
@@ -1039,7 +1039,7 @@ export const USE_CASES: UseCase[] = [
       },
     ],
     ctaMessage:
-      "Bonjour StrasClean 👋 J'ai une voiture haut de gamme et je voudrais un detailing premium à domicile à Strasbourg. Quels sont vos prochains créneaux ? Je peux envoyer des photos du véhicule.",
+      "Bonjour StrasClean 👋 Je voudrais un detailing premium pour ma voiture haut de gamme à Strasbourg. Quels sont vos prochains créneaux ?",
   },
 
   // ─── 11. Page prix consolidée ─────────────────────────────────────────
@@ -1152,7 +1152,7 @@ export const USE_CASES: UseCase[] = [
       },
     ],
     ctaMessage:
-      "Bonjour StrasClean 👋 Je voudrais un devis précis pour le nettoyage de ma voiture à domicile à Strasbourg. Véhicule : [modèle] — État : [léger / moyen / très sale]. Je peux envoyer des photos.",
+      "Bonjour StrasClean 👋 Je voudrais un devis précis pour le nettoyage de ma voiture. Quels sont vos prochains créneaux ?",
   },
 ];
 

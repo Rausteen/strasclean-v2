@@ -77,7 +77,7 @@ export default function PricingSection() {
               </div>
               <a
                 href={waLink(
-                  "Bonjour StrasClean 👋 Je voudrais ajouter une option à ma formule : [poils d'animaux / taches / odeur / autre]. Pouvez-vous me confirmer le supplément et vos prochains créneaux ?"
+                  "Bonjour StrasClean 👋 Je voudrais ajouter une option à ma formule. Pouvez-vous me conseiller ?"
                 )}
                 target="_blank"
                 rel="noopener noreferrer"
