@@ -9,12 +9,12 @@ import { CheckIcon, WhatsAppIcon, ArrowRightIcon, PawIcon, SprayIcon } from "./I
 // Options ciblées sur l'état du véhicule (la taille est déjà gérée par le
 // bandeau VehiclePricing affiché plus haut → on ne la duplique pas ici).
 const OPTIONS = [
-  { icon: <PawIcon size={16} />, label: "Poils d'animaux" },
-  { icon: <SprayIcon size={16} />, label: "Taches tenaces" },
-  { icon: <SprayIcon size={16} />, label: "Sièges très sales" },
-  { icon: <SprayIcon size={16} />, label: "Coffre très sale" },
-  { icon: <SprayIcon size={16} />, label: "Traitement odeurs" },
-  { icon: <SprayIcon size={16} />, label: "Désinfection renforcée" },
+  { icon: <PawIcon size={16} />, label: "Poils d'animaux", price: "+15 à 30 €" },
+  { icon: <SprayIcon size={16} />, label: "Taches tenaces", price: "+10 à 20 €" },
+  { icon: <SprayIcon size={16} />, label: "Sièges très sales", price: "+15 à 25 €" },
+  { icon: <SprayIcon size={16} />, label: "Coffre très sale", price: "+10 à 20 €" },
+  { icon: <SprayIcon size={16} />, label: "Traitement odeurs", price: "+20 à 40 €" },
+  { icon: <SprayIcon size={16} />, label: "Désinfection renforcée", price: "+10 à 15 €" },
 ];
 
 export default function PricingSection() {
@@ -85,14 +85,17 @@ export default function PricingSection() {
               </a>
             </div>
 
-            <ul className="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-3">
+            <ul className="mt-6 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
               {OPTIONS.map((o) => (
                 <li
                   key={o.label}
-                  className="flex items-center gap-3 rounded-xl border border-white/10 bg-white/[0.03] px-4 py-3 text-sm text-white/85"
+                  className="flex items-center gap-3 rounded-xl border border-white/10 bg-white/[0.03] px-4 py-3"
                 >
-                  <span className="text-brand-400">{o.icon}</span>
-                  {o.label}
+                  <span className="text-brand-400 shrink-0">{o.icon}</span>
+                  <span className="flex-1 text-sm text-white/85">{o.label}</span>
+                  <span className="shrink-0 rounded-full bg-brand-500/15 px-2 py-0.5 text-xs font-semibold text-brand-200">
+                    {o.price}
+                  </span>
                 </li>
               ))}
             </ul>

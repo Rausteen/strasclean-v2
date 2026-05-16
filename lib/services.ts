@@ -297,6 +297,119 @@ export const SERVICES: Service[] = [
     ],
     ctaMessage: "Bonjour StrasClean, je souhaite un lavage de ma voiture à mon domicile",
   },
+
+  // ─── 6. Lavage extérieur (entrée de gamme à 29 €) ──────────────────────
+  {
+    slug: "lavage-exterieur-voiture",
+    name: "Lavage extérieur voiture",
+    shortName: "Lavage extérieur",
+    emoji: "🚿",
+    shortDesc:
+      "Lavage carrosserie à la main, à domicile — la formule la plus accessible pour garder votre voiture propre.",
+    introTemplate: (c) =>
+      `À ${c.name}, StrasClean vient laver la carrosserie de votre véhicule à la main, directement à votre domicile. C'est notre prestation d'entrée — rapide, soignée et idéale pour un entretien régulier sans engagement.`,
+    duration: "45 min à 1h",
+    priceFrom: "29",
+    recommendedPlanId: "luxury",
+    whatsIncluded: [
+      "Pré-lavage à la mousse active",
+      "Lavage manuel carrosserie à la microfibre",
+      "Rinçage et séchage sans trace",
+      "Nettoyage des bas de caisse",
+      "Méthode 2 seaux : zéro risque de micro-rayure",
+    ],
+    whyChoose: [
+      {
+        title: "Le tarif le plus accessible",
+        desc: "L'entrée de gamme StrasClean — idéale pour un entretien régulier sans budget conséquent.",
+      },
+      {
+        title: "Lavage main, jamais en rouleaux",
+        desc: "Gants en microfibre + méthode 2 seaux : impossible de rayer la peinture.",
+      },
+      {
+        title: "Parfait tous les 15-30 jours",
+        desc: "Le rythme idéal pour garder une voiture présentable au quotidien.",
+      },
+    ],
+    faq: [
+      {
+        q: "Quelle différence avec le « Lavage à domicile » à 39 € ?",
+        a: "La version à 29 € est la plus basique : carrosserie uniquement. Le Lavage à domicile à 39 € ajoute le nettoyage détaillé des jantes et des vitres extérieures pour un rendu plus complet.",
+      },
+      {
+        q: "Inclut-il les jantes et les vitres ?",
+        a: "Non, pour rester au tarif d'entrée. Pour des jantes et vitres traitées, choisissez la formule Lavage à domicile à 39 €.",
+      },
+      {
+        q: "Faut-il un point d'eau sur place ?",
+        a: "Selon le lieu, on peut être autonome en eau ou utiliser un point d'eau extérieur. On vous le confirme à la réservation.",
+      },
+      {
+        q: "Combien de fois par mois ?",
+        a: "Idéal toutes les 2-4 semaines pour garder une carrosserie présentable. Beaucoup de clients prennent un rendez-vous récurrent à ce tarif.",
+      },
+    ],
+    ctaMessage: "Bonjour StrasClean, je souhaite un lavage extérieur de ma voiture (à partir de 29 €)",
+  },
+
+  // ─── 7. Remise à neuf pour revente (129 €) ──────────────────────────────
+  {
+    slug: "remise-a-neuf-voiture-revente",
+    name: "Remise à neuf pour revente",
+    shortName: "Remise à neuf revente",
+    emoji: "💰",
+    shortDesc:
+      "Préparation complète avant mise en vente — vous gagnez 5 à 15% sur le prix final.",
+    introTemplate: (c) =>
+      `Vous mettez votre voiture en vente ? À ${c.name}, StrasClean prépare votre véhicule pour qu'il sorte du lot sur les annonces. Lavage extérieur + décontamination + polissage léger + shampouinage complet + conseils photos. Une intervention qui rapporte en moyenne 800 à 1 200 € sur le prix de vente final.`,
+    duration: "4h à 5h",
+    priceFrom: "129",
+    recommendedPlanId: "luxury",
+    whatsIncluded: [
+      "Lavage extérieur main + décontamination carrosserie",
+      "Polissage léger des optiques jaunies",
+      "Shampouinage complet de l'habitacle (sièges, moquette, plafonnier)",
+      "Dressing des plastiques intérieurs et extérieurs",
+      "Vitres intérieures et extérieures cristal",
+      "Désodorisation finale (impression de neuf)",
+      "Conseils photos d'annonce inclus",
+    ],
+    whyChoose: [
+      {
+        title: "ROI ×6 à ×10",
+        desc: "L'investissement de 129 € rapporte régulièrement 800 € à 2 000 € sur le prix de vente final.",
+      },
+      {
+        title: "Vente 2× plus rapide",
+        desc: "Sur les clients qui ont vendu après notre intervention : durée moyenne divisée par 2.",
+      },
+      {
+        title: "Conseils photos inclus",
+        desc: "On vous indique gratuitement les meilleurs angles + heure de prise de vue pour maximiser vos annonces.",
+      },
+    ],
+    faq: [
+      {
+        q: "Quel délai avant de prendre les photos d'annonce ?",
+        a: "On termine en fin de journée, prenez les photos le lendemain matin entre 9h et 11h (la meilleure lumière). On vous conseille les angles à privilégier.",
+      },
+      {
+        q: "Quel ROI je peux espérer ?",
+        a: "Sur les derniers clients revente : en moyenne +800 à 1 200 € sur le prix de vente final, durée de vente divisée par 2 versus une voiture non préparée.",
+      },
+      {
+        q: "Pour un véhicule très usé, ça vaut le coup ?",
+        a: "Encore plus que pour un véhicule récent. Plus la voiture est marquée au départ, plus l'effet « avant-après » est spectaculaire — c'est sur ces véhicules qu'on a vu les plus gros écarts (jusqu'à +2 500 € sur des SUV âgés).",
+      },
+      {
+        q: "Différence avec la formule Luxury Detailing à 119 € ?",
+        a: "Le Luxury Detailing est un service haut de gamme généraliste. La Remise à neuf revente est ciblée sur les besoins d'un véhicule à vendre : polissage des optiques, conseils photos d'annonce, accent sur le rendu « impression de neuf ».",
+      },
+    ],
+    ctaMessage:
+      "Bonjour StrasClean, je vais mettre ma voiture en vente, je souhaite une remise à neuf complète",
+  },
 ];
 
 /** Construit l'URL d'une page service × ville */
