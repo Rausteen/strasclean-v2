@@ -104,24 +104,26 @@ export default function PricingSection() {
           </div>
         </Reveal>
 
-        {/* Prestations à la carte — clairement séparées des Formules.
-            Pour les visiteurs qui ne veulent QU'UNE prestation précise. */}
+        {/* Prestations complémentaires — uniquement les prestations
+            qui sortent du cadre des formules (extérieur seul + revente). */}
         <Reveal>
           <div className="mt-8 rounded-3xl border border-white/10 bg-white/[0.03] p-6 sm:p-8">
             <div className="flex flex-col gap-1 sm:flex-row sm:items-end sm:justify-between">
               <div>
                 <h3 className="h-display text-xl font-semibold text-white sm:text-2xl">
-                  Prestations à la carte
+                  Prestations complémentaires
                 </h3>
                 <p className="mt-1 text-sm text-white/60">
-                  Vous voulez juste UNE prestation précise (sans formule complète) ?
-                  Voici les 7 services à l'unité, à domicile.
+                  Deux prestations en plus des formules — pour un besoin
+                  précis : extérieur uniquement, ou remise à neuf pour la revente.
                 </p>
               </div>
             </div>
 
-            <ul className="mt-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-              {SERVICES.map((s) => (
+            <ul className="mt-5 grid gap-3 sm:grid-cols-2">
+              {SERVICES.filter((s) =>
+                ["lavage-exterieur-voiture", "remise-a-neuf-voiture-revente"].includes(s.slug)
+              ).map((s) => (
                 <li key={s.slug}>
                   <Link
                     href={servicePath(s, DEFAULT_CITY)}
