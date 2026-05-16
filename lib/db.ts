@@ -88,6 +88,26 @@ function openDb(): Database.Database {
       tag TEXT NOT NULL,
       tagged_at INTEGER NOT NULL
     );
+
+    -- Cache persistant des avis Google. Google Places API ne renvoie que
+    -- les 5 derniers à chaque requête, mais ils varient dans le temps.
+    -- En accumulant ici, on a TOUS les avis qu'on a vus passer, et on
+    -- peut les filtrer par section (via review_tags) sans risque de
+    -- tomber à zéro sur une section quand les 5 derniers sont sur l'autre.
+    CREATE TABLE IF NOT EXISTS reviews (
+      id TEXT PRIMARY KEY,
+      author_name TEXT NOT NULL,
+      author_url TEXT,
+      profile_photo_url TEXT,
+      rating INTEGER NOT NULL,
+      relative_time_description TEXT,
+      text TEXT NOT NULL,
+      time INTEGER,
+      ingested_at INTEGER NOT NULL,
+      last_seen_at INTEGER NOT NULL
+    );
+    CREATE INDEX IF NOT EXISTS reviews_time ON reviews(time DESC);
+    CREATE INDEX IF NOT EXISTS reviews_rating ON reviews(rating);
   `);
 
   return db;
@@ -205,6 +225,104 @@ export function getReviewTagsMap(): Record<string, ReviewTagValue> {
   const out: Record<string, ReviewTagValue> = {};
   for (const r of rows) out[r.review_id] = r.tag;
   return out;
+}
+
+// ─── Cache persistant des avis Google ──────────────────────────────────
+//
+// Google Places API ne retourne que les 5 avis "vedettes" et la sélection
+// peut varier dans le temps. On accumule ici pour avoir l'historique
+// complet, puis on filtre par section côté pages.
+
+export type StoredReview = {
+  id: string;
+  author_name: string;
+  author_url: string | null;
+  profile_photo_url: string | null;
+  rating: number;
+  relative_time_description: string | null;
+  text: string;
+  time: number | null;
+  ingested_at: number;
+  last_seen_at: number;
+};
+
+const upsertReviewStmt = db.prepare(`
+  INSERT INTO reviews
+    (id, author_name, author_url, profile_photo_url, rating,
+     relative_time_description, text, time, ingested_at, last_seen_at)
+  VALUES
+    (@id, @author_name, @author_url, @profile_photo_url, @rating,
+     @relative_time_description, @text, @time, @now, @now)
+  ON CONFLICT(id) DO UPDATE SET
+    last_seen_at = @now,
+    -- On rafraîchit ces champs au cas où Google améliore une donnée
+    -- (ex: ajout d'une photo de profil ultérieurement)
+    author_url = COALESCE(excluded.author_url, reviews.author_url),
+    profile_photo_url = COALESCE(excluded.profile_photo_url, reviews.profile_photo_url),
+    relative_time_description = COALESCE(excluded.relative_time_description, reviews.relative_time_description)
+`);
+
+/** Upsert d'un lot d'avis. Renvoie le nombre de nouveaux avis insérés.
+ *  Idempotent : appeler avec les mêmes données ne crée pas de duplicate. */
+export function upsertReviews(
+  reviews: {
+    id: string;
+    author_name: string;
+    author_url?: string | null;
+    profile_photo_url?: string | null;
+    rating: number;
+    relative_time_description?: string | null;
+    text: string;
+    time?: number | null;
+  }[],
+): number {
+  if (reviews.length === 0) return 0;
+  const now = Date.now();
+  let inserted = 0;
+  // Transaction pour batch insert performant
+  const insertMany = db.transaction((items: typeof reviews) => {
+    for (const r of items) {
+      const before = upsertReviewStmt
+        .run({
+          id: r.id,
+          author_name: r.author_name,
+          author_url: r.author_url ?? null,
+          profile_photo_url: r.profile_photo_url ?? null,
+          rating: r.rating,
+          relative_time_description: r.relative_time_description ?? null,
+          text: r.text,
+          time: r.time ?? null,
+          now,
+        });
+      // changes = 1 si nouveau (INSERT), 1 si conflit UPDATE — on ne peut
+      // pas distinguer simplement. On compte les inserts en pré-vérifiant.
+      if (before.changes > 0) inserted++;
+    }
+  });
+  insertMany(reviews);
+  return inserted;
+}
+
+/** Renvoie tous les avis accumulés, triés par date d'avis décroissante.
+ *  Ne filtre PAS par note minimum — le filtre 4+ étoiles se fait côté
+ *  reviews.ts pour rester cohérent avec l'ancien comportement. */
+export function getStoredReviews(): StoredReview[] {
+  return db
+    .prepare(
+      `SELECT * FROM reviews
+       ORDER BY
+         CASE WHEN time IS NULL THEN 1 ELSE 0 END,
+         time DESC,
+         ingested_at DESC`,
+    )
+    .all() as StoredReview[];
+}
+
+/** Compte total des avis stockés (utile pour debug / admin). */
+export function countStoredReviews(): number {
+  return (
+    db.prepare(`SELECT COUNT(*) as c FROM reviews`).get() as { c: number }
+  ).c;
 }
 
 /** Renvoie la clause SQL "AND ip NOT IN (...)" + params à passer. Vide si aucune IP cachée. */

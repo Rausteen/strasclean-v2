@@ -165,26 +165,75 @@ async function fetchLegacy(placeId: string, apiKey: string): Promise<PlaceData> 
   };
 }
 
+// Import différé pour éviter de bundler better-sqlite3 côté client si
+// quelqu'un essayait d'importer ce module ailleurs.
+import { upsertReviews, getStoredReviews } from "./db";
+
 export async function getGooglePlaceData(): Promise<PlaceData> {
   const apiKey = process.env.GOOGLE_PLACES_API_KEY;
   const placeId = process.env.GOOGLE_PLACE_ID;
-  if (!apiKey || !placeId) return EMPTY;
+  if (!apiKey || !placeId) {
+    // Pas d'API key : on tente quand même de retourner les avis déjà
+    // stockés en DB (utile en dev / build sans .env).
+    return {
+      ...EMPTY,
+      reviews: getStoredFiltered(),
+    };
+  }
 
   try {
     let data = await fetchV1(placeId, apiKey);
     if (data.reviews.length === 0) {
       data = await fetchLegacy(placeId, apiKey);
     }
+
+    // Persistance : on accumule TOUS les avis qu'on a vu passer (Google
+    // ne renvoie que les 5 derniers à chaque requête, le set varie dans
+    // le temps). Idempotent — appel répété n'inflate pas la DB.
+    if (data.reviews.length > 0) {
+      try {
+        upsertReviews(data.reviews);
+      } catch {
+        // En cas d'erreur DB, on continue avec les avis en mémoire (degraded)
+      }
+    }
+
     return {
       ...data,
-      // On retourne tous les avis 4★+ ; le filtre par section (auto/maison)
-      // et le slice final sont appliqués au moment du rendu via filterReviewsBySection().
-      reviews: data.reviews.filter((r) => r.rating >= 4),
+      // On retourne l'union de tous les avis vus historiquement (filtrés
+      // ≥4★) — les composants en aval appliquent filterReviewsBySection()
+      // pour ne montrer que les avis pertinents à la section.
+      reviews: getStoredFiltered(),
       // URL publique de la fiche pour le CTA "voir tous les avis"
       profileUrl: `https://www.google.com/maps/place/?q=place_id:${placeId}`,
     };
   } catch {
-    return EMPTY;
+    // Erreur réseau Google : on continue avec les avis déjà stockés
+    return {
+      reviews: getStoredFiltered(),
+      profileUrl: `https://www.google.com/maps/place/?q=place_id:${placeId}`,
+    };
+  }
+}
+
+/** Renvoie tous les avis stockés ≥4★ depuis la DB, au format GoogleReview. */
+function getStoredFiltered(): GoogleReview[] {
+  try {
+    return getStoredReviews()
+      .filter((r) => r.rating >= 4)
+      .map((r) => ({
+        id: r.id,
+        author_name: r.author_name,
+        author_url: r.author_url ?? undefined,
+        profile_photo_url: r.profile_photo_url ?? undefined,
+        rating: r.rating,
+        relative_time_description: r.relative_time_description ?? undefined,
+        text: r.text,
+        time: r.time ?? undefined,
+      }));
+  } catch {
+    // Si la DB n'est pas accessible (build SSG sans data/), on retourne vide
+    return [];
   }
 }
 
