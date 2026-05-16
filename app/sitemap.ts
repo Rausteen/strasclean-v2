@@ -77,9 +77,9 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "monthly" as const,
       priority: 0.8,
     })),
-    // Page "Qui sommes-nous" Maison (E-E-A-T pour Google)
+    // Page "Qui sommes-nous" globale (E-E-A-T pour Google, couvre Auto + Maison)
     {
-      url: `${SITE.url}/strasclean-maison/qui-sommes-nous`,
+      url: `${SITE.url}/qui-sommes-nous`,
       lastModified: now,
       changeFrequency: "monthly" as const,
       priority: 0.7,
