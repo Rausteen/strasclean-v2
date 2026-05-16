@@ -35,22 +35,20 @@ export function isMaisonPathname(pathname: string): boolean {
   return MAISON_SLUG_PREFIXES.some((p) => slug.startsWith(p));
 }
 
-/** Sections accessibles via ancres sur la home Auto + lien Qui sommes-nous global */
+/** Sections accessibles via ancres sur la home Auto */
 export const NAV_AUTO = [
   { href: "/#formules", label: "Formules" },
   { href: "/#avant-apres", label: "Avant / Après" },
   { href: "/#fonctionnement", label: "Comment ça marche" },
   { href: "/#avis", label: "Avis" },
   { href: "/#faq", label: "FAQ" },
-  { href: "/qui-sommes-nous", label: "À propos" },
 ];
 
-/** Sections accessibles via ancres sur la home Maison + lien Qui sommes-nous global */
+/** Sections accessibles via ancres sur la home Maison */
 export const NAV_MAISON = [
   { href: "/strasclean-maison#prestations", label: "Prestations" },
   { href: "/strasclean-maison#avant-apres", label: "Avant / Après" },
   { href: "/strasclean-maison#process", label: "Comment ça marche" },
   { href: "/strasclean-maison#avis", label: "Avis" },
   { href: "/strasclean-maison#faq", label: "FAQ" },
-  { href: "/qui-sommes-nous", label: "À propos" },
 ];
