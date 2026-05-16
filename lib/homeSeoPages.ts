@@ -449,9 +449,26 @@ export const HOME_SEO_PAGES: HomeService[] = [
       { label: "Fauteuil 1 place", price: "39 €" },
       { label: "Tabouret de bar", price: "12 €" },
       {
-        label: "Cuir (toutes pièces)",
-        price: "+ 5 à 10 €",
-        note: "Selon taille de la pièce",
+        label: "Cuir — chaise unique / tabouret",
+        price: "+ 5 €",
+        note: "Nettoyage pH-neutre + nutrition",
+      },
+      {
+        label: "Cuir — fauteuil 1 place",
+        price: "+ 10 €",
+      },
+      {
+        label: "Cuir — lot 4 chaises",
+        price: "+ 15 €",
+        note: "≈ 3,75 €/chaise",
+      },
+      {
+        label: "Cuir — lot 6 chaises",
+        price: "+ 20 €",
+      },
+      {
+        label: "Cuir — lot 8 chaises",
+        price: "+ 25 €",
       },
       {
         label: "Lot pro (10+ pièces)",

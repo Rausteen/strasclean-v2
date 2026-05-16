@@ -432,12 +432,15 @@ export const HOME_SERVICES: HomeService[] = [
       { label: "Chaise unique", price: "12-15 €" },
       { label: "Lot de 4 chaises", price: "49 €" },
       { label: "Lot de 6 chaises", price: "69 €" },
+      { label: "Lot de 8 chaises", price: "89 €" },
       { label: "Fauteuil 1 place", price: "39 €" },
       { label: "Tabouret de bar", price: "12 €" },
+      { label: "Cuir — chaise ou tabouret", price: "+ 5 €" },
+      { label: "Cuir — fauteuil", price: "+ 10 €" },
       {
-        label: "Cuir (toutes pièces)",
-        price: "+ 5 à 10 €",
-        note: "Selon taille",
+        label: "Cuir — lot 4 à 8 chaises",
+        price: "+ 15 à 25 €",
+        note: "Selon taille du lot",
       },
       {
         label: "Lot pro (10+ pièces)",

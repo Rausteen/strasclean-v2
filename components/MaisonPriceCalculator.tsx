@@ -21,7 +21,12 @@ type Variant = {
 type Option = {
   id: string;
   label: string;
+  /** Prix par défaut (utilisé si pas de priceByVariant correspondant) */
   price: number;
+  /** Tarification spécifique au variant choisi.
+   *  Ex pour le cuir sur chaises : varie selon lot (4/6/8) car le coût
+   *  produit + temps scale avec le nombre de pièces. */
+  priceByVariant?: Record<string, number>;
   note?: string;
 };
 
@@ -91,7 +96,20 @@ const SERVICES: ServiceDef[] = [
       { id: "tabouret", label: "Tabouret de bar", price: 12 },
     ],
     options: [
-      { id: "cuir", label: "Cuir (toutes pièces)", price: 8 },
+      {
+        id: "cuir",
+        label: "Cuir (pH-neutre + nutrition)",
+        price: 5, // fallback (chaise unique / tabouret)
+        priceByVariant: {
+          "chaise-1": 5,
+          "tabouret": 5,
+          "fauteuil": 10,
+          "lot-4": 15,
+          "lot-6": 20,
+          "lot-8": 25,
+        },
+        note: "Tarif selon taille du lot",
+      },
     ],
   },
 ];
@@ -111,21 +129,35 @@ export default function MaisonPriceCalculator() {
   );
 
   const isPerM2 = variant?.id === "XL"; // tapis très grand
+
+  /** Retourne le prix d'une option pour le variant sélectionné. Si l'option
+   *  définit un priceByVariant pour le variant courant, on l'utilise ;
+   *  sinon, fallback sur le prix par défaut. */
+  function resolveOptionPrice(o: Option, v: Variant): number {
+    return o.priceByVariant?.[v.id] ?? o.price;
+  }
+
   const result = useMemo(() => {
     if (!service || !variant) return null;
-    const optionsTotal = service.options
-      ? service.options
-          .filter((o) => activeOptions.has(o.id))
-          .reduce((sum, o) => sum + o.price, 0)
-      : 0;
+    const selectedOptions =
+      service.options?.filter((o) => activeOptions.has(o.id)) ?? [];
+    const optionsTotal = selectedOptions.reduce(
+      (sum, o) => sum + resolveOptionPrice(o, variant),
+      0,
+    );
+    // On enrichit chaque option sélectionnée avec son prix résolu pour
+    // l'affichage du détail dans le devis WhatsApp.
+    const selectedOptionsWithPrice = selectedOptions.map((o) => ({
+      ...o,
+      resolvedPrice: resolveOptionPrice(o, variant),
+    }));
     return {
       service,
       variant,
       base: variant.price,
       optionsTotal,
       total: variant.price + optionsTotal,
-      selectedOptions:
-        service.options?.filter((o) => activeOptions.has(o.id)) ?? [],
+      selectedOptions: selectedOptionsWithPrice,
     };
   }, [service, variant, activeOptions]);
 
@@ -149,7 +181,9 @@ export default function MaisonPriceCalculator() {
         buildWhatsappMessage(
           result.service.name,
           result.variant.label,
-          result.selectedOptions.map((o) => o.label),
+          result.selectedOptions.map(
+            (o) => `${o.label} (+${o.resolvedPrice} €)`,
+          ),
           result.total,
           isPerM2,
         ),
@@ -269,6 +303,12 @@ export default function MaisonPriceCalculator() {
               <div className="mt-3 grid gap-2 sm:grid-cols-2">
                 {service.options.map((o) => {
                   const active = activeOptions.has(o.id);
+                  // Prix affiché : résolu pour le variant sélectionné si dispo,
+                  // sinon prix par défaut (utile avant que l'utilisateur ait
+                  // choisi son variant).
+                  const displayedPrice = variant
+                    ? resolveOptionPrice(o, variant)
+                    : o.price;
                   return (
                     <button
                       key={o.id}
@@ -294,8 +334,13 @@ export default function MaisonPriceCalculator() {
                           {o.label}
                         </span>
                         <span className="ml-1 text-xs font-bold text-amber-300">
-                          + {o.price} €
+                          + {displayedPrice} €
                         </span>
+                        {o.note && (
+                          <span className="mt-0.5 block text-[11px] text-white/45">
+                            {o.note}
+                          </span>
+                        )}
                       </span>
                     </button>
                   );
@@ -332,7 +377,12 @@ export default function MaisonPriceCalculator() {
                     {result.selectedOptions.length > 0 && (
                       <ul className="mt-3 space-y-0.5 text-[11px] text-white/55">
                         {result.selectedOptions.map((o) => (
-                          <li key={o.id}>+ {o.label}</li>
+                          <li key={o.id}>
+                            + {o.label}{" "}
+                            <span className="text-amber-300">
+                              ({o.resolvedPrice} €)
+                            </span>
+                          </li>
                         ))}
                       </ul>
                     )}
