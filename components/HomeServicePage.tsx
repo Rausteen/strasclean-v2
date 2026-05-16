@@ -30,6 +30,92 @@ type Props = {
 export default function HomeServicePage({ service, place }: Props) {
   const message = service.ctaMessage;
   const h1Plain = service.hero.h1.replace(service.hero.h1Highlight, "").trim();
+  const pageUrl = `${SITE.url}/${service.slug}`;
+
+  // ─── JSON-LD : Service + LocalBusiness + Breadcrumb + FAQ ───────────
+  const serviceJsonLd: Record<string, unknown> = {
+    "@context": "https://schema.org",
+    "@type": "Service",
+    name: service.shortName,
+    description: service.metaDescription,
+    serviceType: service.shortName,
+    url: pageUrl,
+    provider: {
+      "@type": "LocalBusiness",
+      name: `${SITE.name} Maison`,
+      url: `${SITE.url}/strasclean-maison`,
+      telephone: SITE.phoneDisplay,
+      priceRange: "€€",
+      address: {
+        "@type": "PostalAddress",
+        addressLocality: SITE.city,
+        addressRegion: SITE.region,
+        addressCountry: SITE.country,
+      },
+      areaServed: { "@type": "City", name: SITE.city },
+      ...(place.rating && place.totalCount
+        ? {
+            aggregateRating: {
+              "@type": "AggregateRating",
+              ratingValue: place.rating.toFixed(1),
+              reviewCount: String(place.totalCount),
+              bestRating: "5",
+              worstRating: "1",
+            },
+          }
+        : {}),
+    },
+    areaServed: { "@type": "City", name: SITE.city },
+    offers: {
+      "@type": "Offer",
+      priceCurrency: "EUR",
+      price: service.pricing.priceFrom,
+      url: pageUrl,
+      availability: "https://schema.org/InStock",
+    },
+    // OfferCatalog détaillé si tarifs structurés disponibles
+    ...(service.tariffs && service.tariffs.length > 0
+      ? {
+          hasOfferCatalog: {
+            "@type": "OfferCatalog",
+            name: `Tarifs ${service.shortName}`,
+            itemListElement: service.tariffs.map((t) => ({
+              "@type": "Offer",
+              name: t.label,
+              priceCurrency: "EUR",
+              // On extrait juste le nombre du label "79 €" / "+ 20 €" / "9 €/m²"
+              price: extractNumericPrice(t.price),
+              priceSpecification: {
+                "@type": "PriceSpecification",
+                price: t.price,
+                priceCurrency: "EUR",
+              },
+              ...(t.note ? { description: t.note } : {}),
+            })),
+          },
+        }
+      : {}),
+  };
+
+  const breadcrumbJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "Accueil", item: SITE.url },
+      {
+        "@type": "ListItem",
+        position: 2,
+        name: "StrasClean Maison",
+        item: `${SITE.url}/strasclean-maison`,
+      },
+      {
+        "@type": "ListItem",
+        position: 3,
+        name: service.shortName,
+        item: pageUrl,
+      },
+    ],
+  };
 
   return (
     <>
@@ -274,8 +360,23 @@ export default function HomeServicePage({ service, place }: Props) {
       </main>
       <Footer />
       <FloatingWhatsApp />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceJsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
+      />
     </>
   );
+}
+
+/** Extrait la 1re valeur numérique d'un libellé tarif (ex. "79 €", "+ 20 €",
+ *  "9 €/m²" → "79", "20", "9"). Sert au champ price de Schema.org Offer. */
+function extractNumericPrice(label: string): string {
+  const match = label.match(/(\d+(?:[.,]\d+)?)/);
+  return match ? match[1].replace(",", ".") : "0";
 }
 
 /** Visuel placeholder du hero, propre en attendant les vraies photos.

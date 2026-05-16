@@ -108,6 +108,9 @@ export async function generateMetadata({
 
   if (m.type === "usecase" || m.type === "home-service") {
     const uc = m.type === "usecase" ? m.useCase : m.homeService;
+    // Les pages Maison utilisent l'OG image dédiée (palette ambre, emojis
+    // canapé/tapis/matelas/fauteuil) ; les pages Auto gardent /og.svg.
+    const ogImage = m.type === "home-service" ? "/og-maison.svg" : "/og.svg";
     return {
       title: uc.metaTitle,
       description: uc.metaDescription,
@@ -121,7 +124,7 @@ export async function generateMetadata({
         locale: "fr_FR",
         images: [
           {
-            url: "/og.svg",
+            url: ogImage,
             width: 1200,
             height: 630,
             alt: `StrasClean — ${uc.shortName}`,
@@ -132,7 +135,7 @@ export async function generateMetadata({
         card: "summary_large_image",
         title: uc.metaTitle,
         description: uc.metaDescription,
-        images: ["/og.svg"],
+        images: [ogImage],
       },
     };
   }

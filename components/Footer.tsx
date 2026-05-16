@@ -6,6 +6,7 @@ import { SITE, waLink } from "@/lib/site";
 import { CITIES, cityPath } from "@/lib/cities";
 import { PLANS } from "@/lib/plans";
 import { HOME_SERVICES, homeServicePath } from "@/lib/homeServices";
+import { HOME_SEO_PAGES, homeSeoPath } from "@/lib/homeSeoPages";
 import { WhatsAppIcon, PhoneIcon, SparklesIcon } from "./Icon";
 import { isMaisonPathname } from "@/lib/section";
 
@@ -138,6 +139,25 @@ export default function Footer() {
                   → Toute l'offre Maison
                 </Link>
               </li>
+            </ul>
+
+            {/* Pages SEO Maison (tarifs détaillés, Airbnb, cuir) — discret
+                mais essentiel pour le maillage interne. */}
+            <h4 className="mt-6 text-[11px] font-semibold uppercase tracking-wider text-white/40">
+              Tarifs & spécialités
+            </h4>
+            <ul className="mt-3 space-y-1.5 text-xs text-white/55">
+              {HOME_SEO_PAGES.map((s) => (
+                <li key={s.slug}>
+                  <Link
+                    href={homeSeoPath(s)}
+                    prefetch={false}
+                    className="hover:text-white/85"
+                  >
+                    {s.shortName}
+                  </Link>
+                </li>
+              ))}
             </ul>
           </div>
 

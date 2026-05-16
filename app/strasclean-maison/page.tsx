@@ -23,7 +23,7 @@ import {
   StarIcon,
 } from "@/components/Icon";
 import { SITE, waLink } from "@/lib/site";
-import { MAISON_GLOBAL_FAQS } from "@/lib/homeServices";
+import { HOME_SERVICES, MAISON_GLOBAL_FAQS } from "@/lib/homeServices";
 import { getGooglePlaceData, filterReviewsBySection } from "@/lib/reviews";
 import { getReviewTagsMap } from "@/lib/db";
 
@@ -43,7 +43,7 @@ export const metadata: Metadata = {
     description:
       "Nettoyage pro à domicile : canapé, tapis, matelas, fauteuils. Injection-extraction, séchage rapide, équipe de 2. Dès 39 €.",
     locale: "fr_FR",
-    images: [{ url: "/og.svg", width: 1200, height: 630, alt: "StrasClean Maison" }],
+    images: [{ url: "/og-maison.svg", width: 1200, height: 630, alt: "StrasClean Maison — nettoyage canapé, tapis, matelas à domicile à Strasbourg" }],
   },
 };
 
@@ -54,6 +54,72 @@ export default async function HubMaisonPage() {
   const place = await getGooglePlaceData();
   const tags = getReviewTagsMap();
   const maisonReviews = filterReviewsBySection(place.reviews, tags, "maison");
+
+  const hubUrl = `${SITE.url}/strasclean-maison`;
+
+  // ─── JSON-LD : LocalBusiness pour le hub Maison ─────────────────────
+  const localBusinessJsonLd: Record<string, unknown> = {
+    "@context": "https://schema.org",
+    "@type": "LocalBusiness",
+    "@id": hubUrl,
+    name: `${SITE.name} Maison`,
+    description:
+      "Nettoyage professionnel à domicile à Strasbourg : canapé, tapis, matelas, fauteuils. Injection-extraction pro, séchage rapide, équipe de 2.",
+    url: hubUrl,
+    telephone: SITE.phoneDisplay,
+    priceRange: "€€",
+    image: `${SITE.url}/og-maison.svg`,
+    address: {
+      "@type": "PostalAddress",
+      addressLocality: SITE.city,
+      addressRegion: SITE.region,
+      addressCountry: SITE.country,
+    },
+    areaServed: { "@type": "City", name: SITE.city },
+    ...(place.rating && place.totalCount
+      ? {
+          aggregateRating: {
+            "@type": "AggregateRating",
+            ratingValue: place.rating.toFixed(1),
+            reviewCount: String(place.totalCount),
+            bestRating: "5",
+            worstRating: "1",
+          },
+        }
+      : {}),
+    // OfferCatalog des 4 prestations principales
+    hasOfferCatalog: {
+      "@type": "OfferCatalog",
+      name: "Prestations StrasClean Maison",
+      itemListElement: HOME_SERVICES.map((s) => ({
+        "@type": "Offer",
+        name: s.shortName,
+        priceCurrency: "EUR",
+        price: s.pricing.priceFrom,
+        url: `${SITE.url}/${s.slug}`,
+        availability: "https://schema.org/InStock",
+        itemOffered: {
+          "@type": "Service",
+          name: s.shortName,
+          description: s.metaDescription,
+        },
+      })),
+    },
+  };
+
+  const breadcrumbJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "Accueil", item: SITE.url },
+      {
+        "@type": "ListItem",
+        position: 2,
+        name: "StrasClean Maison",
+        item: hubUrl,
+      },
+    ],
+  };
 
   return (
     <>
@@ -280,6 +346,14 @@ export default async function HubMaisonPage() {
       </main>
       <Footer />
       <FloatingWhatsApp />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(localBusinessJsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
+      />
     </>
   );
 }

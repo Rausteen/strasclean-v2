@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#0A0D12"/>
+      <stop offset="1" stop-color="#05070A"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="50%" cy="0%" r="60%">
+      <stop offset="0" stop-color="#F59E0B" stop-opacity=".30"/>
+      <stop offset="1" stop-color="#F59E0B" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="brand" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#FCD34D"/>
+      <stop offset="1" stop-color="#F59E0B"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  <rect width="1200" height="630" fill="url(#glow)"/>
+
+  <!-- Logo bloc -->
+  <g transform="translate(80,90)">
+    <rect width="64" height="64" rx="14" fill="url(#brand)"/>
+    <path d="M32 14 L36 28 L50 32 L36 36 L32 50 L28 36 L14 32 L28 28 Z" fill="#05070A"/>
+  </g>
+  <text x="170" y="128" font-family="Inter, system-ui, sans-serif" font-size="38" font-weight="700" fill="#fff">StrasClean</text>
+  <text x="170" y="158" font-family="Inter, system-ui, sans-serif" font-size="18" font-weight="600" letter-spacing="3" fill="#FCD34D">MAISON</text>
+
+  <!-- Titre principal -->
+  <text x="80" y="280" font-family="Inter, system-ui, sans-serif" font-size="68" font-weight="800" fill="#fff">Votre canapé, tapis,</text>
+  <text x="80" y="360" font-family="Inter, system-ui, sans-serif" font-size="68" font-weight="800" fill="#fff">matelas comme</text>
+  <text x="80" y="440" font-family="Inter, system-ui, sans-serif" font-size="68" font-weight="800" fill="#FCD34D">neufs.</text>
+
+  <!-- Sous-titre -->
+  <text x="80" y="492" font-family="Inter, system-ui, sans-serif" font-size="26" fill="#cbd5e1">Nettoyage textile à domicile à Strasbourg & alentours.</text>
+
+  <!-- CTA buttons -->
+  <g transform="translate(80,530)">
+    <rect width="280" height="60" rx="30" fill="#25D366"/>
+    <text x="140" y="40" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-size="22" font-weight="700" fill="#fff">Devis WhatsApp</text>
+    <rect x="300" y="0" width="220" height="60" rx="30" fill="#fff"/>
+    <text x="410" y="40" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-size="22" font-weight="700" fill="#05070A">Dès 39 €</text>
+  </g>
+
+  <!-- Emojis prestations à droite -->
+  <g transform="translate(820,180)">
+    <rect width="280" height="280" rx="24" fill="rgba(245,158,11,0.08)" stroke="rgba(245,158,11,0.20)" stroke-width="1.5"/>
+    <text x="80" y="100" font-size="80" text-anchor="middle">🛋️</text>
+    <text x="200" y="100" font-size="80" text-anchor="middle">🧶</text>
+    <text x="80" y="230" font-size="80" text-anchor="middle">🛏️</text>
+    <text x="200" y="230" font-size="80" text-anchor="middle">🪑</text>
+  </g>
+
+  <!-- Footer URL -->
+  <text x="80" y="610" font-family="Inter, system-ui, sans-serif" font-size="18" fill="#64748b">strasclean.fr/strasclean-maison</text>
+</svg>
