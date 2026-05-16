@@ -8,6 +8,7 @@ dist
 *.log
 .vscode
 .idea
+tsconfig.tsbuildinfo
 
 # Base SQLite de l'analytics admin (générée au runtime)
 data/
