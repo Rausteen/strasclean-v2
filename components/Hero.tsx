@@ -173,8 +173,8 @@ function HeroVisual() {
               <BoltIcon size={16} />
             </span>
             <div>
-              <p className="text-xs font-semibold text-white">Intervention rapide</p>
-              <p className="text-[11px] text-white/60">Dès 1h30 sur place</p>
+              <p className="text-xs font-semibold text-white">Équipe de 2</p>
+              <p className="text-[11px] text-white/60">Dès 30 min sur place</p>
             </div>
           </div>
         </div>

@@ -10,7 +10,7 @@ export const FAQS: FAQItem[] = [
   },
   {
     q: "Combien de temps dure un nettoyage ?",
-    a: "Comptez environ 1h à 1h30 pour la formule Confort, 2h à 3h pour la Premium, et jusqu'à 4h pour la Luxury Detailing. La durée dépend de la taille du véhicule et de son état.",
+    a: "Comptez environ 30 à 45 min pour la formule Confort, 1h à 1h30 pour la Premium, et 2h pour la Luxury Detailing. La durée dépend de la taille du véhicule et de son état. On travaille en équipe de 2, ce qui divise par 2 le temps versus un detailer solo.",
   },
   {
     q: "Le prix peut-il changer ?",

@@ -19,8 +19,8 @@ const BENEFITS = [
   },
   {
     icon: <ClockIcon />,
-    title: "Gain de temps",
-    desc: "Plus de file d'attente en station. Vous gardez votre temps libre.",
+    title: "Équipe de 2 — 2× plus rapide",
+    desc: "On vient à 2 sur chaque intervention : le temps habituel divisé par 2. Vous récupérez votre voiture deux fois plus vite qu'un detailer solo.",
   },
   {
     icon: <SprayIcon />,

@@ -129,7 +129,7 @@ export const USE_CASES: UseCase[] = [
         },
       ],
     },
-    pricing: { priceFrom: "69", duration: "2 h à 3 h" },
+    pricing: { priceFrom: "69", duration: "1 h à 1h30" },
     recommendedServiceSlug: "nettoyage-poils-animaux-voiture",
     faq: [
       {
@@ -195,7 +195,7 @@ export const USE_CASES: UseCase[] = [
     solution: {
       title: "Le protocole anti-tabac StrasClean",
       intro:
-        "On applique le traitement complet en intervention unique à votre domicile à Strasbourg ou en proche banlieue. Comptez 3 à 4 h sur place, et plus aucune trace d'odeur après. Pour les véhicules très imprégnés, on peut combiner avec un traitement à l'ozone qui oxyde les molécules jusque dans la mousse des sièges.",
+        "On applique le traitement complet en intervention unique à votre domicile à Strasbourg ou en proche banlieue. Comptez 1h30 à 2 h sur place — on travaille en équipe de 2, donc deux fois plus vite qu'un detailer solo. Plus aucune trace d'odeur après. Pour les véhicules très imprégnés, on peut combiner avec un traitement à l'ozone qui oxyde les molécules jusque dans la mousse des sièges.",
       steps: [
         {
           title: "Aspiration et pré-traitement",
@@ -223,7 +223,7 @@ export const USE_CASES: UseCase[] = [
         },
       ],
     },
-    pricing: { priceFrom: "89", duration: "3 h à 4 h" },
+    pricing: { priceFrom: "89", duration: "1h30 à 2 h" },
     recommendedServiceSlug: "detailing-auto",
     faq: [
       {
@@ -292,7 +292,7 @@ export const USE_CASES: UseCase[] = [
     solution: {
       title: "Le pack « préparation revente » StrasClean",
       intro:
-        "On combine lavage extérieur à la main, décontamination, shampouinage intérieur complet, traitement des plastiques et désodorisation, en une seule intervention de 4-5 h à votre domicile à Strasbourg. Vous prenez ensuite vos photos d'annonce le lendemain matin dans une lumière favorable, et la voiture est prête pour les visites.",
+        "On combine lavage extérieur à la main, décontamination, shampouinage intérieur complet, traitement des plastiques et désodorisation, en une seule intervention de 2 à 2h30 à votre domicile à Strasbourg. On travaille en équipe de 2, ce qui divise par 2 le temps habituel. Vous prenez ensuite vos photos d'annonce le lendemain matin dans une lumière favorable, et la voiture est prête pour les visites.",
       steps: [
         {
           title: "Lavage extérieur main + décontamination",
@@ -324,7 +324,7 @@ export const USE_CASES: UseCase[] = [
         },
       ],
     },
-    pricing: { priceFrom: "119", duration: "4 h à 5 h" },
+    pricing: { priceFrom: "119", duration: "2 h à 2h30" },
     recommendedServiceSlug: "detailing-auto",
     faq: [
       {

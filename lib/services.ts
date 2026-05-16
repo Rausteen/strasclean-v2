@@ -56,7 +56,7 @@ export const SERVICES: Service[] = [
       "Injection-extraction professionnelle pour des sièges nettoyés à neuf, sans tache ni odeur.",
     introTemplate: (c) =>
       `Le shampouinage des sièges, c'est la prestation qui retire les taches anciennes, les auréoles et les odeurs incrustées dans les fibres. À ${c.name}, StrasClean intervient à domicile avec un injecteur-extracteur professionnel pour traiter tous types de sièges — tissu, alcantara, similicuir et cuir.`,
-    duration: "1h30 à 3h",
+    duration: "45 min à 1h30",
     priceFrom: "59",
     recommendedPlanId: "premium",
     whatsIncluded: [
@@ -106,7 +106,7 @@ export const SERVICES: Service[] = [
       "Niveau au-dessus du nettoyage classique — rendu showroom intérieur et extérieur.",
     introTemplate: (c) =>
       `Le detailing auto, c'est le niveau d'exigence au-dessus du nettoyage classique. À ${c.name}, StrasClean traite chaque surface avec des produits professionnels — lavage extérieur main, décontamination carrosserie, shampouinage complet, traitement des plastiques — pour un rendu showroom à la sortie.`,
-    duration: "4h à 6h",
+    duration: "2h à 3h",
     priceFrom: "119",
     recommendedPlanId: "luxury",
     whatsIncluded: [
@@ -133,7 +133,7 @@ export const SERVICES: Service[] = [
     faq: [
       {
         q: "Combien de temps dure un detailing complet ?",
-        a: "Comptez 4 à 6h sur place pour un detailing complet, selon la taille du véhicule et son état initial.",
+        a: "Comptez 2 à 3h sur place pour un detailing complet — on travaille en équipe de 2, ce qui divise par 2 le temps versus un detailer solo. La durée dépend de la taille du véhicule et de son état initial.",
       },
       {
         q: "Faut-il préparer la voiture ?",
@@ -156,7 +156,7 @@ export const SERVICES: Service[] = [
       "Élimination des poils incrustés sur sièges, moquette et coffre — méthode dédiée.",
     introTemplate: (c) =>
       `Si vous transportez régulièrement vos animaux, vous savez à quel point les poils s'incrustent dans les fibres et résistent à l'aspirateur classique. À ${c.name}, StrasClean utilise une méthode dédiée — turbo-brosse, adhésifs spécifiques et brossage manuel — pour décoller les poils en profondeur, partout où ils se cachent.`,
-    duration: "2h à 3h",
+    duration: "1h à 1h30",
     priceFrom: "69",
     recommendedPlanId: "premium",
     whatsIncluded: [
@@ -207,7 +207,7 @@ export const SERVICES: Service[] = [
       "Habitacle aspiré, plastiques nettoyés, vitres claires, désinfection complète.",
     introTemplate: (c) =>
       `Le nettoyage intérieur, c'est la prestation d'entretien régulier qui maintient l'habitacle propre, sain et agréable à conduire. À ${c.name}, StrasClean se déplace à votre domicile pour aspirer en profondeur, nettoyer tous les plastiques, désinfecter les points de contact et redonner un aspect impeccable à votre intérieur.`,
-    duration: "1h à 2h",
+    duration: "30 à 50 min",
     priceFrom: "39",
     recommendedPlanId: "confort",
     whatsIncluded: [
@@ -224,7 +224,7 @@ export const SERVICES: Service[] = [
       },
       {
         title: "Service rapide",
-        desc: "1h à 2h sur place — vous récupérez votre voiture le jour même.",
+        desc: "30 à 50 min sur place — équipe de 2, vous récupérez votre voiture rapidement le jour même.",
       },
       {
         title: "Prix accessible",
@@ -257,7 +257,7 @@ export const SERVICES: Service[] = [
       "Lavage extérieur à la main, jantes et vitres — chez vous, sans déplacement.",
     introTemplate: (c) =>
       `Plus besoin de faire la queue en station. À ${c.name}, StrasClean vient laver votre voiture directement à votre domicile ou sur votre lieu de travail, à la main, avec un matériel autonome et des produits qui respectent la peinture.`,
-    duration: "1h à 2h",
+    duration: "30 min à 1h",
     priceFrom: "39",
     recommendedPlanId: "luxury",
     whatsIncluded: [
@@ -292,7 +292,7 @@ export const SERVICES: Service[] = [
       },
       {
         q: "Quel temps si je veux aussi l'intérieur ?",
-        a: "Comptez 2h30 à 4h pour un combiné intérieur + extérieur, selon la formule choisie.",
+        a: "Comptez 1h15 à 2h pour un combiné intérieur + extérieur — on travaille en équipe de 2, donc deux fois plus rapide qu'un detailer solo.",
       },
     ],
     ctaMessage: "Bonjour StrasClean, je souhaite un lavage de ma voiture à mon domicile",
@@ -308,7 +308,7 @@ export const SERVICES: Service[] = [
       "Lavage carrosserie à la main, à domicile — la formule la plus accessible pour garder votre voiture propre.",
     introTemplate: (c) =>
       `À ${c.name}, StrasClean vient laver la carrosserie de votre véhicule à la main, directement à votre domicile. C'est notre prestation d'entrée — rapide, soignée et idéale pour un entretien régulier sans engagement.`,
-    duration: "45 min à 1h",
+    duration: "20 à 30 min",
     priceFrom: "29",
     recommendedPlanId: "luxury",
     whatsIncluded: [
@@ -363,7 +363,7 @@ export const SERVICES: Service[] = [
       "Préparation complète avant mise en vente — vous gagnez 5 à 15% sur le prix final.",
     introTemplate: (c) =>
       `Vous mettez votre voiture en vente ? À ${c.name}, StrasClean prépare votre véhicule pour qu'il sorte du lot sur les annonces. Lavage extérieur + décontamination + polissage léger + shampouinage complet + conseils photos. Une intervention qui rapporte en moyenne 800 à 1 200 € sur le prix de vente final.`,
-    duration: "4h à 5h",
+    duration: "2h à 2h30",
     priceFrom: "129",
     recommendedPlanId: "luxury",
     whatsIncluded: [
