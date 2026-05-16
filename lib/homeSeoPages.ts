@@ -436,35 +436,16 @@ export const HOME_SEO_PAGES: HomeService[] = [
         },
       ],
     },
-    pricing: { priceFrom: "12", duration: "30 à 45 min" },
+    pricing: { priceFrom: "39", duration: "30 à 45 min" },
     tariffs: [
-      { label: "Chaise unique", price: "12-15 €" },
       { label: "Lot de 4 chaises", price: "49 €", note: "12,25 €/chaise" },
       { label: "Lot de 6 chaises", price: "69 €", note: "11,50 €/chaise" },
       { label: "Lot de 8 chaises", price: "89 €", note: "11,10 €/chaise" },
       { label: "Fauteuil 1 place", price: "39 €" },
-      { label: "Tabouret de bar", price: "12 €" },
       {
-        label: "Cuir — chaise unique / tabouret",
-        price: "+ 5 €",
-        note: "Nettoyage pH-neutre + nutrition",
-      },
-      {
-        label: "Cuir — fauteuil 1 place",
-        price: "+ 10 €",
-      },
-      {
-        label: "Cuir — lot 4 chaises",
-        price: "+ 15 €",
-        note: "≈ 3,75 €/chaise",
-      },
-      {
-        label: "Cuir — lot 6 chaises",
-        price: "+ 20 €",
-      },
-      {
-        label: "Cuir — lot 8 chaises",
-        price: "+ 25 €",
+        label: "Option cuir",
+        price: "+ 5 à 25 €",
+        note: "Nettoyage pH-neutre + baume nourrissant, prix selon nombre de pièces",
       },
       {
         label: "Lot pro (10+ pièces)",

@@ -88,21 +88,17 @@ const SERVICES: ServiceDef[] = [
     emoji: "🪑",
     name: "Fauteuils & chaises",
     variants: [
-      { id: "chaise-1", label: "1 chaise unique", price: 14 },
+      { id: "fauteuil", label: "Fauteuil 1 place", price: 39 },
       { id: "lot-4", label: "Lot de 4 chaises", price: 49 },
       { id: "lot-6", label: "Lot de 6 chaises", price: 69 },
       { id: "lot-8", label: "Lot de 8 chaises", price: 89 },
-      { id: "fauteuil", label: "Fauteuil 1 place", price: 39 },
-      { id: "tabouret", label: "Tabouret de bar", price: 12 },
     ],
     options: [
       {
         id: "cuir",
         label: "Cuir (pH-neutre + nutrition)",
-        price: 5, // fallback (chaise unique / tabouret)
+        price: 10, // fallback (fauteuil)
         priceByVariant: {
-          "chaise-1": 5,
-          "tabouret": 5,
           "fauteuil": 10,
           "lot-4": 15,
           "lot-6": 20,
