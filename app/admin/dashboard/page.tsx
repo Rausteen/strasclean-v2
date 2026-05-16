@@ -10,9 +10,12 @@ import {
   getTopPaths,
   getTopReferers,
   getHiddenIps,
+  getReviewTagsMap,
 } from "@/lib/db";
+import { getGooglePlaceData } from "@/lib/reviews";
 import LogoutButton from "./LogoutButton";
 import { HideIpButton, UnhideIpButton } from "./HideIpButton";
+import ReviewTagger from "./ReviewTagger";
 
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
@@ -80,6 +83,17 @@ export default async function DashboardPage({
   const topPaths = getTopPaths(10);
   const topReferers = getTopReferers(10);
   const hiddenIps = getHiddenIps();
+
+  // Avis Google + tags actuels
+  const place = await getGooglePlaceData();
+  const reviewTags = getReviewTagsMap();
+  const reviewsForTagger = place.reviews.map((r) => ({
+    id: r.id,
+    author: r.author_name,
+    text: r.text,
+    rating: r.rating,
+    relative: r.relative_time_description,
+  }));
 
   const visitsPages = Math.max(1, Math.ceil(visitsTotal / PAGE_SIZE));
   const eventsPages = Math.max(1, Math.ceil(eventsTotal / PAGE_SIZE));
@@ -181,6 +195,28 @@ export default async function DashboardPage({
           </Panel>
         </section>
       )}
+
+      {/* Tagger les avis Google par section (Auto / Maison / Les deux) */}
+      <section className="mt-8">
+        <Panel
+          title={`Avis Google — tagger par section (${reviewsForTagger.length})`}
+        >
+          <p className="mb-4 text-xs text-white/55">
+            Chaque avis affiche par défaut côté Auto (notre activité historique).
+            Tague-le <span className="text-amber-300">Maison</span> ou{" "}
+            <span className="text-sky-300">Les deux</span> dès qu'il concerne le
+            mobilier. Le filtre s'applique en temps réel sur le site.
+          </p>
+          {reviewsForTagger.length === 0 ? (
+            <p className="text-sm text-white/50">
+              Aucun avis Google récupéré pour l'instant (vérifie ta config
+              Places API).
+            </p>
+          ) : (
+            <ReviewTagger reviews={reviewsForTagger} tags={reviewTags} />
+          )}
+        </Panel>
+      </section>
 
       {/* Visites récentes */}
       <section className="mt-8">

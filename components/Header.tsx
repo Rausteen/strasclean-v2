@@ -43,6 +43,7 @@ export default function Header() {
           : "bg-transparent"
       }`}
     >
+      {/* TOPBAR principale — logo / nav / CTA */}
       <div className="container-x flex h-16 items-center gap-3">
         {/* Logo */}
         <Link
@@ -63,15 +64,17 @@ export default function Header() {
               <span className={onMaison ? "text-amber-400" : "text-brand-400"}>
                 Clean
               </span>
+              {onMaison && (
+                <span className="ml-1 hidden text-[10px] font-medium uppercase tracking-wider text-amber-300/80 sm:inline">
+                  Maison
+                </span>
+              )}
             </span>
           </span>
         </Link>
 
-        {/* Toggle Auto / Maison — position stable juste après le logo */}
-        <SectionToggle onMaison={onMaison} />
-
-        {/* NAV anchors centrale (auto ou maison) */}
-        <nav className="ml-auto hidden items-center gap-6 xl:flex">
+        {/* NAV anchors centrales (desktop uniquement) */}
+        <nav className="mx-auto hidden items-center gap-6 lg:flex">
           {nav.map((n) => (
             <Link
               key={n.href}
@@ -83,39 +86,45 @@ export default function Header() {
           ))}
         </nav>
 
-        {/* CTAs desktop — compactés en 1 seul bouton WA pour désencombrer */}
-        <div className="ml-auto hidden shrink-0 items-center gap-2 lg:flex xl:ml-3">
+        {/* CTA WhatsApp + Burger mobile */}
+        <div className="ml-auto flex shrink-0 items-center gap-2">
+          {/* WhatsApp desktop */}
           <a
             href={SITE.whatsappHref}
             target="_blank"
             rel="noopener noreferrer"
-            className="btn-wa"
+            className="btn-wa hidden lg:inline-flex"
           >
             <WhatsAppIcon size={18} />
             WhatsApp
           </a>
-        </div>
-
-        {/* Mobile */}
-        <div className="ml-auto flex shrink-0 items-center gap-2 lg:hidden">
+          {/* WhatsApp mobile (texte plus court) */}
           <a
             href={SITE.whatsappHref}
             target="_blank"
             rel="noopener noreferrer"
-            className="btn-wa !min-h-0 !px-3.5 !py-2 text-sm"
+            className="btn-wa !min-h-0 !px-3 !py-2 text-sm lg:hidden"
             aria-label="Réserver sur WhatsApp"
           >
             <WhatsAppIcon size={16} />
             WhatsApp
           </a>
+          {/* Burger menu mobile */}
           <button
             onClick={() => setOpen((s) => !s)}
             aria-label={open ? "Fermer le menu" : "Ouvrir le menu"}
             aria-expanded={open}
-            className="grid h-10 w-10 place-items-center rounded-full border border-white/10 bg-white/5 text-white active:scale-95"
+            className="grid h-10 w-10 place-items-center rounded-full border border-white/10 bg-white/5 text-white active:scale-95 lg:hidden"
           >
             {open ? <CloseIcon size={18} /> : <MenuIcon size={18} />}
           </button>
+        </div>
+      </div>
+
+      {/* SOUS-STRIP — pill Auto/Maison toujours visible, position stable */}
+      <div className="border-t border-white/5 bg-ink-950/60 backdrop-blur-sm">
+        <div className="container-x flex h-10 items-center justify-center">
+          <SectionToggle onMaison={onMaison} />
         </div>
       </div>
 
@@ -161,27 +170,35 @@ export default function Header() {
 
 function SectionToggle({ onMaison }: { onMaison: boolean }) {
   return (
-    <div className="inline-flex shrink-0 items-center rounded-full border border-white/10 bg-white/[0.04] p-0.5 text-xs sm:text-sm">
+    <div
+      role="tablist"
+      aria-label="Section StrasClean"
+      className="inline-flex items-center rounded-full border border-white/10 bg-white/[0.04] p-0.5 text-xs"
+    >
       <Link
         href="/"
-        className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-1.5 font-semibold transition sm:px-3.5 ${
+        role="tab"
+        aria-selected={!onMaison}
+        className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 font-semibold transition ${
           !onMaison
             ? "bg-brand-500 text-ink-950 shadow"
             : "text-white/70 hover:text-white"
         }`}
       >
-        <CarIcon size={14} />
+        <CarIcon size={13} />
         Auto
       </Link>
       <Link
         href="/strasclean-maison"
-        className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-1.5 font-semibold transition sm:px-3.5 ${
+        role="tab"
+        aria-selected={onMaison}
+        className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 font-semibold transition ${
           onMaison
             ? "bg-amber-400 text-ink-950 shadow"
             : "text-white/70 hover:text-white"
         }`}
       >
-        <HomeIcon size={14} />
+        <HomeIcon size={13} />
         Maison
       </Link>
     </div>

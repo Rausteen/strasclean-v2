@@ -3,32 +3,48 @@ import { StarIcon, SparklesIcon, ArrowRightIcon } from "./Icon";
 import type { GoogleReview } from "@/lib/reviews";
 
 type Props = {
+  /** Avis Google déjà filtrés sur la section Maison. */
+  googleReviews?: GoogleReview[];
   /** Note globale Google de la fiche (auto/maison confondus) */
   googleRating?: number;
   googleTotalCount?: number;
   googleProfileUrl?: string | null;
-  /** Avis Google bruts — utilisés seulement pour afficher la note globale */
-  googleReviews?: GoogleReview[];
 };
 
+const TONES = [
+  "from-amber-500/30 to-orange-500/30",
+  "from-orange-500/30 to-rose-500/30",
+  "from-amber-400/30 to-yellow-500/30",
+  "from-rose-500/30 to-pink-500/30",
+  "from-orange-400/30 to-amber-500/30",
+  "from-pink-500/30 to-amber-500/30",
+];
+
+function initialsOf(name: string) {
+  return name
+    .split(/\s+/)
+    .map((p) => p[0]?.toUpperCase() ?? "")
+    .slice(0, 2)
+    .join("");
+}
+
 /**
- * Bloc témoignages pour la verticale Maison.
+ * Témoignages côté Maison.
+ *  - Si on a au moins 1 avis Maison tagué → on affiche la grille classique
+ *    d'avis (jusqu'à 6) avec accents ambre.
+ *  - Sinon → on affiche un bandeau confiance condensé (note globale Google
+ *    + équipe + service 100% domicile) avec CTA vers la fiche Google.
  *
- * Particularité : tous les avis Google actuels viennent de clients auto
- * (donc mentionnent "voiture"). Les afficher tels quels créerait de la
- * confusion sur les pages Maison ("avis sur le nettoyage de canapé"
- * mentionnant des sièges auto = très étrange).
- *
- * Solution : on affiche uniquement la note globale + un CTA vers la fiche
- * Google, et on cadre clairement "premiers retours Maison à venir".
- * Quand StrasClean aura accumulé 5-10 vrais avis Maison, on pourra
- * basculer sur un affichage similaire à Testimonials auto.
+ * Le passage de l'un à l'autre est automatique dès que tu tagues 1 avis
+ * "Maison" dans le dashboard admin.
  */
 export default function TestimonialsMaison({
+  googleReviews,
   googleRating,
   googleTotalCount,
   googleProfileUrl,
 }: Props) {
+  const hasMaisonReviews = !!googleReviews && googleReviews.length > 0;
   const hasGoogle =
     typeof googleRating === "number" &&
     typeof googleTotalCount === "number" &&
@@ -42,66 +58,111 @@ export default function TestimonialsMaison({
       <div className="container-x">
         <Reveal className="mx-auto max-w-3xl text-center">
           <p className="text-sm font-semibold uppercase tracking-[0.18em] text-amber-300">
-            Confiance
+            Avis clients
           </p>
           <h2 className="h-display mt-3 text-balance text-3xl font-bold text-white sm:text-4xl lg:text-5xl">
-            Une équipe locale notée par ses clients.
+            Ce que disent nos clients à Strasbourg.
           </h2>
-          <p className="mt-4 text-white/65">
-            StrasClean Maison est lancée par la même équipe que StrasClean Auto
-            (notée 5/5 sur Google). Les premiers retours Maison arrivent — en
-            attendant, vous bénéficiez du même niveau de service et de la même
-            exigence.
-          </p>
+          {hasGoogle && (
+            <div className="mt-5 inline-flex flex-wrap items-center justify-center gap-x-3 gap-y-1 rounded-full border border-amber-500/30 bg-amber-500/[0.08] px-4 py-2">
+              <span className="flex items-center gap-0.5 text-amber-300">
+                {Array.from({ length: 5 }).map((_, i) => (
+                  <StarIcon key={i} size={18} />
+                ))}
+              </span>
+              <span className="text-base font-bold text-white">
+                {googleRating!.toFixed(1).replace(".", ",")}/5
+              </span>
+              <span className="text-sm text-white/70">
+                · {googleTotalCount} avis Google
+              </span>
+            </div>
+          )}
         </Reveal>
 
-        <div className="mx-auto mt-10 grid max-w-3xl gap-5 sm:grid-cols-3">
-          {/* Note Google globale */}
-          {hasGoogle ? (
+        {hasMaisonReviews ? (
+          // Grille des vrais avis Maison
+          <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {googleReviews!.slice(0, 6).map((r, i) => (
+              <Reveal key={r.id} delay={i * 60}>
+                <article className="card card-hover h-full">
+                  <div className="flex items-center gap-3">
+                    <span
+                      className={`grid h-10 w-10 shrink-0 place-items-center rounded-full bg-gradient-to-br ${
+                        TONES[i % TONES.length]
+                      } text-sm font-bold text-white`}
+                    >
+                      {initialsOf(r.author_name)}
+                    </span>
+                    <div className="min-w-0">
+                      <p className="truncate text-sm font-semibold text-white">
+                        {r.author_name}
+                      </p>
+                      <p className="text-[11px] text-white/55">
+                        {r.relative_time_description ?? "Avis Google"}
+                      </p>
+                    </div>
+                  </div>
+                  <span className="mt-3 flex gap-0.5 text-amber-300">
+                    {Array.from({ length: r.rating }).map((_, i) => (
+                      <StarIcon key={i} size={14} />
+                    ))}
+                  </span>
+                  <p className="mt-3 text-sm leading-relaxed text-white/75">
+                    {r.text}
+                  </p>
+                </article>
+              </Reveal>
+            ))}
+          </div>
+        ) : (
+          // Bandeau confiance condensé (note globale + équipe + 100% domicile)
+          <div className="mx-auto mt-10 grid max-w-3xl gap-5 sm:grid-cols-3">
             <Reveal>
               <div className="rounded-3xl border border-amber-400/30 bg-gradient-to-br from-amber-500/10 via-ink-800 to-ink-900 p-5 text-center">
                 <p className="text-xs font-semibold uppercase tracking-[0.18em] text-amber-300">
                   Note Google
                 </p>
                 <p className="mt-3 flex items-center justify-center gap-1.5 text-3xl font-bold text-white">
-                  {googleRating!.toFixed(1)}
+                  {hasGoogle ? googleRating!.toFixed(1) : "—"}
                   <span className="inline-flex text-amber-300">
                     <StarIcon size={20} />
                   </span>
                 </p>
                 <p className="mt-1 text-xs text-white/55">
-                  {googleTotalCount} avis vérifiés
+                  {hasGoogle
+                    ? `${googleTotalCount} avis vérifiés`
+                    : "Avis vérifiés"}
                 </p>
               </div>
             </Reveal>
-          ) : null}
 
-          <Reveal delay={80}>
-            <div className="rounded-3xl border border-white/10 bg-white/[0.03] p-5 text-center">
-              <p className="text-xs font-semibold uppercase tracking-[0.18em] text-amber-300">
-                Équipe
-              </p>
-              <p className="mt-3 text-3xl font-bold text-white">2</p>
-              <p className="mt-1 text-xs text-white/55">
-                pros sur chaque intervention
-              </p>
-            </div>
-          </Reveal>
+            <Reveal delay={80}>
+              <div className="rounded-3xl border border-white/10 bg-white/[0.03] p-5 text-center">
+                <p className="text-xs font-semibold uppercase tracking-[0.18em] text-amber-300">
+                  Équipe
+                </p>
+                <p className="mt-3 text-3xl font-bold text-white">2</p>
+                <p className="mt-1 text-xs text-white/55">
+                  pros sur chaque intervention
+                </p>
+              </div>
+            </Reveal>
 
-          <Reveal delay={160}>
-            <div className="rounded-3xl border border-white/10 bg-white/[0.03] p-5 text-center">
-              <p className="text-xs font-semibold uppercase tracking-[0.18em] text-amber-300">
-                Domicile
-              </p>
-              <p className="mt-3 text-3xl font-bold text-white">100%</p>
-              <p className="mt-1 text-xs text-white/55">
-                à votre adresse, sans déplacement
-              </p>
-            </div>
-          </Reveal>
-        </div>
+            <Reveal delay={160}>
+              <div className="rounded-3xl border border-white/10 bg-white/[0.03] p-5 text-center">
+                <p className="text-xs font-semibold uppercase tracking-[0.18em] text-amber-300">
+                  Domicile
+                </p>
+                <p className="mt-3 text-3xl font-bold text-white">100%</p>
+                <p className="mt-1 text-xs text-white/55">
+                  à votre adresse, sans déplacement
+                </p>
+              </div>
+            </Reveal>
+          </div>
+        )}
 
-        {/* CTA fiche Google */}
         {googleProfileUrl ? (
           <div className="mt-8 flex justify-center">
             <a

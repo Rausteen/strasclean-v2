@@ -16,7 +16,8 @@ import FAQ from "@/components/FAQ";
 import FinalCTA from "@/components/FinalCTA";
 import Footer from "@/components/Footer";
 import FloatingWhatsApp from "@/components/FloatingWhatsApp";
-import { getGooglePlaceData } from "@/lib/reviews";
+import { getGooglePlaceData, filterReviewsBySection } from "@/lib/reviews";
+import { getReviewTagsMap } from "@/lib/db";
 
 // Régénération en arrière-plan toutes les heures pour refléter les
 // nouveaux avis Google sans avoir à rebuild.
@@ -24,6 +25,8 @@ export const revalidate = 3600;
 
 export default async function Page() {
   const place = await getGooglePlaceData();
+  const tags = getReviewTagsMap();
+  const autoReviews = filterReviewsBySection(place.reviews, tags, "auto");
 
   return (
     <>
@@ -41,7 +44,7 @@ export default async function Page() {
         <ServiceArea />
         <HomeServicesPromo />
         <Testimonials
-          googleReviews={place.reviews}
+          googleReviews={autoReviews}
           googleRating={place.rating}
           googleTotalCount={place.totalCount}
           googleProfileUrl={place.profileUrl}

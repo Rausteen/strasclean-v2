@@ -40,9 +40,10 @@ export default function HomeBeforeAfter() {
             Avant / après — la différence visible immédiatement.
           </h2>
           <p className="mt-4 text-white/65">
-            Photos clients en cours d'ajout. En attendant, voici à quoi
-            s'attendre : une extraction profonde qui restaure la matière
-            originale, sans auréole résiduelle.
+            Une extraction profonde qui décolle les taches incrustées et
+            restaure la matière d'origine — sans auréole résiduelle, sans
+            humidité excessive. Voici quelques rendus types après notre
+            intervention.
           </p>
         </Reveal>
 

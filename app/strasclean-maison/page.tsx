@@ -26,7 +26,8 @@ import {
   homeServicePath,
   MAISON_GLOBAL_FAQS,
 } from "@/lib/homeServices";
-import { getGooglePlaceData } from "@/lib/reviews";
+import { getGooglePlaceData, filterReviewsBySection } from "@/lib/reviews";
+import { getReviewTagsMap } from "@/lib/db";
 
 export const revalidate = 3600;
 
@@ -53,6 +54,8 @@ const MESSAGE =
 
 export default async function HubMaisonPage() {
   const place = await getGooglePlaceData();
+  const tags = getReviewTagsMap();
+  const maisonReviews = filterReviewsBySection(place.reviews, tags, "maison");
 
   return (
     <>

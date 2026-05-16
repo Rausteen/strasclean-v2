@@ -27,7 +27,8 @@ import { SERVICES, Service, matchSlug, servicePath } from "@/lib/services";
 import { USE_CASES, UseCase, useCasePath } from "@/lib/usecases";
 import { HOME_SERVICES } from "@/lib/homeServices";
 import { SITE } from "@/lib/site";
-import { getGooglePlaceData } from "@/lib/reviews";
+import { getGooglePlaceData, filterReviewsBySection } from "@/lib/reviews";
+import { getReviewTagsMap } from "@/lib/db";
 
 type Params = { slug: string };
 
@@ -184,13 +185,24 @@ export default async function Page({
 
   // Fetché une fois par render (et mis en cache 1h par Next via lib/reviews)
   const place = await getGooglePlaceData();
+  const tags = getReviewTagsMap();
+  // On découpe les avis par section ici. Le résultat (place) passé à chaque
+  // composant ne contient QUE les avis pertinents pour la section affichée.
+  const autoPlace = {
+    ...place,
+    reviews: filterReviewsBySection(place.reviews, tags, "auto"),
+  };
+  const maisonPlace = {
+    ...place,
+    reviews: filterReviewsBySection(place.reviews, tags, "maison"),
+  };
 
-  if (m.type === "city") return <CityPage city={m.city} place={place} />;
+  if (m.type === "city") return <CityPage city={m.city} place={autoPlace} />;
   if (m.type === "service-city")
-    return <ServiceCityPage service={m.service} city={m.city} place={place} />;
+    return <ServiceCityPage service={m.service} city={m.city} place={autoPlace} />;
   if (m.type === "home-service")
-    return <HomeServicePage service={m.homeService} place={place} />;
-  return <UseCasePage useCase={m.useCase} place={place} />;
+    return <HomeServicePage service={m.homeService} place={maisonPlace} />;
+  return <UseCasePage useCase={m.useCase} place={autoPlace} />;
 }
 
 // ─── City page ───────────────────────────────────────────────────────────

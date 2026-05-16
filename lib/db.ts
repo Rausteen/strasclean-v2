@@ -67,6 +67,12 @@ function openDb(): Database.Database {
       label TEXT,
       hidden_at INTEGER NOT NULL
     );
+
+    CREATE TABLE IF NOT EXISTS review_tags (
+      review_id TEXT PRIMARY KEY,
+      tag TEXT NOT NULL,
+      tagged_at INTEGER NOT NULL
+    );
   `);
 
   return db;
@@ -156,6 +162,31 @@ export function getHiddenIps(): HiddenIp[] {
   return db
     .prepare(`SELECT * FROM hidden_ips ORDER BY hidden_at DESC`)
     .all() as HiddenIp[];
+}
+
+// ─── Tags d'avis Google (auto / maison / both) ──────────────────────────
+export type ReviewTagValue = "auto" | "maison" | "both";
+export type ReviewTag = { review_id: string; tag: ReviewTagValue; tagged_at: number };
+
+export function setReviewTag(reviewId: string, tag: ReviewTagValue) {
+  db.prepare(
+    `INSERT OR REPLACE INTO review_tags (review_id, tag, tagged_at) VALUES (?, ?, ?)`,
+  ).run(reviewId, tag, Date.now());
+}
+
+export function clearReviewTag(reviewId: string) {
+  db.prepare(`DELETE FROM review_tags WHERE review_id = ?`).run(reviewId);
+}
+
+/** Renvoie une Map reviewId → tag pour appliquer côté UI. */
+export function getReviewTagsMap(): Record<string, ReviewTagValue> {
+  const rows = db.prepare(`SELECT review_id, tag FROM review_tags`).all() as {
+    review_id: string;
+    tag: ReviewTagValue;
+  }[];
+  const out: Record<string, ReviewTagValue> = {};
+  for (const r of rows) out[r.review_id] = r.tag;
+  return out;
 }
 
 /** Renvoie la clause SQL "AND ip NOT IN (...)" + params à passer. Vide si aucune IP cachée. */

@@ -26,6 +26,8 @@ import "server-only";
 // ─────────────────────────────────────────────────────────────────────────
 
 export type GoogleReview = {
+  /** ID stable dérivé de author + time (utilisé pour tagger en DB). */
+  id: string;
   author_name: string;
   author_url?: string;
   profile_photo_url?: string;
@@ -34,6 +36,18 @@ export type GoogleReview = {
   text: string;
   time?: number;
 };
+
+/** Construit un identifiant stable pour un avis Google.
+ *  Combine l'auteur (slugifié) + le timestamp pour rester unique et déterministe. */
+export function makeReviewId(authorName: string, time?: number): string {
+  const slug = authorName
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[̀-ͯ]/g, "")
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "");
+  return `${slug}::${time ?? 0}`;
+}
 
 export type PlaceData = {
   reviews: GoogleReview[];
@@ -81,6 +95,7 @@ function normalizeV1(r: V1ReviewRaw): GoogleReview | null {
   if (!name || !text || typeof r.rating !== "number") return null;
   const t = r.publishTime ? Math.floor(Date.parse(r.publishTime) / 1000) : undefined;
   return {
+    id: makeReviewId(name, t),
     author_name: name,
     author_url: r.authorAttribution?.uri,
     profile_photo_url: r.authorAttribution?.photoUri,
@@ -131,15 +146,20 @@ async function fetchLegacy(placeId: string, apiKey: string): Promise<PlaceData> 
   if (!res.ok) return EMPTY;
   const data = (await res.json()) as {
     result?: {
-      reviews?: GoogleReview[];
+      reviews?: Omit<GoogleReview, "id">[];
       rating?: number;
       user_ratings_total?: number;
     };
     status?: string;
   };
   if (data.status && data.status !== "OK") return EMPTY;
+  const rawReviews = data.result?.reviews ?? [];
+  const reviews: GoogleReview[] = rawReviews.map((r) => ({
+    ...r,
+    id: makeReviewId(r.author_name, r.time),
+  }));
   return {
-    reviews: data.result?.reviews ?? [],
+    reviews,
     rating: data.result?.rating,
     totalCount: data.result?.user_ratings_total,
   };
@@ -157,8 +177,9 @@ export async function getGooglePlaceData(): Promise<PlaceData> {
     }
     return {
       ...data,
-      // 4★ minimum, max 5 (limite stricte de Google côté Place Details)
-      reviews: data.reviews.filter((r) => r.rating >= 4).slice(0, 5),
+      // On retourne tous les avis 4★+ ; le filtre par section (auto/maison)
+      // et le slice final sont appliqués au moment du rendu via filterReviewsBySection().
+      reviews: data.reviews.filter((r) => r.rating >= 4),
       // URL publique de la fiche pour le CTA "voir tous les avis"
       profileUrl: `https://www.google.com/maps/place/?q=place_id:${placeId}`,
     };
@@ -171,4 +192,33 @@ export async function getGooglePlaceData(): Promise<PlaceData> {
 export async function getGoogleReviews(): Promise<GoogleReview[]> {
   const data = await getGooglePlaceData();
   return data.reviews;
+}
+
+/**
+ * Filtre les avis Google selon la section affichée.
+ *
+ *  - section "auto"   : on garde les avis tagués 'auto' ou 'both' ET ceux
+ *                       non tagués (par défaut : auto, vu que 100% du
+ *                       capital avis est auto au démarrage).
+ *  - section "maison" : on ne garde QUE les avis explicitement tagués
+ *                       'maison' ou 'both'. Tant qu'aucun avis Maison
+ *                       n'est tagué, la liste est vide → l'UI bascule
+ *                       en mode "placeholder" (note globale + CTA fiche).
+ *
+ *  `tags` est la map renvoyée par getReviewTagsMap() (côté serveur).
+ */
+export function filterReviewsBySection(
+  reviews: GoogleReview[],
+  tags: Record<string, "auto" | "maison" | "both">,
+  section: "auto" | "maison",
+  limit = 5,
+): GoogleReview[] {
+  const filtered = reviews.filter((r) => {
+    const t = tags[r.id];
+    if (section === "auto") {
+      return t === undefined || t === "auto" || t === "both";
+    }
+    return t === "maison" || t === "both";
+  });
+  return filtered.slice(0, limit);
 }
