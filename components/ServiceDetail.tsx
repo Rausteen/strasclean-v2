@@ -11,7 +11,7 @@ export default function ServiceDetail({
   service: Service;
   city: City;
 }) {
-  const message = `${service.ctaMessage} (${city.name}).`;
+  const message = `${service.ctaMessage} à ${city.name}. Vos disponibilités cette semaine ?`;
 
   return (
     <section className="relative py-14 sm:py-24 lg:py-28">

@@ -24,7 +24,7 @@ export default function ServiceArea() {
 
             <a
               href={waLink(
-                "Bonjour StrasClean, est-ce que vous intervenez dans ma ville ?"
+                "Bonjour StrasClean 👋 Est-ce que vous intervenez dans ma ville ?"
               )}
               target="_blank"
               rel="noopener noreferrer"

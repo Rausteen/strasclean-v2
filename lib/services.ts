@@ -94,7 +94,7 @@ export const SERVICES: Service[] = [
         a: "Oui. Pour le cuir on utilise des produits dédiés et un nettoyage doux qui préserve la matière, suivi d'un soin nourrissant.",
       },
     ],
-    ctaMessage: "Bonjour StrasClean, je souhaite un shampouinage des sièges de ma voiture",
+    ctaMessage: "Bonjour StrasClean 👋 Je voudrais un shampouinage des sièges de ma voiture",
   },
 
   {
@@ -144,7 +144,7 @@ export const SERVICES: Service[] = [
         a: "Oui, après lavage et décontamination on applique un produit de finition qui protège la peinture pendant plusieurs semaines.",
       },
     ],
-    ctaMessage: "Bonjour StrasClean, je souhaite réserver un detailing auto complet",
+    ctaMessage: "Bonjour StrasClean 👋 Je voudrais réserver un detailing auto complet",
   },
 
   {
@@ -195,7 +195,7 @@ export const SERVICES: Service[] = [
       },
     ],
     ctaMessage:
-      "Bonjour StrasClean, ma voiture contient beaucoup de poils d'animaux, je souhaite un nettoyage spécifique",
+      "Bonjour StrasClean 👋 Ma voiture est pleine de poils d'animaux, je voudrais un traitement complet",
   },
 
   {
@@ -245,7 +245,7 @@ export const SERVICES: Service[] = [
         a: "Le nettoyage intérieur (Confort) est de l'entretien. La Premium ajoute un shampouinage complet des sièges et de la moquette — utile quand la voiture est très sale ou tachée.",
       },
     ],
-    ctaMessage: "Bonjour StrasClean, je souhaite un nettoyage intérieur de ma voiture",
+    ctaMessage: "Bonjour StrasClean 👋 Je voudrais un nettoyage intérieur de ma voiture",
   },
 
   {
@@ -295,7 +295,7 @@ export const SERVICES: Service[] = [
         a: "Comptez 1h15 à 2h pour un combiné intérieur + extérieur — on travaille en équipe de 2, donc deux fois plus rapide qu'un detailer solo.",
       },
     ],
-    ctaMessage: "Bonjour StrasClean, je souhaite un lavage de ma voiture à mon domicile",
+    ctaMessage: "Bonjour StrasClean 👋 Je voudrais un lavage complet de ma voiture à domicile",
   },
 
   // ─── 6. Lavage extérieur (entrée de gamme à 29 €) ──────────────────────
@@ -350,7 +350,7 @@ export const SERVICES: Service[] = [
         a: "Idéal toutes les 2-4 semaines pour garder une carrosserie présentable. Beaucoup de clients prennent un rendez-vous récurrent à ce tarif.",
       },
     ],
-    ctaMessage: "Bonjour StrasClean, je souhaite un lavage extérieur de ma voiture (à partir de 29 €)",
+    ctaMessage: "Bonjour StrasClean 👋 Je voudrais un lavage extérieur de ma voiture (dès 29 €)",
   },
 
   // ─── 7. Remise à neuf pour revente (129 €) ──────────────────────────────
@@ -408,7 +408,7 @@ export const SERVICES: Service[] = [
       },
     ],
     ctaMessage:
-      "Bonjour StrasClean, je vais mettre ma voiture en vente, je souhaite une remise à neuf complète",
+      "Bonjour StrasClean 👋 Je vais mettre ma voiture en vente, je voudrais une remise à neuf complète (dès 129 €)",
   },
 ];
 

@@ -150,7 +150,7 @@ export const USE_CASES: UseCase[] = [
       },
     ],
     ctaMessage:
-      "Bonjour StrasClean, je transporte mon chien régulièrement et j'aimerais un traitement complet poils d'animaux pour ma voiture à Strasbourg.",
+      "Bonjour StrasClean 👋 Je transporte mon chien régulièrement, je voudrais un traitement complet poils d'animaux pour ma voiture à Strasbourg. Vos disponibilités cette semaine ?",
   },
 
   // ─── 2. Enlever l'odeur de tabac ──────────────────────────────────────
@@ -248,7 +248,7 @@ export const USE_CASES: UseCase[] = [
       },
     ],
     ctaMessage:
-      "Bonjour StrasClean, ma voiture a une odeur de tabac persistante, je voudrais un traitement complet à mon domicile à Strasbourg.",
+      "Bonjour StrasClean 👋 Ma voiture a une odeur de tabac persistante, je voudrais un traitement complet à mon domicile à Strasbourg. Vos disponibilités cette semaine ?",
   },
 
   // ─── 3. Préparer voiture pour revente ─────────────────────────────────
@@ -349,7 +349,7 @@ export const USE_CASES: UseCase[] = [
       },
     ],
     ctaMessage:
-      "Bonjour StrasClean, je vais mettre ma voiture en vente, je voudrais une préparation complète revente à mon domicile à Strasbourg.",
+      "Bonjour StrasClean 👋 Je vais mettre ma voiture en vente, je voudrais une préparation complète revente à mon domicile à Strasbourg. Vos disponibilités cette semaine ?",
   },
 ];
 
