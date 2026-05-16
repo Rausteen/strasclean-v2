@@ -19,8 +19,10 @@ import Footer from "@/components/Footer";
 import FloatingWhatsApp from "@/components/FloatingWhatsApp";
 import OtherCities from "@/components/OtherCities";
 import ServiceLinks from "@/components/ServiceLinks";
+import UseCasePage from "@/components/UseCasePage";
 import { CITIES, City, CITY_URL_PREFIX, cityPath, inCity } from "@/lib/cities";
 import { SERVICES, Service, matchSlug, servicePath } from "@/lib/services";
+import { USE_CASES, UseCase, useCasePath } from "@/lib/usecases";
 import { SITE } from "@/lib/site";
 import { getGooglePlaceData } from "@/lib/reviews";
 
@@ -36,7 +38,8 @@ export function generateStaticParams(): Params[] {
   const serviceCityParams = SERVICES.flatMap((s) =>
     CITIES.map((c) => ({ slug: `${s.slug}-${c.slug}` })),
   );
-  return [...cityParams, ...serviceCityParams];
+  const useCaseParams = USE_CASES.map((uc) => ({ slug: uc.slug }));
+  return [...cityParams, ...serviceCityParams, ...useCaseParams];
 }
 
 export async function generateMetadata({
@@ -87,6 +90,37 @@ export async function generateMetadata({
         `shampouinage siège voiture ${city.name}`,
         `nettoyage voiture à domicile ${city.name}`,
       ],
+    };
+  }
+
+  if (m.type === "usecase") {
+    const uc = m.useCase;
+    return {
+      title: uc.metaTitle,
+      description: uc.metaDescription,
+      alternates: { canonical: useCasePath(uc) },
+      openGraph: {
+        type: "website",
+        url: `${SITE.url}${useCasePath(uc)}`,
+        siteName: SITE.name,
+        title: uc.metaTitle,
+        description: uc.metaDescription,
+        locale: "fr_FR",
+        images: [
+          {
+            url: "/og.svg",
+            width: 1200,
+            height: 630,
+            alt: `StrasClean — ${uc.shortName}`,
+          },
+        ],
+      },
+      twitter: {
+        card: "summary_large_image",
+        title: uc.metaTitle,
+        description: uc.metaDescription,
+        images: ["/og.svg"],
+      },
     };
   }
 
@@ -142,11 +176,10 @@ export default async function Page({
   // Fetché une fois par render (et mis en cache 1h par Next via lib/reviews)
   const place = await getGooglePlaceData();
 
-  return m.type === "city" ? (
-    <CityPage city={m.city} place={place} />
-  ) : (
-    <ServiceCityPage service={m.service} city={m.city} place={place} />
-  );
+  if (m.type === "city") return <CityPage city={m.city} place={place} />;
+  if (m.type === "service-city")
+    return <ServiceCityPage service={m.service} city={m.city} place={place} />;
+  return <UseCasePage useCase={m.useCase} place={place} />;
 }
 
 // ─── City page ───────────────────────────────────────────────────────────

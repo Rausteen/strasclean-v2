@@ -15,6 +15,7 @@
 // ─────────────────────────────────────────────────────────────────────────
 
 import { CITIES, City, CITY_URL_PREFIX } from "./cities";
+import { USE_CASES, UseCase, findUseCase } from "./usecases";
 
 export type Service = {
   /** Slug d'URL — kebab-case, sans accent. Doit être un keyword SEO complet. */
@@ -304,10 +305,11 @@ export const servicePath = (s: Service, c: City) => `/${s.slug}-${c.slug}`;
 /** Trouve un service par son slug */
 export const findService = (slug: string) => SERVICES.find((s) => s.slug === slug);
 
-/** Résultat du routeur de slug : ville pure ou couple service × ville */
+/** Résultat du routeur de slug : ville, service×ville, ou cas d'usage. */
 export type SlugMatch =
   | { type: "city"; city: City }
-  | { type: "service-city"; service: Service; city: City };
+  | { type: "service-city"; service: Service; city: City }
+  | { type: "usecase"; useCase: UseCase };
 
 /**
  * Identifie le type d'une URL StrasClean et renvoie les entités correspondantes.
@@ -325,6 +327,10 @@ export function matchSlug(slug: string): SlugMatch | null {
     const city = CITIES.find((c) => slug === `${service.slug}-${c.slug}`);
     if (city) return { type: "service-city", service, city };
   }
+
+  // 3) Page "cas d'usage" / pain point : slug complet et unique
+  const uc = findUseCase(slug);
+  if (uc) return { type: "usecase", useCase: uc };
 
   return null;
 }

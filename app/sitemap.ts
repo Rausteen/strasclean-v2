@@ -2,6 +2,7 @@ import { MetadataRoute } from "next";
 import { SITE } from "@/lib/site";
 import { CITIES, cityPath } from "@/lib/cities";
 import { SERVICES, servicePath } from "@/lib/services";
+import { USE_CASES, useCasePath } from "@/lib/usecases";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const now = new Date();
@@ -48,5 +49,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
         priority: 0.7,
       })),
     ),
+    // Pages "pain point" / cas d'usage (forte intention commerciale)
+    ...USE_CASES.map((uc) => ({
+      url: `${SITE.url}${useCasePath(uc)}`,
+      lastModified: now,
+      changeFrequency: "monthly" as const,
+      priority: 0.85,
+    })),
   ];
 }
