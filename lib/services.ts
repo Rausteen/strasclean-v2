@@ -422,11 +422,12 @@ export const servicePath = (s: Service, c: City) => `/${s.slug}-${c.slug}`;
 /** Trouve un service par son slug */
 export const findService = (slug: string) => SERVICES.find((s) => s.slug === slug);
 
-/** Résultat du routeur de slug : ville, service×ville, ou cas d'usage. */
+/** Résultat du routeur de slug : ville, service×ville, cas d'usage, ou prestation Maison. */
 export type SlugMatch =
   | { type: "city"; city: City }
   | { type: "service-city"; service: Service; city: City }
-  | { type: "usecase"; useCase: UseCase };
+  | { type: "usecase"; useCase: UseCase }
+  | { type: "home-service"; homeService: UseCase };
 
 /**
  * Identifie le type d'une URL StrasClean et renvoie les entités correspondantes.
@@ -450,10 +451,10 @@ export function matchSlug(slug: string): SlugMatch | null {
   if (uc) return { type: "usecase", useCase: uc };
 
   // 4) Page service Maison (canapé, tapis, matelas, fauteuil/chaise) :
-  //    on les expose via le même type "usecase" pour bénéficier du rendu
-  //    existant (UseCasePage) — c'est strictement la même structure de page.
+  //    type dédié pour qu'on rende un layout 100% Maison (pas de pollution
+  //    avec les formules / before-after / process auto).
   const hs = findHomeService(slug);
-  if (hs) return { type: "usecase", useCase: hs };
+  if (hs) return { type: "home-service", homeService: hs };
 
   return null;
 }

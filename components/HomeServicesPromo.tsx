@@ -27,6 +27,13 @@ export default function HomeServicesPromo() {
             à domicile à Strasbourg. Canapé tissu ou cuir, tapis, matelas,
             fauteuils, chaises : on intervient chez vous, sans rien déplacer.
           </p>
+          <Link
+            href="/strasclean-maison"
+            className="mt-5 inline-flex items-center gap-1.5 rounded-full border border-amber-400/40 bg-amber-500/10 px-4 py-2 text-sm font-semibold text-amber-200 transition hover:bg-amber-500/20"
+          >
+            Découvrir StrasClean Maison
+            <ArrowRightIcon size={14} />
+          </Link>
         </Reveal>
 
         <div className="mx-auto mt-10 grid max-w-5xl gap-4 sm:grid-cols-2 lg:grid-cols-4">

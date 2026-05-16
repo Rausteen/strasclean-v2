@@ -21,6 +21,7 @@ import FloatingWhatsApp from "@/components/FloatingWhatsApp";
 import OtherCities from "@/components/OtherCities";
 import ServiceLinks from "@/components/ServiceLinks";
 import UseCasePage from "@/components/UseCasePage";
+import HomeServicePage from "@/components/HomeServicePage";
 import { CITIES, City, CITY_URL_PREFIX, cityPath, inCity } from "@/lib/cities";
 import { SERVICES, Service, matchSlug, servicePath } from "@/lib/services";
 import { USE_CASES, UseCase, useCasePath } from "@/lib/usecases";
@@ -101,8 +102,8 @@ export async function generateMetadata({
     };
   }
 
-  if (m.type === "usecase") {
-    const uc = m.useCase;
+  if (m.type === "usecase" || m.type === "home-service") {
+    const uc = m.type === "usecase" ? m.useCase : m.homeService;
     return {
       title: uc.metaTitle,
       description: uc.metaDescription,
@@ -187,6 +188,8 @@ export default async function Page({
   if (m.type === "city") return <CityPage city={m.city} place={place} />;
   if (m.type === "service-city")
     return <ServiceCityPage service={m.service} city={m.city} place={place} />;
+  if (m.type === "home-service")
+    return <HomeServicePage service={m.homeService} place={place} />;
   return <UseCasePage useCase={m.useCase} place={place} />;
 }
 
