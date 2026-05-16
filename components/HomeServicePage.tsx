@@ -560,8 +560,8 @@ function HeroVisual({ service }: { service: UseCase }) {
   const heroSrc = findHeroPhoto(service.slug);
 
   return (
-    <div className="relative mx-auto w-full max-w-md lg:ml-auto">
-      <div className="relative overflow-hidden rounded-3xl border border-white/10 bg-gradient-to-br from-ink-800 to-ink-900 p-5 shadow-card">
+    <div className="relative mx-auto w-full max-w-xl lg:ml-auto">
+      <div className="relative overflow-hidden rounded-3xl border border-white/10 bg-gradient-to-br from-ink-800 to-ink-900 p-6 shadow-card">
         <div className="relative aspect-[4/3] w-full overflow-hidden rounded-2xl bg-gradient-to-br from-amber-200/20 via-orange-300/15 to-amber-500/10">
           {heroSrc ? (
             <>
@@ -570,7 +570,7 @@ function HeroVisual({ service }: { service: UseCase }) {
                 alt={`${service.shortName} — StrasClean Maison`}
                 fill
                 priority
-                sizes="(max-width: 640px) 92vw, (max-width: 1024px) 80vw, 448px"
+                sizes="(max-width: 640px) 92vw, (max-width: 1024px) 80vw, 560px"
                 quality={82}
                 className="object-cover"
               />
