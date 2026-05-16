@@ -6,9 +6,6 @@ import { usePathname } from "next/navigation";
 import { SITE } from "@/lib/site";
 import {
   WhatsAppIcon,
-  PhoneIcon,
-  MenuIcon,
-  CloseIcon,
   SparklesIcon,
   CarIcon,
   HomeIcon,
@@ -17,11 +14,10 @@ import { isMaisonPathname, NAV_AUTO, NAV_MAISON } from "@/lib/section";
 
 export default function Header() {
   const [scrolled, setScrolled] = useState(false);
-  const [open, setOpen] = useState(false);
   const pathname = usePathname() || "/";
   const onMaison = isMaisonPathname(pathname);
 
-  // NAV anchors selon section
+  // NAV anchors (desktop uniquement, mobile = scroll naturel)
   const nav = onMaison ? NAV_MAISON : NAV_AUTO;
 
   useEffect(() => {
@@ -30,10 +26,6 @@ export default function Header() {
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
-
-  useEffect(() => {
-    document.body.style.overflow = open ? "hidden" : "";
-  }, [open]);
 
   return (
     <header
@@ -92,7 +84,7 @@ export default function Header() {
           ))}
         </nav>
 
-        {/* CTA WhatsApp + Burger mobile */}
+        {/* CTA WhatsApp seul (pas de burger : sur mobile on scroll naturellement) */}
         <div className="ml-auto flex shrink-0 items-center gap-2">
           {/* WhatsApp desktop */}
           <a
@@ -115,15 +107,6 @@ export default function Header() {
             <WhatsAppIcon size={16} />
             WhatsApp
           </a>
-          {/* Burger menu mobile */}
-          <button
-            onClick={() => setOpen((s) => !s)}
-            aria-label={open ? "Fermer le menu" : "Ouvrir le menu"}
-            aria-expanded={open}
-            className="grid h-10 w-10 place-items-center rounded-full border border-white/10 bg-white/5 text-white active:scale-95 lg:hidden"
-          >
-            {open ? <CloseIcon size={18} /> : <MenuIcon size={18} />}
-          </button>
         </div>
       </div>
 
@@ -133,43 +116,6 @@ export default function Header() {
           <SectionToggle onMaison={onMaison} />
         </div>
       </div>
-
-      {/* Mobile drawer */}
-      {open && (
-        <div className="lg:hidden">
-          <div className="border-t border-white/5 bg-ink-950">
-            <div className="container-x flex flex-col gap-3 py-4">
-              {/* NAV section courante */}
-              <div className="flex flex-col gap-1">
-                {nav.map((n) => (
-                  <Link
-                    key={n.href}
-                    href={n.href}
-                    onClick={() => setOpen(false)}
-                    className="rounded-xl px-3 py-2.5 text-base font-medium text-white/85 hover:bg-white/5"
-                  >
-                    {n.label}
-                  </Link>
-                ))}
-              </div>
-
-              <div className="mt-2 grid grid-cols-2 gap-2">
-                <a href={SITE.phoneHref} className="btn-ghost w-full">
-                  <PhoneIcon size={16} /> Appeler
-                </a>
-                <a
-                  href={SITE.whatsappHref}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="btn-wa w-full"
-                >
-                  <WhatsAppIcon size={18} /> WhatsApp
-                </a>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
     </header>
   );
 }
