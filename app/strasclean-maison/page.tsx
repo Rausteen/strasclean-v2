@@ -13,7 +13,6 @@ import FAQ from "@/components/FAQ";
 import HomeBeforeAfter from "@/components/HomeBeforeAfter";
 import ServiceArea from "@/components/ServiceArea";
 import MaisonServicesGrid from "@/components/MaisonServicesGrid";
-import MaisonCitiesGrid from "@/components/MaisonCitiesGrid";
 import MaisonTrustSection from "@/components/MaisonTrustSection";
 import MaisonPriceCalculator from "@/components/MaisonPriceCalculatorLazy";
 import Reveal from "@/components/Reveal";
@@ -354,8 +353,6 @@ export default async function HubMaisonPage() {
         />
 
         <ServiceArea variant="maison" />
-
-        <MaisonCitiesGrid />
 
         <FAQ variant="maison" mainFAQs={MAISON_GLOBAL_FAQS} />
 

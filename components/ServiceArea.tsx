@@ -3,6 +3,7 @@ import Reveal from "./Reveal";
 import { waLink } from "@/lib/site";
 import { CITIES, cityPath } from "@/lib/cities";
 import { MapPinIcon, WhatsAppIcon, ArrowRightIcon } from "./Icon";
+import MaisonCityServicePicker from "./MaisonCityServicePicker";
 
 type Props = {
   variant?: "auto" | "maison";
@@ -54,38 +55,23 @@ export default function ServiceArea({ variant = "auto" }: Props = {}) {
           </Reveal>
 
           <Reveal className="lg:col-span-7" delay={120}>
-            <div className="relative overflow-hidden rounded-3xl border border-white/10 bg-gradient-to-br from-ink-800 to-ink-900 p-7 sm:p-9">
-              <div className="absolute inset-0 -z-10 bg-grid-light bg-[size:36px_36px] opacity-[0.25]" />
-              <div
-                className={`absolute -right-20 -top-24 h-64 w-64 rounded-full ${
-                  isMaison ? "bg-amber-500/15" : "bg-brand-500/15"
-                } blur-2xl sm:blur-3xl`}
-              />
+            {isMaison ? (
+              <MaisonCityServicePicker />
+            ) : (
+              <div className="relative overflow-hidden rounded-3xl border border-white/10 bg-gradient-to-br from-ink-800 to-ink-900 p-7 sm:p-9">
+                <div className="absolute inset-0 -z-10 bg-grid-light bg-[size:36px_36px] opacity-[0.25]" />
+                <div className="absolute -right-20 -top-24 h-64 w-64 rounded-full bg-brand-500/15 blur-2xl sm:blur-3xl" />
 
-              <h3 className="h-display text-xl font-semibold text-white">
-                12 communes desservies
-              </h3>
-              <p className="mt-1 text-sm text-white/60">
-                Et bien d'autres autour — demandez-nous.
-              </p>
+                <h3 className="h-display text-xl font-semibold text-white">
+                  12 communes desservies
+                </h3>
+                <p className="mt-1 text-sm text-white/60">
+                  Et bien d'autres autour — demandez-nous.
+                </p>
 
-              <ul className="mt-6 grid grid-cols-2 gap-2 sm:grid-cols-3">
-                {CITIES.map((c) => (
-                  <li key={c.slug}>
-                    {/* Sur Maison, les liens ville pointent toujours sur la
-                        page ville auto (on n'a pas de pages ville Maison
-                        dédiées pour l'instant). On garde le lien désactivé
-                        visuellement pour ne pas dégrader l'expérience. */}
-                    {isMaison ? (
-                      <span
-                        className={`group flex items-center justify-between gap-2 rounded-xl border border-white/10 bg-white/[0.03] px-3 py-2.5 text-sm text-white/85`}
-                      >
-                        <span className="inline-flex items-center gap-2">
-                          <MapPinIcon size={14} className={pinColor} />
-                          {c.name}
-                        </span>
-                      </span>
-                    ) : (
+                <ul className="mt-6 grid grid-cols-2 gap-2 sm:grid-cols-3">
+                  {CITIES.map((c) => (
+                    <li key={c.slug}>
                       <Link
                         href={cityPath(c)}
                         prefetch={false}
@@ -100,14 +86,14 @@ export default function ServiceArea({ variant = "auto" }: Props = {}) {
                           className={`text-white/40 transition group-hover:translate-x-0.5 group-hover:${pinColor}`}
                         />
                       </Link>
-                    )}
+                    </li>
+                  ))}
+                  <li className="flex items-center justify-center rounded-xl border border-dashed border-white/15 bg-white/[0.02] px-3 py-2.5 text-sm text-white/65">
+                    + alentours
                   </li>
-                ))}
-                <li className="flex items-center justify-center rounded-xl border border-dashed border-white/15 bg-white/[0.02] px-3 py-2.5 text-sm text-white/65">
-                  + alentours
-                </li>
-              </ul>
-            </div>
+                </ul>
+              </div>
+            )}
           </Reveal>
         </div>
       </div>
