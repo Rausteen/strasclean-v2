@@ -5,45 +5,70 @@ import Script from "next/script";
 // ─────────────────────────────────────────────────────────────────────────
 //  Analytics & tracking pub — piloté par variables d'environnement.
 //
-//  À renseigner dans Vercel (ou .env du serveur) :
-//    NEXT_PUBLIC_GA_ID                  ex: G-XXXXXXX             (GA4)
-//    NEXT_PUBLIC_GOOGLE_ADS_ID          ex: AW-17962141009        (Google Ads)
-//    NEXT_PUBLIC_GOOGLE_ADS_WA_LABEL    ex: AW-17962141009/axtcCP3o0qwcENGKgvVC
-//    NEXT_PUBLIC_GOOGLE_ADS_PHONE_LABEL ex: AW-17962141009/xxxxxxxx
-//    NEXT_PUBLIC_META_PIXEL_ID          ex: 123456789012          (Meta Pixel)
+//  À renseigner dans .env de prod (ou Vercel) :
 //
-//  Laisse vide → le bloc correspondant n'est pas chargé.
+//  ── GA4 (un seul compte, cross-section) ──────────────────────────────
+//    NEXT_PUBLIC_GA_ID                       ex: G-XXXXXXX
 //
-//  Tracking des conversions automatique :
-//   - Clic WhatsApp (wa.me / whatsapp) → conversion "Contact"
-//   - Clic téléphone (tel:)            → conversion "Phone call lead"
+//  ── Google Ads AUTO (compte n°1) ─────────────────────────────────────
+//    NEXT_PUBLIC_GOOGLE_ADS_AUTO_ID          ex: AW-1111111111
+//    NEXT_PUBLIC_GOOGLE_ADS_AUTO_WA_LABEL    ex: AW-1111111111/abcd...
+//    NEXT_PUBLIC_GOOGLE_ADS_AUTO_PHONE_LABEL ex: AW-1111111111/wxyz...
+//
+//  ── Google Ads MAISON (compte n°2) ───────────────────────────────────
+//    NEXT_PUBLIC_GOOGLE_ADS_MAISON_ID          ex: AW-2222222222
+//    NEXT_PUBLIC_GOOGLE_ADS_MAISON_WA_LABEL    ex: AW-2222222222/abcd...
+//    NEXT_PUBLIC_GOOGLE_ADS_MAISON_PHONE_LABEL ex: AW-2222222222/wxyz...
+//
+//  ── Meta Pixel (optionnel) ───────────────────────────────────────────
+//    NEXT_PUBLIC_META_PIXEL_ID               ex: 123456789012
+//
+//  Une variable vide = le bloc correspondant n'est pas chargé.
+//
+//  Fonctionnement des conversions :
+//   - Au clic sur un lien wa.me/whatsapp → conversion "WhatsApp"
+//   - Au clic sur un lien tel:           → conversion "Phone"
+//   - La SECTION (auto vs maison) est détectée via window.location.pathname
+//     au moment du clic et envoie la conv vers le BON compte Google Ads.
+//
+//  ⚠️ La logique de détection JS plus bas (isMaisonPath) doit rester
+//  synchro avec lib/section.ts → isMaisonPathname.
 // ─────────────────────────────────────────────────────────────────────────
 
 const GA_ID = process.env.NEXT_PUBLIC_GA_ID;
-const ADS_ID = process.env.NEXT_PUBLIC_GOOGLE_ADS_ID;
-const ADS_WA_LABEL = process.env.NEXT_PUBLIC_GOOGLE_ADS_WA_LABEL;
-const ADS_PHONE_LABEL = process.env.NEXT_PUBLIC_GOOGLE_ADS_PHONE_LABEL;
+
+const ADS_AUTO_ID = process.env.NEXT_PUBLIC_GOOGLE_ADS_AUTO_ID;
+const ADS_AUTO_WA_LABEL = process.env.NEXT_PUBLIC_GOOGLE_ADS_AUTO_WA_LABEL;
+const ADS_AUTO_PHONE_LABEL = process.env.NEXT_PUBLIC_GOOGLE_ADS_AUTO_PHONE_LABEL;
+
+const ADS_MAISON_ID = process.env.NEXT_PUBLIC_GOOGLE_ADS_MAISON_ID;
+const ADS_MAISON_WA_LABEL = process.env.NEXT_PUBLIC_GOOGLE_ADS_MAISON_WA_LABEL;
+const ADS_MAISON_PHONE_LABEL =
+  process.env.NEXT_PUBLIC_GOOGLE_ADS_MAISON_PHONE_LABEL;
+
 const PIXEL_ID = process.env.NEXT_PUBLIC_META_PIXEL_ID;
 
-const hasGtag = Boolean(GA_ID || ADS_ID);
-const hasAnything = Boolean(GA_ID || ADS_ID || PIXEL_ID);
+const hasGtag = Boolean(GA_ID || ADS_AUTO_ID || ADS_MAISON_ID);
+const hasAnything = Boolean(
+  GA_ID || ADS_AUTO_ID || ADS_MAISON_ID || PIXEL_ID,
+);
 
 export default function Analytics() {
   if (!hasAnything) return null;
 
-  const gtagIdForLoad = GA_ID || ADS_ID;
+  // N'importe quel ID gtag suffit pour charger gtag.js (la lib est commune).
+  const gtagLoaderId = GA_ID || ADS_AUTO_ID || ADS_MAISON_ID;
 
-  // Injecté côté client en string pour le snippet de tracking
-  const waLabelJs = ADS_WA_LABEL ? `'${ADS_WA_LABEL}'` : "null";
-  const phoneLabelJs = ADS_PHONE_LABEL ? `'${ADS_PHONE_LABEL}'` : "null";
+  // Sérialisation des labels côté JS : 'STRING' si défini, sinon null
+  const j = (v?: string) => (v ? `'${v}'` : "null");
 
   return (
     <>
-      {/* Google tag (gtag.js) — GA4 + Google Ads */}
+      {/* Google tag (gtag.js) — GA4 + 2 comptes Google Ads */}
       {hasGtag && (
         <>
           <Script
-            src={`https://www.googletagmanager.com/gtag/js?id=${gtagIdForLoad}`}
+            src={`https://www.googletagmanager.com/gtag/js?id=${gtagLoaderId}`}
             strategy="afterInteractive"
           />
           <Script id="gtag-init" strategy="afterInteractive">
@@ -52,7 +77,8 @@ export default function Analytics() {
               function gtag(){dataLayer.push(arguments);}
               gtag('js', new Date());
               ${GA_ID ? `gtag('config', '${GA_ID}');` : ""}
-              ${ADS_ID ? `gtag('config', '${ADS_ID}');` : ""}
+              ${ADS_AUTO_ID ? `gtag('config', '${ADS_AUTO_ID}');` : ""}
+              ${ADS_MAISON_ID ? `gtag('config', '${ADS_MAISON_ID}');` : ""}
             `}
           </Script>
         </>
@@ -88,38 +114,79 @@ export default function Analytics() {
         </>
       )}
 
-      {/* Tracking conversions : clics WhatsApp & téléphone */}
+      {/* Tracking conversions : clics WhatsApp & téléphone, routés
+          vers le bon compte Google Ads selon la section (auto/maison). */}
       <Script id="conversion-tracking" strategy="afterInteractive">
         {`
           (function(){
-            var WA_SEND_TO = ${waLabelJs};
-            var PHONE_SEND_TO = ${phoneLabelJs};
+            var AUTO_WA   = ${j(ADS_AUTO_WA_LABEL)};
+            var AUTO_TEL  = ${j(ADS_AUTO_PHONE_LABEL)};
+            var MAISON_WA  = ${j(ADS_MAISON_WA_LABEL)};
+            var MAISON_TEL = ${j(ADS_MAISON_PHONE_LABEL)};
+
+            // Préfixes slug Maison — DOIT rester synchro avec lib/section.ts
+            var MAISON_PREFIXES = [
+              'nettoyage-canape-',
+              'nettoyage-tapis-',
+              'nettoyage-matelas-',
+              'nettoyage-fauteuil-chaise-',
+              'nettoyage-airbnb-',
+              'prix-nettoyage-canape-',
+              'prix-nettoyage-tapis-',
+              'prix-nettoyage-matelas-',
+              'prix-nettoyage-fauteuil-chaise-'
+            ];
+
+            function isMaisonPath(p){
+              if (!p) return false;
+              if (p === '/strasclean-maison') return true;
+              if (p.indexOf('/strasclean-maison/') === 0) return true;
+              if (p === '/maison') return true;
+              var slug = p.replace(/^\\/+/, '').replace(/\\/.*$/, '');
+              for (var i = 0; i < MAISON_PREFIXES.length; i++) {
+                if (slug.indexOf(MAISON_PREFIXES[i]) === 0) return true;
+              }
+              return false;
+            }
 
             document.addEventListener('click', function(e){
               var a = e.target && e.target.closest ? e.target.closest('a') : null;
               if (!a) return;
               var href = a.getAttribute('href') || '';
-              var isWa = href.indexOf('wa.me') !== -1 || href.indexOf('whatsapp') !== -1;
+              var isWa  = href.indexOf('wa.me') !== -1 || href.indexOf('whatsapp') !== -1;
               var isTel = href.indexOf('tel:') === 0;
               if (!isWa && !isTel) return;
 
+              var section = isMaisonPath(window.location.pathname) ? 'maison' : 'auto';
+              var sendTo;
+              if (section === 'maison') {
+                sendTo = isWa ? MAISON_WA : MAISON_TEL;
+              } else {
+                sendTo = isWa ? AUTO_WA : AUTO_TEL;
+              }
+
               try {
                 if (typeof gtag === 'function') {
-                  // GA4 — événement générique (utile pour l'analyse)
+                  // GA4 — événement générique avec param de section
                   gtag('event', isWa ? 'whatsapp_click' : 'phone_click', {
                     event_category: 'contact',
                     event_label: href,
+                    section: section,
                     value: 56
                   });
-                  // Google Ads — conversion (si label fourni)
-                  var sendTo = isWa ? WA_SEND_TO : PHONE_SEND_TO;
+                  // Google Ads — conversion routée vers le bon compte
                   if (sendTo) {
-                    gtag('event', 'conversion', { 'send_to': sendTo, 'value': 56, 'currency': 'EUR' });
+                    gtag('event', 'conversion', {
+                      'send_to': sendTo,
+                      'value': 56,
+                      'currency': 'EUR'
+                    });
                   }
                 }
                 if (typeof fbq === 'function') {
                   fbq('track', 'Lead', {
                     content_name: isWa ? 'whatsapp_click' : 'phone_click',
+                    section: section,
                     value: 56,
                     currency: 'EUR'
                   });
