@@ -121,8 +121,11 @@ export default function Hero() {
             </ul>
           </div>
 
-          {/* Visual */}
-          <HeroVisual />
+          {/* Visual — desktop only : sur mobile, on file directement vers
+              les Formules en dessous pour réduire le scroll avant prix. */}
+          <div className="hidden lg:block">
+            <HeroVisual />
+          </div>
         </div>
       </div>
     </section>
@@ -150,8 +153,7 @@ function HeroVisual() {
                 src={HERO_IMAGE_PATH}
                 alt="Voiture nettoyée par StrasClean — rendu showroom à Strasbourg"
                 fill
-                priority
-                sizes="(max-width: 640px) 92vw, (max-width: 1024px) 80vw, 560px"
+                sizes="560px"
                 quality={82}
                 className="object-cover"
               />
