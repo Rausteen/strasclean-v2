@@ -6,6 +6,9 @@ import { usePathname } from "next/navigation";
 import { SITE } from "@/lib/site";
 import {
   WhatsAppIcon,
+  PhoneIcon,
+  MenuIcon,
+  CloseIcon,
   SparklesIcon,
   CarIcon,
   HomeIcon,
@@ -14,10 +17,10 @@ import { isMaisonPathname, NAV_AUTO, NAV_MAISON } from "@/lib/section";
 
 export default function Header() {
   const [scrolled, setScrolled] = useState(false);
+  const [open, setOpen] = useState(false);
   const pathname = usePathname() || "/";
   const onMaison = isMaisonPathname(pathname);
 
-  // NAV anchors (desktop uniquement, mobile = scroll naturel)
   const nav = onMaison ? NAV_MAISON : NAV_AUTO;
 
   useEffect(() => {
@@ -26,6 +29,15 @@ export default function Header() {
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
+
+  useEffect(() => {
+    document.body.style.overflow = open ? "hidden" : "";
+  }, [open]);
+
+  // Ferme le drawer dès qu'on change de page
+  useEffect(() => {
+    setOpen(false);
+  }, [pathname]);
 
   return (
     <header
@@ -37,9 +49,6 @@ export default function Header() {
     >
       {/* TOPBAR principale — logo / nav / CTA */}
       <div className="container-x flex h-16 items-center gap-3">
-        {/* Logo — pointe vers le hub de la section courante (Auto ou Maison)
-            pour ne pas faire basculer l'utilisateur d'un univers à l'autre
-            par accident. */}
         <Link
           href={onMaison ? "/strasclean-maison" : "/"}
           aria-label={
@@ -84,9 +93,8 @@ export default function Header() {
           ))}
         </nav>
 
-        {/* CTA WhatsApp seul (pas de burger : sur mobile on scroll naturellement) */}
+        {/* CTA WhatsApp + Burger mobile */}
         <div className="ml-auto flex shrink-0 items-center gap-2">
-          {/* WhatsApp desktop */}
           <a
             href={SITE.whatsappHref}
             target="_blank"
@@ -96,7 +104,6 @@ export default function Header() {
             <WhatsAppIcon size={18} />
             WhatsApp
           </a>
-          {/* WhatsApp mobile (texte plus court) */}
           <a
             href={SITE.whatsappHref}
             target="_blank"
@@ -107,23 +114,68 @@ export default function Header() {
             <WhatsAppIcon size={16} />
             WhatsApp
           </a>
+          <button
+            onClick={() => setOpen((s) => !s)}
+            aria-label={open ? "Fermer le menu" : "Ouvrir le menu"}
+            aria-expanded={open}
+            className="grid h-10 w-10 place-items-center rounded-full border border-white/10 bg-white/5 text-white active:scale-95 lg:hidden"
+          >
+            {open ? <CloseIcon size={18} /> : <MenuIcon size={18} />}
+          </button>
         </div>
       </div>
 
-      {/* SOUS-STRIP — pill Auto/Maison toujours visible, position stable.
-          À propos en lien discret à droite : accessible depuis chaque page,
-          y compris sur mobile où la NAV desktop est masquée. */}
+      {/* SOUS-STRIP — pill Auto/Maison toujours visible, position stable */}
       <div className="border-t border-white/5 bg-ink-950/60 backdrop-blur-sm">
-        <div className="container-x relative flex h-10 items-center justify-center">
+        <div className="container-x flex h-10 items-center justify-center">
           <SectionToggle onMaison={onMaison} />
-          <Link
-            href="/qui-sommes-nous"
-            className="absolute right-4 text-[11px] font-medium text-white/55 transition hover:text-white sm:right-6 sm:text-xs"
-          >
-            À propos
-          </Link>
         </div>
       </div>
+
+      {/* Mobile drawer */}
+      {open && (
+        <div className="lg:hidden">
+          <div className="border-t border-white/5 bg-ink-950">
+            <div className="container-x flex flex-col gap-3 py-4">
+              <div className="flex flex-col gap-1">
+                {nav.map((n) => (
+                  <Link
+                    key={n.href}
+                    href={n.href}
+                    onClick={() => setOpen(false)}
+                    className="rounded-xl px-3 py-2.5 text-base font-medium text-white/85 hover:bg-white/5"
+                  >
+                    {n.label}
+                  </Link>
+                ))}
+                {/* À propos — accessible depuis chaque page, hors NAV
+                    section pour ne pas alourdir la nav desktop. */}
+                <Link
+                  href="/qui-sommes-nous"
+                  onClick={() => setOpen(false)}
+                  className="rounded-xl px-3 py-2.5 text-base font-medium text-white/85 hover:bg-white/5"
+                >
+                  À propos
+                </Link>
+              </div>
+
+              <div className="mt-2 grid grid-cols-2 gap-2">
+                <a href={SITE.phoneHref} className="btn-ghost w-full">
+                  <PhoneIcon size={16} /> Appeler
+                </a>
+                <a
+                  href={SITE.whatsappHref}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="btn-wa w-full"
+                >
+                  <WhatsAppIcon size={18} /> WhatsApp
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </header>
   );
 }
