@@ -35,9 +35,9 @@ export default async function Page() {
       <main>
         <Hero />
         <TrustBar />
-        <ProblemsSolution />
         <PricingSection />
         <PriceCalculator />
+        <ProblemsSolution />
         <BeforeAfter />
         <HowItWorks />
         <Benefits />
