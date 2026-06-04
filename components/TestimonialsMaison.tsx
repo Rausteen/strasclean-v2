@@ -52,9 +52,6 @@ export default function TestimonialsMaison({
 
   return (
     <section id="avis" className="relative overflow-hidden py-16 sm:py-24">
-      <div className="pointer-events-none absolute inset-0 -z-10">
-        <div className="absolute right-1/4 top-0 h-[360px] w-[640px] rounded-full bg-amber-500/8 blur-2xl sm:blur-3xl" />
-      </div>
       <div className="container-x">
         <Reveal className="mx-auto max-w-3xl text-center">
           <p className="inline-flex items-center gap-2.5 text-sm font-semibold uppercase tracking-[0.18em] text-amber-600 before:h-px before:w-6 before:bg-amber-500 before:opacity-70 before:content-['']">

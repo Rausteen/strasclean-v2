@@ -90,10 +90,6 @@ export default function PriceCalculator() {
       id="calculateur"
       className="relative overflow-hidden py-16 sm:py-24"
     >
-      <div className="pointer-events-none absolute inset-0 -z-10">
-        <div className="absolute left-1/2 top-0 h-[420px] w-[760px] -translate-x-1/2 rounded-full bg-brand-500/15 blur-2xl sm:blur-3xl" />
-      </div>
-
       <div className="container-x">
         <div className="mx-auto max-w-3xl text-center">
           <p className="inline-flex items-center gap-2.5 text-sm font-semibold uppercase tracking-[0.18em] text-brand-600 before:h-px before:w-6 before:bg-brand-500 before:opacity-70 before:content-['']">

@@ -9,10 +9,6 @@ export default function HomeServicesPromo() {
       id="maison"
       className="relative overflow-hidden bg-amber-50/60 py-16 sm:py-24"
     >
-      <div className="pointer-events-none absolute inset-0 -z-10">
-        <div className="absolute left-1/4 top-0 h-[420px] w-[760px] rounded-full bg-amber-500/10 blur-2xl sm:blur-3xl" />
-      </div>
-
       <div className="container-x">
         <Reveal className="mx-auto max-w-3xl text-center">
           <p className="inline-flex items-center gap-2 text-sm font-semibold uppercase tracking-[0.18em] text-amber-600">
