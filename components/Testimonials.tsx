@@ -150,7 +150,7 @@ export default function Testimonials({
   }
 
   return (
-    <section id="avis" className="relative py-14 sm:py-24 lg:py-28">
+    <section id="avis" className="relative bg-slate-50 py-14 sm:py-24 lg:py-28">
       <div className="container-x">
         <Reveal className="mx-auto max-w-3xl text-center">
           <p className="text-sm font-semibold uppercase tracking-[0.18em] text-brand-600">

@@ -308,7 +308,7 @@ export default async function HubMaisonPage() {
         <HomeBeforeAfter />
 
         {/* COMMENT ÇA SE PASSE */}
-        <section id="process" className="relative overflow-hidden bg-slate-50 py-14 sm:py-24 lg:py-28">
+        <section id="process" className="relative overflow-hidden py-14 sm:py-24 lg:py-28">
           <div className="container-x">
             <Reveal className="mx-auto max-w-3xl text-center">
               <p className="text-sm font-semibold uppercase tracking-[0.18em] text-amber-600">
