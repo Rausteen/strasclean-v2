@@ -172,8 +172,8 @@ function PlanCard({ plan }: { plan: Plan }) {
       <div
         className={`relative h-full overflow-hidden rounded-3xl border p-6 transition-all duration-300 sm:p-7 ${
           popular
-            ? "border-brand-400/40 bg-gradient-to-b from-brand-500/10 to-slate-50 shadow-glow"
-            : "border-slate-200 bg-slate-50 group-hover:-translate-y-1 group-hover:border-slate-300"
+            ? "border-brand-400/60 bg-white shadow-glow ring-1 ring-brand-400/30"
+            : "border-slate-200 bg-white shadow-sm group-hover:-translate-y-1 group-hover:border-slate-300 group-hover:shadow-md"
         }`}
       >
         {/* Glow */}

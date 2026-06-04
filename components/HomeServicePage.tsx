@@ -255,7 +255,7 @@ export default function HomeServicePage({ service, place, city }: Props) {
 
                 <h1 className="h-display mt-4 text-balance text-[30px] font-bold leading-[1.05] text-slate-900 sm:text-5xl lg:text-6xl">
                   {h1FullPlain}{" "}
-                  <span className="bg-gradient-to-r from-amber-200 via-amber-300 to-amber-500 bg-clip-text text-transparent">
+                  <span className="bg-gradient-to-r from-amber-500 via-amber-600 to-orange-600 bg-clip-text text-transparent">
                     {h1Highlight}
                   </span>
                 </h1>

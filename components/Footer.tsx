@@ -13,12 +13,14 @@ export default function Footer() {
   const pathname = usePathname() || "/";
   const isMaison = isMaisonPathname(pathname);
 
-  const accent = isMaison ? "text-amber-600" : "text-brand-600";
+  // Tons d'accent contextualisés à la section pour rester cohérent
+  // avec le Header / Hero (brand vert pour Auto, ambre pour Maison).
+  const accent = isMaison ? "text-amber-300" : "text-brand-300";
+  const accentMuted = isMaison ? "text-amber-200/80" : "text-brand-200/80";
   const logoGradient = isMaison
     ? "from-amber-300 to-amber-500"
     : "from-brand-400 to-brand-600";
 
-  // CTA WA contextualisé selon la section
   const waHref = isMaison
     ? waLink(
         "Bonjour StrasClean 👋 Je voudrais un devis pour un nettoyage à domicile (canapé / tapis / matelas / fauteuils). Quels sont vos prochains créneaux ?",
@@ -26,22 +28,30 @@ export default function Footer() {
     : SITE.whatsappHref;
 
   return (
-    <footer className="border-t border-slate-100 bg-white pb-24 pt-14 sm:pb-12 sm:pt-12">
-      <div className="container-x">
+    <footer className="relative overflow-hidden bg-slate-900 pb-24 pt-14 text-slate-300 sm:pb-12 sm:pt-14">
+      {/* Halo d'accent en haut pour lier visuellement au body light */}
+      <div
+        aria-hidden
+        className={`pointer-events-none absolute -top-32 left-1/2 h-64 w-[820px] -translate-x-1/2 rounded-full blur-3xl ${
+          isMaison ? "bg-amber-400/15" : "bg-brand-500/15"
+        }`}
+      />
+
+      <div className="container-x relative">
         <div className="grid gap-10 lg:grid-cols-12 lg:gap-8">
           {/* COL 1 — Brand + CTAs */}
           <div className="lg:col-span-5">
             <Link href="/" className="inline-flex items-center gap-2">
               <span
-                className={`grid h-9 w-9 place-items-center rounded-xl bg-gradient-to-br ${logoGradient}`}
+                className={`grid h-9 w-9 place-items-center rounded-xl bg-gradient-to-br ${logoGradient} shadow-glow`}
               >
                 <SparklesIcon size={18} className="text-slate-900" />
               </span>
-              <span className="h-display text-lg font-bold text-slate-900">
+              <span className="h-display text-lg font-bold text-white">
                 Stras<span className={accent}>Clean</span>
               </span>
             </Link>
-            <p className="mt-3 max-w-sm text-sm text-slate-600">
+            <p className="mt-3 max-w-sm text-sm text-slate-400">
               Nettoyage professionnel à domicile à Strasbourg — voiture et
               textile maison. Équipe locale, matériel pro, 7j/7 de 8h à 22h.
             </p>
@@ -55,12 +65,15 @@ export default function Footer() {
               >
                 <WhatsAppIcon size={16} /> WhatsApp
               </a>
-              <a href={SITE.phoneHref} className="btn-ghost">
+              <a
+                href={SITE.phoneHref}
+                className="btn border border-white/15 bg-white/5 text-white hover:bg-white/10"
+              >
                 <PhoneIcon size={16} /> {SITE.phoneDisplay}
               </a>
             </div>
 
-            <p className="mt-5 inline-flex items-center gap-1.5 text-xs text-slate-500">
+            <p className="mt-5 inline-flex items-center gap-1.5 text-xs text-slate-400">
               <MapPinIcon size={12} className={accent} />
               Strasbourg + 12 communes desservies
             </p>
@@ -68,17 +81,17 @@ export default function Footer() {
 
           {/* COL 2 — Auto */}
           <div className="lg:col-span-3">
-            <h3 className="text-xs font-semibold uppercase tracking-wider text-slate-700">
+            <h3 className="text-xs font-semibold uppercase tracking-wider text-white/85">
               StrasClean Auto
             </h3>
-            <ul className="mt-3 space-y-1.5 text-sm text-slate-600">
+            <ul className="mt-3 space-y-1.5 text-sm text-slate-400">
               <li>
-                <Link href="/" className="hover:text-slate-900">
+                <Link href="/" className="hover:text-white">
                   Accueil
                 </Link>
               </li>
               <li>
-                <Link href="/formules" className="hover:text-slate-900">
+                <Link href="/formules" className="hover:text-white">
                   Formules (39 / 79 / 119 €)
                 </Link>
               </li>
@@ -86,7 +99,7 @@ export default function Footer() {
                 <Link
                   href={cityPath(CITIES[0])}
                   prefetch={false}
-                  className="hover:text-slate-900"
+                  className="hover:text-white"
                 >
                   Nettoyage voiture Strasbourg
                 </Link>
@@ -96,14 +109,16 @@ export default function Footer() {
 
           {/* COL 3 — Maison */}
           <div className="lg:col-span-4">
-            <h3 className="text-xs font-semibold uppercase tracking-wider text-amber-600/90">
+            <h3
+              className={`text-xs font-semibold uppercase tracking-wider ${accentMuted}`}
+            >
               StrasClean Maison
             </h3>
-            <ul className="mt-3 space-y-1.5 text-sm text-slate-600">
+            <ul className="mt-3 space-y-1.5 text-sm text-slate-400">
               <li>
                 <Link
                   href="/strasclean-maison"
-                  className="hover:text-slate-900"
+                  className="hover:text-white"
                 >
                   Hub Maison
                 </Link>
@@ -113,10 +128,10 @@ export default function Footer() {
                   <Link
                     href={homeServicePath(s)}
                     prefetch={false}
-                    className="hover:text-slate-900"
+                    className="hover:text-white"
                   >
                     {s.shortName}{" "}
-                    <span className="text-slate-400">
+                    <span className="text-slate-500">
                       · dès {s.pricing.priceFrom} €
                     </span>
                   </Link>
@@ -126,14 +141,12 @@ export default function Footer() {
           </div>
         </div>
 
-        {/* Liste compacte des villes (pour le SEO local + maillage).
-            Sur Maison, chaque lien pointe vers la page Maison de la commune
-            (canapé = service le plus populaire), pas vers la page Auto. */}
-        <div className="mt-10 border-t border-slate-100 pt-6">
-          <p className="text-xs font-semibold uppercase tracking-wider text-slate-500">
+        {/* Liste compacte des villes (SEO + maillage) */}
+        <div className="mt-10 border-t border-white/10 pt-6">
+          <p className="text-xs font-semibold uppercase tracking-wider text-slate-400">
             Communes desservies
           </p>
-          <ul className="mt-3 flex flex-wrap gap-x-3 gap-y-1.5 text-xs text-slate-500">
+          <ul className="mt-3 flex flex-wrap gap-x-3 gap-y-1.5 text-xs text-slate-400">
             {CITIES.map((c, i) => (
               <li key={c.slug}>
                 <Link
@@ -143,35 +156,35 @@ export default function Footer() {
                       : cityPath(c)
                   }
                   prefetch={false}
-                  className="hover:text-slate-900"
+                  className="hover:text-white"
                 >
                   {c.name}
                 </Link>
                 {i < CITIES.length - 1 && (
-                  <span className="ml-3 text-slate-200">·</span>
+                  <span className="ml-3 text-white/20">·</span>
                 )}
               </li>
             ))}
           </ul>
         </div>
 
-        {/* Bottom : copyright + légal + qui-sommes-nous */}
-        <div className="mt-8 flex flex-col items-start justify-between gap-3 border-t border-slate-100 pt-6 text-xs text-slate-400 sm:flex-row sm:items-center">
+        {/* Bottom : copyright + légal */}
+        <div className="mt-8 flex flex-col items-start justify-between gap-3 border-t border-white/10 pt-6 text-xs text-slate-500 sm:flex-row sm:items-center">
           <p>© {year} StrasClean. Tous droits réservés.</p>
           <div className="flex flex-wrap gap-x-5 gap-y-1">
-            <Link href="/qui-sommes-nous" className="hover:text-slate-700">
+            <Link href="/qui-sommes-nous" className="hover:text-white">
               Qui sommes-nous
             </Link>
-            <Link href="/mentions-legales" className="hover:text-slate-700">
+            <Link href="/mentions-legales" className="hover:text-white">
               Mentions légales
             </Link>
             <Link
               href="/politique-de-confidentialite"
-              className="hover:text-slate-700"
+              className="hover:text-white"
             >
               Politique de confidentialité
             </Link>
-            <a href={`mailto:${SITE.email}`} className="hover:text-slate-700">
+            <a href={`mailto:${SITE.email}`} className="hover:text-white">
               {SITE.email}
             </a>
           </div>

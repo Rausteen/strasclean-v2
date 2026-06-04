@@ -175,9 +175,10 @@ export default async function HubMaisonPage() {
         {/* HERO */}
         <section id="top" className="relative overflow-hidden">
           <div className="pointer-events-none absolute inset-0 -z-10">
-            <div className="absolute inset-0 bg-radial-fade" />
-            <div className="absolute inset-0 bg-grid-light bg-[size:48px_48px] opacity-[0.30] [mask-image:radial-gradient(ellipse_at_center,black_30%,transparent_75%)]" />
-            <div className="absolute -top-32 left-1/2 h-[520px] w-[820px] -translate-x-1/2 rounded-full bg-amber-500/20 blur-2xl sm:blur-3xl" />
+            <div className="absolute inset-0 bg-gradient-to-b from-amber-50 via-white to-white" />
+            <div className="absolute inset-0 bg-grid-light bg-[size:48px_48px] opacity-50 [mask-image:radial-gradient(ellipse_at_center,black_30%,transparent_75%)]" />
+            <div className="absolute -top-40 left-1/2 h-[520px] w-[820px] -translate-x-1/2 rounded-full bg-amber-300/40 blur-3xl" />
+            <div className="absolute -top-24 right-0 h-72 w-72 rounded-full bg-orange-100/70 blur-3xl" />
           </div>
 
           <div className="container-x pt-6 pb-12 sm:pt-14 sm:pb-20 lg:pt-20 lg:pb-24">
@@ -190,7 +191,7 @@ export default async function HubMaisonPage() {
 
                 <h1 className="h-display mt-4 text-balance text-[34px] font-bold leading-[1.05] text-slate-900 sm:text-5xl lg:text-6xl">
                   Votre canapé, tapis et matelas{" "}
-                  <span className="bg-gradient-to-r from-amber-200 via-amber-300 to-amber-500 bg-clip-text text-transparent">
+                  <span className="bg-gradient-to-r from-amber-500 via-amber-600 to-orange-600 bg-clip-text text-transparent">
                     comme neufs.
                   </span>
                 </h1>

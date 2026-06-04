@@ -129,7 +129,7 @@ export default async function QuiSommesNousPage() {
 
               <h1 className="h-display mt-4 text-balance text-[32px] font-bold leading-[1.05] text-slate-900 sm:text-5xl lg:text-6xl">
                 Une équipe locale qui prend soin de votre voiture{" "}
-                <span className="bg-gradient-to-r from-brand-300 via-brand-400 to-brand-500 bg-clip-text text-transparent">
+                <span className="bg-gradient-to-r from-brand-500 via-brand-600 to-emerald-700 bg-clip-text text-transparent">
                   et de votre intérieur.
                 </span>
               </h1>

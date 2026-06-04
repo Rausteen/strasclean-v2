@@ -31,11 +31,13 @@ import {
 export default function Hero() {
   return (
     <section id="top" className="relative overflow-hidden">
-      {/* Background */}
+      {/* Background — atmosphère light : grille discrète + halo brand
+          en haut pour évoquer l'accent sans alourdir. */}
       <div className="pointer-events-none absolute inset-0 -z-10">
-        <div className="absolute inset-0 bg-radial-fade" />
-        <div className="absolute inset-0 bg-grid-light bg-[size:48px_48px] opacity-[0.35] [mask-image:radial-gradient(ellipse_at_center,black_30%,transparent_75%)]" />
-        <div className="absolute -top-32 left-1/2 h-[520px] w-[820px] -translate-x-1/2 rounded-full bg-brand-500/20 blur-2xl sm:blur-3xl" />
+        <div className="absolute inset-0 bg-radial-fade opacity-80" />
+        <div className="absolute inset-0 bg-grid-light bg-[size:48px_48px] opacity-50 [mask-image:radial-gradient(ellipse_at_center,black_30%,transparent_75%)]" />
+        <div className="absolute -top-40 left-1/2 h-[520px] w-[820px] -translate-x-1/2 rounded-full bg-brand-300/40 blur-3xl" />
+        <div className="absolute -top-24 right-0 h-72 w-72 rounded-full bg-emerald-100/70 blur-3xl" />
       </div>
 
       <div className="container-x pt-8 pb-14 sm:pt-16 sm:pb-24 lg:pt-20 lg:pb-28">
@@ -52,7 +54,7 @@ export default function Hero() {
 
             <h1 className="h-display mt-4 text-balance text-[34px] font-bold leading-[1.05] text-slate-900 sm:text-5xl lg:text-6xl">
               Votre voiture propre comme neuve,{" "}
-              <span className="bg-gradient-to-r from-brand-300 via-brand-400 to-brand-500 bg-clip-text text-transparent">
+              <span className="bg-gradient-to-r from-brand-500 via-brand-600 to-emerald-700 bg-clip-text text-transparent">
                 sans vous déplacer.
               </span>
             </h1>
