@@ -176,8 +176,6 @@ export default async function HubMaisonPage() {
           <div className="pointer-events-none absolute inset-0 -z-10">
             <div className="absolute inset-0 bg-gradient-to-b from-amber-50 via-white to-white" />
             <div className="absolute inset-0 bg-grid-light bg-[size:48px_48px] opacity-50 [mask-image:radial-gradient(ellipse_at_center,black_30%,transparent_75%)]" />
-            <div className="absolute -top-40 left-1/2 h-[520px] w-[820px] -translate-x-1/2 rounded-full bg-amber-300/40 blur-3xl" />
-            <div className="absolute -top-24 right-0 h-72 w-72 rounded-full bg-orange-100/70 blur-3xl" />
           </div>
 
           <div className="container-x pt-6 pb-12 sm:pt-14 sm:pb-20 lg:pt-20 lg:pb-24">

@@ -31,13 +31,12 @@ import {
 export default function Hero() {
   return (
     <section id="top" className="relative overflow-hidden">
-      {/* Background — atmosphère light : grille discrète + halo brand
-          en haut pour évoquer l'accent sans alourdir. */}
+      {/* Background — atmosphère light : grille discrète + un radial
+          fade brand au top. Pas de blob circulaire (sinon clip visible
+          au bas du Hero sur mobile court). */}
       <div className="pointer-events-none absolute inset-0 -z-10">
-        <div className="absolute inset-0 bg-radial-fade opacity-80" />
+        <div className="absolute inset-0 bg-radial-fade opacity-90" />
         <div className="absolute inset-0 bg-grid-light bg-[size:48px_48px] opacity-50 [mask-image:radial-gradient(ellipse_at_center,black_30%,transparent_75%)]" />
-        <div className="absolute -top-40 left-1/2 h-[520px] w-[820px] -translate-x-1/2 rounded-full bg-brand-300/40 blur-3xl" />
-        <div className="absolute -top-24 right-0 h-72 w-72 rounded-full bg-emerald-100/70 blur-3xl" />
       </div>
 
       <div className="container-x pt-8 pb-14 sm:pt-16 sm:pb-24 lg:pt-20 lg:pb-28">
