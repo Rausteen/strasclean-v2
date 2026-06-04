@@ -508,9 +508,16 @@ export const homeServiceCityPath = (s: HomeService, city: City) => {
 export function matchHomeServiceCity(
   slug: string,
 ): { service: HomeService; city: City } | null {
+  // Import lazy pour éviter dépendance circulaire avec cities.ts
+  const { QUARTIERS } = require("./quartiers") as typeof import("./quartiers");
+  const ALL = [...CITIES, ...QUARTIERS];
+
   for (const service of HOME_SERVICES) {
     const base = homeServiceBaseSlug(service);
-    for (const city of CITIES) {
+    for (const city of ALL) {
+      // Strasbourg commune est gérée par findHomeService() (slug natif).
+      // Les quartiers (centre-strasbourg, krutenau-strasbourg, etc.) sont
+      // traités ici normalement — leur slug est distinct de "strasbourg".
       if (city.slug === "strasbourg") continue;
       if (slug === `${base}-${city.slug}`) {
         return { service, city };
@@ -527,10 +534,13 @@ export function listHomeServiceCityCombos(): {
   city: City;
   slug: string;
 }[] {
+  const { QUARTIERS } = require("./quartiers") as typeof import("./quartiers");
+  const ALL = [...CITIES, ...QUARTIERS];
+
   const out: { service: HomeService; city: City; slug: string }[] = [];
   for (const service of HOME_SERVICES) {
     const base = homeServiceBaseSlug(service);
-    for (const city of CITIES) {
+    for (const city of ALL) {
       if (city.slug === "strasbourg") continue;
       out.push({ service, city, slug: `${base}-${city.slug}` });
     }

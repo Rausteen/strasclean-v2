@@ -16,7 +16,7 @@ export type City = {
   /** Nom affiché */
   name: string;
   /** Article + nom utilisé dans les phrases : "à Strasbourg", "à La Wantzenau" */
-  preposition: "à" | "à la" | "à l'";
+  preposition: "à" | "à la" | "à l'" | "au";
   /** Codes postaux principaux */
   postalCodes: string[];
   /** Quartiers ou zones connues (3 max — pour le SEO local naturel) */

@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { SITE, waLink } from "@/lib/site";
 import { CITIES, cityPath } from "@/lib/cities";
+import { QUARTIERS } from "@/lib/quartiers";
 import { HOME_SERVICES, homeServicePath, homeServiceCityPath } from "@/lib/homeServices";
 import { WhatsAppIcon, PhoneIcon, SparklesIcon, MapPinIcon } from "./Icon";
 import { isMaisonPathname } from "@/lib/section";
@@ -161,6 +162,32 @@ export default function Footer() {
                   {c.name}
                 </Link>
                 {i < CITIES.length - 1 && (
+                  <span className="ml-3 text-white/20">·</span>
+                )}
+              </li>
+            ))}
+          </ul>
+
+          {/* Quartiers Strasbourg — sous-liste pour le SEO hyper-local
+              et le maillage interne vers les 50+ pages quartier. */}
+          <p className="mt-6 text-xs font-semibold uppercase tracking-wider text-slate-400">
+            Quartiers Strasbourg
+          </p>
+          <ul className="mt-3 flex flex-wrap gap-x-3 gap-y-1.5 text-xs text-slate-400">
+            {QUARTIERS.map((q, i) => (
+              <li key={q.slug}>
+                <Link
+                  href={
+                    isMaison
+                      ? homeServiceCityPath(HOME_SERVICES[0], q)
+                      : cityPath(q)
+                  }
+                  prefetch={false}
+                  className="hover:text-white"
+                >
+                  {q.name}
+                </Link>
+                {i < QUARTIERS.length - 1 && (
                   <span className="ml-3 text-white/20">·</span>
                 )}
               </li>

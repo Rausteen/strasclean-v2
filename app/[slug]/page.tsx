@@ -40,9 +40,14 @@ export const dynamicParams = false;
 export const revalidate = 21600;
 
 export function generateStaticParams(): Params[] {
-  const cityParams = CITIES.map((c) => ({ slug: `${CITY_URL_PREFIX}-${c.slug}` }));
+  // ALL = communes (CITIES) + quartiers Strasbourg (QUARTIERS) pour générer
+  // les pages Auto + service×ville sur tous les emplacements desservis.
+  const { QUARTIERS } = require("@/lib/quartiers") as typeof import("@/lib/quartiers");
+  const ALL = [...CITIES, ...QUARTIERS];
+
+  const cityParams = ALL.map((c) => ({ slug: `${CITY_URL_PREFIX}-${c.slug}` }));
   const serviceCityParams = SERVICES.flatMap((s) =>
-    CITIES.map((c) => ({ slug: `${s.slug}-${c.slug}` })),
+    ALL.map((c) => ({ slug: `${s.slug}-${c.slug}` })),
   );
   const useCaseParams = USE_CASES.map((uc) => ({ slug: uc.slug }));
   const homeServiceParams = HOME_SERVICES.map((s) => ({ slug: s.slug }));

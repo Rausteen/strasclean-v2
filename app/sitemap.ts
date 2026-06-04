@@ -1,6 +1,7 @@
 import { MetadataRoute } from "next";
 import { SITE } from "@/lib/site";
 import { CITIES, cityPath } from "@/lib/cities";
+import { QUARTIERS } from "@/lib/quartiers";
 import { SERVICES, servicePath } from "@/lib/services";
 import { USE_CASES, useCasePath } from "@/lib/usecases";
 import {
@@ -40,16 +41,16 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "yearly",
       priority: 0.2,
     },
-    // Pages ville
-    ...CITIES.map((c) => ({
+    // Pages ville (communes + quartiers Strasbourg)
+    ...[...CITIES, ...QUARTIERS].map((c) => ({
       url: `${SITE.url}${cityPath(c)}`,
       lastModified: now,
       changeFrequency: "weekly" as const,
       priority: 0.8,
     })),
-    // Pages service × ville
+    // Pages service × ville (Auto) — communes + quartiers
     ...SERVICES.flatMap((s) =>
-      CITIES.map((c) => ({
+      [...CITIES, ...QUARTIERS].map((c) => ({
         url: `${SITE.url}${servicePath(s, c)}`,
         lastModified: now,
         changeFrequency: "weekly" as const,

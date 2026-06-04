@@ -441,15 +441,22 @@ export type SlugMatch =
  * Renvoie null si le slug ne correspond à aucun pattern connu (→ 404).
  */
 export function matchSlug(slug: string): SlugMatch | null {
+  // ALL_LOCATIONS = communes (CITIES) + quartiers Strasbourg (QUARTIERS).
+  // Mêmes templates SEO, mêmes URLs : seul le contenu intro/maisonIntro
+  // diffère pour anti-cannibalisation.
+  // Import lazy pour éviter une dépendance circulaire avec lib/quartiers.
+  const { QUARTIERS } = require("./quartiers") as typeof import("./quartiers");
+  const ALL = [...CITIES, ...QUARTIERS];
+
   // 1) Page ville : "nettoyage-voiture-domicile-{citySlug}"
-  const cityFromCityPage = CITIES.find(
+  const cityFromCityPage = ALL.find(
     (c) => slug === `${CITY_URL_PREFIX}-${c.slug}`,
   );
   if (cityFromCityPage) return { type: "city", city: cityFromCityPage };
 
   // 2) Page service × ville : "{serviceSlug}-{citySlug}"
   for (const service of SERVICES) {
-    const city = CITIES.find((c) => slug === `${service.slug}-${c.slug}`);
+    const city = ALL.find((c) => slug === `${service.slug}-${c.slug}`);
     if (city) return { type: "service-city", service, city };
   }
 
