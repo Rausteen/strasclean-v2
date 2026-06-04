@@ -117,11 +117,11 @@ export default function UseCasePage({ useCase: uc, place }: Props) {
 
 
         {/* PROBLÈME */}
-        <section className="relative overflow-hidden py-14 sm:py-24 lg:py-28">
+        <section className="relative overflow-hidden py-16 sm:py-24">
           <div className="container-x">
             <div className="grid gap-10 lg:grid-cols-12 lg:gap-16">
               <Reveal className="lg:col-span-5">
-                <p className="text-sm font-semibold uppercase tracking-[0.18em] text-brand-600">
+                <p className="inline-flex items-center gap-2.5 text-sm font-semibold uppercase tracking-[0.18em] text-brand-600 before:h-px before:w-6 before:bg-brand-500 before:opacity-70 before:content-['']">
                   Le problème
                 </p>
                 <h2 className="h-display mt-3 text-balance text-3xl font-bold text-slate-900 sm:text-4xl">
@@ -156,10 +156,10 @@ export default function UseCasePage({ useCase: uc, place }: Props) {
         </section>
 
         {/* POURQUOI LE DIY ÉCHOUE */}
-        <section className="relative overflow-hidden py-14 sm:py-24 lg:py-28">
+        <section className="relative overflow-hidden py-16 sm:py-24">
           <div className="container-x">
             <Reveal className="mx-auto max-w-3xl text-center">
-              <p className="text-sm font-semibold uppercase tracking-[0.18em] text-brand-600">
+              <p className="inline-flex items-center gap-2.5 text-sm font-semibold uppercase tracking-[0.18em] text-brand-600 before:h-px before:w-6 before:bg-brand-500 before:opacity-70 before:content-['']">
                 Pourquoi le DIY échoue
               </p>
               <h2 className="h-display mt-3 text-balance text-3xl font-bold text-slate-900 sm:text-4xl lg:text-5xl">
@@ -175,13 +175,13 @@ export default function UseCasePage({ useCase: uc, place }: Props) {
         </section>
 
         {/* SOLUTION + PROCESS */}
-        <section className="relative overflow-hidden py-14 sm:py-24 lg:py-28">
+        <section className="relative overflow-hidden py-16 sm:py-24">
           <div className="pointer-events-none absolute inset-0 -z-10">
             <div className="absolute left-1/2 top-0 h-[400px] w-[700px] -translate-x-1/2 rounded-full bg-brand-500/10 blur-2xl sm:blur-3xl" />
           </div>
           <div className="container-x">
             <Reveal className="mx-auto max-w-3xl text-center">
-              <p className="text-sm font-semibold uppercase tracking-[0.18em] text-brand-600">
+              <p className="inline-flex items-center gap-2.5 text-sm font-semibold uppercase tracking-[0.18em] text-brand-600 before:h-px before:w-6 before:bg-brand-500 before:opacity-70 before:content-['']">
                 Notre solution
               </p>
               <h2 className="h-display mt-3 text-balance text-3xl font-bold text-slate-900 sm:text-4xl lg:text-5xl">
@@ -216,7 +216,7 @@ export default function UseCasePage({ useCase: uc, place }: Props) {
             <Reveal>
               <div className="mt-12 grid items-center gap-5 rounded-3xl border border-brand-400/30 bg-gradient-to-br from-brand-500/15 via-slate-100 to-slate-50 p-6 sm:p-8 lg:grid-cols-12">
                 <div className="lg:col-span-7">
-                  <p className="text-sm font-semibold uppercase tracking-[0.18em] text-brand-600">
+                  <p className="inline-flex items-center gap-2.5 text-sm font-semibold uppercase tracking-[0.18em] text-brand-600 before:h-px before:w-6 before:bg-brand-500 before:opacity-70 before:content-['']">
                     Intervention complète
                   </p>
                   <p className="mt-2 text-[15px] text-slate-800">

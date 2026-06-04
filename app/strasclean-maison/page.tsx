@@ -308,10 +308,10 @@ export default async function HubMaisonPage() {
         <HomeBeforeAfter />
 
         {/* COMMENT ÇA SE PASSE */}
-        <section id="process" className="relative overflow-hidden py-14 sm:py-24 lg:py-28">
+        <section id="process" className="relative overflow-hidden py-16 sm:py-24">
           <div className="container-x">
             <Reveal className="mx-auto max-w-3xl text-center">
-              <p className="text-sm font-semibold uppercase tracking-[0.18em] text-amber-600">
+              <p className="inline-flex items-center gap-2.5 text-sm font-semibold uppercase tracking-[0.18em] text-amber-600 before:h-px before:w-6 before:bg-amber-500 before:opacity-70 before:content-['']">
                 Comment ça se passe
               </p>
               <h2 className="h-display mt-3 text-balance text-3xl font-bold text-slate-900 sm:text-4xl">
@@ -355,7 +355,7 @@ export default async function HubMaisonPage() {
         <FAQ variant="maison" mainFAQs={MAISON_GLOBAL_FAQS} />
 
         {/* CTA final */}
-        <section className="relative overflow-hidden py-14 sm:py-20">
+        <section className="relative overflow-hidden py-16 sm:py-24">
           <div className="container-x">
             <Reveal>
               <div className="relative overflow-hidden rounded-3xl border border-amber-400/30 bg-gradient-to-br from-amber-500/15 via-slate-100 to-slate-50 p-8 text-center sm:p-12">

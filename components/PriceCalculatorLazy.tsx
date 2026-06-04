@@ -44,7 +44,7 @@ function CalculatorSkeleton({ variant }: { variant: "brand" | "amber" }) {
   const accentText =
     variant === "amber" ? "text-amber-600" : "text-brand-600";
   return (
-    <section className="relative overflow-hidden py-14 sm:py-24 lg:py-28">
+    <section className="relative overflow-hidden py-16 sm:py-24">
       <div className="container-x">
         <div className="mx-auto max-w-3xl text-center">
           <p

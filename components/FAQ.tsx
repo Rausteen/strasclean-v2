@@ -32,7 +32,7 @@ export default function FAQ({
   const waHref = isMaison ? waLink(waMessage) : SITE.whatsappHref;
 
   return (
-    <section id="faq" className="relative py-14 sm:py-24 lg:py-28">
+    <section id="faq" className="relative py-16 sm:py-24">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{

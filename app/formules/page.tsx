@@ -151,7 +151,7 @@ export default function FormulesPage() {
 
 
         {/* Formules détaillées */}
-        <section className="relative py-14 sm:py-24 lg:py-28">
+        <section className="relative py-16 sm:py-24">
           <div className="container-x">
             <div className="space-y-12 sm:space-y-20">
               {PLANS.map((p, i) => (

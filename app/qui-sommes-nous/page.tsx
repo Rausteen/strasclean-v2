@@ -149,7 +149,7 @@ export default async function QuiSommesNousPage() {
           <div className="container-x">
             <div className="mx-auto max-w-3xl">
               <Reveal>
-                <p className="text-sm font-semibold uppercase tracking-[0.18em] text-brand-600">
+                <p className="inline-flex items-center gap-2.5 text-sm font-semibold uppercase tracking-[0.18em] text-brand-600 before:h-px before:w-6 before:bg-brand-500 before:opacity-70 before:content-['']">
                   Notre histoire
                 </p>
                 <h2 className="h-display mt-3 text-balance text-3xl font-bold text-slate-900 sm:text-4xl">
@@ -193,7 +193,7 @@ export default async function QuiSommesNousPage() {
           <div className="container-x">
             <div className="mx-auto max-w-5xl">
               <Reveal className="text-center">
-                <p className="text-sm font-semibold uppercase tracking-[0.18em] text-brand-600">
+                <p className="inline-flex items-center gap-2.5 text-sm font-semibold uppercase tracking-[0.18em] text-brand-600 before:h-px before:w-6 before:bg-brand-500 before:opacity-70 before:content-['']">
                   Deux activités
                 </p>
                 <h2 className="h-display mt-3 text-balance text-3xl font-bold text-slate-900 sm:text-4xl">
@@ -289,7 +289,7 @@ export default async function QuiSommesNousPage() {
           <div className="container-x">
             <div className="mx-auto max-w-3xl">
               <Reveal>
-                <p className="text-sm font-semibold uppercase tracking-[0.18em] text-brand-600">
+                <p className="inline-flex items-center gap-2.5 text-sm font-semibold uppercase tracking-[0.18em] text-brand-600 before:h-px before:w-6 before:bg-brand-500 before:opacity-70 before:content-['']">
                   Notre équipe
                 </p>
                 <h2 className="h-display mt-3 text-balance text-3xl font-bold text-slate-900 sm:text-4xl">
@@ -332,7 +332,7 @@ export default async function QuiSommesNousPage() {
           <div className="container-x">
             <div className="mx-auto max-w-3xl">
               <Reveal>
-                <p className="text-sm font-semibold uppercase tracking-[0.18em] text-brand-600">
+                <p className="inline-flex items-center gap-2.5 text-sm font-semibold uppercase tracking-[0.18em] text-brand-600 before:h-px before:w-6 before:bg-brand-500 before:opacity-70 before:content-['']">
                   Notre matériel
                 </p>
                 <h2 className="h-display mt-3 text-balance text-3xl font-bold text-slate-900 sm:text-4xl">
@@ -376,7 +376,7 @@ export default async function QuiSommesNousPage() {
           <div className="container-x">
             <div className="mx-auto max-w-3xl">
               <Reveal>
-                <p className="text-sm font-semibold uppercase tracking-[0.18em] text-brand-600">
+                <p className="inline-flex items-center gap-2.5 text-sm font-semibold uppercase tracking-[0.18em] text-brand-600 before:h-px before:w-6 before:bg-brand-500 before:opacity-70 before:content-['']">
                   Nos engagements
                 </p>
                 <h2 className="h-display mt-3 text-balance text-3xl font-bold text-slate-900 sm:text-4xl">

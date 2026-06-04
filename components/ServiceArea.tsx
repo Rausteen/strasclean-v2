@@ -29,7 +29,7 @@ export default function ServiceArea({ variant = "auto" }: Props = {}) {
     : "StrasClean intervient à Strasbourg et dans les communes voisines pour nettoyer votre véhicule directement chez vous, sur votre lieu de travail ou à l'adresse de votre choix.";
 
   return (
-    <section id="zone" className="relative bg-slate-50 py-14 sm:py-24 lg:py-28">
+    <section id="zone" className="relative bg-slate-50 py-16 sm:py-24">
       <div className="container-x">
         <div className="grid gap-10 lg:grid-cols-12 lg:gap-12">
           <Reveal className="lg:col-span-5">

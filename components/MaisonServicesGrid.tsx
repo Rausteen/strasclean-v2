@@ -38,7 +38,7 @@ export default function MaisonServicesGrid({
   return (
     <section
       id="prestations"
-      className="relative overflow-hidden bg-slate-50 py-14 sm:py-20 lg:py-24"
+      className="relative overflow-hidden bg-slate-50 py-16 sm:py-24"
     >
       <div className="pointer-events-none absolute inset-0 -z-10">
         <div className="absolute left-1/2 top-0 h-[460px] w-[760px] -translate-x-1/2 rounded-full bg-amber-500/12 blur-2xl sm:blur-3xl" />
@@ -46,7 +46,7 @@ export default function MaisonServicesGrid({
 
       <div className="container-x">
         <Reveal className="mx-auto max-w-3xl text-center">
-          <p className="text-sm font-semibold uppercase tracking-[0.18em] text-amber-600">
+          <p className="inline-flex items-center gap-2.5 text-sm font-semibold uppercase tracking-[0.18em] text-amber-600 before:h-px before:w-6 before:bg-amber-500 before:opacity-70 before:content-['']">
             {eyebrow}
           </p>
           <h2 className="h-display mt-3 text-balance text-3xl font-bold text-slate-900 sm:text-4xl lg:text-5xl">

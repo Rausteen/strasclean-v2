@@ -4,11 +4,11 @@ import { MapPinIcon, CheckIcon } from "./Icon";
 
 export default function LocalSection({ city }: { city: City }) {
   return (
-    <section className="relative py-14 sm:py-24 lg:py-28">
+    <section className="relative py-16 sm:py-24">
       <div className="container-x">
         <div className="grid gap-10 lg:grid-cols-12 lg:gap-12">
           <Reveal className="lg:col-span-6">
-            <p className="text-sm font-semibold uppercase tracking-[0.18em] text-brand-600">
+            <p className="inline-flex items-center gap-2.5 text-sm font-semibold uppercase tracking-[0.18em] text-brand-600 before:h-px before:w-6 before:bg-brand-500 before:opacity-70 before:content-['']">
               {city.name}
             </p>
             <h2 className="h-display mt-3 text-balance text-3xl font-bold text-slate-900 sm:text-4xl">

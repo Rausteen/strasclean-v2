@@ -6,10 +6,10 @@ import { MapPinIcon, ArrowRightIcon } from "./Icon";
 export default function OtherCities({ current }: { current?: City }) {
   const others = CITIES.filter((c) => c.slug !== current?.slug);
   return (
-    <section className="relative py-14 sm:py-24 lg:py-28">
+    <section className="relative py-16 sm:py-24">
       <div className="container-x">
         <Reveal className="mx-auto max-w-3xl text-center">
-          <p className="text-sm font-semibold uppercase tracking-[0.18em] text-brand-600">
+          <p className="inline-flex items-center gap-2.5 text-sm font-semibold uppercase tracking-[0.18em] text-brand-600 before:h-px before:w-6 before:bg-brand-500 before:opacity-70 before:content-['']">
             Autres villes desservies
           </p>
           <h2 className="h-display mt-3 text-balance text-3xl font-bold text-slate-900 sm:text-4xl">

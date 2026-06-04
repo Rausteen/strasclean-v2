@@ -32,7 +32,7 @@ export default function NotFound() {
 
         <div className="container-x py-16 sm:py-24">
           <div className="mx-auto max-w-3xl text-center">
-            <p className="text-sm font-semibold uppercase tracking-[0.18em] text-brand-600">
+            <p className="inline-flex items-center gap-2.5 text-sm font-semibold uppercase tracking-[0.18em] text-brand-600 before:h-px before:w-6 before:bg-brand-500 before:opacity-70 before:content-['']">
               Erreur 404
             </p>
             <h1 className="h-display mt-3 text-balance text-4xl font-bold text-slate-900 sm:text-5xl lg:text-6xl">

@@ -357,7 +357,7 @@ export default function HomeServicePage({ service, place, city }: Props) {
           <div className="container-x">
             <div className="mx-auto max-w-4xl">
               <Reveal className="text-center">
-                <p className="text-sm font-semibold uppercase tracking-[0.18em] text-amber-600">
+                <p className="inline-flex items-center gap-2.5 text-sm font-semibold uppercase tracking-[0.18em] text-amber-600 before:h-px before:w-6 before:bg-amber-500 before:opacity-70 before:content-['']">
                   Le constat
                 </p>
                 <h2 className="h-display mt-2 text-balance text-2xl font-bold text-slate-900 sm:text-3xl lg:text-4xl">
@@ -393,7 +393,7 @@ export default function HomeServicePage({ service, place, city }: Props) {
           </div>
           <div className="container-x">
             <Reveal className="mx-auto max-w-3xl text-center">
-              <p className="text-sm font-semibold uppercase tracking-[0.18em] text-amber-600">
+              <p className="inline-flex items-center gap-2.5 text-sm font-semibold uppercase tracking-[0.18em] text-amber-600 before:h-px before:w-6 before:bg-amber-500 before:opacity-70 before:content-['']">
                 Comment ça se passe
               </p>
               <h2 className="h-display mt-2 text-balance text-2xl font-bold text-slate-900 sm:text-3xl lg:text-4xl">
@@ -432,7 +432,7 @@ export default function HomeServicePage({ service, place, city }: Props) {
             <div className="container-x">
               <Reveal className="mx-auto max-w-3xl">
                 <div className="rounded-3xl border border-slate-200 bg-slate-50 p-6 sm:p-8">
-                  <p className="text-sm font-semibold uppercase tracking-[0.18em] text-amber-600">
+                  <p className="inline-flex items-center gap-2.5 text-sm font-semibold uppercase tracking-[0.18em] text-amber-600 before:h-px before:w-6 before:bg-amber-500 before:opacity-70 before:content-['']">
                     Pourquoi pro vs. DIY
                   </p>
                   <h3 className="h-display mt-2 text-xl font-bold text-slate-900 sm:text-2xl">

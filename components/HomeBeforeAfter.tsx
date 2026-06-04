@@ -88,11 +88,11 @@ export default function HomeBeforeAfter() {
   return (
     <section
       id="avant-apres"
-      className="relative overflow-hidden bg-slate-50 py-14 sm:py-24 lg:py-28"
+      className="relative overflow-hidden bg-slate-50 py-16 sm:py-24"
     >
       <div className="container-x">
         <Reveal className="mx-auto max-w-3xl text-center">
-          <p className="text-sm font-semibold uppercase tracking-[0.18em] text-amber-600">
+          <p className="inline-flex items-center gap-2.5 text-sm font-semibold uppercase tracking-[0.18em] text-amber-600 before:h-px before:w-6 before:bg-amber-500 before:opacity-70 before:content-['']">
             Le résultat
           </p>
           <h2 className="h-display mt-3 text-balance text-3xl font-bold text-slate-900 sm:text-4xl lg:text-5xl">

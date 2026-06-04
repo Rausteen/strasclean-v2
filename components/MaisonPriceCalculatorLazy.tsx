@@ -40,10 +40,10 @@ export default function MaisonPriceCalculatorLazy() {
 
 function MaisonCalculatorSkeleton() {
   return (
-    <section className="relative overflow-hidden py-14 sm:py-20 lg:py-24">
+    <section className="relative overflow-hidden py-16 sm:py-24">
       <div className="container-x">
         <div className="mx-auto max-w-3xl text-center">
-          <p className="text-sm font-semibold uppercase tracking-[0.18em] text-amber-600">
+          <p className="inline-flex items-center gap-2.5 text-sm font-semibold uppercase tracking-[0.18em] text-amber-600 before:h-px before:w-6 before:bg-amber-500 before:opacity-70 before:content-['']">
             Calculateur de prix Maison
           </p>
           <div className="mx-auto mt-3 h-10 w-3/4 animate-pulse rounded-lg bg-slate-100 sm:h-12 lg:h-14" />

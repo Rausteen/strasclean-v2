@@ -4,7 +4,7 @@ import { WhatsAppIcon, PhoneIcon, MapPinIcon, BoltIcon, CheckIcon } from "./Icon
 
 export default function FinalCTA() {
   return (
-    <section id="reserver" className="relative py-14 sm:py-24 lg:py-28">
+    <section id="reserver" className="relative py-16 sm:py-24">
       <div className="container-x">
         <Reveal>
           {/* CTA final : carte sombre pour clore la page sur un accent
