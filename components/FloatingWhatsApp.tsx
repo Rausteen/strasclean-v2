@@ -12,6 +12,8 @@ export default function FloatingWhatsApp() {
   const isMaison = isMaisonPathname(pathname);
 
   useEffect(() => {
+    // Apparaît après le hero — évite la triplette d'écran à l'ouverture
+    // (Header + Hero CTA + sticky). 480 px = sous le hero sur mobile.
     const onScroll = () => setScrolled(window.scrollY > 480);
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
@@ -27,9 +29,11 @@ export default function FloatingWhatsApp() {
 
   return (
     <>
-      {/* Mobile sticky bar — TOUJOURS visible */}
+      {/* Mobile sticky bar — n'apparaît qu'après scroll au-delà du hero */}
       <div
-        className="fixed inset-x-0 bottom-0 z-40 border-t border-slate-200 bg-white lg:hidden"
+        className={`fixed inset-x-0 bottom-0 z-40 border-t border-slate-200 bg-white transition-all duration-300 lg:hidden ${
+          scrolled ? "translate-y-0 opacity-100" : "pointer-events-none translate-y-full opacity-0"
+        }`}
         style={{
           paddingTop: "10px",
           paddingBottom: "calc(env(safe-area-inset-bottom, 0px) + 10px)",

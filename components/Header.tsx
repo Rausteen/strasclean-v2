@@ -93,7 +93,10 @@ export default function Header() {
           ))}
         </nav>
 
-        {/* CTA WhatsApp + Burger mobile */}
+        {/* CTA WhatsApp (desktop) + Burger mobile. Sur mobile le bouton
+            WhatsApp est retiré du Header pour ne pas surcharger : il y a
+            déjà les CTA Hero et la sticky bar en bas qui prennent le
+            relais après scroll. */}
         <div className="ml-auto flex shrink-0 items-center gap-2">
           <a
             href={SITE.whatsappHref}
@@ -102,16 +105,6 @@ export default function Header() {
             className="btn-wa hidden lg:inline-flex"
           >
             <WhatsAppIcon size={18} />
-            WhatsApp
-          </a>
-          <a
-            href={SITE.whatsappHref}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="btn-wa !min-h-0 !px-3 !py-2 text-sm lg:hidden"
-            aria-label="Réserver sur WhatsApp"
-          >
-            <WhatsAppIcon size={16} />
             WhatsApp
           </a>
           <button
