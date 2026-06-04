@@ -124,6 +124,14 @@ export default function Footer() {
                   Hub Maison
                 </Link>
               </li>
+              <li>
+                <Link
+                  href="/reserver-maison"
+                  className="hover:text-white"
+                >
+                  Réserver en ligne
+                </Link>
+              </li>
               {HOME_SERVICES.map((s) => (
                 <li key={s.slug}>
                   <Link

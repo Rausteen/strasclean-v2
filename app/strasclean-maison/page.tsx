@@ -210,14 +210,21 @@ export default async function HubMaisonPage() {
                     <WhatsAppIcon size={20} />
                     Demander un devis
                   </a>
-                  <a
-                    href={SITE.phoneHref}
+                  <Link
+                    href="/reserver-maison"
                     className="btn-ghost h-14 w-full px-6 text-base sm:h-12 sm:w-auto"
                   >
-                    <PhoneIcon size={18} />
-                    {SITE.phoneDisplay}
-                  </a>
+                    Réserver en ligne
+                    <ArrowRightIcon size={16} />
+                  </Link>
                 </div>
+                <a
+                  href={SITE.phoneHref}
+                  className="mt-3 inline-flex items-center gap-1.5 text-sm font-medium text-slate-600 hover:text-slate-900"
+                >
+                  <PhoneIcon size={14} />
+                  Ou appelez : {SITE.phoneDisplay}
+                </a>
 
                 <ul className="mt-6 flex flex-wrap items-center gap-x-4 gap-y-2 text-[13px] text-slate-600 sm:mt-7 sm:text-sm">
                   <li className="inline-flex items-center gap-1.5">
@@ -375,6 +382,13 @@ export default async function HubMaisonPage() {
                     <WhatsAppIcon size={18} />
                     WhatsApp
                   </a>
+                  <Link
+                    href="/reserver-maison"
+                    className="btn inline-flex items-center justify-center gap-2 h-12 px-6 bg-slate-900 text-white hover:bg-slate-800"
+                  >
+                    Réserver en ligne
+                    <ArrowRightIcon size={14} />
+                  </Link>
                   <a href={SITE.phoneHref} className="btn-ghost h-12 px-6">
                     <PhoneIcon size={16} />
                     {SITE.phoneDisplay}

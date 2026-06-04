@@ -11,6 +11,8 @@ import {
   getTopReferers,
   getHiddenIps,
   getReviewTagsMap,
+  getRecentBookingRequests,
+  countBookingRequests,
 } from "@/lib/db";
 import { getGooglePlaceData } from "@/lib/reviews";
 import LogoutButton from "./LogoutButton";
@@ -97,6 +99,10 @@ export default async function DashboardPage({
 
   const visitsPages = Math.max(1, Math.ceil(visitsTotal / PAGE_SIZE));
   const eventsPages = Math.max(1, Math.ceil(eventsTotal / PAGE_SIZE));
+
+  // Demandes de RDV reçues via le formulaire /reserver-maison
+  const bookingRequests = getRecentBookingRequests(20);
+  const bookingTotal = countBookingRequests();
 
   return (
     <div className="container-x py-8">
@@ -186,6 +192,78 @@ export default async function DashboardPage({
               </li>
             ))}
           </ul>
+        </Panel>
+      </section>
+
+      {/* Demandes de RDV Maison */}
+      <section className="mt-8">
+        <Panel
+          title={`Demandes de RDV Maison (${bookingTotal}${bookingTotal > 20 ? " — 20 dernières affichées" : ""})`}
+        >
+          {bookingRequests.length === 0 ? (
+            <p className="text-sm text-slate-500">
+              Aucune demande pour l'instant. Les soumissions de{" "}
+              <a href="/reserver-maison" className="underline">
+                /reserver-maison
+              </a>{" "}
+              s'afficheront ici.
+            </p>
+          ) : (
+            <ul className="space-y-2">
+              {bookingRequests.map((b) => {
+                const when = new Date(b.ts).toLocaleString("fr-FR", {
+                  dateStyle: "short",
+                  timeStyle: "short",
+                });
+                return (
+                  <li
+                    key={b.id}
+                    className="rounded-xl border border-slate-200 bg-white p-3"
+                  >
+                    <div className="flex flex-wrap items-baseline justify-between gap-2 text-sm">
+                      <p className="font-semibold text-slate-900">
+                        {b.first_name} · {b.service_label}
+                        {b.variant && (
+                          <span className="font-normal text-slate-500">
+                            {" "}
+                            ({b.variant})
+                          </span>
+                        )}
+                      </p>
+                      <span className="text-xs text-slate-500">{when}</span>
+                    </div>
+                    <div className="mt-1 flex flex-wrap gap-x-4 gap-y-1 text-xs text-slate-600">
+                      <a
+                        href={`tel:${b.phone}`}
+                        className="font-medium text-slate-900 hover:underline"
+                      >
+                        📞 {b.phone}
+                      </a>
+                      <a
+                        href={`mailto:${b.email}`}
+                        className="hover:underline"
+                      >
+                        ✉️ {b.email}
+                      </a>
+                      {b.postal_code && <span>📍 {b.postal_code}</span>}
+                      {b.address_note && <span>{b.address_note}</span>}
+                      {b.preferred_day && (
+                        <span>
+                          🗓️ {b.preferred_day}
+                          {b.preferred_slot && ` (${b.preferred_slot})`}
+                        </span>
+                      )}
+                    </div>
+                    {b.notes && (
+                      <p className="mt-1.5 rounded border border-slate-200 bg-slate-50 px-2 py-1 text-xs italic text-slate-600">
+                        {b.notes}
+                      </p>
+                    )}
+                  </li>
+                );
+              })}
+            </ul>
+          )}
         </Panel>
       </section>
 

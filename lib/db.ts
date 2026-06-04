@@ -89,6 +89,30 @@ function openDb(): Database.Database {
       tagged_at INTEGER NOT NULL
     );
 
+    -- Demandes de RDV reçues via le formulaire /reserver-maison.
+    -- Stocke tout ce dont on a besoin pour rappeler / planifier le créneau.
+    CREATE TABLE IF NOT EXISTS booking_requests (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      ts INTEGER NOT NULL,
+      section TEXT NOT NULL DEFAULT 'maison',
+      service_slug TEXT NOT NULL,
+      service_label TEXT NOT NULL,
+      variant TEXT,
+      first_name TEXT NOT NULL,
+      email TEXT NOT NULL,
+      phone TEXT NOT NULL,
+      postal_code TEXT,
+      address_note TEXT,
+      preferred_day TEXT,
+      preferred_slot TEXT,
+      notes TEXT,
+      ip TEXT,
+      user_agent TEXT,
+      status TEXT NOT NULL DEFAULT 'new'
+    );
+    CREATE INDEX IF NOT EXISTS booking_requests_ts ON booking_requests(ts DESC);
+    CREATE INDEX IF NOT EXISTS booking_requests_status ON booking_requests(status);
+
     -- Cache persistant des avis Google. Google Places API ne renvoie que
     -- les 5 derniers à chaque requête, mais ils varient dans le temps.
     -- En accumulant ici, on a TOUS les avis qu'on a vus passer, et on
@@ -512,4 +536,59 @@ export function getTopReferers(limit = 10) {
       ...hidden.params,
       limit,
     ) as { referer: string; c: number }[];
+}
+
+// ─── Demandes de RDV (formulaire /reserver-maison) ──────────────────────
+export type BookingRequest = {
+  id: number;
+  ts: number;
+  section: string;
+  service_slug: string;
+  service_label: string;
+  variant: string | null;
+  first_name: string;
+  email: string;
+  phone: string;
+  postal_code: string | null;
+  address_note: string | null;
+  preferred_day: string | null;
+  preferred_slot: string | null;
+  notes: string | null;
+  ip: string | null;
+  user_agent: string | null;
+  status: string;
+};
+
+const insertBookingStmt = db.prepare(`
+  INSERT INTO booking_requests
+    (ts, section, service_slug, service_label, variant,
+     first_name, email, phone, postal_code, address_note,
+     preferred_day, preferred_slot, notes, ip, user_agent, status)
+  VALUES
+    (@ts, @section, @service_slug, @service_label, @variant,
+     @first_name, @email, @phone, @postal_code, @address_note,
+     @preferred_day, @preferred_slot, @notes, @ip, @user_agent, 'new')
+`);
+
+export function insertBookingRequest(
+  b: Omit<BookingRequest, "id" | "status">,
+): number {
+  const r = insertBookingStmt.run(b);
+  return r.lastInsertRowid as number;
+}
+
+export function getRecentBookingRequests(limit = 50): BookingRequest[] {
+  return db
+    .prepare(
+      `SELECT * FROM booking_requests ORDER BY ts DESC LIMIT ?`,
+    )
+    .all(limit) as BookingRequest[];
+}
+
+export function countBookingRequests(): number {
+  return (
+    db
+      .prepare(`SELECT COUNT(*) as c FROM booking_requests`)
+      .get() as { c: number }
+  ).c;
 }
