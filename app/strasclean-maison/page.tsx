@@ -5,7 +5,6 @@ import Link from "next/link";
 import Image from "next/image";
 import Header from "@/components/Header";
 import MobileOfferStrip from "@/components/MobileOfferStrip";
-import TrustBar from "@/components/TrustBar";
 import Footer from "@/components/Footer";
 import FloatingWhatsApp from "@/components/FloatingWhatsApp";
 import TestimonialsMaison from "@/components/TestimonialsMaison";
@@ -301,8 +300,6 @@ export default async function HubMaisonPage() {
             </div>
           </div>
         </section>
-
-        <TrustBar />
 
         <MaisonServicesGrid />
 

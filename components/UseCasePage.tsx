@@ -1,12 +1,9 @@
 import Link from "next/link";
 import Header from "./Header";
 import MobileOfferStrip from "./MobileOfferStrip";
-import TrustBar from "./TrustBar";
 import PricingSection from "./PricingSection";
 import BeforeAfter from "./BeforeAfter";
-import Benefits from "./Benefits";
 import Testimonials from "./Testimonials";
-import MidCTA from "./MidCTA";
 import FAQ from "./FAQ";
 import FinalCTA from "./FinalCTA";
 import Footer from "./Footer";
@@ -118,7 +115,6 @@ export default function UseCasePage({ useCase: uc, place }: Props) {
           </div>
         </section>
 
-        <TrustBar />
 
         {/* PROBLÈME */}
         <section className="relative overflow-hidden py-14 sm:py-24 lg:py-28">
@@ -259,14 +255,12 @@ export default function UseCasePage({ useCase: uc, place }: Props) {
 
         <PricingSection />
         <BeforeAfter />
-        <Benefits />
         <Testimonials
           googleReviews={place.reviews}
           googleRating={place.rating}
           googleTotalCount={place.totalCount}
           googleProfileUrl={place.profileUrl}
         />
-        <MidCTA />
 
         {/* FAQ spécifique au use case + globale */}
         <FAQ extraSchemaFAQs={uc.faq} />

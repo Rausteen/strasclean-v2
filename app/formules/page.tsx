@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import Header from "@/components/Header";
 import MobileOfferStrip from "@/components/MobileOfferStrip";
-import TrustBar from "@/components/TrustBar";
 import FAQ from "@/components/FAQ";
 import FinalCTA from "@/components/FinalCTA";
 import Footer from "@/components/Footer";
@@ -150,7 +149,6 @@ export default function FormulesPage() {
           </div>
         </section>
 
-        <TrustBar />
 
         {/* Formules détaillées */}
         <section className="relative py-14 sm:py-24 lg:py-28">

@@ -4,16 +4,13 @@ import Header from "@/components/Header";
 import MobileOfferStrip from "@/components/MobileOfferStrip";
 import CityHero from "@/components/CityHero";
 import ServiceCityHero from "@/components/ServiceCityHero";
-import TrustBar from "@/components/TrustBar";
 import LocalSection from "@/components/LocalSection";
 import ServiceDetail from "@/components/ServiceDetail";
 import PricingSection from "@/components/PricingSection";
 import PriceCalculator from "@/components/PriceCalculatorLazy";
 import BeforeAfter from "@/components/BeforeAfter";
 import HowItWorks from "@/components/HowItWorks";
-import Benefits from "@/components/Benefits";
 import Testimonials from "@/components/Testimonials";
-import MidCTA from "@/components/MidCTA";
 import FAQ from "@/components/FAQ";
 import FinalCTA from "@/components/FinalCTA";
 import Footer from "@/components/Footer";
@@ -335,13 +332,11 @@ function CityPage({
       <MobileOfferStrip />
       <main>
         <CityHero city={city} />
-        <TrustBar />
         <LocalSection city={city} />
         <PricingSection />
         <PriceCalculator />
         <BeforeAfter />
         <HowItWorks />
-        <Benefits />
         <Testimonials
           cityReview={cityReview}
           googleReviews={place.reviews}
@@ -349,7 +344,6 @@ function CityPage({
           googleTotalCount={place.totalCount}
           googleProfileUrl={place.profileUrl}
         />
-        <MidCTA />
         <FAQ />
         <OtherCities current={city} />
         <FinalCTA />
@@ -454,13 +448,11 @@ function ServiceCityPage({
       <MobileOfferStrip />
       <main>
         <ServiceCityHero service={service} city={city} />
-        <TrustBar />
         <ServiceDetail service={service} city={city} />
         <LocalSection city={city} />
         <PricingSection />
         <PriceCalculator />
         <BeforeAfter />
-        <Benefits />
         <Testimonials
           cityReview={cityReview}
           googleReviews={place.reviews}
@@ -482,7 +474,6 @@ function ServiceCityPage({
           items={otherCityItems}
           variant="city"
         />
-        <MidCTA />
         <FAQ extraSchemaFAQs={service.faq} />
         <FinalCTA />
       </main>

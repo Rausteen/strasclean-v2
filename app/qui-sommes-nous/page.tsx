@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import Header from "@/components/Header";
 import MobileOfferStrip from "@/components/MobileOfferStrip";
-import TrustBar from "@/components/TrustBar";
 import Footer from "@/components/Footer";
 import FloatingWhatsApp from "@/components/FloatingWhatsApp";
 import Reveal from "@/components/Reveal";
@@ -144,7 +143,6 @@ export default async function QuiSommesNousPage() {
           </div>
         </section>
 
-        <TrustBar />
 
         {/* L'HISTOIRE */}
         <section className="relative py-12 sm:py-20">

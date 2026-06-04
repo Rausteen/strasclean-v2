@@ -4,7 +4,6 @@ import Image from "next/image";
 import Link from "next/link";
 import Header from "./Header";
 import MobileOfferStrip from "./MobileOfferStrip";
-import TrustBar from "./TrustBar";
 import TestimonialsMaison from "./TestimonialsMaison";
 import FAQ from "./FAQ";
 import Footer from "./Footer";
@@ -310,7 +309,6 @@ export default function HomeServicePage({ service, place, city }: Props) {
           </div>
         </section>
 
-        <TrustBar />
 
         {/* Section ville-spécifique pour les pages service × ville (anti-
             cannibalisation SEO : chaque page a un paragraphe unique). */}

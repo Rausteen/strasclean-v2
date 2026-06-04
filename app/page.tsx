@@ -1,17 +1,13 @@
 import Header from "@/components/Header";
 import MobileOfferStrip from "@/components/MobileOfferStrip";
 import Hero from "@/components/Hero";
-import TrustBar from "@/components/TrustBar";
-import ProblemsSolution from "@/components/ProblemsSolution";
 import PricingSection from "@/components/PricingSection";
 import PriceCalculator from "@/components/PriceCalculatorLazy";
 import BeforeAfter from "@/components/BeforeAfter";
 import HowItWorks from "@/components/HowItWorks";
-import Benefits from "@/components/Benefits";
 import ServiceArea from "@/components/ServiceArea";
 import HomeServicesPromo from "@/components/HomeServicesPromo";
 import Testimonials from "@/components/Testimonials";
-import MidCTA from "@/components/MidCTA";
 import FAQ from "@/components/FAQ";
 import FinalCTA from "@/components/FinalCTA";
 import Footer from "@/components/Footer";
@@ -34,13 +30,10 @@ export default async function Page() {
       <MobileOfferStrip />
       <main>
         <Hero />
-        <TrustBar />
         <PricingSection />
         <PriceCalculator />
-        <ProblemsSolution />
         <BeforeAfter />
         <HowItWorks />
-        <Benefits />
         <ServiceArea />
         <HomeServicesPromo />
         <Testimonials
@@ -49,7 +42,6 @@ export default async function Page() {
           googleTotalCount={place.totalCount}
           googleProfileUrl={place.profileUrl}
         />
-        <MidCTA />
         <FAQ />
         <FinalCTA />
       </main>
