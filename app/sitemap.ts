@@ -11,6 +11,7 @@ import {
   homeServiceCityPath,
 } from "@/lib/homeServices";
 import { HOME_SEO_PAGES, homeSeoPath } from "@/lib/homeSeoPages";
+import { GUIDES, guidePath } from "@/lib/guides";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const now = new Date();
@@ -92,6 +93,20 @@ export default function sitemap(): MetadataRoute.Sitemap {
       lastModified: now,
       changeFrequency: "monthly" as const,
       priority: 0.75,
+    })),
+    // Hub guide / blog
+    {
+      url: `${SITE.url}/guide`,
+      lastModified: now,
+      changeFrequency: "weekly" as const,
+      priority: 0.7,
+    },
+    // Articles guide / blog
+    ...GUIDES.map((g) => ({
+      url: `${SITE.url}${guidePath(g)}`,
+      lastModified: new Date(g.updatedAt ?? g.publishedAt),
+      changeFrequency: "monthly" as const,
+      priority: 0.65,
     })),
   ];
 }

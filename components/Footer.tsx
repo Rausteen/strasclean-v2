@@ -202,6 +202,9 @@ export default function Footer() {
             <Link href="/qui-sommes-nous" className="hover:text-white">
               Qui sommes-nous
             </Link>
+            <Link href="/guide" className="hover:text-white">
+              Guide pratique
+            </Link>
             <Link href="/mentions-legales" className="hover:text-white">
               Mentions légales
             </Link>
