@@ -729,6 +729,266 @@ export const HOME_SEO_PAGES: HomeService[] = [
     ctaMessage:
       "Bonjour StrasClean 👋 J'ai un canapé cuir à nettoyer à Strasbourg. Quels sont vos prochains créneaux ?",
   },
+
+  // ─── 7. B2B Hôtels ────────────────────────────────────────────────────
+  {
+    slug: "nettoyage-matelas-hotel-strasbourg",
+    shortName: "Nettoyage hôtel",
+    emoji: "🏨",
+    metaTitle: "Nettoyage matelas et literie d'hôtel à Strasbourg — StrasClean Pro",
+    metaDescription:
+      "Hôtel indépendant ou résidence hôtelière à Strasbourg ? StrasClean intervient en équipe pour le nettoyage matelas, sommiers, têtes de lit, fauteuils et moquettes. Tarif dégressif chambres, planning adapté, facture pro.",
+    hero: {
+      chip: "Pro Hôtels",
+      h1: "Nettoyage matelas et literie d'hôtel à Strasbourg.",
+      h1Highlight: "à Strasbourg.",
+      subtitle:
+        "Hôtels, résidences hôtelières, chambres d'hôtes à Strasbourg : nous prenons en charge le nettoyage approfondi de votre literie, fauteuils et textiles d'ameublement. Intervention en équipe, planning adapté à votre taux d'occupation.",
+    },
+    problem: {
+      title: "Une literie d'hôtel se doit d'être irréprochable",
+      paragraphs: [
+        "Vos clients paient une nuit pour dormir dans un lit qui doit être aussi propre que le leur — voire plus. Une tache sur un matelas, une odeur résiduelle dans un fauteuil ou une moquette qui marque, et c'est un avis 1 étoile sur Booking. Mais entretenir une centaine de matelas avec votre équipe ménage est irréaliste. C'est exactement ce qu'on prend en charge.",
+      ],
+      bullets: [
+        "Matelas : taches biologiques, traces transpiration, acariens",
+        "Fauteuils chambres : usure, marques cosmétiques, miettes",
+        "Têtes de lit tissu : poussière, marques cheveux, traces parfums",
+        "Moquettes couloirs : passage, taches café, vin, ménage chimique répété",
+        "Banquettes lobby : usure quotidienne, taches accidentelles",
+      ],
+    },
+    whyDiy: {
+      title: "Pourquoi votre équipe ménage ne peut pas tout faire",
+      paragraphs: [
+        "Le ménage standard d'une chambre (lit refait, salle de bain, aspirateur) prend déjà 30 min. Y rajouter un nettoyage approfondi du matelas tous les 3 mois (1h) × 60 chambres = 60h de travail supplémentaire que votre équipe n'a pas. Externaliser ce volume précis est plus rentable, plus pro, et libère votre équipe pour ce qui compte (relation client).",
+      ],
+    },
+    solution: {
+      title: "Le service StrasClean Hôtels",
+      intro:
+        "Contrat trimestriel ou semestriel selon votre taux de rotation, planning d'intervention par étage / par bâtiment pour minimiser la fermeture chambres. Équipe de 2-3 personnes selon volume, facture pro mensuelle centralisée.",
+      steps: [
+        {
+          title: "Audit gratuit",
+          desc: "Visite de votre établissement, recommandations adaptées par zone.",
+        },
+        {
+          title: "Planning sur mesure",
+          desc: "Par étage, par bâtiment, ou en chambres vacantes selon votre booking.",
+        },
+        {
+          title: "Intervention équipe",
+          desc: "20-30 matelas / jour en équipe de 3, séchage rapide (chambre redispo le soir).",
+        },
+        {
+          title: "Reporting et facturation",
+          desc: "Détail des chambres traitées, photos avant/après si demandé, facture centralisée.",
+        },
+      ],
+    },
+    pricing: { priceFrom: "39", duration: "30 à 45 min / matelas" },
+    tariffs: [
+      { label: "Nettoyage matelas 1 personne", price: "49 €", note: "Tarif unitaire" },
+      { label: "Nettoyage matelas 2 personnes", price: "69 €", note: "Tarif unitaire" },
+      { label: "Contrat 20+ matelas", price: "−25 %", note: "Sur tarif unitaire" },
+      { label: "Contrat 50+ matelas / trimestre", price: "Sur devis", note: "Tarif au plus bas + équipe dédiée" },
+      { label: "Pack lobby (canapés + fauteuils + moquette)", price: "Sur devis", note: "Selon m²/pièces" },
+    ],
+    faq: [
+      {
+        q: "Vous intervenez sans bloquer toutes les chambres ?",
+        a: "Oui — on adapte le planning à votre taux d'occupation : intervention par étage, par bâtiment, en chambres vacantes seulement. Séchage rapide (3-4h), chambre redisponible le soir.",
+      },
+      {
+        q: "Quel volume par jour ?",
+        a: "En équipe de 3, on traite 20-30 matelas par jour, ou 8-10 chambres complètes (matelas + fauteuils + moquette).",
+      },
+      {
+        q: "Vous pouvez intervenir la nuit pour ne pas gêner ?",
+        a: "Oui sur demande (+20 %), mais souvent inutile : nos protocoles sont silencieux et le bruit est limité aux extracteurs.",
+      },
+      {
+        q: "Facture pro et TVA ?",
+        a: "Bien sûr — facture pro avec TVA récupérable, virement bancaire, contrat annuel possible avec engagement de planning.",
+      },
+    ],
+    ctaMessage:
+      "Bonjour StrasClean 👋 Je gère un hôtel à Strasbourg, je voudrais un devis pour le nettoyage de matelas / literie en contrat trimestriel. Quel jour pouvez-vous passer pour un audit ?",
+  },
+
+  // ─── 8. B2B Restaurants ───────────────────────────────────────────────
+  {
+    slug: "nettoyage-chaises-restaurant-strasbourg",
+    shortName: "Nettoyage restaurant",
+    emoji: "🍽️",
+    metaTitle: "Nettoyage chaises et banquettes restaurant Strasbourg — StrasClean Pro",
+    metaDescription:
+      "Restaurant, brasserie, café à Strasbourg ? StrasClean intervient pour le nettoyage en profondeur de vos chaises tissu, banquettes, fauteuils et moquettes. Intervention nuit ou jour de fermeture, devis sous 24 h.",
+    hero: {
+      chip: "Pro Restauration",
+      h1: "Nettoyage chaises et banquettes de restaurant à Strasbourg.",
+      h1Highlight: "à Strasbourg.",
+      subtitle:
+        "Chaises tissu, banquettes, fauteuils de bar : votre mobilier salle accumule taches, gras et odeurs. StrasClean intervient en nuit ou jour de fermeture pour un nettoyage en profondeur sans interrompre votre service.",
+    },
+    problem: {
+      title: "Le textile salle, premier impact visuel de votre restaurant",
+      paragraphs: [
+        "Avant même de goûter votre cuisine, le client s'assoit sur votre chaise. Une chaise tachée, une banquette qui sent l'huile froide, un fauteuil de bar collant : c'est le signal d'alarme inconscient qui fait baisser la note. À l'inverse, un mobilier impeccable rassure et justifie le ticket moyen. C'est invisible quand c'est bien fait, dévastateur quand ça ne l'est pas.",
+      ],
+      bullets: [
+        "Chaises tissu : taches café, vin, gras de cuisine, transpiration",
+        "Banquettes : usure des accoudoirs, marques d'assise, miettes incrustées",
+        "Fauteuils de bar : auréoles cocktails, traces mains, parfums clients",
+        "Moquettes / tapis : passage clients × 365 jours / an",
+        "Rideaux et nappes textile : odeurs cuisine absorbées",
+      ],
+    },
+    whyDiy: {
+      title: "Pourquoi un nettoyage chimique ponctuel ne suffit pas",
+      paragraphs: [
+        "Le pulvérisateur chimique enlève la tache visible mais laisse le produit dans la fibre, qui attire la saleté plus vite ensuite (les taches reviennent en 2 semaines). L'extraction professionnelle décolle ET retire le produit + la saleté dans la même opération. Le mobilier reste propre 5 à 10× plus longtemps.",
+      ],
+    },
+    solution: {
+      title: "Le service StrasClean Restauration",
+      intro:
+        "Intervention nuit (après fermeture 23h) ou jour de fermeture (souvent lundi à Strasbourg). Équipe de 2-3 personnes, traitement de toute la salle en 4-6h, séchage rapide pour rouverture le service suivant. Contrat trimestriel recommandé.",
+      steps: [
+        {
+          title: "Audit + devis",
+          desc: "Visite après service, comptage des pièces, devis ferme sous 48 h.",
+        },
+        {
+          title: "Planning d'intervention",
+          desc: "Nuit (23h-6h) ou jour de fermeture, on s'adapte à votre rythme.",
+        },
+        {
+          title: "Traitement salle complète",
+          desc: "Chaises, banquettes, moquette, rideaux selon devis. Équipe 2-3.",
+        },
+        {
+          title: "Réouverture sécurisée",
+          desc: "Séchage avant ouverture, contrôle qualité, photo reporting.",
+        },
+      ],
+    },
+    pricing: { priceFrom: "12", duration: "Selon volume" },
+    tariffs: [
+      { label: "Chaise tissu unitaire", price: "12 €", note: "Tarif unitaire en lot (min. 20)" },
+      { label: "Banquette 4 places", price: "59 €", note: "" },
+      { label: "Fauteuil de bar / lounge", price: "39 €", note: "" },
+      { label: "Moquette restaurant (au m²)", price: "8 €/m²", note: "Min. 30 m²" },
+      { label: "Contrat trimestriel salle complète", price: "Sur devis", note: "Tarif dégressif annuel" },
+    ],
+    faq: [
+      {
+        q: "Vous intervenez la nuit pour ne pas bloquer mon service ?",
+        a: "Oui — intervention 23h-6h fréquente sur Strasbourg, sans surcoût horaire dans le cadre d'un contrat trimestriel. Toute la salle traitée en une nuit.",
+      },
+      {
+        q: "Combien de chaises par nuit ?",
+        a: "Équipe de 2 : 40-60 chaises tissu + banquettes complémentaires. Équipe de 3 : 80+. On dimensionne selon votre salle.",
+      },
+      {
+        q: "Séchage rapide pour le service du midi ?",
+        a: "Oui — extraction haute puissance, tout est sec sous 2-3h. Souvent on finit à 5h du matin, salle 100% utilisable pour le service midi.",
+      },
+      {
+        q: "Vous traitez aussi les odeurs (huile, cuisine) ?",
+        a: "Oui — décontamination + neutralisant pro éliminent les odeurs profondes. Souvent le 1er signal positif que les clients remarquent.",
+      },
+    ],
+    ctaMessage:
+      "Bonjour StrasClean 👋 Je gère un restaurant à Strasbourg, je voudrais un devis pour le nettoyage des chaises et banquettes en contrat trimestriel. Quel jour pouvez-vous passer pour un audit ?",
+  },
+
+  // ─── 9. B2B Conciergerie Airbnb / Welkeys / etc. ──────────────────────
+  {
+    slug: "nettoyage-textile-conciergerie-strasbourg",
+    shortName: "Conciergerie",
+    emoji: "🔑",
+    metaTitle: "Nettoyage textile conciergerie Airbnb Strasbourg — StrasClean Pro",
+    metaDescription:
+      "Conciergerie Airbnb à Strasbourg ? StrasClean est votre partenaire textile : canapés, matelas, fauteuils, tapis sur l'ensemble de votre portefeuille. Intervention rapide, tarif partenaire, facture mensuelle centralisée.",
+    hero: {
+      chip: "Pro Conciergerie",
+      h1: "Nettoyage textile pour conciergeries Airbnb à Strasbourg.",
+      h1Highlight: "à Strasbourg.",
+      subtitle:
+        "Welkeys, Guest&Strategy, indépendants : StrasClean est votre prestataire textile sur Strasbourg. Une seule facture, un seul interlocuteur, intervention sous 48 h sur l'ensemble de votre portefeuille d'appartements.",
+    },
+    problem: {
+      title: "Votre portefeuille = autant de canapés à entretenir",
+      paragraphs: [
+        "Gérer 20 appartements Airbnb à Strasbourg, c'est gérer 20 canapés, 20-40 matelas et autant de tapis qui prennent cher au rythme des rotations locataires. Chercher un prestataire textile fiable, négocier, planifier appart par appart : énergie perdue. Un partenaire textile unique vous fait gagner du temps et de l'argent.",
+      ],
+      bullets: [
+        "Canapés/matelas usés par rotation rapide (taches, odeurs, taches biologiques)",
+        "Demandes ponctuelles urgentes après incidents locataires",
+        "Avis Airbnb sensibles à la propreté perçue (mention textile fréquente)",
+        "Renouvellement précoce du mobilier sans entretien (coût caché)",
+      ],
+    },
+    whyDiy: {
+      title: "Pourquoi multiplier les prestataires ponctuels coûte plus",
+      paragraphs: [
+        "Faire venir un nettoyeur différent à chaque incident, comparer 3 devis à chaque fois, gérer 10 factures par mois : c'est de la charge mentale et de l'argent perdu. Un partenaire textile en tarif partenaire vous donne un prix au volume, un interlocuteur unique, une facture mensuelle. Et on connaît votre portefeuille (matières, contraintes accès, voisinage).",
+      ],
+    },
+    solution: {
+      title: "Le service StrasClean Conciergerie",
+      intro:
+        "Partenariat annuel ou trimestriel : tarif partenaire (-20 % à -30 % vs unitaire), priorité planning (sous 48 h), facture mensuelle centralisée. On gère l'accès via vos protocoles (code, lockbox, intervention en présence de votre équipe).",
+      steps: [
+        {
+          title: "Conventionnement",
+          desc: "Accord-cadre, tarif partenaire, protocole d'accès, contact unique.",
+        },
+        {
+          title: "Demande par WhatsApp",
+          desc: "Vous nous écrivez quand vous avez besoin (un appart, plusieurs).",
+        },
+        {
+          title: "Intervention prioritaire",
+          desc: "Sous 48 h en moyenne, sous 24 h en urgence.",
+        },
+        {
+          title: "Facture mensuelle",
+          desc: "Centralisée, détaillée par appartement, TVA récupérable.",
+        },
+      ],
+    },
+    pricing: { priceFrom: "59", duration: "1 h à 3 h selon presta" },
+    tariffs: [
+      { label: "Canapé 2 places (tarif partenaire)", price: "59 €", note: "-25 % vs unitaire" },
+      { label: "Matelas 2 personnes", price: "59 €", note: "-15 % vs unitaire" },
+      { label: "Tapis salon (≤6 m²)", price: "49 €", note: "" },
+      { label: "Pack appart complet", price: "Sur devis", note: "Canapé + matelas + tapis" },
+      { label: "Intervention urgence (24 h)", price: "+25 %", note: "Sur tarif partenaire" },
+    ],
+    faq: [
+      {
+        q: "Vous gérez plusieurs appartements par jour ?",
+        a: "Oui — équipe de 2, 3-4 appartements par jour selon le volume textile par adresse. On optimise les tournées géographiquement.",
+      },
+      {
+        q: "Vous prenez en charge l'accès en notre absence ?",
+        a: "Oui — code, lockbox, ou intervention en présence de votre femme de ménage. Tout est cadré dans la convention de départ.",
+      },
+      {
+        q: "Une seule facture mensuelle ?",
+        a: "Oui — récap par appartement, totalisée en bas de facture, virement bancaire. TVA récupérable.",
+      },
+      {
+        q: "Quel délai d'intervention en cas d'urgence (mauvais avis évité) ?",
+        a: "Sous 24 h en cas d'urgence locataire (vomi, tache importante, odeur). Tarif urgence +25 %. On a sauvé plusieurs hôtes d'une cascade d'avis négatifs.",
+      },
+    ],
+    ctaMessage:
+      "Bonjour StrasClean 👋 Je gère une conciergerie Airbnb à Strasbourg avec X appartements, je voudrais un devis partenaire pour le nettoyage textile. Pouvons-nous en discuter ?",
+  },
 ];
 
 /** Construit l'URL d'une page SEO Maison */

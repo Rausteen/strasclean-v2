@@ -1145,6 +1145,178 @@ export const USE_CASES: UseCase[] = [
     ctaMessage:
       "Bonjour StrasClean 👋 Je voudrais un devis précis pour le nettoyage de ma voiture. Quels sont vos prochains créneaux ?",
   },
+  // ─── 12. B2B — Flotte VTC / Uber / Bolt ───────────────────────────────
+  {
+    slug: "nettoyage-voiture-flotte-vtc-strasbourg",
+    shortName: "Flotte VTC",
+    emoji: "🚖",
+    metaTitle: "Nettoyage voiture VTC / Uber / Bolt à Strasbourg — StrasClean",
+    metaDescription:
+      "Chauffeur VTC, Uber, Bolt à Strasbourg ? Nettoyage à domicile entre deux courses, intérieur impeccable pour vos clients, désinfection rapide. Tarif dégressif flotte, facture pro avec TVA. Dès 49 €.",
+    hero: {
+      chip: "Pro VTC / Taxi",
+      h1: "Nettoyage voiture pro VTC à Strasbourg.",
+      h1Highlight: "à Strasbourg.",
+      subtitle:
+        "Vos notes Uber et Bolt dépendent autant de la propreté que de la conduite. StrasClean intervient à domicile (ou sur votre zone de prise en charge) à Strasbourg pour un intérieur impeccable entre deux services. Tarif dégressif pour les flottes.",
+    },
+    problem: {
+      title: "La propreté = la note client = le revenu",
+      paragraphs: [
+        "Un client qui monte dans une voiture qui sent l'ancien passager, qui voit des miettes ou des traces sur les sièges, mettra une note inférieure même si votre conduite est parfaite. Sur Uber et Bolt, une moyenne sous 4,8/5 réduit immédiatement votre attribution de courses et donc votre chiffre. Le nettoyage régulier est un investissement direct dans votre revenu.",
+      ],
+      bullets: [
+        "Sièges : taches café, traces de chaussures, miettes incrustées",
+        "Tableau de bord : traces de doigts, poussière, écran sale",
+        "Tapis : terre, sable, neige fondue selon la saison",
+        "Odeur résiduelle (parfum trop fort, alimentation, animaux clients)",
+        "Vitres : traces de doigts, buée séchée, halos",
+      ],
+    },
+    whyDiy: {
+      title: "Pourquoi le lavage station ne suffit pas pour un VTC",
+      paragraphs: [
+        "Le tunnel automatique fait l'extérieur en 5 min. L'intérieur ? Vous avez 2 minutes avec un aspirateur partagé qui suce moyennement. Vous laissez les sièges sales, les contacts non désinfectés, et l'odeur persiste. Pour un usage pro où chaque course rapporte une note, c'est insuffisant.",
+      ],
+    },
+    solution: {
+      title: "Le service StrasClean VTC",
+      intro:
+        "Nettoyage intérieur pro à domicile ou sur votre lieu de prise en charge. Équipe de 2, 30 minutes pour un nettoyage flash entre 2 services, 1h30 pour un nettoyage complet en fin de journée. Tarif dégressif pour les flottes (à partir de 3 véhicules) ou abonnement hebdomadaire.",
+      steps: [
+        {
+          title: "Aspiration profonde",
+          desc: "Sièges, tapis, coffre, joints — récupère sable, miettes, débris.",
+        },
+        {
+          title: "Désinfection bactéricide",
+          desc: "Tous les points de contact (volant, poignées, écran, boucles ceinture).",
+        },
+        {
+          title: "Shampouinage rapide",
+          desc: "Sièges + tapis si nécessaire, séchage rapide avant reprise.",
+        },
+        {
+          title: "Désodorisation pro",
+          desc: "Élimine les odeurs résiduelles (parfum client, alimentation, etc.).",
+        },
+      ],
+    },
+    pricing: { priceFrom: "49", duration: "30 min à 1 h" },
+    tariffs: [
+      { label: "Nettoyage flash (entre 2 services)", price: "49 €", note: "Aspiration + désinfection + vitres" },
+      { label: "Nettoyage complet quotidien", price: "79 €", note: "Aspi + shampouinage léger + désinfection" },
+      { label: "Detailing hebdomadaire", price: "119 €", note: "Intérieur complet + extérieur" },
+      { label: "Abonnement flotte 3+ véhicules", price: "Sur devis", note: "Tarif dégressif, facture pro mensuelle" },
+      { label: "Intervention urgence (incident client)", price: "+30 %", note: "Sous 4 h" },
+    ],
+    faq: [
+      {
+        q: "Vous facturez en TVA pour ma compta VTC ?",
+        a: "Oui — facture pro avec TVA récupérable. Tous les justificatifs nécessaires pour votre comptable / URSSAF / impôt.",
+      },
+      {
+        q: "Possible de venir à mon lieu de prise en charge (gare, aéroport, hôtel) ?",
+        a: "Oui sur Strasbourg et alentours (Entzheim aéroport, gare centrale, hôtels périphériques). Prévoir 30 min de battement entre 2 courses.",
+      },
+      {
+        q: "Tarif dégressif à partir de combien de véhicules ?",
+        a: "À partir de 3 véhicules en abonnement hebdo : -15 % sur le tarif unitaire. À 5+ : -25 %. Devis personnalisé sous 1 h via WhatsApp.",
+      },
+      {
+        q: "Intervention urgence si un client a sali ?",
+        a: "Oui — sous 4 h en moyenne sur Strasbourg, +30 % du tarif standard. On a souvent sauvé des chauffeurs d'une journée gâchée.",
+      },
+    ],
+    ctaMessage:
+      "Bonjour StrasClean 👋 Je suis chauffeur VTC à Strasbourg, je voudrais un devis pour un nettoyage flash entre deux courses. Quels sont vos prochains créneaux ?",
+  },
+
+  // ─── 13. B2B — Flotte entreprise / société ────────────────────────────
+  {
+    slug: "nettoyage-voiture-flotte-entreprise-strasbourg",
+    shortName: "Flotte entreprise",
+    emoji: "🚐",
+    metaTitle: "Nettoyage flotte entreprise Strasbourg — StrasClean Pro",
+    metaDescription:
+      "Parc de véhicules d'entreprise à Strasbourg ? Nettoyage à domicile / sur site pro, intervention groupée, facture mensuelle. Contrat d'entretien, tarif dégressif dès 3 véhicules. Devis sous 24 h.",
+    hero: {
+      chip: "Pro B2B",
+      h1: "Nettoyage flotte d'entreprise à Strasbourg.",
+      h1Highlight: "à Strasbourg.",
+      subtitle:
+        "StrasClean intervient sur votre site, à Strasbourg et 12 communes alentours, pour entretenir l'ensemble de vos véhicules de société. Contrat mensuel ou intervention ponctuelle, facture pro centralisée, planning adapté à votre activité.",
+    },
+    problem: {
+      title: "Une flotte sale, c'est l'image de marque qui souffre",
+      paragraphs: [
+        "Un commercial qui arrive chez un client dans une voiture sale, un véhicule utilitaire qui sent la cigarette, un coupé direction négligé : autant de signaux qui détériorent la perception de votre entreprise. À l'inverse, une flotte impeccable renforce le sérieux et le soin que vous mettez dans votre activité — pour un coût mensuel maîtrisé.",
+      ],
+      bullets: [
+        "Image de marque : ce que voient vos clients, prospects, partenaires",
+        "Confort des collaborateurs : voiture saine = bien-être au travail",
+        "Revente : un véhicule entretenu = -30 % de décote à la revente",
+        "Hygiène : surtout post-Covid, désinfection régulière attendue",
+      ],
+    },
+    whyDiy: {
+      title: "Pourquoi la station-service multipliée par 10 véhicules ne marche pas",
+      paragraphs: [
+        "Envoyer chaque collaborateur en station coûte cher en temps (1h-2h par véhicule × planning) et donne un résultat médiocre. Externaliser sur site est plus rapide, plus pro et moins cher au global. StrasClean intervient en équipe de 2 sur votre parking : 8-10 véhicules par jour traités, équipe vos collaborateurs ne s'arrêtent pas.",
+      ],
+    },
+    solution: {
+      title: "Le service StrasClean Pro flotte",
+      intro:
+        "Contrat d'entretien sur site (votre parking, votre dépôt), planning établi avec votre gestionnaire de flotte, équipe de 2, facture mensuelle centralisée. Tarif dégressif selon le volume et la fréquence.",
+      steps: [
+        {
+          title: "Devis sur site",
+          desc: "Visite gratuite, audit de votre flotte, proposition adaptée.",
+        },
+        {
+          title: "Planning d'intervention",
+          desc: "On s'adapte à vos horaires : tôt matin, soir, week-end.",
+        },
+        {
+          title: "Intervention groupée",
+          desc: "Équipe de 2 sur place, 8-10 véhicules par journée traitée.",
+        },
+        {
+          title: "Facture mensuelle",
+          desc: "Centralisée, détaillée par véhicule, TVA récupérable.",
+        },
+      ],
+    },
+    pricing: { priceFrom: "59", duration: "30 à 60 min/véhicule" },
+    tariffs: [
+      { label: "Intervention ponctuelle (1-2 véhicules)", price: "Tarif standard", note: "Cf. formules Auto" },
+      { label: "Contrat mensuel 3-5 véhicules", price: "−15 %", note: "Sur tarif standard" },
+      { label: "Contrat mensuel 6-10 véhicules", price: "−25 %", note: "+ priorité planning" },
+      { label: "Contrat 10+ véhicules", price: "Sur devis", note: "Tarif au plus bas, équipe dédiée" },
+      { label: "Intervention week-end / nuit", price: "+20 %", note: "Si demande spécifique" },
+    ],
+    faq: [
+      {
+        q: "Vous intervenez sur notre parking d'entreprise ?",
+        a: "Oui — c'est même notre mode d'intervention principal en B2B. On vient avec tout le matériel mobile (eau, électricité 220 V de votre site si possible, ou autonome).",
+      },
+      {
+        q: "Combien de véhicules par journée d'intervention ?",
+        a: "En équipe de 2, on traite 8-10 véhicules par jour pour un nettoyage standard, 4-6 pour du complet avec shampouinage.",
+      },
+      {
+        q: "On peut tester avant de signer un contrat ?",
+        a: "Oui — première intervention à tarif standard sur 1-2 véhicules. Si convaincu, on signe un contrat mensuel.",
+      },
+      {
+        q: "Vous gérez aussi les utilitaires et fourgons ?",
+        a: "Oui, partie intégrante de notre activité B2B (artisans, livraison, BTP). Tarif adapté à la taille (utilitaire = +30 € vs citadine).",
+      },
+    ],
+    ctaMessage:
+      "Bonjour StrasClean 👋 Je gère une flotte de véhicules d'entreprise à Strasbourg, je voudrais un devis pour un contrat d'entretien mensuel. Quel jour pouvez-vous passer faire un audit ?",
+  },
 ];
 
 /** Construit l'URL d'une page use case */
