@@ -97,6 +97,11 @@ export default function Footer() {
                 </Link>
               </li>
               <li>
+                <Link href="/reserver-auto" className="hover:text-white">
+                  Réserver en ligne
+                </Link>
+              </li>
+              <li>
                 <Link
                   href={cityPath(CITIES[0])}
                   prefetch={false}

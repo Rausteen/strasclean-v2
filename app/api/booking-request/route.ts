@@ -6,6 +6,7 @@ import {
 import { checkSameOrigin } from "@/lib/auth";
 import { checkRateLimit, getClientIp } from "@/lib/ratelimit";
 import { HOME_SERVICES } from "@/lib/homeServices";
+import { PLANS } from "@/lib/plans";
 
 // On limite à 5 demandes par heure et par IP — protège contre l'abus
 // tout en restant largement au-dessus d'un usage normal.
@@ -37,6 +38,23 @@ function isLikelyPhone(v: string): boolean {
   return digits.length >= 8 && digits.length <= 15;
 }
 
+/** Cherche un item (service Maison ou formule Auto) par section + id.
+ *  Renvoie un label affichable et le slug stable pour la DB. */
+function resolveItem(
+  section: string,
+  itemId: string,
+): { slug: string; label: string } | null {
+  if (section === "maison") {
+    const s = HOME_SERVICES.find((s) => s.slug === itemId);
+    return s ? { slug: s.slug, label: s.shortName } : null;
+  }
+  if (section === "auto") {
+    const p = PLANS.find((p) => p.id === itemId);
+    return p ? { slug: p.id, label: p.name } : null;
+  }
+  return null;
+}
+
 export async function POST(req: Request) {
   // 1) Garde-fous : CSRF + rate limit
   if (!checkSameOrigin(req)) {
@@ -60,11 +78,19 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "Format invalide" }, { status: 400 });
   }
 
-  const serviceSlug = safe(body.serviceSlug, 100);
-  const service = HOME_SERVICES.find((s) => s.slug === serviceSlug);
-  if (!service || !serviceSlug) {
+  const section = safe(body.section, 20);
+  if (section !== "auto" && section !== "maison") {
     return NextResponse.json(
-      { error: "Service inconnu" },
+      { error: "Section invalide" },
+      { status: 400 },
+    );
+  }
+
+  const itemId = safe(body.itemId, 100);
+  const item = itemId ? resolveItem(section, itemId) : null;
+  if (!item) {
+    return NextResponse.json(
+      { error: "Prestation inconnue" },
       { status: 400 },
     );
   }
@@ -104,9 +130,9 @@ export async function POST(req: Request) {
 
   const record: Omit<BookingRequest, "id" | "status"> = {
     ts: Date.now(),
-    section: "maison",
-    service_slug: serviceSlug,
-    service_label: service.shortName,
+    section,
+    service_slug: item.slug,
+    service_label: item.label,
     variant,
     first_name: firstName,
     email,

@@ -75,14 +75,19 @@ export default function Hero() {
                 Réserver sur WhatsApp
               </a>
               <a
-                href={SITE.phoneHref}
+                href="/reserver-auto"
                 className="btn-ghost h-14 w-full px-6 text-base active:scale-[0.98] sm:h-12 sm:w-auto"
               >
-                <PhoneIcon size={18} />
-                <span className="sm:hidden">Appeler {SITE.phoneDisplay}</span>
-                <span className="hidden sm:inline">Appeler maintenant</span>
+                Réserver en ligne
               </a>
             </div>
+            <a
+              href={SITE.phoneHref}
+              className="mt-3 inline-flex items-center gap-1.5 text-sm font-medium text-slate-600 hover:text-slate-900"
+            >
+              <PhoneIcon size={14} />
+              Ou appelez : {SITE.phoneDisplay}
+            </a>
 
             {/* Preuve sociale + dispo — fusionnés en un seul bandeau dense */}
             <div className="mt-4 flex flex-wrap items-center gap-x-4 gap-y-2 text-[13px] sm:mt-5 sm:text-sm">

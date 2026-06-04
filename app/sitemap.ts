@@ -94,7 +94,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "monthly" as const,
       priority: 0.75,
     })),
-    // Formulaire de réservation Maison
+    // Formulaires de réservation
+    {
+      url: `${SITE.url}/reserver-auto`,
+      lastModified: now,
+      changeFrequency: "monthly" as const,
+      priority: 0.6,
+    },
     {
       url: `${SITE.url}/reserver-maison`,
       lastModified: now,

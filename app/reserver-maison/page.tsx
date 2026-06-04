@@ -32,15 +32,21 @@ export const metadata: Metadata = {
 };
 
 export default function ReserverMaisonPage() {
-  // Préparation des données serveur passées au composant client.
-  // Évite à BookingForm d'importer toute la lib HOME_SERVICES côté client.
-  const services = HOME_SERVICES.map((s) => ({
-    slug: s.slug,
+  const items = HOME_SERVICES.map((s) => ({
+    id: s.slug,
     shortName: s.shortName,
     emoji: s.emoji,
     priceFrom: s.pricing.priceFrom,
     duration: s.pricing.duration,
   }));
+
+  // Placeholders contextualisés selon le service choisi
+  const placeholders: Record<string, string> = {
+    "nettoyage-canape-strasbourg": "Canapé 2 places tissu",
+    "nettoyage-tapis-domicile-strasbourg": "Tapis 2×3 m laine",
+    "nettoyage-matelas-strasbourg": "Matelas 140×190 cm",
+    "nettoyage-fauteuil-chaise-strasbourg": "2 fauteuils tissu",
+  };
 
   return (
     <>
@@ -64,7 +70,18 @@ export default function ReserverMaisonPage() {
             </div>
 
             <div className="mx-auto mt-10 max-w-2xl">
-              <BookingForm services={services} />
+              <BookingForm
+                section="maison"
+                items={items}
+                freeTextVariantPlaceholderByItem={placeholders}
+                copy={{
+                  serviceQuestion: "Quelle prestation souhaitez-vous ?",
+                  serviceHint: "Choisissez le textile principal. On affinera ensuite.",
+                  detailsQuestion: "Quelques détails sur votre {name}.",
+                  successWaMessage:
+                    "Bonjour StrasClean 👋 Je viens de remplir le formulaire de réservation Maison sur le site.",
+                }}
+              />
             </div>
 
             <div className="mx-auto mt-8 max-w-2xl text-center text-xs text-slate-500">

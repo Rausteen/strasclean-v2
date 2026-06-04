@@ -43,9 +43,18 @@ export default function FinalCTA() {
                 <WhatsAppIcon size={20} />
                 Réserver sur WhatsApp
               </a>
-              <a href={SITE.phoneHref} className="btn h-14 px-7 text-base bg-white text-slate-900 hover:bg-slate-100 sm:h-12 sm:w-auto">
+              <a
+                href="/reserver-auto"
+                className="btn h-14 px-7 text-base bg-white text-slate-900 hover:bg-slate-100 sm:h-12 sm:w-auto"
+              >
+                Réserver en ligne
+              </a>
+              <a
+                href={SITE.phoneHref}
+                className="btn h-14 px-7 text-base border border-white/20 bg-white/5 text-white hover:bg-white/10 sm:h-12 sm:w-auto"
+              >
                 <PhoneIcon size={18} />
-                Appeler maintenant
+                Appeler
               </a>
             </div>
 
