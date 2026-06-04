@@ -11,8 +11,8 @@ type Props = {
 
 export default function ServiceArea({ variant = "auto" }: Props = {}) {
   const isMaison = variant === "maison";
-  const accent = isMaison ? "text-amber-300" : "text-brand-400";
-  const pinColor = isMaison ? "text-amber-400" : "text-brand-400";
+  const accent = isMaison ? "text-amber-600" : "text-brand-600";
+  const pinColor = isMaison ? "text-amber-600" : "text-brand-600";
   const hoverBorder = isMaison
     ? "hover:border-amber-400/40 hover:bg-amber-500/10"
     : "hover:border-brand-400/40 hover:bg-brand-500/10";
@@ -38,10 +38,10 @@ export default function ServiceArea({ variant = "auto" }: Props = {}) {
             >
               Zone d'intervention
             </p>
-            <h2 className="h-display mt-3 text-balance text-3xl font-bold text-white sm:text-4xl">
+            <h2 className="h-display mt-3 text-balance text-3xl font-bold text-slate-900 sm:text-4xl">
               {title}
             </h2>
-            <p className="mt-4 text-white/70">{intro}</p>
+            <p className="mt-4 text-slate-600">{intro}</p>
 
             <a
               href={waLink(message)}
@@ -58,14 +58,14 @@ export default function ServiceArea({ variant = "auto" }: Props = {}) {
             {isMaison ? (
               <MaisonCityServicePicker />
             ) : (
-              <div className="relative overflow-hidden rounded-3xl border border-white/10 bg-gradient-to-br from-ink-800 to-ink-900 p-7 sm:p-9">
+              <div className="relative overflow-hidden rounded-3xl border border-slate-200 bg-gradient-to-br from-slate-100 to-slate-50 p-7 sm:p-9">
                 <div className="absolute inset-0 -z-10 bg-grid-light bg-[size:36px_36px] opacity-[0.25]" />
                 <div className="absolute -right-20 -top-24 h-64 w-64 rounded-full bg-brand-500/15 blur-2xl sm:blur-3xl" />
 
-                <h3 className="h-display text-xl font-semibold text-white">
+                <h3 className="h-display text-xl font-semibold text-slate-900">
                   12 communes desservies
                 </h3>
-                <p className="mt-1 text-sm text-white/60">
+                <p className="mt-1 text-sm text-slate-500">
                   Et bien d'autres autour — demandez-nous.
                 </p>
 
@@ -75,7 +75,7 @@ export default function ServiceArea({ variant = "auto" }: Props = {}) {
                       <Link
                         href={cityPath(c)}
                         prefetch={false}
-                        className={`group flex items-center justify-between gap-2 rounded-xl border border-white/10 bg-white/[0.03] px-3 py-2.5 text-sm text-white/85 transition ${hoverBorder} hover:text-white`}
+                        className={`group flex items-center justify-between gap-2 rounded-xl border border-slate-200 bg-slate-50 px-3 py-2.5 text-sm text-slate-800 transition ${hoverBorder} hover:text-slate-900`}
                       >
                         <span className="inline-flex items-center gap-2">
                           <MapPinIcon size={14} className={pinColor} />
@@ -83,12 +83,12 @@ export default function ServiceArea({ variant = "auto" }: Props = {}) {
                         </span>
                         <ArrowRightIcon
                           size={12}
-                          className={`text-white/40 transition group-hover:translate-x-0.5 group-hover:${pinColor}`}
+                          className={`text-slate-400 transition group-hover:translate-x-0.5 group-hover:${pinColor}`}
                         />
                       </Link>
                     </li>
                   ))}
-                  <li className="flex items-center justify-center rounded-xl border border-dashed border-white/15 bg-white/[0.02] px-3 py-2.5 text-sm text-white/65">
+                  <li className="flex items-center justify-center rounded-xl border border-dashed border-slate-300 bg-slate-50 px-3 py-2.5 text-sm text-slate-600">
                     + alentours
                   </li>
                 </ul>

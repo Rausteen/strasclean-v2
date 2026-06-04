@@ -96,27 +96,27 @@ export default function PriceCalculator() {
 
       <div className="container-x">
         <div className="mx-auto max-w-3xl text-center">
-          <p className="text-sm font-semibold uppercase tracking-[0.18em] text-brand-400">
+          <p className="text-sm font-semibold uppercase tracking-[0.18em] text-brand-600">
             Calculateur de prix
           </p>
-          <h2 className="h-display mt-3 text-balance text-3xl font-bold text-white sm:text-4xl lg:text-5xl">
+          <h2 className="h-display mt-3 text-balance text-3xl font-bold text-slate-900 sm:text-4xl lg:text-5xl">
             Combien ça va coûter pour votre voiture ?
           </h2>
-          <p className="mt-4 text-white/70">
+          <p className="mt-4 text-slate-600">
             Choisissez votre véhicule et votre formule. Votre devis s'affiche en
             2 secondes, sans inscription. Aucun frais caché — le prix annoncé
             est le prix payé.
           </p>
         </div>
 
-        <div className="mx-auto mt-10 max-w-4xl rounded-3xl border border-white/10 bg-gradient-to-b from-white/[0.04] to-white/[0.02] p-5 sm:p-8">
+        <div className="mx-auto mt-10 max-w-4xl rounded-3xl border border-slate-200 bg-gradient-to-b from-white/[0.04] to-white/[0.02] p-5 sm:p-8">
           {/* Étape 1 — Véhicule */}
           <div>
             <div className="mb-3 flex items-center gap-2">
-              <span className="grid h-6 w-6 place-items-center rounded-full bg-brand-500 text-[11px] font-bold text-ink-950">
+              <span className="grid h-6 w-6 place-items-center rounded-full bg-brand-500 text-[11px] font-bold text-slate-900">
                 1
               </span>
-              <h3 className="h-display text-base font-semibold text-white">
+              <h3 className="h-display text-base font-semibold text-slate-900">
                 Votre type de véhicule
               </h3>
             </div>
@@ -130,32 +130,32 @@ export default function PriceCalculator() {
                     className={`group relative flex h-full flex-col items-start gap-1 rounded-2xl border px-3 py-3 text-left transition ${
                       active
                         ? "border-brand-400/60 bg-brand-500/15 shadow-glow"
-                        : "border-white/10 bg-white/[0.03] hover:border-white/25 hover:bg-white/[0.06]"
+                        : "border-slate-200 bg-slate-50 hover:border-white/25 hover:bg-slate-100"
                     }`}
                   >
                     <span className="flex items-center gap-1.5">
                       <CarIcon
                         size={14}
-                        className={active ? "text-brand-300" : "text-white/50"}
+                        className={active ? "text-brand-600" : "text-slate-500"}
                       />
                       <span
                         className={`text-sm font-semibold ${
-                          active ? "text-white" : "text-white/85"
+                          active ? "text-slate-900" : "text-slate-800"
                         }`}
                       >
                         {v.name}
                       </span>
                     </span>
-                    <span className="text-[11px] leading-snug text-white/65">
+                    <span className="text-[11px] leading-snug text-slate-600">
                       {v.examples}
                     </span>
                     {v.surcharge > 0 && (
-                      <span className="mt-1 inline-flex items-center rounded-full bg-white/5 px-2 py-0.5 text-[10px] font-medium text-white/65">
+                      <span className="mt-1 inline-flex items-center rounded-full bg-slate-50 px-2 py-0.5 text-[10px] font-medium text-slate-600">
                         +{v.surcharge} €
                       </span>
                     )}
                     {active && (
-                      <span className="absolute right-2 top-2 grid h-4 w-4 place-items-center rounded-full bg-brand-500 text-[9px] text-ink-950">
+                      <span className="absolute right-2 top-2 grid h-4 w-4 place-items-center rounded-full bg-brand-500 text-[9px] text-slate-900">
                         <CheckIcon size={10} />
                       </span>
                     )}
@@ -171,13 +171,13 @@ export default function PriceCalculator() {
               <span
                 className={`grid h-6 w-6 place-items-center rounded-full text-[11px] font-bold ${
                   vehicle
-                    ? "bg-brand-500 text-ink-950"
-                    : "bg-white/10 text-white/65"
+                    ? "bg-brand-500 text-slate-900"
+                    : "bg-slate-100 text-slate-600"
                 }`}
               >
                 2
               </span>
-              <h3 className="h-display text-base font-semibold text-white">
+              <h3 className="h-display text-base font-semibold text-slate-900">
                 Votre formule
               </h3>
             </div>
@@ -192,19 +192,19 @@ export default function PriceCalculator() {
                     className={`group relative flex h-full items-start gap-3 rounded-2xl border p-4 text-left transition disabled:cursor-not-allowed disabled:opacity-50 ${
                       active
                         ? "border-brand-400/60 bg-brand-500/15 shadow-glow"
-                        : "border-white/10 bg-white/[0.03] hover:border-white/25 hover:bg-white/[0.06]"
+                        : "border-slate-200 bg-slate-50 hover:border-white/25 hover:bg-slate-100"
                     }`}
                   >
                     {f.popular && (
-                      <span className="absolute -top-2 left-3 rounded-full bg-brand-500 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-ink-950">
+                      <span className="absolute -top-2 left-3 rounded-full bg-brand-500 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-slate-900">
                         Le + populaire
                       </span>
                     )}
                     <span
                       className={`mt-0.5 grid h-9 w-9 shrink-0 place-items-center rounded-xl ${
                         active
-                          ? "bg-brand-500/30 text-brand-200"
-                          : "bg-white/[0.06] text-white/60"
+                          ? "bg-brand-500/30 text-brand-700"
+                          : "bg-slate-100 text-slate-500"
                       }`}
                     >
                       <SparklesIcon size={16} />
@@ -213,24 +213,24 @@ export default function PriceCalculator() {
                       <span className="flex items-center justify-between gap-2">
                         <span
                           className={`text-sm font-semibold ${
-                            active ? "text-white" : "text-white/90"
+                            active ? "text-slate-900" : "text-slate-800"
                           }`}
                         >
                           {f.name}
                         </span>
-                        <span className="shrink-0 text-sm font-bold text-brand-300">
+                        <span className="shrink-0 text-sm font-bold text-brand-600">
                           dès {f.basePrice} €
                         </span>
                       </span>
-                      <span className="mt-1 block text-xs leading-snug text-white/65">
+                      <span className="mt-1 block text-xs leading-snug text-slate-600">
                         {f.desc}
                       </span>
-                      <span className="mt-1.5 inline-block text-[11px] text-white/45">
+                      <span className="mt-1.5 inline-block text-[11px] text-slate-400">
                         Durée : {f.duration}
                       </span>
                     </span>
                     {active && (
-                      <span className="absolute right-2 top-2 grid h-4 w-4 place-items-center rounded-full bg-brand-500 text-[9px] text-ink-950">
+                      <span className="absolute right-2 top-2 grid h-4 w-4 place-items-center rounded-full bg-brand-500 text-[9px] text-slate-900">
                         <CheckIcon size={10} />
                       </span>
                     )}
@@ -243,25 +243,25 @@ export default function PriceCalculator() {
           {/* Résultat */}
           <div className="mt-6">
             {result ? (
-              <div className="overflow-hidden rounded-2xl border border-brand-400/40 bg-gradient-to-br from-brand-500/15 via-ink-800 to-ink-900 p-5 sm:p-7">
+              <div className="overflow-hidden rounded-2xl border border-brand-400/40 bg-gradient-to-br from-brand-500/15 via-slate-100 to-slate-50 p-5 sm:p-7">
                 <div className="flex flex-col items-start gap-5 sm:flex-row sm:items-center sm:justify-between">
                   <div className="min-w-0">
-                    <p className="text-xs font-semibold uppercase tracking-[0.18em] text-brand-300">
+                    <p className="text-xs font-semibold uppercase tracking-[0.18em] text-brand-600">
                       Votre devis
                     </p>
-                    <p className="mt-1 text-sm text-white/70">
+                    <p className="mt-1 text-sm text-slate-600">
                       Formule {result.f.name} · {result.v.name}
                     </p>
                     <p className="mt-2 flex items-baseline gap-2">
-                      <span className="h-display text-4xl font-extrabold text-white sm:text-5xl">
+                      <span className="h-display text-4xl font-extrabold text-slate-900 sm:text-5xl">
                         {result.total} €
                       </span>
-                      <span className="text-xs text-white/65">
+                      <span className="text-xs text-slate-600">
                         ({result.f.basePrice} €
                         {result.v.surcharge > 0 ? ` + ${result.v.surcharge} € ${result.v.name.toLowerCase()}` : ""})
                       </span>
                     </p>
-                    <p className="mt-2 text-xs text-white/65">
+                    <p className="mt-2 text-xs text-slate-600">
                       Durée estimée : {result.f.duration} · Paiement sur place
                     </p>
                   </div>
@@ -275,7 +275,7 @@ export default function PriceCalculator() {
                     Réserver à {result.total} €
                   </a>
                 </div>
-                <p className="mt-4 border-t border-white/10 pt-3 text-[11px] text-white/45">
+                <p className="mt-4 border-t border-slate-200 pt-3 text-[11px] text-slate-400">
                   Prix indicatif sur véhicule en état standard. Pour un état très
                   sale, taches importantes ou odeurs persistantes, on confirme le
                   tarif final avant intervention (jamais de surcoût surprise sur
@@ -283,7 +283,7 @@ export default function PriceCalculator() {
                 </p>
               </div>
             ) : (
-              <div className="rounded-2xl border border-dashed border-white/15 bg-white/[0.02] p-6 text-center text-sm text-white/65">
+              <div className="rounded-2xl border border-dashed border-slate-300 bg-slate-50 p-6 text-center text-sm text-slate-600">
                 {!vehicle
                   ? "Choisissez d'abord votre type de véhicule"
                   : "Choisissez maintenant votre formule"}

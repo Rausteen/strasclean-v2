@@ -21,14 +21,14 @@ export default function MaisonCityServicePicker() {
     HOME_SERVICES.find((s) => s.slug === serviceSlug) ?? HOME_SERVICES[0];
 
   return (
-    <div className="relative overflow-hidden rounded-3xl border border-white/10 bg-gradient-to-br from-ink-800 to-ink-900 p-7 sm:p-9">
+    <div className="relative overflow-hidden rounded-3xl border border-slate-200 bg-gradient-to-br from-slate-100 to-slate-50 p-7 sm:p-9">
       <div className="absolute inset-0 -z-10 bg-grid-light bg-[size:36px_36px] opacity-[0.25]" />
       <div className="absolute -right-20 -top-24 h-64 w-64 rounded-full bg-amber-500/15 blur-2xl sm:blur-3xl" />
 
-      <h3 className="h-display text-xl font-semibold text-white">
+      <h3 className="h-display text-xl font-semibold text-slate-900">
         12 communes desservies
       </h3>
-      <p className="mt-1 text-sm text-white/60">
+      <p className="mt-1 text-sm text-slate-500">
         Choisissez votre prestation puis tapez sur votre commune.
       </p>
 
@@ -49,8 +49,8 @@ export default function MaisonCityServicePicker() {
               onClick={() => setServiceSlug(s.slug)}
               className={`rounded-full border px-3 py-1.5 text-xs font-semibold transition ${
                 active
-                  ? "border-amber-400/60 bg-amber-400 text-ink-950 shadow"
-                  : "border-white/10 bg-white/[0.04] text-white/70 hover:border-amber-400/30 hover:text-white"
+                  ? "border-amber-400/60 bg-amber-400 text-slate-900 shadow"
+                  : "border-slate-200 bg-slate-100 text-slate-600 hover:border-amber-400/30 hover:text-slate-900"
               }`}
             >
               {s.shortName}
@@ -65,20 +65,20 @@ export default function MaisonCityServicePicker() {
             <Link
               href={homeServiceCityPath(service, c)}
               prefetch={false}
-              className="group flex items-center justify-between gap-2 rounded-xl border border-white/10 bg-white/[0.03] px-3 py-2.5 text-sm text-white/85 transition hover:border-amber-400/40 hover:bg-amber-500/10 hover:text-white"
+              className="group flex items-center justify-between gap-2 rounded-xl border border-slate-200 bg-slate-50 px-3 py-2.5 text-sm text-slate-800 transition hover:border-amber-400/40 hover:bg-amber-500/10 hover:text-slate-900"
             >
               <span className="inline-flex items-center gap-2">
-                <MapPinIcon size={14} className="text-amber-400" />
+                <MapPinIcon size={14} className="text-amber-600" />
                 {c.name}
               </span>
               <ArrowRightIcon
                 size={12}
-                className="text-white/40 transition group-hover:translate-x-0.5 group-hover:text-amber-300"
+                className="text-slate-400 transition group-hover:translate-x-0.5 group-hover:text-amber-600"
               />
             </Link>
           </li>
         ))}
-        <li className="flex items-center justify-center rounded-xl border border-dashed border-white/15 bg-white/[0.02] px-3 py-2.5 text-sm text-white/65">
+        <li className="flex items-center justify-center rounded-xl border border-dashed border-slate-300 bg-slate-50 px-3 py-2.5 text-sm text-slate-600">
           + alentours
         </li>
       </ul>

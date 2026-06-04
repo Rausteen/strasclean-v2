@@ -15,21 +15,21 @@ export default function HomeServicesPromo() {
 
       <div className="container-x">
         <Reveal className="mx-auto max-w-3xl text-center">
-          <p className="inline-flex items-center gap-2 text-sm font-semibold uppercase tracking-[0.18em] text-amber-300">
+          <p className="inline-flex items-center gap-2 text-sm font-semibold uppercase tracking-[0.18em] text-amber-600">
             <SparklesIcon size={14} />
             StrasClean Maison
           </p>
-          <h2 className="h-display mt-3 text-balance text-3xl font-bold text-white sm:text-4xl lg:text-5xl">
+          <h2 className="h-display mt-3 text-balance text-3xl font-bold text-slate-900 sm:text-4xl lg:text-5xl">
             On nettoie aussi votre canapé, tapis et matelas.
           </h2>
-          <p className="mt-4 text-white/70">
+          <p className="mt-4 text-slate-600">
             Même équipe, même matériel pro (injection-extraction), même service
             à domicile à Strasbourg. Canapé tissu ou cuir, tapis, matelas,
             fauteuils, chaises : on intervient chez vous, sans rien déplacer.
           </p>
           <Link
             href="/strasclean-maison"
-            className="mt-5 inline-flex items-center gap-1.5 rounded-full border border-amber-400/40 bg-amber-500/10 px-4 py-2 text-sm font-semibold text-amber-200 transition hover:bg-amber-500/20"
+            className="mt-5 inline-flex items-center gap-1.5 rounded-full border border-amber-400/40 bg-amber-500/10 px-4 py-2 text-sm font-semibold text-amber-700 transition hover:bg-amber-500/20"
           >
             Découvrir StrasClean Maison
             <ArrowRightIcon size={14} />
@@ -42,24 +42,24 @@ export default function HomeServicesPromo() {
               <Link
                 href={homeServicePath(s)}
                 prefetch={false}
-                className="group flex h-full flex-col rounded-3xl border border-white/10 bg-white/[0.03] p-5 transition hover:-translate-y-1 hover:border-amber-400/40 hover:bg-amber-500/[0.06]"
+                className="group flex h-full flex-col rounded-3xl border border-slate-200 bg-slate-50 p-5 transition hover:-translate-y-1 hover:border-amber-400/40 hover:bg-amber-500/[0.06]"
               >
                 <span className="grid h-12 w-12 place-items-center rounded-2xl bg-amber-500/10 text-2xl">
                   {s.emoji}
                 </span>
-                <h3 className="h-display mt-4 text-base font-semibold text-white">
+                <h3 className="h-display mt-4 text-base font-semibold text-slate-900">
                   {s.shortName}
                 </h3>
-                <p className="mt-1 text-sm text-white/65">
+                <p className="mt-1 text-sm text-slate-600">
                   {/* Hero subtitle est trop long → on prend une version courte
                       construite côté composant à partir du h1 */}
                   {tagline(s.shortName)}
                 </p>
                 <div className="mt-auto flex items-center justify-between pt-4">
-                  <span className="text-sm font-bold text-amber-300">
+                  <span className="text-sm font-bold text-amber-600">
                     dès {s.pricing.priceFrom} €
                   </span>
-                  <span className="inline-flex items-center gap-1 text-xs text-white/65 group-hover:text-amber-300">
+                  <span className="inline-flex items-center gap-1 text-xs text-slate-600 group-hover:text-amber-600">
                     Voir
                     <ArrowRightIcon
                       size={12}

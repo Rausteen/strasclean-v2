@@ -30,7 +30,7 @@ export function HideIpButton({ ip }: { ip: string | null }) {
     <button
       onClick={toggle}
       disabled={loading}
-      className="rounded border border-white/15 bg-white/[0.04] px-1.5 py-0.5 text-[10px] text-white/60 hover:border-red-500/40 hover:bg-red-500/10 hover:text-red-300 disabled:opacity-50"
+      className="rounded border border-slate-300 bg-slate-100 px-1.5 py-0.5 text-[10px] text-slate-500 hover:border-red-500/40 hover:bg-red-500/10 hover:text-red-300 disabled:opacity-50"
       title="Cacher cette IP des statistiques"
     >
       Cacher
@@ -56,7 +56,7 @@ export function UnhideIpButton({ ip }: { ip: string }) {
     <button
       onClick={toggle}
       disabled={loading}
-      className="rounded border border-white/15 bg-white/[0.04] px-2 py-0.5 text-[10px] text-white/60 hover:border-brand-500/40 hover:bg-brand-500/10 hover:text-brand-300 disabled:opacity-50"
+      className="rounded border border-slate-300 bg-slate-100 px-2 py-0.5 text-[10px] text-slate-500 hover:border-brand-500/40 hover:bg-brand-500/10 hover:text-brand-600 disabled:opacity-50"
     >
       Réafficher
     </button>

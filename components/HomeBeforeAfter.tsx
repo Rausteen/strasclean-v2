@@ -92,13 +92,13 @@ export default function HomeBeforeAfter() {
     >
       <div className="container-x">
         <Reveal className="mx-auto max-w-3xl text-center">
-          <p className="text-sm font-semibold uppercase tracking-[0.18em] text-amber-300">
+          <p className="text-sm font-semibold uppercase tracking-[0.18em] text-amber-600">
             Le résultat
           </p>
-          <h2 className="h-display mt-3 text-balance text-3xl font-bold text-white sm:text-4xl lg:text-5xl">
+          <h2 className="h-display mt-3 text-balance text-3xl font-bold text-slate-900 sm:text-4xl lg:text-5xl">
             Avant / après — la différence visible immédiatement.
           </h2>
-          <p className="mt-4 text-white/65">
+          <p className="mt-4 text-slate-600">
             {hasRealPhotos
               ? "Photos prises lors de nos interventions clients à Strasbourg. Extraction profonde, matière d'origine restaurée, aucune auréole."
               : "Une extraction profonde qui décolle les taches incrustées et restaure la matière d'origine — sans auréole résiduelle, sans humidité excessive. Voici quelques rendus types après notre intervention."}
@@ -108,7 +108,7 @@ export default function HomeBeforeAfter() {
         <div className="mt-12 grid gap-6 lg:grid-cols-3">
           {pairs.map((p, i) => (
             <Reveal key={p.slug} delay={i * 100}>
-              <article className="overflow-hidden rounded-3xl border border-white/10 bg-white/[0.02]">
+              <article className="overflow-hidden rounded-3xl border border-slate-200 bg-slate-50">
                 <div className="grid grid-cols-2">
                   {/* Avant */}
                   <div
@@ -135,7 +135,7 @@ export default function HomeBeforeAfter() {
                         </span>
                       </>
                     )}
-                    <span className="absolute left-3 top-3 rounded-full bg-black/70 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-white/85 backdrop-blur-sm">
+                    <span className="absolute left-3 top-3 rounded-full bg-black/70 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-white backdrop-blur-sm">
                       Avant
                     </span>
                   </div>
@@ -165,14 +165,14 @@ export default function HomeBeforeAfter() {
                         </span>
                       </>
                     )}
-                    <span className="absolute right-3 top-3 rounded-full bg-amber-500 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-ink-950">
+                    <span className="absolute right-3 top-3 rounded-full bg-amber-500 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-slate-900">
                       Après
                     </span>
                   </div>
                 </div>
                 <div className="p-4">
-                  <p className="text-sm font-semibold text-white">{p.label}</p>
-                  <p className="mt-1 text-xs text-white/65">{p.sub}</p>
+                  <p className="text-sm font-semibold text-slate-900">{p.label}</p>
+                  <p className="mt-1 text-xs text-slate-600">{p.sub}</p>
                 </div>
               </article>
             </Reveal>

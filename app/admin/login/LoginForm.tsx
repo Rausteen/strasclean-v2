@@ -36,7 +36,7 @@ export default function LoginForm() {
   return (
     <form onSubmit={onSubmit} className="space-y-4">
       <div>
-        <label className="text-xs font-medium uppercase tracking-wider text-white/65">
+        <label className="text-xs font-medium uppercase tracking-wider text-slate-600">
           Mot de passe
         </label>
         <input
@@ -45,7 +45,7 @@ export default function LoginForm() {
           onChange={(e) => setPassword(e.target.value)}
           autoFocus
           required
-          className="mt-2 block w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-base text-white outline-none focus:border-brand-400/60 focus:bg-white/[0.07]"
+          className="mt-2 block w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-base text-slate-900 outline-none focus:border-brand-400/60 focus:bg-white/[0.07]"
         />
       </div>
       {err && (

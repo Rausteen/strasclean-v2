@@ -227,40 +227,40 @@ export default function HomeServicePage({ service, place, city }: Props) {
                 <nav aria-label="Fil d'ariane" className="mb-4 text-xs">
                   <Link
                     href="/strasclean-maison"
-                    className="font-medium text-white/65 hover:text-white/80"
+                    className="font-medium text-slate-600 hover:text-slate-700"
                   >
                     StrasClean Maison
                   </Link>
                   {isCity && (
                     <>
-                      <span className="mx-1.5 text-white/30">/</span>
+                      <span className="mx-1.5 text-slate-300">/</span>
                       <Link
                         href={`/${service.slug}`}
-                        className="font-medium text-white/65 hover:text-white/80"
+                        className="font-medium text-slate-600 hover:text-slate-700"
                       >
                         {service.shortName}
                       </Link>
                     </>
                   )}
-                  <span className="mx-1.5 text-white/30">/</span>
-                  <span className="text-white/75">
+                  <span className="mx-1.5 text-slate-300">/</span>
+                  <span className="text-slate-700">
                     {isCity ? cityName : service.shortName}
                   </span>
                 </nav>
 
-                <span className="inline-flex items-center gap-1.5 rounded-full border border-amber-500/30 bg-amber-500/10 px-3 py-1 text-sm font-medium text-amber-200">
+                <span className="inline-flex items-center gap-1.5 rounded-full border border-amber-500/30 bg-amber-500/10 px-3 py-1 text-sm font-medium text-amber-700">
                   <span className="text-base leading-none">{service.emoji}</span>
                   {service.hero.chip}
                 </span>
 
-                <h1 className="h-display mt-4 text-balance text-[30px] font-bold leading-[1.05] text-white sm:text-5xl lg:text-6xl">
+                <h1 className="h-display mt-4 text-balance text-[30px] font-bold leading-[1.05] text-slate-900 sm:text-5xl lg:text-6xl">
                   {h1FullPlain}{" "}
                   <span className="bg-gradient-to-r from-amber-200 via-amber-300 to-amber-500 bg-clip-text text-transparent">
                     {h1Highlight}
                   </span>
                 </h1>
 
-                <p className="mt-4 max-w-xl text-balance text-[15px] leading-relaxed text-white/70 sm:mt-5 sm:text-lg">
+                <p className="mt-4 max-w-xl text-balance text-[15px] leading-relaxed text-slate-600 sm:mt-5 sm:text-lg">
                   {subtitle}
                 </p>
 
@@ -283,17 +283,17 @@ export default function HomeServicePage({ service, place, city }: Props) {
                   </a>
                 </div>
 
-                <ul className="mt-6 flex flex-wrap items-center gap-x-4 gap-y-2 text-[13px] text-white/65 sm:text-sm">
+                <ul className="mt-6 flex flex-wrap items-center gap-x-4 gap-y-2 text-[13px] text-slate-600 sm:text-sm">
                   <li className="inline-flex items-center gap-1.5">
-                    <ClockIcon size={14} className="text-amber-300" />
+                    <ClockIcon size={14} className="text-amber-600" />
                     {service.pricing.duration}
                   </li>
                   <li className="inline-flex items-center gap-1.5">
-                    <CheckIcon size={14} className="text-amber-300" />
+                    <CheckIcon size={14} className="text-amber-600" />
                     Dès {service.pricing.priceFrom} €
                   </li>
                   <li className="inline-flex items-center gap-1.5">
-                    <MapPinIcon size={14} className="text-amber-300" />
+                    <MapPinIcon size={14} className="text-amber-600" />
                     {isCity ? `${cityName} (${city!.postalCodes[0]})` : "Strasbourg & alentours"}
                   </li>
                 </ul>
@@ -320,19 +320,19 @@ export default function HomeServicePage({ service, place, city }: Props) {
               <Reveal className="mx-auto max-w-3xl">
                 <div className="rounded-2xl border border-amber-500/20 bg-amber-500/[0.04] p-5 sm:p-6">
                   <div className="flex items-center gap-2">
-                    <MapPinIcon size={16} className="text-amber-300" />
-                    <p className="text-xs font-semibold uppercase tracking-[0.18em] text-amber-300">
+                    <MapPinIcon size={16} className="text-amber-600" />
+                    <p className="text-xs font-semibold uppercase tracking-[0.18em] text-amber-600">
                       {service.shortName} {cityPreposition} {cityName}
                     </p>
                   </div>
-                  <p className="mt-3 text-[15px] leading-relaxed text-white/80">
+                  <p className="mt-3 text-[15px] leading-relaxed text-slate-700">
                     StrasClean intervient {cityPreposition} {cityName} (
                     {city!.postalCodes.join(", ")}) — environ {city!.distanceKm}{" "}
                     km du centre de Strasbourg. Déplacement inclus dans le tarif
                     annoncé. {city!.maisonIntro ?? city!.intro}
                   </p>
                   {city!.neighborhoods && city!.neighborhoods.length > 0 && (
-                    <p className="mt-3 text-sm text-white/60">
+                    <p className="mt-3 text-sm text-slate-500">
                       Quartiers desservis : {city!.neighborhoods.join(" · ")}.
                     </p>
                   )}
@@ -359,14 +359,14 @@ export default function HomeServicePage({ service, place, city }: Props) {
           <div className="container-x">
             <div className="mx-auto max-w-4xl">
               <Reveal className="text-center">
-                <p className="text-sm font-semibold uppercase tracking-[0.18em] text-amber-300">
+                <p className="text-sm font-semibold uppercase tracking-[0.18em] text-amber-600">
                   Le constat
                 </p>
-                <h2 className="h-display mt-2 text-balance text-2xl font-bold text-white sm:text-3xl lg:text-4xl">
+                <h2 className="h-display mt-2 text-balance text-2xl font-bold text-slate-900 sm:text-3xl lg:text-4xl">
                   {service.problem.title}
                 </h2>
                 {service.problem.paragraphs[0] && (
-                  <p className="mx-auto mt-3 max-w-2xl text-[15px] leading-relaxed text-white/70">
+                  <p className="mx-auto mt-3 max-w-2xl text-[15px] leading-relaxed text-slate-600">
                     {service.problem.paragraphs[0]}
                   </p>
                 )}
@@ -375,7 +375,7 @@ export default function HomeServicePage({ service, place, city }: Props) {
               <ul className="mt-8 grid gap-3 sm:grid-cols-2">
                 {service.problem.bullets.map((b, i) => (
                   <Reveal key={b} delay={i * 40}>
-                    <li className="flex items-start gap-3 rounded-xl border border-white/10 bg-white/[0.03] px-4 py-3 text-sm text-white/85">
+                    <li className="flex items-start gap-3 rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-800">
                       <span className="mt-0.5 grid h-7 w-7 shrink-0 place-items-center rounded-lg bg-rose-500/10 text-rose-300">
                         ✕
                       </span>
@@ -395,13 +395,13 @@ export default function HomeServicePage({ service, place, city }: Props) {
           </div>
           <div className="container-x">
             <Reveal className="mx-auto max-w-3xl text-center">
-              <p className="text-sm font-semibold uppercase tracking-[0.18em] text-amber-300">
+              <p className="text-sm font-semibold uppercase tracking-[0.18em] text-amber-600">
                 Comment ça se passe
               </p>
-              <h2 className="h-display mt-2 text-balance text-2xl font-bold text-white sm:text-3xl lg:text-4xl">
+              <h2 className="h-display mt-2 text-balance text-2xl font-bold text-slate-900 sm:text-3xl lg:text-4xl">
                 {service.solution.title}
               </h2>
-              <p className="mx-auto mt-3 max-w-2xl text-[15px] leading-relaxed text-white/70">
+              <p className="mx-auto mt-3 max-w-2xl text-[15px] leading-relaxed text-slate-600">
                 {service.solution.intro}
               </p>
             </Reveal>
@@ -411,14 +411,14 @@ export default function HomeServicePage({ service, place, city }: Props) {
                 <Reveal key={step.title} delay={i * 50}>
                   <article className="card card-hover h-full">
                     <div className="flex items-center gap-3">
-                      <span className="h-display grid h-9 w-9 shrink-0 place-items-center rounded-xl bg-amber-500/15 text-amber-300 font-bold">
+                      <span className="h-display grid h-9 w-9 shrink-0 place-items-center rounded-xl bg-amber-500/15 text-amber-600 font-bold">
                         {i + 1}
                       </span>
-                      <h3 className="h-display text-base font-semibold text-white">
+                      <h3 className="h-display text-base font-semibold text-slate-900">
                         {step.title}
                       </h3>
                     </div>
-                    <p className="mt-3 text-sm leading-relaxed text-white/70">
+                    <p className="mt-3 text-sm leading-relaxed text-slate-600">
                       {step.desc}
                     </p>
                   </article>
@@ -433,14 +433,14 @@ export default function HomeServicePage({ service, place, city }: Props) {
           <section className="relative py-12 sm:py-20">
             <div className="container-x">
               <Reveal className="mx-auto max-w-3xl">
-                <div className="rounded-3xl border border-white/10 bg-white/[0.03] p-6 sm:p-8">
-                  <p className="text-sm font-semibold uppercase tracking-[0.18em] text-amber-300">
+                <div className="rounded-3xl border border-slate-200 bg-slate-50 p-6 sm:p-8">
+                  <p className="text-sm font-semibold uppercase tracking-[0.18em] text-amber-600">
                     Pourquoi pro vs. DIY
                   </p>
-                  <h3 className="h-display mt-2 text-xl font-bold text-white sm:text-2xl">
+                  <h3 className="h-display mt-2 text-xl font-bold text-slate-900 sm:text-2xl">
                     {service.whyDiy.title}
                   </h3>
-                  <p className="mt-3 text-[15px] leading-relaxed text-white/75">
+                  <p className="mt-3 text-[15px] leading-relaxed text-slate-700">
                     {service.whyDiy.paragraphs[0]}
                   </p>
                 </div>
@@ -473,12 +473,12 @@ export default function HomeServicePage({ service, place, city }: Props) {
         <section className="relative overflow-hidden py-12 sm:py-20">
           <div className="container-x">
             <Reveal>
-              <div className="relative overflow-hidden rounded-3xl border border-amber-400/30 bg-gradient-to-br from-amber-500/15 via-ink-800 to-ink-900 p-6 text-center sm:p-12">
+              <div className="relative overflow-hidden rounded-3xl border border-amber-400/30 bg-gradient-to-br from-amber-500/15 via-slate-100 to-slate-50 p-6 text-center sm:p-12">
                 <div className="pointer-events-none absolute -right-20 -top-24 h-64 w-64 rounded-full bg-amber-500/25 blur-2xl sm:blur-3xl" />
-                <h2 className="h-display mx-auto max-w-2xl text-balance text-2xl font-bold text-white sm:text-3xl lg:text-4xl">
+                <h2 className="h-display mx-auto max-w-2xl text-balance text-2xl font-bold text-slate-900 sm:text-3xl lg:text-4xl">
                   Prêt à redonner vie à votre intérieur ?
                 </h2>
-                <p className="mx-auto mt-3 max-w-xl text-[15px] text-white/75">
+                <p className="mx-auto mt-3 max-w-xl text-[15px] text-slate-700">
                   Envoyez quelques photos sur WhatsApp, on confirme un devis et
                   un créneau.
                 </p>
@@ -561,7 +561,7 @@ function HeroVisual({ service }: { service: UseCase }) {
 
   return (
     <div className="relative mx-auto w-full max-w-xl lg:ml-auto">
-      <div className="relative overflow-hidden rounded-3xl border border-white/10 bg-gradient-to-br from-ink-800 to-ink-900 p-6 shadow-card">
+      <div className="relative overflow-hidden rounded-3xl border border-slate-200 bg-gradient-to-br from-slate-100 to-slate-50 p-6 shadow-card">
         <div className="relative aspect-[4/3] w-full overflow-hidden rounded-2xl bg-gradient-to-br from-amber-200/20 via-orange-300/15 to-amber-500/10">
           {heroSrc ? (
             <>
@@ -598,15 +598,15 @@ function HeroVisual({ service }: { service: UseCase }) {
             dès {service.pricing.priceFrom} €
           </span>
         </div>
-        <div className="mt-4 flex items-center gap-3 rounded-2xl border border-white/10 bg-white/[0.04] p-3">
-          <div className="grid h-10 w-10 place-items-center rounded-xl bg-amber-500/15 text-amber-300">
+        <div className="mt-4 flex items-center gap-3 rounded-2xl border border-slate-200 bg-slate-100 p-3">
+          <div className="grid h-10 w-10 place-items-center rounded-xl bg-amber-500/15 text-amber-600">
             <ClockIcon size={18} />
           </div>
           <div className="flex-1">
-            <p className="text-sm font-semibold text-white">
+            <p className="text-sm font-semibold text-slate-900">
               {service.pricing.duration}
             </p>
-            <p className="text-xs text-white/60">
+            <p className="text-xs text-slate-500">
               Équipe de 2 · matériel professionnel
             </p>
           </div>

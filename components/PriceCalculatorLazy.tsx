@@ -42,7 +42,7 @@ export default function PriceCalculatorLazy() {
 /** Skeleton minimal et leger reprenant la silhouette du calculateur. */
 function CalculatorSkeleton({ variant }: { variant: "brand" | "amber" }) {
   const accentText =
-    variant === "amber" ? "text-amber-300" : "text-brand-400";
+    variant === "amber" ? "text-amber-600" : "text-brand-600";
   return (
     <section className="relative overflow-hidden py-14 sm:py-24 lg:py-28">
       <div className="container-x">
@@ -52,25 +52,25 @@ function CalculatorSkeleton({ variant }: { variant: "brand" | "amber" }) {
           >
             Calculateur de prix
           </p>
-          <div className="mx-auto mt-3 h-10 w-3/4 animate-pulse rounded-lg bg-white/[0.06] sm:h-12 lg:h-14" />
-          <div className="mx-auto mt-4 h-4 w-2/3 animate-pulse rounded bg-white/[0.04]" />
+          <div className="mx-auto mt-3 h-10 w-3/4 animate-pulse rounded-lg bg-slate-100 sm:h-12 lg:h-14" />
+          <div className="mx-auto mt-4 h-4 w-2/3 animate-pulse rounded bg-slate-100" />
         </div>
-        <div className="mx-auto mt-10 max-w-4xl rounded-3xl border border-white/10 bg-white/[0.03] p-5 sm:p-8">
-          <div className="h-5 w-32 animate-pulse rounded bg-white/[0.06]" />
+        <div className="mx-auto mt-10 max-w-4xl rounded-3xl border border-slate-200 bg-slate-50 p-5 sm:p-8">
+          <div className="h-5 w-32 animate-pulse rounded bg-slate-100" />
           <div className="mt-3 grid grid-cols-2 gap-2 sm:grid-cols-4">
             {[0, 1, 2, 3].map((i) => (
               <div
                 key={i}
-                className="h-20 animate-pulse rounded-2xl bg-white/[0.04]"
+                className="h-20 animate-pulse rounded-2xl bg-slate-100"
               />
             ))}
           </div>
-          <div className="mt-6 h-5 w-40 animate-pulse rounded bg-white/[0.06]" />
+          <div className="mt-6 h-5 w-40 animate-pulse rounded bg-slate-100" />
           <div className="mt-3 grid gap-2 sm:grid-cols-2">
             {[0, 1, 2, 3, 4].map((i) => (
               <div
                 key={i}
-                className="h-16 animate-pulse rounded-2xl bg-white/[0.04]"
+                className="h-16 animate-pulse rounded-2xl bg-slate-100"
               />
             ))}
           </div>

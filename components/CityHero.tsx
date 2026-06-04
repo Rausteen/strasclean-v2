@@ -27,7 +27,7 @@ export default function CityHero({ city }: { city: City }) {
           <nav aria-label="Fil d'ariane" className="mb-5">
             <Link
               href="/"
-              className="inline-flex items-center gap-1.5 text-xs font-medium text-white/65 hover:text-white/80"
+              className="inline-flex items-center gap-1.5 text-xs font-medium text-slate-600 hover:text-slate-700"
             >
               ← StrasClean
             </Link>
@@ -41,14 +41,14 @@ export default function CityHero({ city }: { city: City }) {
             {city.angle}
           </span>
 
-          <h1 className="h-display mt-4 text-balance text-[34px] font-bold leading-[1.05] text-white sm:text-5xl lg:text-6xl">
+          <h1 className="h-display mt-4 text-balance text-[34px] font-bold leading-[1.05] text-slate-900 sm:text-5xl lg:text-6xl">
             Nettoyage voiture à domicile{" "}
             <span className="bg-gradient-to-r from-brand-300 via-brand-400 to-brand-500 bg-clip-text text-transparent">
               {inCity(city)}.
             </span>
           </h1>
 
-          <p className="mx-auto mt-4 max-w-2xl text-balance text-[15px] leading-relaxed text-white/70 sm:mt-5 sm:text-lg">
+          <p className="mx-auto mt-4 max-w-2xl text-balance text-[15px] leading-relaxed text-slate-600 sm:mt-5 sm:text-lg">
             StrasClean se déplace {inCity(city)} pour nettoyer votre véhicule
             en profondeur — intérieur, extérieur, shampouinage et detailing —
             directement chez vous, sur votre lieu de travail ou à l'adresse de
@@ -72,29 +72,29 @@ export default function CityHero({ city }: { city: City }) {
           </div>
 
           {/* Postal codes */}
-          <ul className="mx-auto mt-6 flex flex-wrap items-center justify-center gap-x-4 gap-y-2 text-[13px] text-white/65 sm:mt-7 sm:text-sm">
+          <ul className="mx-auto mt-6 flex flex-wrap items-center justify-center gap-x-4 gap-y-2 text-[13px] text-slate-600 sm:mt-7 sm:text-sm">
             <li className="inline-flex items-center gap-1.5">
-              <MapPinIcon size={14} className="text-brand-400" />
+              <MapPinIcon size={14} className="text-brand-600" />
               {city.name}
             </li>
             {city.postalCodes.map((code) => (
               <li
                 key={code}
-                className="inline-flex items-center rounded-full border border-white/10 bg-white/5 px-2.5 py-1 text-xs text-white/75"
+                className="inline-flex items-center rounded-full border border-slate-200 bg-slate-50 px-2.5 py-1 text-xs text-slate-700"
               >
                 {code}
               </li>
             ))}
             {city.distanceKm > 0 && (
               <li className="inline-flex items-center gap-1.5">
-                <CarIcon size={14} className="text-brand-400" />
+                <CarIcon size={14} className="text-brand-600" />
                 {city.distanceKm} km de Strasbourg centre
               </li>
             )}
           </ul>
 
-          <div className="mx-auto mt-6 inline-flex items-center gap-2 rounded-full border border-brand-500/30 bg-brand-500/10 px-3 py-2 text-[13px] text-brand-200 sm:mt-7 sm:gap-3 sm:px-4 sm:text-sm">
-            <ClockIcon size={14} className="text-brand-300" />
+          <div className="mx-auto mt-6 inline-flex items-center gap-2 rounded-full border border-brand-500/30 bg-brand-500/10 px-3 py-2 text-[13px] text-brand-700 sm:mt-7 sm:gap-3 sm:px-4 sm:text-sm">
+            <ClockIcon size={14} className="text-brand-600" />
             Créneaux disponibles cette semaine {inCity(city)}
           </div>
         </div>
@@ -109,9 +109,9 @@ export default function CityHero({ city }: { city: City }) {
           ].map((it) => (
             <li
               key={it.label}
-              className="flex items-center gap-2 rounded-2xl border border-white/10 bg-white/[0.03] px-3 py-2.5 text-[13px] text-white/85 sm:text-sm"
+              className="flex items-center gap-2 rounded-2xl border border-slate-200 bg-slate-50 px-3 py-2.5 text-[13px] text-slate-800 sm:text-sm"
             >
-              <span className="text-brand-400">{it.icon}</span>
+              <span className="text-brand-600">{it.icon}</span>
               {it.label}
             </li>
           ))}

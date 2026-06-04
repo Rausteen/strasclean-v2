@@ -153,39 +153,39 @@ export default function Testimonials({
     <section id="avis" className="relative py-14 sm:py-24 lg:py-28">
       <div className="container-x">
         <Reveal className="mx-auto max-w-3xl text-center">
-          <p className="text-sm font-semibold uppercase tracking-[0.18em] text-brand-400">
+          <p className="text-sm font-semibold uppercase tracking-[0.18em] text-brand-600">
             Avis clients
           </p>
 
           {hasGoogle && googleRating !== undefined && googleTotalCount !== undefined ? (
             // Bandeau "preuve sociale" en cas d'avis Google connectés
             <div className="mt-4 inline-flex flex-wrap items-center justify-center gap-x-3 gap-y-1 rounded-full border border-brand-500/30 bg-brand-500/[0.08] px-4 py-2">
-              <span className="flex items-center gap-0.5 text-amber-300">
+              <span className="flex items-center gap-0.5 text-amber-600">
                 {Array.from({ length: 5 }).map((_, i) => (
                   <StarIcon key={i} size={18} />
                 ))}
               </span>
-              <span className="text-base font-bold text-white">
+              <span className="text-base font-bold text-slate-900">
                 {googleRating.toFixed(1).replace(".", ",")}/5
               </span>
-              <span className="text-sm text-white/70">
+              <span className="text-sm text-slate-600">
                 · {googleTotalCount} avis Google
               </span>
             </div>
           ) : (
             <div className="mt-4 inline-flex items-center gap-2">
-              <span className="flex items-center gap-0.5 text-amber-300">
+              <span className="flex items-center gap-0.5 text-amber-600">
                 {Array.from({ length: 5 }).map((_, i) => (
                   <StarIcon key={i} size={16} />
                 ))}
               </span>
-              <span className="text-sm text-white/70">
+              <span className="text-sm text-slate-600">
                 Avis vérifiés clients StrasClean
               </span>
             </div>
           )}
 
-          <h2 className="h-display mt-4 text-balance text-3xl font-bold text-white sm:text-4xl lg:text-5xl">
+          <h2 className="h-display mt-4 text-balance text-3xl font-bold text-slate-900 sm:text-4xl lg:text-5xl">
             Ils ont retrouvé une voiture propre.
           </h2>
         </Reveal>
@@ -196,23 +196,23 @@ export default function Testimonials({
               <article className="card card-hover h-full">
                 <div className="flex items-center gap-3">
                   <span
-                    className={`grid h-11 w-11 place-items-center rounded-full bg-gradient-to-br ${r.tone} text-sm font-bold text-white`}
+                    className={`grid h-11 w-11 place-items-center rounded-full bg-gradient-to-br ${r.tone} text-sm font-bold text-slate-900`}
                   >
                     {r.initials}
                   </span>
                   <div className="min-w-0">
-                    <p className="truncate text-sm font-semibold text-white">{r.name}</p>
-                    <p className="truncate text-xs text-white/65">{r.city}</p>
+                    <p className="truncate text-sm font-semibold text-slate-900">{r.name}</p>
+                    <p className="truncate text-xs text-slate-600">{r.city}</p>
                   </div>
-                  <span className="ml-auto flex items-center gap-0.5 text-amber-300">
+                  <span className="ml-auto flex items-center gap-0.5 text-amber-600">
                     {Array.from({ length: Math.round(r.rating ?? 5) }).map((_, j) => (
                       <StarIcon key={j} size={14} />
                     ))}
                   </span>
                 </div>
-                <p className="mt-4 text-sm leading-relaxed text-white/80">“{r.text}”</p>
+                <p className="mt-4 text-sm leading-relaxed text-slate-700">“{r.text}”</p>
                 {r.source === "google" && (
-                  <p className="mt-3 text-[11px] uppercase tracking-wider text-white/40">
+                  <p className="mt-3 text-[11px] uppercase tracking-wider text-slate-400">
                     Avis Google
                   </p>
                 )}
@@ -229,26 +229,26 @@ export default function Testimonials({
                 href={googleProfileUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group flex h-full flex-col items-center justify-center rounded-2xl border border-brand-500/30 bg-gradient-to-br from-brand-500/10 via-ink-800 to-ink-900 p-6 text-center transition hover:-translate-y-1 hover:border-brand-400/60"
+                className="group flex h-full flex-col items-center justify-center rounded-2xl border border-brand-500/30 bg-gradient-to-br from-brand-500/10 via-slate-100 to-slate-50 p-6 text-center transition hover:-translate-y-1 hover:border-brand-400/60"
                 aria-label={`Voir les ${googleTotalCount} avis Google de StrasClean`}
               >
-                <span className="flex items-center gap-0.5 text-amber-300">
+                <span className="flex items-center gap-0.5 text-amber-600">
                   {Array.from({ length: 5 }).map((_, i) => (
                     <StarIcon key={i} size={22} />
                   ))}
                 </span>
-                <p className="h-display mt-3 text-4xl font-extrabold text-white">
+                <p className="h-display mt-3 text-4xl font-extrabold text-slate-900">
                   {(googleRating ?? 5).toFixed(1).replace(".", ",")}
-                  <span className="text-2xl text-white/65">/5</span>
+                  <span className="text-2xl text-slate-600">/5</span>
                 </p>
-                <p className="mt-1 text-sm text-white/70">
+                <p className="mt-1 text-sm text-slate-600">
                   {googleTotalCount} avis Google vérifiés
                 </p>
-                <span className="mt-5 inline-flex items-center gap-1.5 rounded-full border border-white/15 bg-white/5 px-4 py-2 text-sm font-semibold text-white transition group-hover:border-brand-400/40 group-hover:bg-brand-500/10 group-hover:text-brand-200">
+                <span className="mt-5 inline-flex items-center gap-1.5 rounded-full border border-slate-300 bg-slate-50 px-4 py-2 text-sm font-semibold text-slate-900 transition group-hover:border-brand-400/40 group-hover:bg-brand-500/10 group-hover:text-brand-700">
                   Voir tous les avis
                   <span aria-hidden className="transition group-hover:translate-x-0.5">→</span>
                 </span>
-                <p className="mt-3 text-[11px] uppercase tracking-wider text-white/40">
+                <p className="mt-3 text-[11px] uppercase tracking-wider text-slate-400">
                   Lien vers Google Maps
                 </p>
               </a>

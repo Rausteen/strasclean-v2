@@ -17,13 +17,13 @@ export default function ProblemsSolution() {
       <div className="container-x">
         <div className="grid gap-10 lg:grid-cols-12 lg:gap-16">
           <Reveal className="lg:col-span-5">
-            <p className="text-sm font-semibold uppercase tracking-[0.18em] text-brand-400">
+            <p className="text-sm font-semibold uppercase tracking-[0.18em] text-brand-600">
               Le problème
             </p>
-            <h2 className="h-display mt-3 text-balance text-3xl font-bold text-white sm:text-4xl">
+            <h2 className="h-display mt-3 text-balance text-3xl font-bold text-slate-900 sm:text-4xl">
               Une voiture sale, c'est plus qu'un détail.
             </h2>
-            <p className="mt-4 text-white/70">
+            <p className="mt-4 text-slate-600">
               Au quotidien, la saleté s'accumule, les odeurs s'installent et
               l'intérieur perd de sa valeur. Et trouver le temps d'aller en
               centre de lavage est souvent la dernière chose qu'on a envie de
@@ -34,7 +34,7 @@ export default function ProblemsSolution() {
               {problems.map((p) => (
                 <li
                   key={p}
-                  className="flex items-center gap-3 rounded-xl border border-white/10 bg-white/[0.03] px-4 py-3 text-sm text-white/85"
+                  className="flex items-center gap-3 rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-800"
                 >
                   <span className="grid h-7 w-7 place-items-center rounded-lg bg-rose-500/10 text-rose-300">
                     ✕
@@ -46,15 +46,15 @@ export default function ProblemsSolution() {
           </Reveal>
 
           <Reveal className="lg:col-span-7" delay={120}>
-            <div className="relative h-full overflow-hidden rounded-3xl border border-white/10 bg-gradient-to-br from-brand-500/15 via-ink-800 to-ink-900 p-8 sm:p-10">
+            <div className="relative h-full overflow-hidden rounded-3xl border border-slate-200 bg-gradient-to-br from-brand-500/15 via-slate-100 to-slate-50 p-8 sm:p-10">
               <div className="absolute inset-0 -z-10 bg-grid-light bg-[size:36px_36px] opacity-[0.25]" />
-              <p className="text-sm font-semibold uppercase tracking-[0.18em] text-brand-300">
+              <p className="text-sm font-semibold uppercase tracking-[0.18em] text-brand-600">
                 La solution StrasClean
               </p>
-              <h3 className="h-display mt-3 text-balance text-3xl font-bold text-white sm:text-4xl">
+              <h3 className="h-display mt-3 text-balance text-3xl font-bold text-slate-900 sm:text-4xl">
                 On vient directement chez vous.
               </h3>
-              <p className="mt-4 text-white/80">
+              <p className="mt-4 text-slate-700">
                 Avec le matériel et les produits adaptés, on s'occupe de tout&nbsp;:
                 aspiration profonde, shampouinage, désinfection, traitement des
                 surfaces. Vous récupérez une voiture propre, saine et agréable
@@ -70,9 +70,9 @@ export default function ProblemsSolution() {
                 ].map((b) => (
                   <li
                     key={b}
-                    className="flex items-start gap-3 rounded-xl bg-white/[0.04] px-4 py-3 text-sm text-white/90"
+                    className="flex items-start gap-3 rounded-xl bg-slate-100 px-4 py-3 text-sm text-slate-800"
                   >
-                    <span className="mt-0.5 grid h-5 w-5 place-items-center rounded-full bg-brand-500 text-ink-950">
+                    <span className="mt-0.5 grid h-5 w-5 place-items-center rounded-full bg-brand-500 text-slate-900">
                       ✓
                     </span>
                     {b}

@@ -115,26 +115,26 @@ export default async function QuiSommesNousPage() {
           <div className="container-x pt-8 pb-12 sm:pt-16 sm:pb-20 lg:pt-20 lg:pb-24">
             <div className="mx-auto max-w-3xl text-center">
               <nav aria-label="Fil d'ariane" className="mb-4 text-xs">
-                <Link href="/" className="font-medium text-white/65 hover:text-white/80">
+                <Link href="/" className="font-medium text-slate-600 hover:text-slate-700">
                   Accueil
                 </Link>
-                <span className="mx-1.5 text-white/30">/</span>
-                <span className="text-white/75">Qui sommes-nous</span>
+                <span className="mx-1.5 text-slate-300">/</span>
+                <span className="text-slate-700">Qui sommes-nous</span>
               </nav>
 
-              <span className="inline-flex items-center gap-1.5 rounded-full border border-brand-500/30 bg-brand-500/10 px-3 py-1 text-sm font-medium text-brand-200">
+              <span className="inline-flex items-center gap-1.5 rounded-full border border-brand-500/30 bg-brand-500/10 px-3 py-1 text-sm font-medium text-brand-700">
                 <SparklesIcon size={14} />
                 StrasClean
               </span>
 
-              <h1 className="h-display mt-4 text-balance text-[32px] font-bold leading-[1.05] text-white sm:text-5xl lg:text-6xl">
+              <h1 className="h-display mt-4 text-balance text-[32px] font-bold leading-[1.05] text-slate-900 sm:text-5xl lg:text-6xl">
                 Une équipe locale qui prend soin de votre voiture{" "}
                 <span className="bg-gradient-to-r from-brand-300 via-brand-400 to-brand-500 bg-clip-text text-transparent">
                   et de votre intérieur.
                 </span>
               </h1>
 
-              <p className="mx-auto mt-4 max-w-2xl text-balance text-[15px] leading-relaxed text-white/70 sm:mt-5 sm:text-lg">
+              <p className="mx-auto mt-4 max-w-2xl text-balance text-[15px] leading-relaxed text-slate-600 sm:mt-5 sm:text-lg">
                 StrasClean est une équipe strasbourgeoise spécialisée dans le
                 nettoyage professionnel à domicile. Deux activités, une même
                 équipe, un même matériel pro, une même exigence — pour votre
@@ -151,13 +151,13 @@ export default async function QuiSommesNousPage() {
           <div className="container-x">
             <div className="mx-auto max-w-3xl">
               <Reveal>
-                <p className="text-sm font-semibold uppercase tracking-[0.18em] text-brand-400">
+                <p className="text-sm font-semibold uppercase tracking-[0.18em] text-brand-600">
                   Notre histoire
                 </p>
-                <h2 className="h-display mt-3 text-balance text-3xl font-bold text-white sm:text-4xl">
+                <h2 className="h-display mt-3 text-balance text-3xl font-bold text-slate-900 sm:text-4xl">
                   De l'auto au textile d'intérieur — une expertise transposée.
                 </h2>
-                <div className="mt-6 space-y-4 text-[15px] leading-relaxed text-white/75">
+                <div className="mt-6 space-y-4 text-[15px] leading-relaxed text-slate-700">
                   <p>
                     StrasClean est née d'une idée simple : démocratiser le
                     nettoyage automobile à domicile à Strasbourg. Plus de
@@ -167,7 +167,7 @@ export default async function QuiSommesNousPage() {
                   </p>
                   <p>
                     Très vite, nos clients nous ont demandé{" "}
-                    <strong className="text-white">
+                    <strong className="text-slate-900">
                       « Vous pourriez aussi nettoyer mon canapé ? »
                     </strong>{" "}
                     La réponse était évidente : notre matériel
@@ -178,9 +178,9 @@ export default async function QuiSommesNousPage() {
                   </p>
                   <p>
                     Aujourd'hui, StrasClean a deux verticales complémentaires :
-                    <strong className="text-white"> StrasClean Auto</strong> (notre
+                    <strong className="text-slate-900"> StrasClean Auto</strong> (notre
                     activité historique, plus de 100 véhicules nettoyés) et
-                    <strong className="text-white"> StrasClean Maison</strong> (canapés,
+                    <strong className="text-slate-900"> StrasClean Maison</strong> (canapés,
                     tapis, matelas, fauteuils). C'est la même équipe, le même
                     matériel, et la même qualité partout.
                   </p>
@@ -191,17 +191,17 @@ export default async function QuiSommesNousPage() {
         </section>
 
         {/* DEUX VERTICALES */}
-        <section className="relative bg-white/[0.02] py-12 sm:py-20">
+        <section className="relative bg-slate-50 py-12 sm:py-20">
           <div className="container-x">
             <div className="mx-auto max-w-5xl">
               <Reveal className="text-center">
-                <p className="text-sm font-semibold uppercase tracking-[0.18em] text-brand-400">
+                <p className="text-sm font-semibold uppercase tracking-[0.18em] text-brand-600">
                   Deux activités
                 </p>
-                <h2 className="h-display mt-3 text-balance text-3xl font-bold text-white sm:text-4xl">
+                <h2 className="h-display mt-3 text-balance text-3xl font-bold text-slate-900 sm:text-4xl">
                   Auto et Maison — sous une même marque.
                 </h2>
-                <p className="mx-auto mt-3 max-w-2xl text-[15px] leading-relaxed text-white/70">
+                <p className="mx-auto mt-3 max-w-2xl text-[15px] leading-relaxed text-slate-600">
                   Choisissez la section qui correspond à votre besoin. Vous
                   pouvez aussi nous demander les deux dans la même intervention.
                 </p>
@@ -210,36 +210,36 @@ export default async function QuiSommesNousPage() {
               <div className="mt-10 grid gap-5 sm:grid-cols-2">
                 <Link
                   href="/"
-                  className="group rounded-3xl border border-white/10 bg-white/[0.03] p-6 transition hover:-translate-y-1 hover:border-brand-400/40 hover:bg-brand-500/[0.06]"
+                  className="group rounded-3xl border border-slate-200 bg-slate-50 p-6 transition hover:-translate-y-1 hover:border-brand-400/40 hover:bg-brand-500/[0.06]"
                 >
                   <div className="flex items-center gap-3">
                     <span
                       aria-hidden="true"
-                      className="grid h-12 w-12 place-items-center rounded-2xl bg-brand-500/15 text-brand-300"
+                      className="grid h-12 w-12 place-items-center rounded-2xl bg-brand-500/15 text-brand-600"
                     >
                       <CarIcon size={22} />
                     </span>
                     <div>
-                      <p className="text-xs font-semibold uppercase tracking-[0.18em] text-brand-300">
+                      <p className="text-xs font-semibold uppercase tracking-[0.18em] text-brand-600">
                         StrasClean Auto
                       </p>
-                      <h3 className="h-display text-lg font-semibold text-white">
+                      <h3 className="h-display text-lg font-semibold text-slate-900">
                         Nettoyage voiture à domicile
                       </h3>
                     </div>
                   </div>
-                  <p className="mt-4 text-sm leading-relaxed text-white/65">
+                  <p className="mt-4 text-sm leading-relaxed text-slate-600">
                     Intérieur, shampouinage, désinfection, lavage extérieur,
                     detailing complet. 3 formules (Confort, Premium, Luxury)
                     de 39 à 119 €. À Strasbourg + 12 communes.
                   </p>
-                  <ul className="mt-4 space-y-1.5 text-xs text-white/65">
+                  <ul className="mt-4 space-y-1.5 text-xs text-slate-600">
                     <li className="inline-flex items-center gap-1.5">
-                      <CheckIcon size={12} className="text-brand-400" />
+                      <CheckIcon size={12} className="text-brand-600" />
                       100+ véhicules nettoyés
                     </li>
                   </ul>
-                  <span className="mt-5 inline-flex items-center gap-1 text-sm font-semibold text-brand-300">
+                  <span className="mt-5 inline-flex items-center gap-1 text-sm font-semibold text-brand-600">
                     Découvrir l'offre Auto
                     <ArrowRightIcon size={14} />
                   </span>
@@ -247,36 +247,36 @@ export default async function QuiSommesNousPage() {
 
                 <Link
                   href="/strasclean-maison"
-                  className="group rounded-3xl border border-white/10 bg-white/[0.03] p-6 transition hover:-translate-y-1 hover:border-amber-400/40 hover:bg-amber-500/[0.06]"
+                  className="group rounded-3xl border border-slate-200 bg-slate-50 p-6 transition hover:-translate-y-1 hover:border-amber-400/40 hover:bg-amber-500/[0.06]"
                 >
                   <div className="flex items-center gap-3">
                     <span
                       aria-hidden="true"
-                      className="grid h-12 w-12 place-items-center rounded-2xl bg-amber-500/15 text-amber-300"
+                      className="grid h-12 w-12 place-items-center rounded-2xl bg-amber-500/15 text-amber-600"
                     >
                       <HomeIcon size={22} />
                     </span>
                     <div>
-                      <p className="text-xs font-semibold uppercase tracking-[0.18em] text-amber-300">
+                      <p className="text-xs font-semibold uppercase tracking-[0.18em] text-amber-600">
                         StrasClean Maison
                       </p>
-                      <h3 className="h-display text-lg font-semibold text-white">
+                      <h3 className="h-display text-lg font-semibold text-slate-900">
                         Nettoyage canapé, tapis, matelas
                       </h3>
                     </div>
                   </div>
-                  <p className="mt-4 text-sm leading-relaxed text-white/65">
+                  <p className="mt-4 text-sm leading-relaxed text-slate-600">
                     Tissu, cuir, alcantara — injection-extraction
                     professionnelle à votre domicile. Canapés (dès 79 €),
                     tapis, matelas, fauteuils & chaises.
                   </p>
-                  <ul className="mt-4 space-y-1.5 text-xs text-white/65">
+                  <ul className="mt-4 space-y-1.5 text-xs text-slate-600">
                     <li className="inline-flex items-center gap-1.5">
-                      <CheckIcon size={12} className="text-amber-400" />
+                      <CheckIcon size={12} className="text-amber-600" />
                       Particuliers + B2B (Airbnb, hôtels, restaurants)
                     </li>
                   </ul>
-                  <span className="mt-5 inline-flex items-center gap-1 text-sm font-semibold text-amber-300">
+                  <span className="mt-5 inline-flex items-center gap-1 text-sm font-semibold text-amber-600">
                     Découvrir l'offre Maison
                     <ArrowRightIcon size={14} />
                   </span>
@@ -291,25 +291,25 @@ export default async function QuiSommesNousPage() {
           <div className="container-x">
             <div className="mx-auto max-w-3xl">
               <Reveal>
-                <p className="text-sm font-semibold uppercase tracking-[0.18em] text-brand-400">
+                <p className="text-sm font-semibold uppercase tracking-[0.18em] text-brand-600">
                   Notre équipe
                 </p>
-                <h2 className="h-display mt-3 text-balance text-3xl font-bold text-white sm:text-4xl">
+                <h2 className="h-display mt-3 text-balance text-3xl font-bold text-slate-900 sm:text-4xl">
                   Une équipe de 2, formée sur tous les textiles.
                 </h2>
-                <div className="mt-6 space-y-4 text-[15px] leading-relaxed text-white/75">
+                <div className="mt-6 space-y-4 text-[15px] leading-relaxed text-slate-700">
                   <p>
                     Sur chaque intervention, on est{" "}
-                    <strong className="text-white">2 sur place</strong>. Cette
+                    <strong className="text-slate-900">2 sur place</strong>. Cette
                     organisation a deux conséquences directes :
                   </p>
                   <ul className="space-y-2 pl-5">
                     <li className="list-disc">
-                      <strong className="text-white">2× plus rapide</strong> :
+                      <strong className="text-slate-900">2× plus rapide</strong> :
                       ce qu'un detailer solo fait en 3 h, on le fait en 1h30.
                     </li>
                     <li className="list-disc">
-                      <strong className="text-white">2 paires d'yeux</strong> :
+                      <strong className="text-slate-900">2 paires d'yeux</strong> :
                       on repère les taches que l'autre n'aurait pas vues,
                       double contrôle qualité à la fin.
                     </li>
@@ -330,19 +330,19 @@ export default async function QuiSommesNousPage() {
         </section>
 
         {/* MATÉRIEL */}
-        <section className="relative bg-white/[0.02] py-12 sm:py-20">
+        <section className="relative bg-slate-50 py-12 sm:py-20">
           <div className="container-x">
             <div className="mx-auto max-w-3xl">
               <Reveal>
-                <p className="text-sm font-semibold uppercase tracking-[0.18em] text-brand-400">
+                <p className="text-sm font-semibold uppercase tracking-[0.18em] text-brand-600">
                   Notre matériel
                 </p>
-                <h2 className="h-display mt-3 text-balance text-3xl font-bold text-white sm:text-4xl">
+                <h2 className="h-display mt-3 text-balance text-3xl font-bold text-slate-900 sm:text-4xl">
                   Le même équipement pro, en auto comme en maison.
                 </h2>
-                <div className="mt-6 space-y-4 text-[15px] leading-relaxed text-white/75">
+                <div className="mt-6 space-y-4 text-[15px] leading-relaxed text-slate-700">
                   <p>
-                    L'<strong className="text-white">injecteur-extracteur</strong>{" "}
+                    L'<strong className="text-slate-900">injecteur-extracteur</strong>{" "}
                     est notre outil principal. Il envoie de l'eau chaude
                     additionnée d'un produit doux dans la fibre textile, puis
                     aspire immédiatement la solution sale. Résultat : la
@@ -360,7 +360,7 @@ export default async function QuiSommesNousPage() {
                   <p>
                     Tous nos produits viennent de marques pro reconnues du
                     detailing :{" "}
-                    <strong className="text-white">
+                    <strong className="text-slate-900">
                       Koch Chemie, Sonax, Colourlock, Gyeon
                     </strong>
                     . On n'utilise jamais de mousse en bombe ou de produits
@@ -378,29 +378,29 @@ export default async function QuiSommesNousPage() {
           <div className="container-x">
             <div className="mx-auto max-w-3xl">
               <Reveal>
-                <p className="text-sm font-semibold uppercase tracking-[0.18em] text-brand-400">
+                <p className="text-sm font-semibold uppercase tracking-[0.18em] text-brand-600">
                   Nos engagements
                 </p>
-                <h2 className="h-display mt-3 text-balance text-3xl font-bold text-white sm:text-4xl">
+                <h2 className="h-display mt-3 text-balance text-3xl font-bold text-slate-900 sm:text-4xl">
                   6 principes que vous trouverez sur chaque intervention.
                 </h2>
                 <ul className="mt-8 grid gap-3 sm:grid-cols-2">
                   {VALUES.map((v) => (
                     <li
                       key={v.title}
-                      className="flex items-start gap-3 rounded-2xl border border-white/10 bg-white/[0.03] px-4 py-4"
+                      className="flex items-start gap-3 rounded-2xl border border-slate-200 bg-slate-50 px-4 py-4"
                     >
                       <span
                         aria-hidden="true"
-                        className="mt-0.5 grid h-9 w-9 shrink-0 place-items-center rounded-xl bg-brand-500/15 text-brand-300"
+                        className="mt-0.5 grid h-9 w-9 shrink-0 place-items-center rounded-xl bg-brand-500/15 text-brand-600"
                       >
                         {v.icon}
                       </span>
                       <div>
-                        <p className="text-sm font-semibold text-white">
+                        <p className="text-sm font-semibold text-slate-900">
                           {v.title}
                         </p>
-                        <p className="mt-1 text-xs text-white/65">
+                        <p className="mt-1 text-xs text-slate-600">
                           {v.desc}
                         </p>
                       </div>
@@ -413,37 +413,37 @@ export default async function QuiSommesNousPage() {
         </section>
 
         {/* HORAIRES + ZONES */}
-        <section className="relative bg-white/[0.02] py-12 sm:py-20">
+        <section className="relative bg-slate-50 py-12 sm:py-20">
           <div className="container-x">
             <div className="mx-auto max-w-3xl">
               <Reveal>
                 <div className="grid gap-6 sm:grid-cols-2">
-                  <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-5">
-                    <div className="flex items-center gap-2 text-brand-300">
+                  <div className="rounded-2xl border border-slate-200 bg-slate-50 p-5">
+                    <div className="flex items-center gap-2 text-brand-600">
                       <ClockIcon size={16} />
                       <p className="text-xs font-semibold uppercase tracking-[0.18em]">
                         Horaires
                       </p>
                     </div>
-                    <p className="mt-3 text-lg font-semibold text-white">
+                    <p className="mt-3 text-lg font-semibold text-slate-900">
                       7j/7 — 8h à 22h
                     </p>
-                    <p className="mt-1 text-sm text-white/65">
+                    <p className="mt-1 text-sm text-slate-600">
                       Y compris les week-ends. Réservation par WhatsApp ou
                       téléphone, on revient vers vous rapidement.
                     </p>
                   </div>
-                  <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-5">
-                    <div className="flex items-center gap-2 text-brand-300">
+                  <div className="rounded-2xl border border-slate-200 bg-slate-50 p-5">
+                    <div className="flex items-center gap-2 text-brand-600">
                       <MapPinIcon size={16} />
                       <p className="text-xs font-semibold uppercase tracking-[0.18em]">
                         Zones desservies
                       </p>
                     </div>
-                    <p className="mt-3 text-lg font-semibold text-white">
+                    <p className="mt-3 text-lg font-semibold text-slate-900">
                       Strasbourg + 12 communes
                     </p>
-                    <p className="mt-1 text-sm text-white/65">
+                    <p className="mt-1 text-sm text-slate-600">
                       Schiltigheim, Illkirch, Ostwald, Lingolsheim,
                       Bischheim, Hœnheim, Eckbolsheim, Oberhausbergen,
                       Mundolsheim, Vendenheim, La Wantzenau. Déplacement
@@ -460,12 +460,12 @@ export default async function QuiSommesNousPage() {
         <section className="relative overflow-hidden py-12 sm:py-20">
           <div className="container-x">
             <Reveal>
-              <div className="relative overflow-hidden rounded-3xl border border-brand-400/30 bg-gradient-to-br from-brand-500/15 via-ink-800 to-ink-900 p-6 text-center sm:p-12">
+              <div className="relative overflow-hidden rounded-3xl border border-brand-400/30 bg-gradient-to-br from-brand-500/15 via-slate-100 to-slate-50 p-6 text-center sm:p-12">
                 <div className="pointer-events-none absolute -right-20 -top-24 h-64 w-64 rounded-full bg-brand-500/25 blur-2xl sm:blur-3xl" />
-                <h2 className="h-display mx-auto max-w-2xl text-balance text-2xl font-bold text-white sm:text-3xl lg:text-4xl">
+                <h2 className="h-display mx-auto max-w-2xl text-balance text-2xl font-bold text-slate-900 sm:text-3xl lg:text-4xl">
                   Une question sur notre équipe ou nos méthodes ?
                 </h2>
-                <p className="mx-auto mt-3 max-w-xl text-[15px] text-white/75">
+                <p className="mx-auto mt-3 max-w-xl text-[15px] text-slate-700">
                   Posez-la directement par WhatsApp ou téléphone. On répond
                   rapidement, 7 jours sur 7.
                 </p>

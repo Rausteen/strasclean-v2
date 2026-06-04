@@ -41,10 +41,10 @@ export default function MaisonTrustSection({
 
       <div className="container-x">
         <Reveal className="mx-auto max-w-3xl text-center">
-          <p className="text-sm font-semibold uppercase tracking-[0.18em] text-amber-300">
+          <p className="text-sm font-semibold uppercase tracking-[0.18em] text-amber-600">
             Pourquoi nous faire confiance
           </p>
-          <h2 className="h-display mt-3 text-balance text-2xl font-bold text-white sm:text-3xl lg:text-4xl">
+          <h2 className="h-display mt-3 text-balance text-2xl font-bold text-slate-900 sm:text-3xl lg:text-4xl">
             Une équipe locale qui a fait ses preuves sur l'auto — même exigence
             sur votre canapé.
           </h2>
@@ -53,31 +53,31 @@ export default function MaisonTrustSection({
         {/* Chiffres clés */}
         <div className="mx-auto mt-10 grid max-w-4xl gap-4 sm:grid-cols-3">
           <Reveal>
-            <article className="rounded-3xl border border-amber-400/30 bg-gradient-to-br from-amber-500/10 via-ink-800 to-ink-900 p-6 text-center">
-              <p className="text-xs font-semibold uppercase tracking-[0.18em] text-amber-300">
+            <article className="rounded-3xl border border-amber-400/30 bg-gradient-to-br from-amber-500/10 via-slate-100 to-slate-50 p-6 text-center">
+              <p className="text-xs font-semibold uppercase tracking-[0.18em] text-amber-600">
                 Interventions
               </p>
-              <p className="h-display mt-3 text-4xl font-extrabold text-white">
+              <p className="h-display mt-3 text-4xl font-extrabold text-slate-900">
                 100+
               </p>
-              <p className="mt-1 text-xs text-white/65">
+              <p className="mt-1 text-xs text-slate-600">
                 véhicules nettoyés en équipe
               </p>
             </article>
           </Reveal>
 
           <Reveal delay={80}>
-            <article className="rounded-3xl border border-white/10 bg-white/[0.03] p-6 text-center">
-              <p className="text-xs font-semibold uppercase tracking-[0.18em] text-amber-300">
+            <article className="rounded-3xl border border-slate-200 bg-slate-50 p-6 text-center">
+              <p className="text-xs font-semibold uppercase tracking-[0.18em] text-amber-600">
                 Note Google
               </p>
-              <p className="h-display mt-3 flex items-center justify-center gap-1.5 text-4xl font-extrabold text-white">
+              <p className="h-display mt-3 flex items-center justify-center gap-1.5 text-4xl font-extrabold text-slate-900">
                 {hasGoogle ? googleRating!.toFixed(1) : "5.0"}
-                <span className="inline-flex text-amber-300">
+                <span className="inline-flex text-amber-600">
                   <StarIcon size={22} />
                 </span>
               </p>
-              <p className="mt-1 text-xs text-white/65">
+              <p className="mt-1 text-xs text-slate-600">
                 {hasGoogle
                   ? `${googleTotalCount} avis vérifiés`
                   : "avis vérifiés"}
@@ -86,42 +86,42 @@ export default function MaisonTrustSection({
           </Reveal>
 
           <Reveal delay={160}>
-            <article className="rounded-3xl border border-white/10 bg-white/[0.03] p-6 text-center">
-              <p className="text-xs font-semibold uppercase tracking-[0.18em] text-amber-300">
+            <article className="rounded-3xl border border-slate-200 bg-slate-50 p-6 text-center">
+              <p className="text-xs font-semibold uppercase tracking-[0.18em] text-amber-600">
                 Communes
               </p>
-              <p className="h-display mt-3 text-4xl font-extrabold text-white">
+              <p className="h-display mt-3 text-4xl font-extrabold text-slate-900">
                 12
               </p>
-              <p className="mt-1 text-xs text-white/65">desservies à domicile</p>
+              <p className="mt-1 text-xs text-slate-600">desservies à domicile</p>
             </article>
           </Reveal>
         </div>
 
         {/* Piliers de confiance */}
         <Reveal>
-          <div className="mx-auto mt-10 max-w-4xl rounded-3xl border border-white/10 bg-white/[0.03] p-6 sm:p-8">
-            <p className="text-center text-sm font-semibold uppercase tracking-[0.18em] text-amber-300">
+          <div className="mx-auto mt-10 max-w-4xl rounded-3xl border border-slate-200 bg-slate-50 p-6 sm:p-8">
+            <p className="text-center text-sm font-semibold uppercase tracking-[0.18em] text-amber-600">
               Même équipe, même matériel, même exigence
             </p>
-            <p className="mx-auto mt-3 max-w-2xl text-center text-[15px] leading-relaxed text-white/75">
-              StrasClean Maison utilise <strong className="text-white">le même injecteur-extracteur professionnel</strong> que pour les sièges auto. Les produits adaptés (tissu, cuir, alcantara) viennent des mêmes marques pro (Sonax, Koch Chemie). La même équipe de 2 intervient — avec la même rigueur sur chaque détail.
+            <p className="mx-auto mt-3 max-w-2xl text-center text-[15px] leading-relaxed text-slate-700">
+              StrasClean Maison utilise <strong className="text-slate-900">le même injecteur-extracteur professionnel</strong> que pour les sièges auto. Les produits adaptés (tissu, cuir, alcantara) viennent des mêmes marques pro (Sonax, Koch Chemie). La même équipe de 2 intervient — avec la même rigueur sur chaque détail.
             </p>
 
             <ul className="mt-6 grid gap-3 sm:grid-cols-2">
               {PILLARS.map((p) => (
                 <li
                   key={p.title}
-                  className="flex items-start gap-3 rounded-xl border border-white/10 bg-white/[0.02] px-4 py-3"
+                  className="flex items-start gap-3 rounded-xl border border-slate-200 bg-slate-50 px-4 py-3"
                 >
-                  <span className="mt-0.5 grid h-8 w-8 shrink-0 place-items-center rounded-lg bg-amber-500/15 text-amber-300">
+                  <span className="mt-0.5 grid h-8 w-8 shrink-0 place-items-center rounded-lg bg-amber-500/15 text-amber-600">
                     {p.icon}
                   </span>
                   <div>
-                    <p className="text-sm font-semibold text-white">
+                    <p className="text-sm font-semibold text-slate-900">
                       {p.title}
                     </p>
-                    <p className="mt-0.5 text-xs text-white/60">{p.desc}</p>
+                    <p className="mt-0.5 text-xs text-slate-500">{p.desc}</p>
                   </div>
                 </li>
               ))}

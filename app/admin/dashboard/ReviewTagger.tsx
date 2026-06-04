@@ -51,21 +51,21 @@ function ReviewRow({
   }
 
   return (
-    <li className="flex flex-col gap-3 rounded-2xl border border-white/10 bg-white/[0.03] p-4">
+    <li className="flex flex-col gap-3 rounded-2xl border border-slate-200 bg-slate-50 p-4">
       <div className="flex items-start justify-between gap-3">
         <div className="min-w-0 flex-1">
-          <p className="flex items-center gap-2 text-sm font-semibold text-white">
+          <p className="flex items-center gap-2 text-sm font-semibold text-slate-900">
             <span>{review.author}</span>
-            <span className="inline-flex text-amber-300 text-xs">
+            <span className="inline-flex text-amber-600 text-xs">
               {"★".repeat(review.rating)}
             </span>
             {review.relative && (
-              <span className="text-[11px] font-normal text-white/45">
+              <span className="text-[11px] font-normal text-slate-400">
                 · {review.relative}
               </span>
             )}
           </p>
-          <p className="mt-1 text-xs leading-relaxed text-white/65">
+          <p className="mt-1 text-xs leading-relaxed text-slate-600">
             {review.text.length > 220
               ? review.text.slice(0, 217) + "…"
               : review.text}
@@ -99,13 +99,13 @@ function ReviewRow({
           <button
             onClick={() => setTag("clear")}
             disabled={loading}
-            className="ml-1 rounded-full border border-white/10 px-2.5 py-1 text-[10px] font-medium text-white/65 hover:border-white/25 hover:text-white/85 disabled:opacity-50"
+            className="ml-1 rounded-full border border-slate-200 px-2.5 py-1 text-[10px] font-medium text-slate-600 hover:border-white/25 hover:text-slate-800 disabled:opacity-50"
           >
             Retirer
           </button>
         )}
         {current === undefined && (
-          <span className="ml-1 text-[10px] italic text-white/40">
+          <span className="ml-1 text-[10px] italic text-slate-400">
             Non tagué — par défaut affiché côté Auto
           </span>
         )}
@@ -129,16 +129,16 @@ function TagButton({
 }) {
   const activeCls =
     tone === "brand"
-      ? "bg-brand-500 text-ink-950 border-brand-500"
+      ? "bg-brand-500 text-slate-900 border-brand-500"
       : tone === "amber"
-        ? "bg-amber-400 text-ink-950 border-amber-400"
-        : "bg-sky-400 text-ink-950 border-sky-400";
+        ? "bg-amber-400 text-slate-900 border-amber-400"
+        : "bg-sky-400 text-slate-900 border-sky-400";
   const idleCls =
     tone === "brand"
-      ? "border-white/10 text-white/70 hover:border-brand-400/50 hover:text-brand-300"
+      ? "border-slate-200 text-slate-600 hover:border-brand-400/50 hover:text-brand-600"
       : tone === "amber"
-        ? "border-white/10 text-white/70 hover:border-amber-400/50 hover:text-amber-300"
-        : "border-white/10 text-white/70 hover:border-sky-400/50 hover:text-sky-300";
+        ? "border-slate-200 text-slate-600 hover:border-amber-400/50 hover:text-amber-600"
+        : "border-slate-200 text-slate-600 hover:border-sky-400/50 hover:text-sky-300";
 
   return (
     <button

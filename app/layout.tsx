@@ -156,7 +156,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
         <link rel="dns-prefetch" href="https://wa.me" />
       </head>
-      <body className="bg-ink-950 text-white antialiased">
+      <body className="bg-white text-slate-900 antialiased">
         {children}
         <script
           type="application/ld+json"

@@ -67,13 +67,13 @@ export default function Benefits() {
       </div>
       <div className="container-x">
         <Reveal className="mx-auto max-w-3xl text-center">
-          <p className="text-sm font-semibold uppercase tracking-[0.18em] text-brand-400">
+          <p className="text-sm font-semibold uppercase tracking-[0.18em] text-brand-600">
             Pourquoi nous choisir
           </p>
-          <h2 className="h-display mt-3 text-balance text-3xl font-bold text-white sm:text-4xl lg:text-5xl">
+          <h2 className="h-display mt-3 text-balance text-3xl font-bold text-slate-900 sm:text-4xl lg:text-5xl">
             Un nettoyage auto pensé pour vous, pas pour la station.
           </h2>
-          <p className="mt-4 text-white/70">
+          <p className="mt-4 text-slate-600">
             Un service local, sérieux et résolument premium. Voilà ce que vous
             obtenez quand vous réservez chez StrasClean.
           </p>
@@ -83,13 +83,13 @@ export default function Benefits() {
           {BENEFITS.map((b, i) => (
             <Reveal key={b.title} delay={i * 50}>
               <div className="card card-hover h-full">
-                <span className="grid h-11 w-11 place-items-center rounded-xl bg-brand-500/10 text-brand-300">
+                <span className="grid h-11 w-11 place-items-center rounded-xl bg-brand-500/10 text-brand-600">
                   {b.icon}
                 </span>
-                <h3 className="h-display mt-4 text-base font-semibold text-white">
+                <h3 className="h-display mt-4 text-base font-semibold text-slate-900">
                   {b.title}
                 </h3>
-                <p className="mt-2 text-sm text-white/65">{b.desc}</p>
+                <p className="mt-2 text-sm text-slate-600">{b.desc}</p>
               </div>
             </Reveal>
           ))}

@@ -8,12 +8,15 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
+        // Migration light : les anciens tokens "ink" pointent maintenant
+        // vers la nouvelle échelle slate. Tout `bg-ink-XXX` ou `text-ink-XXX`
+        // restant dans le code rendra une couleur claire cohérente.
         ink: {
-          950: "#05070A",
-          900: "#0A0D12",
-          800: "#11151C",
-          700: "#1A2029",
-          600: "#262E3B",
+          950: "#FFFFFF",
+          900: "#F8FAFC",
+          800: "#F1F5F9",
+          700: "#E2E8F0",
+          600: "#CBD5E1",
         },
         brand: {
           50: "#ECFDF5",
@@ -37,17 +40,17 @@ const config: Config = {
         display: ["var(--font-display)", "ui-sans-serif", "system-ui", "sans-serif"],
       },
       boxShadow: {
-        soft: "0 8px 30px rgba(0,0,0,0.06)",
-        card: "0 10px 40px -10px rgba(0,0,0,0.35)",
-        glow: "0 0 0 1px rgba(16,185,129,.25), 0 20px 60px -20px rgba(16,185,129,.45)",
+        soft: "0 8px 30px rgba(15,23,42,0.06)",
+        card: "0 10px 40px -10px rgba(15,23,42,0.12)",
+        glow: "0 0 0 1px rgba(16,185,129,.18), 0 18px 40px -16px rgba(16,185,129,.35)",
         "glow-amber":
-          "0 0 0 1px rgba(245,158,11,.30), 0 20px 60px -20px rgba(245,158,11,.50)",
+          "0 0 0 1px rgba(245,158,11,.22), 0 18px 40px -16px rgba(245,158,11,.40)",
       },
       backgroundImage: {
         "grid-light":
-          "linear-gradient(rgba(255,255,255,.04) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.04) 1px, transparent 1px)",
+          "linear-gradient(rgba(15,23,42,.06) 1px, transparent 1px), linear-gradient(90deg, rgba(15,23,42,.06) 1px, transparent 1px)",
         "radial-fade":
-          "radial-gradient(ellipse at top, rgba(16,185,129,.18), transparent 60%)",
+          "radial-gradient(ellipse at top, rgba(16,185,129,.10), transparent 60%)",
       },
       animation: {
         "fade-in": "fadeIn .8s ease-out both",

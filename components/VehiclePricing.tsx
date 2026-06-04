@@ -7,12 +7,12 @@ import { VEHICLE_TYPES } from "@/lib/plans";
  */
 export default function VehiclePricing() {
   return (
-    <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-5 sm:p-7">
+    <div className="rounded-2xl border border-slate-200 bg-slate-50 p-5 sm:p-7">
       <div className="text-center">
-        <p className="text-xs font-semibold uppercase tracking-[0.18em] text-brand-400">
+        <p className="text-xs font-semibold uppercase tracking-[0.18em] text-brand-600">
           Tarif selon votre véhicule
         </p>
-        <p className="mx-auto mt-2 max-w-2xl text-sm text-white/65">
+        <p className="mx-auto mt-2 max-w-2xl text-sm text-slate-600">
           Le prix de chaque formule s'applique à une citadine. Pour les
           véhicules plus volumineux, un léger supplément s'ajoute.
         </p>
@@ -22,13 +22,13 @@ export default function VehiclePricing() {
         {VEHICLE_TYPES.map((v) => (
           <li
             key={v.id}
-            className="flex flex-col items-center rounded-xl border border-white/10 bg-white/[0.04] px-3 py-3 text-center"
+            className="flex flex-col items-center rounded-xl border border-slate-200 bg-slate-100 px-3 py-3 text-center"
           >
             <span className="text-2xl leading-none" aria-hidden>{v.emoji}</span>
-            <p className="mt-1.5 text-sm font-semibold text-white">{v.label}</p>
+            <p className="mt-1.5 text-sm font-semibold text-slate-900">{v.label}</p>
             <p
               className={`mt-0.5 text-xs font-medium ${
-                v.surcharge === 0 ? "text-brand-300" : "text-white/65"
+                v.surcharge === 0 ? "text-brand-600" : "text-slate-600"
               }`}
             >
               {v.surcharge === 0 ? "Tarif de base" : `+ ${v.surcharge} €`}

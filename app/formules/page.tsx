@@ -87,11 +87,11 @@ export default function FormulesPage() {
           <div className="container-x pt-8 pb-14 sm:pt-16 sm:pb-24 lg:pt-20 lg:pb-28">
             <div className="mx-auto max-w-3xl text-center">
               <nav aria-label="Fil d'ariane" className="mb-5 text-xs">
-                <Link href="/" className="font-medium text-white/65 hover:text-white/80">
+                <Link href="/" className="font-medium text-slate-600 hover:text-slate-700">
                   StrasClean
                 </Link>
-                <span className="mx-1.5 text-white/30">/</span>
-                <span className="text-white/75">Formules</span>
+                <span className="mx-1.5 text-slate-300">/</span>
+                <span className="text-slate-700">Formules</span>
               </nav>
 
               <span className="chip mx-auto">
@@ -99,14 +99,14 @@ export default function FormulesPage() {
                 3 formules · 12 villes desservies
               </span>
 
-              <h1 className="h-display mt-4 text-balance text-[34px] font-bold leading-[1.05] text-white sm:text-5xl lg:text-6xl">
+              <h1 className="h-display mt-4 text-balance text-[34px] font-bold leading-[1.05] text-slate-900 sm:text-5xl lg:text-6xl">
                 Nos formules de{" "}
                 <span className="bg-gradient-to-r from-brand-300 via-brand-400 to-brand-500 bg-clip-text text-transparent">
                   nettoyage auto à domicile.
                 </span>
               </h1>
 
-              <p className="mx-auto mt-4 max-w-2xl text-balance text-[15px] leading-relaxed text-white/70 sm:mt-5 sm:text-lg">
+              <p className="mx-auto mt-4 max-w-2xl text-balance text-[15px] leading-relaxed text-slate-600 sm:mt-5 sm:text-lg">
                 Trois formules claires, du simple entretien au detailing
                 complet. Choisissez la vôtre, puis la commune
                 d'intervention — StrasClean se déplace dans toute
@@ -119,11 +119,11 @@ export default function FormulesPage() {
                   <a
                     key={p.id}
                     href={`#${p.id}`}
-                    className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm font-medium text-white/85 transition hover:border-brand-400/40 hover:bg-brand-500/10 hover:text-white"
+                    className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-slate-50 px-4 py-2 text-sm font-medium text-slate-800 transition hover:border-brand-400/40 hover:bg-brand-500/10 hover:text-slate-900"
                   >
                     <span>{p.emoji}</span>
                     {p.name.replace("Formule ", "")}
-                    <span className="text-white/65">· {p.priceFrom} €</span>
+                    <span className="text-slate-600">· {p.priceFrom} €</span>
                   </a>
                 ))}
               </div>
@@ -160,15 +160,15 @@ export default function FormulesPage() {
                 <Reveal key={p.id} delay={i * 80}>
                   <article id={p.id} className="relative scroll-mt-24">
                     {p.badge && (
-                      <span className="absolute left-8 top-0 z-10 -translate-y-1/2 whitespace-nowrap rounded-full bg-brand-500 px-3 py-1 text-[11px] font-bold uppercase tracking-wider text-ink-950 shadow-lg">
+                      <span className="absolute left-8 top-0 z-10 -translate-y-1/2 whitespace-nowrap rounded-full bg-brand-500 px-3 py-1 text-[11px] font-bold uppercase tracking-wider text-slate-900 shadow-lg">
                         {p.badge}
                       </span>
                     )}
                     <div
                       className={`relative overflow-hidden rounded-3xl border p-6 sm:p-9 ${
                         p.highlight
-                          ? "border-brand-400/40 bg-gradient-to-br from-brand-500/10 to-ink-900 shadow-glow"
-                          : "border-white/10 bg-white/[0.03]"
+                          ? "border-brand-400/40 bg-gradient-to-br from-brand-500/10 to-slate-50 shadow-glow"
+                          : "border-slate-200 bg-slate-50"
                       }`}
                     >
 
@@ -176,27 +176,27 @@ export default function FormulesPage() {
                       {/* Description */}
                       <div className="lg:col-span-5">
                         <div className="flex items-center gap-3">
-                          <span className="grid h-12 w-12 shrink-0 place-items-center rounded-xl bg-white/5 text-2xl">
+                          <span className="grid h-12 w-12 shrink-0 place-items-center rounded-xl bg-slate-50 text-2xl">
                             {p.emoji}
                           </span>
-                          <h2 className="h-display text-2xl font-bold text-white">
+                          <h2 className="h-display text-2xl font-bold text-slate-900">
                             {p.name}
                           </h2>
                         </div>
 
                         <div className="mt-5 flex items-baseline gap-2">
-                          <span className="text-xs font-medium uppercase tracking-wider text-white/65">
+                          <span className="text-xs font-medium uppercase tracking-wider text-slate-600">
                             à partir de
                           </span>
                         </div>
                         <div className="flex items-baseline gap-2">
-                          <span className="h-display text-5xl font-extrabold text-white">
+                          <span className="h-display text-5xl font-extrabold text-slate-900">
                             {p.priceFrom}
                           </span>
-                          <span className="text-2xl font-semibold text-white/70">€</span>
+                          <span className="text-2xl font-semibold text-slate-600">€</span>
                         </div>
 
-                        <p className="mt-4 text-sm leading-relaxed text-white/75 sm:text-base">
+                        <p className="mt-4 text-sm leading-relaxed text-slate-700 sm:text-base">
                           {p.tagline}
                         </p>
 
@@ -204,13 +204,13 @@ export default function FormulesPage() {
                           {p.features.map((f) => (
                             <li
                               key={f}
-                              className="flex items-start gap-3 text-sm text-white/85"
+                              className="flex items-start gap-3 text-sm text-slate-800"
                             >
                               <span
                                 className={`mt-0.5 grid h-5 w-5 shrink-0 place-items-center rounded-full ${
                                   p.highlight
-                                    ? "bg-brand-500 text-ink-950"
-                                    : "bg-white/10 text-brand-300"
+                                    ? "bg-brand-500 text-slate-900"
+                                    : "bg-slate-100 text-brand-600"
                                 }`}
                               >
                                 <CheckIcon size={12} />
@@ -233,10 +233,10 @@ export default function FormulesPage() {
 
                       {/* City selector */}
                       <div className="lg:col-span-7">
-                        <p className="text-xs font-semibold uppercase tracking-[0.18em] text-brand-400">
+                        <p className="text-xs font-semibold uppercase tracking-[0.18em] text-brand-600">
                           Disponible dans 12 villes
                         </p>
-                        <p className="mt-2 text-sm text-white/65">
+                        <p className="mt-2 text-sm text-slate-600">
                           Cette formule est proposée dans toutes les communes
                           desservies par StrasClean. Choisissez la vôtre :
                         </p>
@@ -247,22 +247,22 @@ export default function FormulesPage() {
                               <Link
                                 href={cityPath(c)}
                                 prefetch={false}
-                                className="group flex items-center justify-between gap-2 rounded-xl border border-white/10 bg-white/[0.03] px-3 py-2.5 text-sm text-white/85 transition hover:-translate-y-0.5 hover:border-brand-400/40 hover:bg-brand-500/10 hover:text-white"
+                                className="group flex items-center justify-between gap-2 rounded-xl border border-slate-200 bg-slate-50 px-3 py-2.5 text-sm text-slate-800 transition hover:-translate-y-0.5 hover:border-brand-400/40 hover:bg-brand-500/10 hover:text-slate-900"
                               >
                                 <span className="inline-flex items-center gap-2 truncate">
-                                  <MapPinIcon size={14} className="shrink-0 text-brand-400" />
+                                  <MapPinIcon size={14} className="shrink-0 text-brand-600" />
                                   <span className="truncate">{c.name}</span>
                                 </span>
                                 <ArrowRightIcon
                                   size={12}
-                                  className="shrink-0 text-white/40 transition group-hover:translate-x-0.5 group-hover:text-brand-400"
+                                  className="shrink-0 text-slate-400 transition group-hover:translate-x-0.5 group-hover:text-brand-600"
                                 />
                               </Link>
                             </li>
                           ))}
                         </ul>
 
-                        <p className="mt-4 text-xs text-white/50">
+                        <p className="mt-4 text-xs text-slate-500">
                           Votre commune n'est pas listée ?{" "}
                           <a
                             href={waLink(
@@ -270,7 +270,7 @@ export default function FormulesPage() {
                             )}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="text-brand-300 hover:text-brand-200"
+                            className="text-brand-600 hover:text-brand-700"
                           >
                             Demandez-nous sur WhatsApp.
                           </a>
@@ -289,7 +289,7 @@ export default function FormulesPage() {
               </div>
             </Reveal>
 
-            <p className="mx-auto mt-8 max-w-3xl text-center text-sm text-white/65">
+            <p className="mx-auto mt-8 max-w-3xl text-center text-sm text-slate-600">
               Le tarif final peut varier selon l'état intérieur du véhicule et
               les options demandées. On confirme toujours le prix avant
               intervention.

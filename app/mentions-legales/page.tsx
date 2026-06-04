@@ -26,18 +26,18 @@ export default function MentionsLegales() {
       <MobileOfferStrip />
       <main className="container-x py-10 sm:py-16">
         <nav aria-label="Fil d'ariane" className="mb-6 text-xs">
-          <Link href="/" className="font-medium text-white/65 hover:text-white/80">
+          <Link href="/" className="font-medium text-slate-600 hover:text-slate-700">
             StrasClean
           </Link>
-          <span className="mx-1.5 text-white/30">/</span>
-          <span className="text-white/75">Mentions légales</span>
+          <span className="mx-1.5 text-slate-300">/</span>
+          <span className="text-slate-700">Mentions légales</span>
         </nav>
 
         <article className="prose prose-invert mx-auto max-w-3xl">
-          <h1 className="h-display text-3xl font-bold text-white sm:text-4xl">
+          <h1 className="h-display text-3xl font-bold text-slate-900 sm:text-4xl">
             Mentions légales
           </h1>
-          <p className="mt-2 text-sm text-white/65">Dernière mise à jour : {updated}</p>
+          <p className="mt-2 text-sm text-slate-600">Dernière mise à jour : {updated}</p>
 
           <Section title="Éditeur du site">
             <p>
@@ -54,7 +54,7 @@ export default function MentionsLegales() {
               Téléphone : {SITE.phoneDisplay}
               <br />
               Email :{" "}
-              <a href={`mailto:${SITE.email}`} className="text-brand-300 hover:text-brand-200">
+              <a href={`mailto:${SITE.email}`} className="text-brand-600 hover:text-brand-700">
                 {SITE.email}
               </a>
               <br />
@@ -75,7 +75,7 @@ export default function MentionsLegales() {
                 href="https://www.ovhcloud.com"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-brand-300 hover:text-brand-200"
+                className="text-brand-600 hover:text-brand-700"
               >
                 www.ovhcloud.com
               </a>
@@ -131,7 +131,7 @@ export default function MentionsLegales() {
               Le traitement de vos données personnelles est détaillé dans notre{" "}
               <Link
                 href="/politique-de-confidentialite"
-                className="text-brand-300 hover:text-brand-200"
+                className="text-brand-600 hover:text-brand-700"
               >
                 politique de confidentialité
               </Link>
@@ -158,12 +158,12 @@ export default function MentionsLegales() {
 function Section({ title, children }: { title: string; children: React.ReactNode }) {
   return (
     <section className="mt-8">
-      <h2 className="h-display text-xl font-semibold text-white sm:text-2xl">{title}</h2>
-      <div className="mt-3 text-[15px] leading-relaxed text-white/75">{children}</div>
+      <h2 className="h-display text-xl font-semibold text-slate-900 sm:text-2xl">{title}</h2>
+      <div className="mt-3 text-[15px] leading-relaxed text-slate-700">{children}</div>
     </section>
   );
 }
 
 function Field({ children }: { children: React.ReactNode }) {
-  return <span className="text-amber-200/80">{children}</span>;
+  return <span className="text-amber-700/80">{children}</span>;
 }

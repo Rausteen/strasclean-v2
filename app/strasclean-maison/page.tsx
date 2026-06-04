@@ -183,19 +183,19 @@ export default async function HubMaisonPage() {
           <div className="container-x pt-6 pb-12 sm:pt-14 sm:pb-20 lg:pt-20 lg:pb-24">
             <div className="grid items-center gap-8 lg:grid-cols-2 lg:gap-12">
               <div>
-                <span className="inline-flex items-center gap-1.5 rounded-full border border-amber-500/30 bg-amber-500/10 px-3 py-1 text-sm font-medium text-amber-200">
+                <span className="inline-flex items-center gap-1.5 rounded-full border border-amber-500/30 bg-amber-500/10 px-3 py-1 text-sm font-medium text-amber-700">
                   <HomeIcon size={14} />
                   Nettoyage à domicile à Strasbourg
                 </span>
 
-                <h1 className="h-display mt-4 text-balance text-[34px] font-bold leading-[1.05] text-white sm:text-5xl lg:text-6xl">
+                <h1 className="h-display mt-4 text-balance text-[34px] font-bold leading-[1.05] text-slate-900 sm:text-5xl lg:text-6xl">
                   Votre canapé, tapis et matelas{" "}
                   <span className="bg-gradient-to-r from-amber-200 via-amber-300 to-amber-500 bg-clip-text text-transparent">
                     comme neufs.
                   </span>
                 </h1>
 
-                <p className="mt-4 max-w-xl text-balance text-[15px] leading-relaxed text-white/70 sm:mt-5 sm:text-lg">
+                <p className="mt-4 max-w-xl text-balance text-[15px] leading-relaxed text-slate-600 sm:mt-5 sm:text-lg">
                   StrasClean intervient chez vous pour redonner vie à vos
                   textiles d'intérieur. Injection-extraction professionnelle,
                   produits adaptés (tissu, cuir, alcantara), séchage rapide.
@@ -221,20 +221,20 @@ export default async function HubMaisonPage() {
                   </a>
                 </div>
 
-                <ul className="mt-6 flex flex-wrap items-center gap-x-4 gap-y-2 text-[13px] text-white/65 sm:mt-7 sm:text-sm">
+                <ul className="mt-6 flex flex-wrap items-center gap-x-4 gap-y-2 text-[13px] text-slate-600 sm:mt-7 sm:text-sm">
                   <li className="inline-flex items-center gap-1.5">
-                    <CheckIcon size={14} className="text-amber-300" />À domicile
+                    <CheckIcon size={14} className="text-amber-600" />À domicile
                   </li>
                   <li className="inline-flex items-center gap-1.5">
-                    <SparklesIcon size={14} className="text-amber-300" />
+                    <SparklesIcon size={14} className="text-amber-600" />
                     Injection-extraction pro
                   </li>
                   <li className="inline-flex items-center gap-1.5">
-                    <ClockIcon size={14} className="text-amber-300" />
+                    <ClockIcon size={14} className="text-amber-600" />
                     Séchage rapide
                   </li>
                   <li className="inline-flex items-center gap-1.5">
-                    <MapPinIcon size={14} className="text-amber-300" />
+                    <MapPinIcon size={14} className="text-amber-600" />
                     Strasbourg & 12 communes
                   </li>
                 </ul>
@@ -245,7 +245,7 @@ export default async function HubMaisonPage() {
                   4 emojis). Avant c'était caché mobile, mais maintenant
                   qu'il y a une vraie photo c'est l'élément visuel principal. */}
               <div className="relative mx-auto w-full max-w-xl lg:ml-auto">
-                <div className="relative overflow-hidden rounded-3xl border border-white/10 bg-gradient-to-br from-ink-800 to-ink-900 p-6 shadow-card">
+                <div className="relative overflow-hidden rounded-3xl border border-slate-200 bg-gradient-to-br from-slate-100 to-slate-50 p-6 shadow-card">
                   <div className="relative aspect-[4/3] w-full overflow-hidden rounded-2xl bg-gradient-to-br from-amber-200/20 via-orange-300/15 to-amber-500/10">
                     {hubHeroSrc ? (
                       <>
@@ -282,15 +282,15 @@ export default async function HubMaisonPage() {
                       dès 39 €
                     </span>
                   </div>
-                  <div className="mt-4 flex items-center gap-3 rounded-2xl border border-white/10 bg-white/[0.04] p-3">
-                    <div className="grid h-10 w-10 place-items-center rounded-xl bg-amber-500/15 text-amber-300">
+                  <div className="mt-4 flex items-center gap-3 rounded-2xl border border-slate-200 bg-slate-100 p-3">
+                    <div className="grid h-10 w-10 place-items-center rounded-xl bg-amber-500/15 text-amber-600">
                       <SparklesIcon size={18} />
                     </div>
                     <div className="flex-1">
-                      <p className="text-sm font-semibold text-white">
+                      <p className="text-sm font-semibold text-slate-900">
                         4 prestations · 1 équipe
                       </p>
-                      <p className="text-xs text-white/60">
+                      <p className="text-xs text-slate-500">
                         Canapé · Tapis · Matelas · Fauteuils
                       </p>
                     </div>
@@ -310,13 +310,13 @@ export default async function HubMaisonPage() {
         <HomeBeforeAfter />
 
         {/* COMMENT ÇA SE PASSE */}
-        <section id="process" className="relative overflow-hidden bg-white/[0.02] py-14 sm:py-24 lg:py-28">
+        <section id="process" className="relative overflow-hidden bg-slate-50 py-14 sm:py-24 lg:py-28">
           <div className="container-x">
             <Reveal className="mx-auto max-w-3xl text-center">
-              <p className="text-sm font-semibold uppercase tracking-[0.18em] text-amber-300">
+              <p className="text-sm font-semibold uppercase tracking-[0.18em] text-amber-600">
                 Comment ça se passe
               </p>
-              <h2 className="h-display mt-3 text-balance text-3xl font-bold text-white sm:text-4xl">
+              <h2 className="h-display mt-3 text-balance text-3xl font-bold text-slate-900 sm:text-4xl">
                 Simple, transparent, rapide.
               </h2>
             </Reveal>
@@ -324,13 +324,13 @@ export default async function HubMaisonPage() {
               {STEPS.map((step, i) => (
                 <Reveal key={step.title} delay={i * 80}>
                   <article className="card card-hover h-full">
-                    <span className="h-display grid h-10 w-10 place-items-center rounded-xl bg-amber-500/15 text-amber-300 font-bold">
+                    <span className="h-display grid h-10 w-10 place-items-center rounded-xl bg-amber-500/15 text-amber-600 font-bold">
                       {i + 1}
                     </span>
-                    <h3 className="h-display mt-4 text-base font-semibold text-white">
+                    <h3 className="h-display mt-4 text-base font-semibold text-slate-900">
                       {step.title}
                     </h3>
-                    <p className="mt-2 text-sm leading-relaxed text-white/70">
+                    <p className="mt-2 text-sm leading-relaxed text-slate-600">
                       {step.desc}
                     </p>
                   </article>
@@ -360,12 +360,12 @@ export default async function HubMaisonPage() {
         <section className="relative overflow-hidden py-14 sm:py-20">
           <div className="container-x">
             <Reveal>
-              <div className="relative overflow-hidden rounded-3xl border border-amber-400/30 bg-gradient-to-br from-amber-500/15 via-ink-800 to-ink-900 p-8 text-center sm:p-12">
+              <div className="relative overflow-hidden rounded-3xl border border-amber-400/30 bg-gradient-to-br from-amber-500/15 via-slate-100 to-slate-50 p-8 text-center sm:p-12">
                 <div className="pointer-events-none absolute -right-20 -top-24 h-64 w-64 rounded-full bg-amber-500/25 blur-2xl sm:blur-3xl" />
-                <h2 className="h-display mx-auto max-w-2xl text-balance text-2xl font-bold text-white sm:text-3xl lg:text-4xl">
+                <h2 className="h-display mx-auto max-w-2xl text-balance text-2xl font-bold text-slate-900 sm:text-3xl lg:text-4xl">
                   Une question ? Un devis ? On répond rapidement.
                 </h2>
-                <p className="mx-auto mt-3 max-w-xl text-white/75">
+                <p className="mx-auto mt-3 max-w-xl text-slate-700">
                   Envoyez quelques photos sur WhatsApp, on revient avec un tarif
                   précis et un créneau adapté.
                 </p>

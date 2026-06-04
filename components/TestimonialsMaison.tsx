@@ -57,23 +57,23 @@ export default function TestimonialsMaison({
       </div>
       <div className="container-x">
         <Reveal className="mx-auto max-w-3xl text-center">
-          <p className="text-sm font-semibold uppercase tracking-[0.18em] text-amber-300">
+          <p className="text-sm font-semibold uppercase tracking-[0.18em] text-amber-600">
             Avis clients
           </p>
-          <h2 className="h-display mt-3 text-balance text-3xl font-bold text-white sm:text-4xl lg:text-5xl">
+          <h2 className="h-display mt-3 text-balance text-3xl font-bold text-slate-900 sm:text-4xl lg:text-5xl">
             Ce que disent nos clients à Strasbourg.
           </h2>
           {hasGoogle && (
             <div className="mt-5 inline-flex flex-wrap items-center justify-center gap-x-3 gap-y-1 rounded-full border border-amber-500/30 bg-amber-500/[0.08] px-4 py-2">
-              <span className="flex items-center gap-0.5 text-amber-300">
+              <span className="flex items-center gap-0.5 text-amber-600">
                 {Array.from({ length: 5 }).map((_, i) => (
                   <StarIcon key={i} size={18} />
                 ))}
               </span>
-              <span className="text-base font-bold text-white">
+              <span className="text-base font-bold text-slate-900">
                 {googleRating!.toFixed(1).replace(".", ",")}/5
               </span>
-              <span className="text-sm text-white/70">
+              <span className="text-sm text-slate-600">
                 · {googleTotalCount} avis Google
               </span>
             </div>
@@ -90,25 +90,25 @@ export default function TestimonialsMaison({
                     <span
                       className={`grid h-10 w-10 shrink-0 place-items-center rounded-full bg-gradient-to-br ${
                         TONES[i % TONES.length]
-                      } text-sm font-bold text-white`}
+                      } text-sm font-bold text-slate-900`}
                     >
                       {initialsOf(r.author_name)}
                     </span>
                     <div className="min-w-0">
-                      <p className="truncate text-sm font-semibold text-white">
+                      <p className="truncate text-sm font-semibold text-slate-900">
                         {r.author_name}
                       </p>
-                      <p className="text-[11px] text-white/65">
+                      <p className="text-[11px] text-slate-600">
                         {r.relative_time_description ?? "Avis Google"}
                       </p>
                     </div>
                   </div>
-                  <span className="mt-3 flex gap-0.5 text-amber-300">
+                  <span className="mt-3 flex gap-0.5 text-amber-600">
                     {Array.from({ length: r.rating }).map((_, i) => (
                       <StarIcon key={i} size={14} />
                     ))}
                   </span>
-                  <p className="mt-3 text-sm leading-relaxed text-white/75">
+                  <p className="mt-3 text-sm leading-relaxed text-slate-700">
                     {r.text}
                   </p>
                 </article>
@@ -119,17 +119,17 @@ export default function TestimonialsMaison({
           // Bandeau confiance condensé (note globale + équipe + 100% domicile)
           <div className="mx-auto mt-10 grid max-w-3xl gap-5 sm:grid-cols-3">
             <Reveal>
-              <div className="rounded-3xl border border-amber-400/30 bg-gradient-to-br from-amber-500/10 via-ink-800 to-ink-900 p-5 text-center">
-                <p className="text-xs font-semibold uppercase tracking-[0.18em] text-amber-300">
+              <div className="rounded-3xl border border-amber-400/30 bg-gradient-to-br from-amber-500/10 via-slate-100 to-slate-50 p-5 text-center">
+                <p className="text-xs font-semibold uppercase tracking-[0.18em] text-amber-600">
                   Note Google
                 </p>
-                <p className="mt-3 flex items-center justify-center gap-1.5 text-3xl font-bold text-white">
+                <p className="mt-3 flex items-center justify-center gap-1.5 text-3xl font-bold text-slate-900">
                   {hasGoogle ? googleRating!.toFixed(1) : "—"}
-                  <span className="inline-flex text-amber-300">
+                  <span className="inline-flex text-amber-600">
                     <StarIcon size={20} />
                   </span>
                 </p>
-                <p className="mt-1 text-xs text-white/65">
+                <p className="mt-1 text-xs text-slate-600">
                   {hasGoogle
                     ? `${googleTotalCount} avis vérifiés`
                     : "Avis vérifiés"}
@@ -138,24 +138,24 @@ export default function TestimonialsMaison({
             </Reveal>
 
             <Reveal delay={80}>
-              <div className="rounded-3xl border border-white/10 bg-white/[0.03] p-5 text-center">
-                <p className="text-xs font-semibold uppercase tracking-[0.18em] text-amber-300">
+              <div className="rounded-3xl border border-slate-200 bg-slate-50 p-5 text-center">
+                <p className="text-xs font-semibold uppercase tracking-[0.18em] text-amber-600">
                   Équipe
                 </p>
-                <p className="mt-3 text-3xl font-bold text-white">2</p>
-                <p className="mt-1 text-xs text-white/65">
+                <p className="mt-3 text-3xl font-bold text-slate-900">2</p>
+                <p className="mt-1 text-xs text-slate-600">
                   pros sur chaque intervention
                 </p>
               </div>
             </Reveal>
 
             <Reveal delay={160}>
-              <div className="rounded-3xl border border-white/10 bg-white/[0.03] p-5 text-center">
-                <p className="text-xs font-semibold uppercase tracking-[0.18em] text-amber-300">
+              <div className="rounded-3xl border border-slate-200 bg-slate-50 p-5 text-center">
+                <p className="text-xs font-semibold uppercase tracking-[0.18em] text-amber-600">
                   Domicile
                 </p>
-                <p className="mt-3 text-3xl font-bold text-white">100%</p>
-                <p className="mt-1 text-xs text-white/65">
+                <p className="mt-3 text-3xl font-bold text-slate-900">100%</p>
+                <p className="mt-1 text-xs text-slate-600">
                   à votre adresse, sans déplacement
                 </p>
               </div>
@@ -169,7 +169,7 @@ export default function TestimonialsMaison({
               href={googleProfileUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 rounded-full border border-amber-400/40 bg-amber-500/10 px-5 py-2.5 text-sm font-semibold text-amber-200 transition hover:bg-amber-500/20"
+              className="inline-flex items-center gap-2 rounded-full border border-amber-400/40 bg-amber-500/10 px-5 py-2.5 text-sm font-semibold text-amber-700 transition hover:bg-amber-500/20"
             >
               <SparklesIcon size={14} />
               Voir tous les avis Google

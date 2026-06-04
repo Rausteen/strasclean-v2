@@ -31,18 +31,18 @@ export default function ServiceCityHero({
         <div className="mx-auto max-w-3xl text-center">
           {/* Breadcrumb */}
           <nav aria-label="Fil d'ariane" className="mb-5 text-xs">
-            <Link href="/" className="font-medium text-white/65 hover:text-white/80">
+            <Link href="/" className="font-medium text-slate-600 hover:text-slate-700">
               StrasClean
             </Link>
-            <span className="mx-1.5 text-white/30">/</span>
+            <span className="mx-1.5 text-slate-300">/</span>
             <Link
               href={cityPath(city)}
-              className="font-medium text-white/65 hover:text-white/80"
+              className="font-medium text-slate-600 hover:text-slate-700"
             >
               {city.name}
             </Link>
-            <span className="mx-1.5 text-white/30">/</span>
-            <span className="text-white/75">{service.shortName}</span>
+            <span className="mx-1.5 text-slate-300">/</span>
+            <span className="text-slate-700">{service.shortName}</span>
           </nav>
 
           <span className="chip mx-auto">
@@ -50,14 +50,14 @@ export default function ServiceCityHero({
             {service.shortName} {inCity(city)}
           </span>
 
-          <h1 className="h-display mt-4 text-balance text-[34px] font-bold leading-[1.05] text-white sm:text-5xl lg:text-6xl">
+          <h1 className="h-display mt-4 text-balance text-[34px] font-bold leading-[1.05] text-slate-900 sm:text-5xl lg:text-6xl">
             {service.name}{" "}
             <span className="bg-gradient-to-r from-brand-300 via-brand-400 to-brand-500 bg-clip-text text-transparent">
               {inCity(city)}.
             </span>
           </h1>
 
-          <p className="mx-auto mt-4 max-w-2xl text-balance text-[15px] leading-relaxed text-white/70 sm:mt-5 sm:text-lg">
+          <p className="mx-auto mt-4 max-w-2xl text-balance text-[15px] leading-relaxed text-slate-600 sm:mt-5 sm:text-lg">
             {service.shortDesc} StrasClean intervient {inCity(city)}, à votre
             domicile ou sur votre lieu de travail, avec un matériel
             professionnel autonome.
@@ -84,16 +84,16 @@ export default function ServiceCityHero({
           </div>
 
           {/* Quick facts */}
-          <ul className="mx-auto mt-6 flex flex-wrap items-center justify-center gap-x-4 gap-y-2 text-[13px] text-white/65 sm:mt-7 sm:text-sm">
+          <ul className="mx-auto mt-6 flex flex-wrap items-center justify-center gap-x-4 gap-y-2 text-[13px] text-slate-600 sm:mt-7 sm:text-sm">
             <li className="inline-flex items-center gap-1.5">
-              <ClockIcon size={14} className="text-brand-400" />
+              <ClockIcon size={14} className="text-brand-600" />
               Durée : {service.duration}
             </li>
             <li className="inline-flex items-center gap-1.5">
-              <CheckIcon size={14} className="text-brand-400" />À partir de {service.priceFrom} €
+              <CheckIcon size={14} className="text-brand-600" />À partir de {service.priceFrom} €
             </li>
             <li className="inline-flex items-center gap-1.5">
-              <MapPinIcon size={14} className="text-brand-400" />
+              <MapPinIcon size={14} className="text-brand-600" />
               {city.name} — {city.postalCodes.join(" · ")}
             </li>
           </ul>

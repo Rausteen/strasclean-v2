@@ -92,13 +92,13 @@ export default function BeforeAfter() {
     <section id="avant-apres" className="relative py-14 sm:py-24 lg:py-28">
       <div className="container-x">
         <Reveal className="mx-auto max-w-3xl text-center">
-          <p className="text-sm font-semibold uppercase tracking-[0.18em] text-brand-400">
+          <p className="text-sm font-semibold uppercase tracking-[0.18em] text-brand-600">
             Avant / Après
           </p>
-          <h2 className="h-display mt-3 text-balance text-3xl font-bold text-white sm:text-4xl lg:text-5xl">
+          <h2 className="h-display mt-3 text-balance text-3xl font-bold text-slate-900 sm:text-4xl lg:text-5xl">
             Des résultats visibles dès la première intervention.
           </h2>
-          <p className="mt-4 text-white/70">
+          <p className="mt-4 text-slate-600">
             Chaque détail compte. On vous montre la différence sur les zones
             qui font le plus de différence dans votre habitacle.
           </p>
@@ -123,8 +123,8 @@ type ResolvedPair = Pair & {
 
 function BeforeAfterCard({ pair }: { pair: ResolvedPair }) {
   return (
-    <div className="group overflow-hidden rounded-3xl border border-white/10 bg-white/[0.03] transition hover:border-white/20">
-      <div className="grid grid-cols-2 gap-px bg-white/5">
+    <div className="group overflow-hidden rounded-3xl border border-slate-200 bg-slate-50 transition hover:border-slate-300">
+      <div className="grid grid-cols-2 gap-px bg-slate-50">
         <Tile
           label={pair.beforeLabel}
           tone="before"
@@ -142,10 +142,10 @@ function BeforeAfterCard({ pair }: { pair: ResolvedPair }) {
       </div>
       <div className="p-5">
         <div className="flex items-center gap-2">
-          <SparklesIcon size={14} className="text-brand-400" />
-          <h3 className="h-display text-base font-semibold text-white">{pair.title}</h3>
+          <SparklesIcon size={14} className="text-brand-600" />
+          <h3 className="h-display text-base font-semibold text-slate-900">{pair.title}</h3>
         </div>
-        <p className="mt-1 text-sm text-white/65">{pair.description}</p>
+        <p className="mt-1 text-sm text-slate-600">{pair.description}</p>
       </div>
     </div>
   );
@@ -168,7 +168,7 @@ function Tile({
   return (
     <div
       className={`relative aspect-[4/3] w-full overflow-hidden ${
-        isAfter ? "bg-gradient-to-br from-ink-800 to-ink-900" : `bg-gradient-to-br ${gradient}`
+        isAfter ? "bg-gradient-to-br from-slate-100 to-slate-50" : `bg-gradient-to-br ${gradient}`
       }`}
     >
       {image ? (
@@ -202,12 +202,12 @@ function Tile({
 
       <span
         className={`absolute left-3 top-3 z-10 rounded-full px-2.5 py-1 text-[11px] font-bold uppercase tracking-wider backdrop-blur ${
-          isAfter ? "bg-brand-500 text-ink-950" : "bg-black/55 text-white"
+          isAfter ? "bg-brand-500 text-white" : "bg-black/55 text-white"
         }`}
       >
         {isAfter ? "Après" : "Avant"}
       </span>
-      <span className="absolute bottom-3 left-3 z-10 rounded-md bg-black/55 px-2 py-1 text-[11px] text-white/90 backdrop-blur">
+      <span className="absolute bottom-3 left-3 z-10 rounded-md bg-black/55 px-2 py-1 text-[11px] text-white backdrop-blur">
         {label}
       </span>
     </div>

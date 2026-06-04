@@ -26,20 +26,20 @@ export default function Politique() {
       <MobileOfferStrip />
       <main className="container-x py-10 sm:py-16">
         <nav aria-label="Fil d'ariane" className="mb-6 text-xs">
-          <Link href="/" className="font-medium text-white/65 hover:text-white/80">
+          <Link href="/" className="font-medium text-slate-600 hover:text-slate-700">
             StrasClean
           </Link>
-          <span className="mx-1.5 text-white/30">/</span>
-          <span className="text-white/75">Politique de confidentialité</span>
+          <span className="mx-1.5 text-slate-300">/</span>
+          <span className="text-slate-700">Politique de confidentialité</span>
         </nav>
 
         <article className="mx-auto max-w-3xl">
-          <h1 className="h-display text-3xl font-bold text-white sm:text-4xl">
+          <h1 className="h-display text-3xl font-bold text-slate-900 sm:text-4xl">
             Politique de confidentialité
           </h1>
-          <p className="mt-2 text-sm text-white/65">Dernière mise à jour : {updated}</p>
+          <p className="mt-2 text-sm text-slate-600">Dernière mise à jour : {updated}</p>
 
-          <p className="mt-6 text-[15px] leading-relaxed text-white/75">
+          <p className="mt-6 text-[15px] leading-relaxed text-slate-700">
             StrasClean accorde une grande importance à la protection de vos
             données personnelles. Cette politique décrit les données que nous
             collectons via ce site, à quoi elles servent, combien de temps nous
@@ -59,7 +59,7 @@ export default function Politique() {
               Adresse : 12 rue de la Mésange, 67000 Strasbourg
               <br />
               Email :{" "}
-              <a href={`mailto:${SITE.email}`} className="text-brand-300 hover:text-brand-200">
+              <a href={`mailto:${SITE.email}`} className="text-brand-600 hover:text-brand-700">
                 {SITE.email}
               </a>
               <br />
@@ -70,7 +70,7 @@ export default function Politique() {
           </Section>
 
           <Section title="2. Données collectées">
-            <h3 className="h-display mt-4 text-base font-semibold text-white">
+            <h3 className="h-display mt-4 text-base font-semibold text-slate-900">
               a) Données de navigation (automatiques)
             </h3>
             <p>
@@ -78,7 +78,7 @@ export default function Politique() {
               sont enregistrées automatiquement à des fins d'analyse de trafic
               et de mesure de performance publicitaire :
             </p>
-            <ul className="mt-2 list-disc space-y-1 pl-6 text-sm text-white/75">
+            <ul className="mt-2 list-disc space-y-1 pl-6 text-sm text-slate-700">
               <li>Adresse IP</li>
               <li>Type d'appareil, système d'exploitation, navigateur</li>
               <li>Pages visitées et durée des visites</li>
@@ -87,14 +87,14 @@ export default function Politique() {
               <li>Clics sur les boutons WhatsApp et téléphone</li>
             </ul>
 
-            <h3 className="h-display mt-6 text-base font-semibold text-white">
+            <h3 className="h-display mt-6 text-base font-semibold text-slate-900">
               b) Données fournies volontairement
             </h3>
             <p>
               Lorsque vous nous contactez (par WhatsApp, téléphone ou email)
               pour réserver une prestation, vous nous communiquez :
             </p>
-            <ul className="mt-2 list-disc space-y-1 pl-6 text-sm text-white/75">
+            <ul className="mt-2 list-disc space-y-1 pl-6 text-sm text-slate-700">
               <li>Vos nom et prénom</li>
               <li>Votre numéro de téléphone</li>
               <li>Votre adresse d'intervention</li>
@@ -104,13 +104,13 @@ export default function Politique() {
 
           <Section title="3. Finalités et bases légales">
             <table className="mt-3 w-full text-sm">
-              <thead className="text-left text-white/65 uppercase tracking-wider">
+              <thead className="text-left text-slate-600 uppercase tracking-wider">
                 <tr>
                   <th className="pb-2 pr-3">Finalité</th>
                   <th className="pb-2">Base légale</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-white/10 text-white/80">
+              <tbody className="divide-y divide-white/10 text-slate-700">
                 <tr>
                   <td className="py-2 pr-3">Mesure d'audience interne du site</td>
                   <td className="py-2">Intérêt légitime</td>
@@ -136,7 +136,7 @@ export default function Politique() {
           </Section>
 
           <Section title="4. Durée de conservation">
-            <ul className="mt-2 list-disc space-y-1 pl-6 text-sm text-white/75">
+            <ul className="mt-2 list-disc space-y-1 pl-6 text-sm text-slate-700">
               <li>
                 <strong>Données de navigation</strong> (IP, User-Agent, pages) : 13 mois maximum,
                 conformément aux recommandations de la CNIL.
@@ -157,7 +157,7 @@ export default function Politique() {
             <p>
               Vos données sont accessibles à :
             </p>
-            <ul className="mt-2 list-disc space-y-1 pl-6 text-sm text-white/75">
+            <ul className="mt-2 list-disc space-y-1 pl-6 text-sm text-slate-700">
               <li>Le personnel de StrasClean strictement nécessaire à la prestation</li>
               <li>
                 Notre hébergeur (stockage technique sécurisé du site et de la base
@@ -187,7 +187,7 @@ export default function Politique() {
             <p>
               Le site dépose les cookies suivants :
             </p>
-            <ul className="mt-2 list-disc space-y-1 pl-6 text-sm text-white/75">
+            <ul className="mt-2 list-disc space-y-1 pl-6 text-sm text-slate-700">
               <li>
                 <strong>Google Ads (gtag)</strong> — mesure des conversions
                 (clics WhatsApp / téléphone après une annonce). Durée : 90 jours.
@@ -219,7 +219,7 @@ export default function Politique() {
               Conformément au RGPD, vous disposez des droits suivants sur vos
               données personnelles :
             </p>
-            <ul className="mt-2 list-disc space-y-1 pl-6 text-sm text-white/75">
+            <ul className="mt-2 list-disc space-y-1 pl-6 text-sm text-slate-700">
               <li>Droit d'accès</li>
               <li>Droit de rectification</li>
               <li>Droit à l'effacement (« droit à l'oubli »)</li>
@@ -230,7 +230,7 @@ export default function Politique() {
             </ul>
             <p className="mt-3">
               Pour exercer ces droits, contactez-nous à{" "}
-              <a href={`mailto:${SITE.email}`} className="text-brand-300 hover:text-brand-200">
+              <a href={`mailto:${SITE.email}`} className="text-brand-600 hover:text-brand-700">
                 {SITE.email}
               </a>
               . Vous pouvez également introduire une réclamation auprès de la
@@ -239,7 +239,7 @@ export default function Politique() {
                 href="https://www.cnil.fr/fr/plaintes"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-brand-300 hover:text-brand-200"
+                className="text-brand-600 hover:text-brand-700"
               >
                 www.cnil.fr/fr/plaintes
               </a>
@@ -266,12 +266,12 @@ export default function Politique() {
 function Section({ title, children }: { title: string; children: React.ReactNode }) {
   return (
     <section className="mt-8">
-      <h2 className="h-display text-xl font-semibold text-white sm:text-2xl">{title}</h2>
-      <div className="mt-3 text-[15px] leading-relaxed text-white/75">{children}</div>
+      <h2 className="h-display text-xl font-semibold text-slate-900 sm:text-2xl">{title}</h2>
+      <div className="mt-3 text-[15px] leading-relaxed text-slate-700">{children}</div>
     </section>
   );
 }
 
 function Field({ children }: { children: React.ReactNode }) {
-  return <span className="text-amber-200/80">{children}</span>;
+  return <span className="text-amber-700/80">{children}</span>;
 }

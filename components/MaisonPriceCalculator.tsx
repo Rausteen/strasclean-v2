@@ -197,19 +197,19 @@ export default function MaisonPriceCalculator() {
 
       <div className="container-x">
         <div className="mx-auto max-w-3xl text-center">
-          <p className="text-sm font-semibold uppercase tracking-[0.18em] text-amber-300">
+          <p className="text-sm font-semibold uppercase tracking-[0.18em] text-amber-600">
             Calculateur de prix Maison
           </p>
-          <h2 className="h-display mt-3 text-balance text-3xl font-bold text-white sm:text-4xl lg:text-5xl">
+          <h2 className="h-display mt-3 text-balance text-3xl font-bold text-slate-900 sm:text-4xl lg:text-5xl">
             Combien ça va coûter pour votre intérieur ?
           </h2>
-          <p className="mt-4 text-white/70">
+          <p className="mt-4 text-slate-600">
             Choisissez votre prestation, votre taille et les options. Le devis
             s'affiche en 2 secondes — sans inscription. Aucun frais caché.
           </p>
         </div>
 
-        <div className="mx-auto mt-10 max-w-4xl rounded-3xl border border-white/10 bg-gradient-to-b from-white/[0.04] to-white/[0.02] p-5 sm:p-8">
+        <div className="mx-auto mt-10 max-w-4xl rounded-3xl border border-slate-200 bg-gradient-to-b from-white/[0.04] to-white/[0.02] p-5 sm:p-8">
           {/* Étape 1 — Prestation */}
           <div>
             <Step number={1} title="Quelle prestation ?" active />
@@ -223,19 +223,19 @@ export default function MaisonPriceCalculator() {
                     className={`group relative flex h-full flex-col items-start gap-1 rounded-2xl border px-3 py-3 text-left transition ${
                       active
                         ? "border-amber-400/60 bg-amber-500/15 shadow-glow-amber"
-                        : "border-white/10 bg-white/[0.03] hover:border-white/25 hover:bg-white/[0.06]"
+                        : "border-slate-200 bg-slate-50 hover:border-white/25 hover:bg-slate-100"
                     }`}
                   >
                     <span className="text-2xl">{s.emoji}</span>
                     <span
                       className={`text-sm font-semibold ${
-                        active ? "text-white" : "text-white/85"
+                        active ? "text-slate-900" : "text-slate-800"
                       }`}
                     >
                       {s.name}
                     </span>
                     {active && (
-                      <span className="absolute right-2 top-2 grid h-4 w-4 place-items-center rounded-full bg-amber-400 text-[9px] text-ink-950">
+                      <span className="absolute right-2 top-2 grid h-4 w-4 place-items-center rounded-full bg-amber-400 text-[9px] text-slate-900">
                         <CheckIcon size={10} />
                       </span>
                     )}
@@ -259,25 +259,25 @@ export default function MaisonPriceCalculator() {
                     className={`relative flex items-start gap-3 rounded-2xl border p-3 text-left transition disabled:cursor-not-allowed disabled:opacity-50 ${
                       active
                         ? "border-amber-400/60 bg-amber-500/15 shadow-glow-amber"
-                        : "border-white/10 bg-white/[0.03] hover:border-white/25 hover:bg-white/[0.06]"
+                        : "border-slate-200 bg-slate-50 hover:border-white/25 hover:bg-slate-100"
                     }`}
                   >
                     <span className="min-w-0 flex-1">
                       <span className="flex items-center justify-between gap-2">
                         <span
                           className={`text-sm font-semibold ${
-                            active ? "text-white" : "text-white/90"
+                            active ? "text-slate-900" : "text-slate-800"
                           }`}
                         >
                           {v.label}
                         </span>
-                        <span className="shrink-0 text-sm font-bold text-amber-300">
+                        <span className="shrink-0 text-sm font-bold text-amber-600">
                           {v.id === "XL" ? `${v.price} €/m²` : `${v.price} €`}
                         </span>
                       </span>
                     </span>
                     {active && (
-                      <span className="absolute right-2 top-2 grid h-4 w-4 place-items-center rounded-full bg-amber-400 text-[9px] text-ink-950">
+                      <span className="absolute right-2 top-2 grid h-4 w-4 place-items-center rounded-full bg-amber-400 text-[9px] text-slate-900">
                         <CheckIcon size={10} />
                       </span>
                     )}
@@ -285,7 +285,7 @@ export default function MaisonPriceCalculator() {
                 );
               })}
               {!service && (
-                <p className="col-span-full rounded-2xl border border-dashed border-white/15 bg-white/[0.02] px-3 py-3 text-center text-xs text-white/45">
+                <p className="col-span-full rounded-2xl border border-dashed border-slate-300 bg-slate-50 px-3 py-3 text-center text-xs text-slate-400">
                   Choisissez d'abord une prestation
                 </p>
               )}
@@ -313,27 +313,27 @@ export default function MaisonPriceCalculator() {
                       className={`relative flex items-start gap-3 rounded-2xl border p-3 text-left transition disabled:cursor-not-allowed disabled:opacity-50 ${
                         active
                           ? "border-amber-400/60 bg-amber-500/15"
-                          : "border-white/10 bg-white/[0.03] hover:border-white/25 hover:bg-white/[0.06]"
+                          : "border-slate-200 bg-slate-50 hover:border-white/25 hover:bg-slate-100"
                       }`}
                     >
                       <span
                         className={`mt-0.5 grid h-5 w-5 shrink-0 place-items-center rounded-md border ${
                           active
-                            ? "border-amber-400 bg-amber-400 text-ink-950"
-                            : "border-white/20 bg-white/5"
+                            ? "border-amber-400 bg-amber-400 text-slate-900"
+                            : "border-slate-300 bg-slate-50"
                         }`}
                       >
                         {active ? <CheckIcon size={11} /> : null}
                       </span>
                       <span className="min-w-0 flex-1">
-                        <span className="text-sm font-medium text-white/90">
+                        <span className="text-sm font-medium text-slate-800">
                           {o.label}
                         </span>
-                        <span className="ml-1 text-xs font-bold text-amber-300">
+                        <span className="ml-1 text-xs font-bold text-amber-600">
                           + {displayedPrice} €
                         </span>
                         {o.note && (
-                          <span className="mt-0.5 block text-[11px] text-white/45">
+                          <span className="mt-0.5 block text-[11px] text-slate-400">
                             {o.note}
                           </span>
                         )}
@@ -348,22 +348,22 @@ export default function MaisonPriceCalculator() {
           {/* Résultat */}
           <div className="mt-6">
             {result ? (
-              <div className="overflow-hidden rounded-2xl border border-amber-400/40 bg-gradient-to-br from-amber-500/15 via-ink-800 to-ink-900 p-5 sm:p-7">
+              <div className="overflow-hidden rounded-2xl border border-amber-400/40 bg-gradient-to-br from-amber-500/15 via-slate-100 to-slate-50 p-5 sm:p-7">
                 <div className="flex flex-col items-start gap-5 sm:flex-row sm:items-center sm:justify-between">
                   <div className="min-w-0">
-                    <p className="text-xs font-semibold uppercase tracking-[0.18em] text-amber-300">
+                    <p className="text-xs font-semibold uppercase tracking-[0.18em] text-amber-600">
                       Votre devis
                     </p>
-                    <p className="mt-1 text-sm text-white/70">
+                    <p className="mt-1 text-sm text-slate-600">
                       {result.service.emoji} {result.service.name} ·{" "}
                       {result.variant.label}
                     </p>
                     <p className="mt-2 flex items-baseline gap-2">
-                      <span className="h-display text-4xl font-extrabold text-white sm:text-5xl">
+                      <span className="h-display text-4xl font-extrabold text-slate-900 sm:text-5xl">
                         {result.total} €{isPerM2 ? "/m²" : ""}
                       </span>
                     </p>
-                    <p className="mt-2 text-xs text-white/65">
+                    <p className="mt-2 text-xs text-slate-600">
                       {result.base} €{isPerM2 ? "/m²" : ""}
                       {result.optionsTotal > 0
                         ? ` + ${result.optionsTotal} € d'options`
@@ -371,11 +371,11 @@ export default function MaisonPriceCalculator() {
                       {" · paiement sur place"}
                     </p>
                     {result.selectedOptions.length > 0 && (
-                      <ul className="mt-3 space-y-0.5 text-[11px] text-white/65">
+                      <ul className="mt-3 space-y-0.5 text-[11px] text-slate-600">
                         {result.selectedOptions.map((o) => (
                           <li key={o.id}>
                             + {o.label}{" "}
-                            <span className="text-amber-300">
+                            <span className="text-amber-600">
                               ({o.resolvedPrice} €)
                             </span>
                           </li>
@@ -393,14 +393,14 @@ export default function MaisonPriceCalculator() {
                     Réserver à {result.total} €{isPerM2 ? "/m²" : ""}
                   </a>
                 </div>
-                <p className="mt-4 border-t border-white/10 pt-3 text-[11px] text-white/45">
+                <p className="mt-4 border-t border-slate-200 pt-3 text-[11px] text-slate-400">
                   Prix indicatif sur textile en état standard. Pour un état très
                   sale ou des taches importantes, on confirme le tarif final
                   avant intervention (jamais de surcoût surprise sur place).
                 </p>
               </div>
             ) : (
-              <div className="rounded-2xl border border-dashed border-white/15 bg-white/[0.02] p-6 text-center text-sm text-white/65">
+              <div className="rounded-2xl border border-dashed border-slate-300 bg-slate-50 p-6 text-center text-sm text-slate-600">
                 {!service
                   ? "Choisissez d'abord votre prestation"
                   : "Choisissez maintenant la taille / quantité"}
@@ -426,12 +426,12 @@ function Step({
     <div className="flex items-center gap-2">
       <span
         className={`grid h-6 w-6 place-items-center rounded-full text-[11px] font-bold ${
-          active ? "bg-amber-400 text-ink-950" : "bg-white/10 text-white/65"
+          active ? "bg-amber-400 text-slate-900" : "bg-slate-100 text-slate-600"
         }`}
       >
         {number}
       </span>
-      <h3 className="h-display text-base font-semibold text-white">{title}</h3>
+      <h3 className="h-display text-base font-semibold text-slate-900">{title}</h3>
     </div>
   );
 }

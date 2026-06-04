@@ -30,13 +30,13 @@ export default function HowItWorks() {
     <section id="fonctionnement" className="relative py-14 sm:py-24 lg:py-28">
       <div className="container-x">
         <Reveal className="mx-auto max-w-3xl text-center">
-          <p className="text-sm font-semibold uppercase tracking-[0.18em] text-brand-400">
+          <p className="text-sm font-semibold uppercase tracking-[0.18em] text-brand-600">
             Comment ça marche
           </p>
-          <h2 className="h-display mt-3 text-balance text-3xl font-bold text-white sm:text-4xl lg:text-5xl">
+          <h2 className="h-display mt-3 text-balance text-3xl font-bold text-slate-900 sm:text-4xl lg:text-5xl">
             Réservez en quelques secondes. On s'occupe du reste.
           </h2>
-          <p className="mt-4 text-white/70">
+          <p className="mt-4 text-slate-600">
             Pas besoin de vous déplacer. Vous réservez, on vient, votre voiture
             retrouve un intérieur propre et agréable.
           </p>
@@ -47,17 +47,17 @@ export default function HowItWorks() {
             <Reveal key={s.n} delay={i * 90}>
               <div className="card card-hover h-full">
                 <div className="flex items-center justify-between">
-                  <span className="h-display text-3xl font-extrabold text-brand-400">
+                  <span className="h-display text-3xl font-extrabold text-brand-600">
                     {s.n}
                   </span>
-                  <span className="grid h-9 w-9 place-items-center rounded-full border border-white/10 bg-white/5 text-white/70">
+                  <span className="grid h-9 w-9 place-items-center rounded-full border border-slate-200 bg-slate-50 text-slate-600">
                     {i + 1}
                   </span>
                 </div>
-                <h3 className="h-display mt-4 text-lg font-semibold text-white">
+                <h3 className="h-display mt-4 text-lg font-semibold text-slate-900">
                   {s.title}
                 </h3>
-                <p className="mt-2 text-sm text-white/65">{s.desc}</p>
+                <p className="mt-2 text-sm text-slate-600">{s.desc}</p>
               </div>
             </Reveal>
           ))}

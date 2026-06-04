@@ -42,13 +42,13 @@ function shortPath(p: string | null) {
 
 function sourceBadge(src: string | null) {
   const map: Record<string, { label: string; cls: string }> = {
-    ads: { label: "Ads", cls: "bg-amber-500/15 text-amber-200 border-amber-500/30" },
-    organic: { label: "Organic", cls: "bg-brand-500/15 text-brand-200 border-brand-500/30" },
-    direct: { label: "Direct", cls: "bg-white/10 text-white/70 border-white/15" },
+    ads: { label: "Ads", cls: "bg-amber-500/15 text-amber-700 border-amber-500/30" },
+    organic: { label: "Organic", cls: "bg-brand-500/15 text-brand-700 border-brand-500/30" },
+    direct: { label: "Direct", cls: "bg-slate-100 text-slate-600 border-slate-300" },
     referral: { label: "Referral", cls: "bg-sky-500/15 text-sky-200 border-sky-500/30" },
     social: { label: "Social", cls: "bg-fuchsia-500/15 text-fuchsia-200 border-fuchsia-500/30" },
   };
-  const m = map[src ?? ""] ?? { label: src ?? "?", cls: "bg-white/5 text-white/65 border-white/10" };
+  const m = map[src ?? ""] ?? { label: src ?? "?", cls: "bg-slate-50 text-slate-600 border-slate-200" };
   return (
     <span className={`inline-flex items-center rounded-full border px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider ${m.cls}`}>
       {m.label}
@@ -104,10 +104,10 @@ export default async function DashboardPage({
       <header className="mb-8 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <h1 className="h-display text-2xl font-bold sm:text-3xl">Dashboard StrasClean</h1>
-          <p className="mt-1 text-sm text-white/60">
+          <p className="mt-1 text-sm text-slate-500">
             Trafic, sources, clics de contact. Données 100% server-side, hors Google Ads.
             {hiddenIps.length > 0 && (
-              <span className="ml-2 text-amber-300/80">
+              <span className="ml-2 text-amber-600/80">
                 · {hiddenIps.length} IP{hiddenIps.length > 1 ? "s" : ""} masquée{hiddenIps.length > 1 ? "s" : ""}
               </span>
             )}
@@ -161,11 +161,11 @@ export default async function DashboardPage({
       <section className="mt-8 grid gap-6 lg:grid-cols-2">
         <Panel title="Pages les plus visitées (30j)">
           <ul className="divide-y divide-white/5">
-            {topPaths.length === 0 && <li className="py-4 text-sm text-white/50">Aucune donnée encore.</li>}
+            {topPaths.length === 0 && <li className="py-4 text-sm text-slate-500">Aucune donnée encore.</li>}
             {topPaths.map((p) => (
               <li key={p.path} className="flex items-center justify-between gap-4 py-2.5">
-                <span className="truncate text-sm text-white/85">{p.path}</span>
-                <span className="shrink-0 rounded-full bg-white/10 px-2 py-0.5 text-xs font-medium text-white/80">
+                <span className="truncate text-sm text-slate-800">{p.path}</span>
+                <span className="shrink-0 rounded-full bg-slate-100 px-2 py-0.5 text-xs font-medium text-slate-700">
                   {p.c}
                 </span>
               </li>
@@ -174,13 +174,13 @@ export default async function DashboardPage({
         </Panel>
         <Panel title="Sources externes (30j)">
           <ul className="divide-y divide-white/5">
-            {topReferers.length === 0 && <li className="py-4 text-sm text-white/50">Aucune donnée encore.</li>}
+            {topReferers.length === 0 && <li className="py-4 text-sm text-slate-500">Aucune donnée encore.</li>}
             {topReferers.map((r) => (
               <li key={r.referer} className="flex items-center justify-between gap-4 py-2.5">
-                <span className="truncate text-sm text-white/85" title={r.referer}>
+                <span className="truncate text-sm text-slate-800" title={r.referer}>
                   {r.referer}
                 </span>
-                <span className="shrink-0 rounded-full bg-white/10 px-2 py-0.5 text-xs font-medium text-white/80">
+                <span className="shrink-0 rounded-full bg-slate-100 px-2 py-0.5 text-xs font-medium text-slate-700">
                   {r.c}
                 </span>
               </li>
@@ -193,19 +193,19 @@ export default async function DashboardPage({
       {hiddenIps.length > 0 && (
         <section className="mt-8">
           <Panel title={`IPs masquées (${hiddenIps.length})`}>
-            <p className="mb-3 text-xs text-white/65">
+            <p className="mb-3 text-xs text-slate-600">
               Toutes les visites/clics de ces IPs sont exclus des statistiques affichées ci-dessus.
             </p>
             <ul className="grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
               {hiddenIps.map((h) => (
                 <li
                   key={h.ip}
-                  className="flex items-center justify-between gap-3 rounded-xl border border-white/10 bg-white/[0.03] px-3 py-2"
+                  className="flex items-center justify-between gap-3 rounded-xl border border-slate-200 bg-slate-50 px-3 py-2"
                 >
                   <div className="min-w-0 flex-1">
-                    <p className="truncate font-mono text-xs text-white/85">{h.ip}</p>
+                    <p className="truncate font-mono text-xs text-slate-800">{h.ip}</p>
                     {h.label && (
-                      <p className="truncate text-[11px] text-white/50">{h.label}</p>
+                      <p className="truncate text-[11px] text-slate-500">{h.label}</p>
                     )}
                   </div>
                   <UnhideIpButton ip={h.ip} />
@@ -221,14 +221,14 @@ export default async function DashboardPage({
         <Panel
           title={`Avis Google — tagger par section (${reviewsForTagger.length})`}
         >
-          <p className="mb-4 text-xs text-white/65">
+          <p className="mb-4 text-xs text-slate-600">
             Chaque avis affiche par défaut côté Auto (notre activité historique).
-            Tague-le <span className="text-amber-300">Maison</span> ou{" "}
+            Tague-le <span className="text-amber-600">Maison</span> ou{" "}
             <span className="text-sky-300">Les deux</span> dès qu'il concerne le
             mobilier. Le filtre s'applique en temps réel sur le site.
           </p>
           {reviewsForTagger.length === 0 ? (
-            <p className="text-sm text-white/50">
+            <p className="text-sm text-slate-500">
               Aucun avis Google récupéré pour l'instant (vérifie ta config
               Places API).
             </p>
@@ -245,7 +245,7 @@ export default async function DashboardPage({
         >
           <div className="-mx-2 overflow-x-auto">
             <table className="w-full min-w-[960px] text-xs">
-              <thead className="text-left text-white/65 uppercase tracking-wider">
+              <thead className="text-left text-slate-600 uppercase tracking-wider">
                 <tr>
                   <th className="px-2 py-2">Date</th>
                   <th className="px-2 py-2">Source</th>
@@ -259,28 +259,28 @@ export default async function DashboardPage({
               </thead>
               <tbody className="divide-y divide-white/5">
                 {visits.length === 0 && (
-                  <tr><td colSpan={8} className="py-6 text-center text-white/50">Aucune visite sur cette page.</td></tr>
+                  <tr><td colSpan={8} className="py-6 text-center text-slate-500">Aucune visite sur cette page.</td></tr>
                 )}
                 {visits.map((v) => (
-                  <tr key={v.id} className="hover:bg-white/[0.02]">
-                    <td className="px-2 py-2 whitespace-nowrap text-white/75">{fmt(v.ts)}</td>
+                  <tr key={v.id} className="hover:bg-slate-50">
+                    <td className="px-2 py-2 whitespace-nowrap text-slate-700">{fmt(v.ts)}</td>
                     <td className="px-2 py-2">{sourceBadge(v.source)}</td>
                     <td className="px-2 py-2 max-w-[220px] truncate" title={v.path}>{shortPath(v.path)}</td>
-                    <td className="px-2 py-2 text-white/70 max-w-[200px] truncate" title={[v.utm_source, v.utm_campaign, v.gclid].filter(Boolean).join(" · ")}>
-                      {v.gclid ? <span className="text-amber-300">gclid</span> : null}
+                    <td className="px-2 py-2 text-slate-600 max-w-[200px] truncate" title={[v.utm_source, v.utm_campaign, v.gclid].filter(Boolean).join(" · ")}>
+                      {v.gclid ? <span className="text-amber-600">gclid</span> : null}
                       {v.utm_source ? <> · {v.utm_source}</> : null}
                       {v.utm_campaign ? <> · {v.utm_campaign}</> : null}
                       {!v.gclid && !v.utm_source ? "—" : null}
                     </td>
-                    <td className="px-2 py-2 text-white/75">{v.device}</td>
-                    <td className="px-2 py-2 text-white/75">{v.os} · {v.browser}</td>
-                    <td className="px-2 py-2 text-white/65">
+                    <td className="px-2 py-2 text-slate-700">{v.device}</td>
+                    <td className="px-2 py-2 text-slate-700">{v.os} · {v.browser}</td>
+                    <td className="px-2 py-2 text-slate-600">
                       <div className="flex items-center gap-2">
                         <span className="font-mono">{v.ip ?? "—"}</span>
                         <HideIpButton ip={v.ip} />
                       </div>
                     </td>
-                    <td className="px-2 py-2 text-white/65 max-w-[200px] truncate" title={v.referer ?? ""}>{v.referer ?? "—"}</td>
+                    <td className="px-2 py-2 text-slate-600 max-w-[200px] truncate" title={v.referer ?? ""}>{v.referer ?? "—"}</td>
                   </tr>
                 ))}
               </tbody>
@@ -297,7 +297,7 @@ export default async function DashboardPage({
         >
           <div className="-mx-2 overflow-x-auto">
             <table className="w-full min-w-[760px] text-xs">
-              <thead className="text-left text-white/65 uppercase tracking-wider">
+              <thead className="text-left text-slate-600 uppercase tracking-wider">
                 <tr>
                   <th className="px-2 py-2">Date</th>
                   <th className="px-2 py-2">Type</th>
@@ -308,28 +308,28 @@ export default async function DashboardPage({
               </thead>
               <tbody className="divide-y divide-white/5">
                 {events.length === 0 && (
-                  <tr><td colSpan={5} className="py-6 text-center text-white/50">Aucun clic sur cette page.</td></tr>
+                  <tr><td colSpan={5} className="py-6 text-center text-slate-500">Aucun clic sur cette page.</td></tr>
                 )}
                 {events.map((e) => (
-                  <tr key={e.id} className="hover:bg-white/[0.02]">
-                    <td className="px-2 py-2 whitespace-nowrap text-white/75">{fmt(e.ts)}</td>
+                  <tr key={e.id} className="hover:bg-slate-50">
+                    <td className="px-2 py-2 whitespace-nowrap text-slate-700">{fmt(e.ts)}</td>
                     <td className="px-2 py-2">
                       <span className={`inline-flex items-center rounded-full border px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider ${
                         e.type === "whatsapp_click"
-                          ? "bg-brand-500/15 text-brand-200 border-brand-500/30"
+                          ? "bg-brand-500/15 text-brand-700 border-brand-500/30"
                           : "bg-sky-500/15 text-sky-200 border-sky-500/30"
                       }`}>
                         {e.type === "whatsapp_click" ? "WhatsApp" : "Téléphone"}
                       </span>
                     </td>
                     <td className="px-2 py-2 max-w-[240px] truncate" title={e.path ?? ""}>{shortPath(e.path)}</td>
-                    <td className="px-2 py-2 text-white/65">
+                    <td className="px-2 py-2 text-slate-600">
                       <div className="flex items-center gap-2">
                         <span className="font-mono">{e.ip ?? "—"}</span>
                         <HideIpButton ip={e.ip} />
                       </div>
                     </td>
-                    <td className="px-2 py-2 text-white/65 max-w-[280px] truncate" title={e.user_agent ?? ""}>{e.user_agent ?? "—"}</td>
+                    <td className="px-2 py-2 text-slate-600 max-w-[280px] truncate" title={e.user_agent ?? ""}>{e.user_agent ?? "—"}</td>
                   </tr>
                 ))}
               </tbody>
@@ -339,7 +339,7 @@ export default async function DashboardPage({
         </Panel>
       </section>
 
-      <p className="mt-10 text-center text-xs text-white/40">
+      <p className="mt-10 text-center text-xs text-slate-400">
         Stockage local SQLite — <code>data/analytics.db</code>. Mention RGPD à ajouter dans la politique de confidentialité (IP/UA conservés ~13 mois).
       </p>
     </div>
@@ -365,26 +365,26 @@ function Pagination({
   const next = Math.min(total, current + 1);
 
   return (
-    <nav className="mt-4 flex items-center justify-between border-t border-white/5 pt-3 text-xs">
+    <nav className="mt-4 flex items-center justify-between border-t border-slate-100 pt-3 text-xs">
       <Link
         href={link(prev)}
-        className={`rounded-lg border border-white/10 px-3 py-1.5 ${
+        className={`rounded-lg border border-slate-200 px-3 py-1.5 ${
           current === 1
-            ? "pointer-events-none text-white/30"
-            : "text-white/80 hover:bg-white/5"
+            ? "pointer-events-none text-slate-300"
+            : "text-slate-700 hover:bg-slate-50"
         }`}
       >
         ← Précédent
       </Link>
-      <span className="text-white/65">
+      <span className="text-slate-600">
         Page {current} / {total}
       </span>
       <Link
         href={link(next)}
-        className={`rounded-lg border border-white/10 px-3 py-1.5 ${
+        className={`rounded-lg border border-slate-200 px-3 py-1.5 ${
           current === total
-            ? "pointer-events-none text-white/30"
-            : "text-white/80 hover:bg-white/5"
+            ? "pointer-events-none text-slate-300"
+            : "text-slate-700 hover:bg-slate-50"
         }`}
       >
         Suivant →
@@ -411,20 +411,20 @@ function Kpi({
         ? "border-amber-500/30 bg-amber-500/[0.06]"
         : tone === "sky"
           ? "border-sky-500/30 bg-sky-500/[0.06]"
-          : "border-white/10 bg-white/[0.03]";
+          : "border-slate-200 bg-slate-50";
   return (
     <div className={`rounded-2xl border p-5 ${ring}`}>
-      <p className="text-xs font-medium uppercase tracking-wider text-white/65">{label}</p>
-      <p className="mt-2 h-display text-3xl font-extrabold text-white">{value}</p>
-      {hint && <p className="mt-1 text-xs text-white/65">{hint}</p>}
+      <p className="text-xs font-medium uppercase tracking-wider text-slate-600">{label}</p>
+      <p className="mt-2 h-display text-3xl font-extrabold text-slate-900">{value}</p>
+      {hint && <p className="mt-1 text-xs text-slate-600">{hint}</p>}
     </div>
   );
 }
 
 function Panel({ title, children }: { title: string; children: React.ReactNode }) {
   return (
-    <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-5 sm:p-6">
-      <h2 className="h-display text-base font-semibold text-white sm:text-lg">{title}</h2>
+    <div className="rounded-2xl border border-slate-200 bg-slate-50 p-5 sm:p-6">
+      <h2 className="h-display text-base font-semibold text-slate-900 sm:text-lg">{title}</h2>
       <div className="mt-4">{children}</div>
     </div>
   );

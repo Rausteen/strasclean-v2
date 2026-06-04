@@ -29,7 +29,7 @@ export default function FloatingWhatsApp() {
     <>
       {/* Mobile sticky bar — TOUJOURS visible */}
       <div
-        className="fixed inset-x-0 bottom-0 z-40 border-t border-white/10 bg-ink-950 lg:hidden"
+        className="fixed inset-x-0 bottom-0 z-40 border-t border-slate-200 bg-white lg:hidden"
         style={{
           paddingTop: "10px",
           paddingBottom: "calc(env(safe-area-inset-bottom, 0px) + 10px)",
@@ -49,7 +49,7 @@ export default function FloatingWhatsApp() {
           <a
             href={SITE.phoneHref}
             aria-label="Appeler StrasClean"
-            className="grid h-12 w-12 shrink-0 place-items-center rounded-full border border-white/10 bg-white/5 text-white active:scale-95"
+            className="grid h-12 w-12 shrink-0 place-items-center rounded-full border border-slate-200 bg-slate-50 text-slate-900 active:scale-95"
           >
             <PhoneIcon size={20} />
           </a>

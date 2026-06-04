@@ -43,7 +43,7 @@ export default function Header() {
     <header
       className={`sticky top-0 z-50 transition-colors duration-300 ${
         scrolled
-          ? "border-b border-white/5 bg-ink-950/95 lg:bg-ink-950/80 lg:backdrop-blur-md"
+          ? "border-b border-slate-100 bg-white/95 lg:bg-white/80 lg:backdrop-blur-md"
           : "bg-transparent"
       }`}
     >
@@ -64,15 +64,15 @@ export default function Header() {
                   : "from-brand-400 to-brand-600 shadow-glow"
               }`}
             >
-              <SparklesIcon size={18} className="text-ink-950" />
+              <SparklesIcon size={18} className="text-slate-900" />
             </span>
-            <span className="h-display text-lg font-bold tracking-tight text-white">
+            <span className="h-display text-lg font-bold tracking-tight text-slate-900">
               Stras
-              <span className={onMaison ? "text-amber-400" : "text-brand-400"}>
+              <span className={onMaison ? "text-amber-600" : "text-brand-600"}>
                 Clean
               </span>
               {onMaison && (
-                <span className="ml-1 hidden text-[10px] font-medium uppercase tracking-wider text-amber-300/80 sm:inline">
+                <span className="ml-1 hidden text-[10px] font-medium uppercase tracking-wider text-amber-600/80 sm:inline">
                   Maison
                 </span>
               )}
@@ -86,7 +86,7 @@ export default function Header() {
             <Link
               key={n.href}
               href={n.href}
-              className="text-sm font-medium text-white/65 transition hover:text-white"
+              className="text-sm font-medium text-slate-600 transition hover:text-slate-900"
             >
               {n.label}
             </Link>
@@ -118,7 +118,7 @@ export default function Header() {
             onClick={() => setOpen((s) => !s)}
             aria-label={open ? "Fermer le menu" : "Ouvrir le menu"}
             aria-expanded={open}
-            className="grid h-10 w-10 place-items-center rounded-full border border-white/10 bg-white/5 text-white active:scale-95 lg:hidden"
+            className="grid h-10 w-10 place-items-center rounded-full border border-slate-200 bg-slate-50 text-slate-900 active:scale-95 lg:hidden"
           >
             {open ? <CloseIcon size={18} /> : <MenuIcon size={18} />}
           </button>
@@ -126,7 +126,7 @@ export default function Header() {
       </div>
 
       {/* SOUS-STRIP — pill Auto/Maison toujours visible, position stable */}
-      <div className="border-t border-white/5 bg-ink-950/60 backdrop-blur-sm">
+      <div className="border-t border-slate-100 bg-white/60 backdrop-blur-sm">
         <div className="container-x flex h-10 items-center justify-center">
           <SectionToggle onMaison={onMaison} />
         </div>
@@ -135,7 +135,7 @@ export default function Header() {
       {/* Mobile drawer */}
       {open && (
         <div className="lg:hidden">
-          <div className="border-t border-white/5 bg-ink-950">
+          <div className="border-t border-slate-100 bg-white">
             <div className="container-x flex flex-col gap-3 py-4">
               <div className="flex flex-col gap-1">
                 {nav.map((n) => (
@@ -143,7 +143,7 @@ export default function Header() {
                     key={n.href}
                     href={n.href}
                     onClick={() => setOpen(false)}
-                    className="rounded-xl px-3 py-2.5 text-base font-medium text-white/85 hover:bg-white/5"
+                    className="rounded-xl px-3 py-2.5 text-base font-medium text-slate-800 hover:bg-slate-50"
                   >
                     {n.label}
                   </Link>
@@ -153,7 +153,7 @@ export default function Header() {
                 <Link
                   href="/qui-sommes-nous"
                   onClick={() => setOpen(false)}
-                  className="rounded-xl px-3 py-2.5 text-base font-medium text-white/85 hover:bg-white/5"
+                  className="rounded-xl px-3 py-2.5 text-base font-medium text-slate-800 hover:bg-slate-50"
                 >
                   À propos
                 </Link>
@@ -185,7 +185,7 @@ function SectionToggle({ onMaison }: { onMaison: boolean }) {
     <div
       role="tablist"
       aria-label="Section StrasClean"
-      className="inline-flex items-center rounded-full border border-white/10 bg-white/[0.04] p-0.5 text-xs"
+      className="inline-flex items-center rounded-full border border-slate-200 bg-slate-100 p-0.5 text-xs"
     >
       <Link
         href="/"
@@ -193,8 +193,8 @@ function SectionToggle({ onMaison }: { onMaison: boolean }) {
         aria-selected={!onMaison}
         className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 font-semibold transition ${
           !onMaison
-            ? "bg-brand-500 text-ink-950 shadow"
-            : "text-white/70 hover:text-white"
+            ? "bg-brand-500 text-slate-900 shadow"
+            : "text-slate-600 hover:text-slate-900"
         }`}
       >
         <CarIcon size={13} />
@@ -206,8 +206,8 @@ function SectionToggle({ onMaison }: { onMaison: boolean }) {
         aria-selected={onMaison}
         className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 font-semibold transition ${
           onMaison
-            ? "bg-amber-400 text-ink-950 shadow"
-            : "text-white/70 hover:text-white"
+            ? "bg-amber-400 text-slate-900 shadow"
+            : "text-slate-600 hover:text-slate-900"
         }`}
       >
         <HomeIcon size={13} />
