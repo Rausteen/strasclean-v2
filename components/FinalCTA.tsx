@@ -7,11 +7,11 @@ export default function FinalCTA() {
     <section id="reserver" className="relative py-16 sm:py-24">
       <div className="container-x">
         <Reveal>
-          {/* CTA final : carte sombre pour clore la page sur un accent
-              fort. Pendant visuel du MidCTA inversé. */}
-          <div className="relative overflow-hidden rounded-[28px] bg-slate-900 p-7 text-center sm:rounded-[32px] sm:p-12 lg:p-16">
-            <div className="pointer-events-none absolute inset-0 bg-grid-light bg-[size:36px_36px] opacity-[0.15] [mask-image:radial-gradient(ellipse_at_center,black_30%,transparent_75%)]" />
-            <div className="pointer-events-none absolute -bottom-32 left-1/2 h-[420px] w-[820px] -translate-x-1/2 rounded-full bg-brand-500/25 blur-2xl sm:blur-3xl" />
+          {/* CTA final : carte vert forêt pour clore la page sur un
+              accent fort de marque. Bg + halo radial gérés par la classe
+              utilitaire surface-forest (globals.css). */}
+          <div className="surface-forest relative overflow-hidden rounded-[28px] p-7 text-center sm:rounded-[32px] sm:p-12 lg:p-16">
+            <div className="pointer-events-none absolute inset-0 bg-grid-light bg-[size:36px_36px] opacity-[0.10] [mask-image:radial-gradient(ellipse_at_center,black_30%,transparent_75%)]" />
             <div className="pointer-events-none absolute -top-24 -right-10 h-64 w-64 rounded-full bg-emerald-400/15 blur-3xl" />
 
             <span className="relative inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-3 py-1.5 text-xs font-medium text-white/80 backdrop-blur">

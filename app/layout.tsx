@@ -1,18 +1,18 @@
 import type { Metadata, Viewport } from "next";
-import { Inter, Sora } from "next/font/google";
+import { Plus_Jakarta_Sans, Sora } from "next/font/google";
 import "./globals.css";
 import { SITE } from "@/lib/site";
 import Analytics from "@/components/Analytics";
 import Tracker from "@/components/Tracker";
 import { getGooglePlaceData } from "@/lib/reviews";
 
-const inter = Inter({
+const jakarta = Plus_Jakarta_Sans({
   subsets: ["latin"],
-  variable: "--font-inter",
+  variable: "--font-sans",
   display: "swap",
-  // Inter est utilisée pour le body (texte courant) — pas pour le H1 LCP.
-  // On la sort du critical path : elle se télécharge après le premier
-  // paint, sans le bloquer. Pendant ce temps le fallback système s'affiche.
+  weight: ["400", "500", "600", "700", "800"],
+  // Police body (pas l'élément LCP) → on la sort du critical path.
+  // Pendant son téléchargement, le fallback système s'affiche.
   preload: false,
   fallback: ["system-ui", "-apple-system", "Segoe UI", "Roboto", "sans-serif"],
 });
@@ -76,7 +76,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#05070A",
+  themeColor: "#F3F1E9",
   width: "device-width",
   initialScale: 1,
 };
@@ -148,7 +148,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   };
 
   return (
-    <html lang="fr" className={`${inter.variable} ${sora.variable}`}>
+    <html lang="fr" className={`${jakarta.variable} ${sora.variable}`}>
       <head>
         {/* Préconnexions vers les origines tierces pour économiser le
             handshake TCP+TLS au premier hit (gtag, fonts, WhatsApp). */}
@@ -156,7 +156,10 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
         <link rel="dns-prefetch" href="https://wa.me" />
       </head>
-      <body className="bg-white text-slate-900 antialiased">
+      {/* On retire bg-white pour laisser le fond "papier chaud" (--bg)
+          défini dans globals.css s'appliquer. text-slate-900 = warm ink
+          via l'override de la palette slate dans tailwind.config. */}
+      <body className="text-slate-900 antialiased">
         {children}
         <script
           type="application/ld+json"

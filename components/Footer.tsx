@@ -27,7 +27,7 @@ export default function Footer() {
     : SITE.whatsappHref;
 
   return (
-    <footer className="relative overflow-hidden bg-slate-900 pb-24 pt-14 text-slate-300 sm:pb-12 sm:pt-14">
+    <footer className="surface-forest relative overflow-hidden pb-24 pt-14 sm:pb-12 sm:pt-14">
       {/* Halo d'accent en haut pour lier visuellement au body light */}
       <div
         aria-hidden
