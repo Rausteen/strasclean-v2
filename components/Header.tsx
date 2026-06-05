@@ -47,7 +47,7 @@ export default function Header() {
           : "bg-transparent"
       }`}
     >
-      {/* TOPBAR principale — logo / nav / CTA */}
+      {/* TOPBAR principale — logo / toggle / nav / CTA */}
       <div className="container-x flex h-16 items-center gap-3">
         <Link
           href={onMaison ? "/strasclean-maison" : "/"}
@@ -75,6 +75,13 @@ export default function Header() {
             </span>
           </span>
         </Link>
+
+        {/* Toggle Auto/Maison — collé au logo, desktop uniquement.
+            Sur mobile c'est dans le drawer (cf. plus bas) pour ne pas
+            surcharger la topbar. */}
+        <div className="hidden lg:block">
+          <SectionToggle onMaison={onMaison} />
+        </div>
 
         {/* NAV anchors centrales (desktop uniquement) */}
         <nav className="mx-auto hidden items-center gap-6 lg:flex">
@@ -125,13 +132,6 @@ export default function Header() {
         </div>
       </div>
 
-      {/* SOUS-STRIP — pill Auto/Maison toujours visible, position stable */}
-      <div className="border-t border-slate-200 bg-slate-100/70 backdrop-blur-sm">
-        <div className="container-x flex h-[42px] items-center justify-center">
-          <SectionToggle onMaison={onMaison} />
-        </div>
-      </div>
-
       {/* Mobile drawer — overlay full-screen fixed.
           Couvre tout le viewport (peu importe la position de scroll),
           slide-in du haut. Évite le bug de sticky qui casse quand
@@ -170,6 +170,11 @@ export default function Header() {
           >
             <CloseIcon size={20} />
           </button>
+        </div>
+
+        {/* Toggle Auto/Maison — en haut du drawer pour switcher de section */}
+        <div className="flex justify-center border-b border-slate-200 bg-white py-3">
+          <SectionToggle onMaison={onMaison} />
         </div>
 
         {/* Nav scrollable si liste longue */}
