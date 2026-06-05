@@ -11,13 +11,23 @@
 [phases.setup]
 nixPkgs = ["nodejs_20", "python3", "gcc", "gnumake"]
 
-# Phase "install" : utilise npm ci pour un install reproductible depuis le lock
+# Phase "install" : utilise npm ci pour un install reproductible depuis le lock.
+# cacheDirectories : Nixpacks/BuildKit montent ces dossiers en cache persistant
+# entre les builds → npm ci ne re-télécharge que les deps modifiées.
 [phases.install]
-cmds = ["npm ci"]
+cmds = ["npm ci --prefer-offline --no-audit"]
+cacheDirectories = [
+  "/root/.npm",      # cache global npm (tarballs)
+  "node_modules",    # installées localement
+]
 
-# Phase "build" : exécute next build (output static + SSR)
+# Phase "build" : exécute next build.
+# .next/cache : Webpack/SWC cache + image optim cache → 2e build ~3× plus rapide.
 [phases.build]
 cmds = ["npm run build"]
+cacheDirectories = [
+  ".next/cache",
+]
 
 # Démarrage : Next 15 en mode prod sur le port fourni par la plateforme
 [start]
