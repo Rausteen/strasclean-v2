@@ -12,13 +12,14 @@
 nixPkgs = ["nodejs_20", "python3", "gcc", "gnumake"]
 
 # Phase "install" : utilise npm ci pour un install reproductible depuis le lock.
-# cacheDirectories : Nixpacks/BuildKit montent ces dossiers en cache persistant
-# entre les builds → npm ci ne re-télécharge que les deps modifiées.
+# cacheDirectories : seul /root/.npm est cachable safely entre builds.
+# /!\ NE PAS cacher node_modules ici : BuildKit le monte comme cache mount
+# séparé qui n'est plus présent dans la phase build → "next: not found"
+# (exit code 127).
 [phases.install]
 cmds = ["npm ci --prefer-offline --no-audit"]
 cacheDirectories = [
-  "/root/.npm",      # cache global npm (tarballs)
-  "node_modules",    # installées localement
+  "/root/.npm",      # cache global des tarballs npm
 ]
 
 # Phase "build" : exécute next build.
