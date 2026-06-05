@@ -132,58 +132,99 @@ export default function Header() {
         </div>
       </div>
 
-      {/* Mobile drawer — version aérée :
-          - Items espacés, type liste de menu native
-          - Couleur de fond paper + séparateur entre nav et CTA */}
-      {open && (
-        <div className="lg:hidden">
-          <div className="border-t border-slate-200 bg-slate-100">
-            <div className="container-x flex flex-col gap-1 py-4">
-              {nav.map((n) => (
+      {/* Mobile drawer — overlay full-screen fixed.
+          Couvre tout le viewport (peu importe la position de scroll),
+          slide-in du haut. Évite le bug de sticky qui casse quand
+          body.overflow=hidden sur certains navigateurs mobiles. */}
+      <div
+        className={`fixed inset-0 z-[60] flex flex-col bg-slate-100 transition-all duration-300 lg:hidden ${
+          open
+            ? "pointer-events-auto opacity-100"
+            : "pointer-events-none opacity-0"
+        }`}
+        aria-hidden={!open}
+      >
+        {/* Top bar du drawer : logo + bouton close */}
+        <div className="flex h-16 items-center justify-between border-b border-slate-200 bg-white px-4">
+          <Link
+            href={onMaison ? "/strasclean-maison" : "/"}
+            onClick={() => setOpen(false)}
+            className="inline-flex items-center gap-2"
+          >
+            <LogoMark
+              size={32}
+              variant={onMaison ? "amber" : "brand"}
+              className="rounded-lg"
+            />
+            <span className="h-display text-base font-bold text-slate-900">
+              Stras
+              <span className={onMaison ? "text-amber-600" : "text-brand-600"}>
+                Clean
+              </span>
+            </span>
+          </Link>
+          <button
+            onClick={() => setOpen(false)}
+            aria-label="Fermer le menu"
+            className="grid h-11 w-11 place-items-center rounded-full border border-slate-200 bg-white text-slate-900 active:scale-95"
+          >
+            <CloseIcon size={20} />
+          </button>
+        </div>
+
+        {/* Nav scrollable si liste longue */}
+        <nav className="flex-1 overflow-y-auto px-4 py-5">
+          <ul className="flex flex-col gap-1">
+            {nav.map((n) => (
+              <li key={n.href}>
                 <Link
-                  key={n.href}
                   href={n.href}
                   onClick={() => setOpen(false)}
-                  className="flex items-center justify-between rounded-2xl px-4 py-3.5 text-[16px] font-semibold text-slate-800 transition hover:bg-white"
+                  className="flex items-center justify-between rounded-2xl px-4 py-3.5 text-[17px] font-semibold text-slate-800 transition active:scale-[0.98] active:bg-white"
                 >
                   <span>{n.label}</span>
-                  <span aria-hidden className="text-slate-400">
-                    →
-                  </span>
+                  <span aria-hidden className="text-slate-400">→</span>
                 </Link>
-              ))}
+              </li>
+            ))}
+            <li>
               <Link
                 href="/qui-sommes-nous"
                 onClick={() => setOpen(false)}
-                className="flex items-center justify-between rounded-2xl px-4 py-3.5 text-[16px] font-semibold text-slate-800 transition hover:bg-white"
+                className="flex items-center justify-between rounded-2xl px-4 py-3.5 text-[17px] font-semibold text-slate-800 transition active:scale-[0.98] active:bg-white"
               >
                 <span>À propos</span>
-                <span aria-hidden className="text-slate-400">
-                  →
-                </span>
+                <span aria-hidden className="text-slate-400">→</span>
               </Link>
+            </li>
+          </ul>
+        </nav>
 
-              {/* CTA row — fond paper-2 pour distinguer du nav */}
-              <div className="mt-3 grid grid-cols-2 gap-2 border-t border-slate-200 pt-4">
-                <a
-                  href={SITE.phoneHref}
-                  className="inline-flex h-12 items-center justify-center gap-2 rounded-full border border-slate-300 bg-white text-[15px] font-semibold text-slate-900 active:scale-[0.98]"
-                >
-                  <PhoneIcon size={16} /> Appeler
-                </a>
-                <a
-                  href={SITE.whatsappHref}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="btn-wa h-12 w-full text-[15px]"
-                >
-                  <WhatsAppIcon size={18} /> WhatsApp
-                </a>
-              </div>
-            </div>
+        {/* CTA fixé en bas */}
+        <div
+          className="border-t border-slate-200 bg-white px-4 pt-4"
+          style={{
+            paddingBottom: "calc(env(safe-area-inset-bottom, 0px) + 16px)",
+          }}
+        >
+          <div className="grid grid-cols-2 gap-2">
+            <a
+              href={SITE.phoneHref}
+              className="inline-flex h-12 items-center justify-center gap-2 rounded-full border border-slate-300 bg-white text-[15px] font-semibold text-slate-900 active:scale-[0.98]"
+            >
+              <PhoneIcon size={16} /> Appeler
+            </a>
+            <a
+              href={SITE.whatsappHref}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn-wa h-12 w-full text-[15px]"
+            >
+              <WhatsAppIcon size={18} /> WhatsApp
+            </a>
           </div>
         </div>
-      )}
+      </div>
     </header>
   );
 }
