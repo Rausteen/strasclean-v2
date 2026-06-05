@@ -2,21 +2,17 @@ import Link from "next/link";
 import Reveal from "./Reveal";
 import { waLink } from "@/lib/site";
 import { PLANS, Plan } from "@/lib/plans";
-import { SERVICES, servicePath } from "@/lib/services";
-import { DEFAULT_CITY } from "@/lib/services";
 import VehiclePricing from "./VehiclePricing";
 import PlansCarousel from "./PlansCarousel";
-import { CheckIcon, WhatsAppIcon, ArrowRightIcon, PawIcon, SprayIcon, ClockIcon } from "./Icon";
+import { CheckIcon, WhatsAppIcon, ArrowRightIcon, PawIcon, SprayIcon } from "./Icon";
 
-// Options ciblées sur l'état du véhicule (la taille est déjà gérée par le
-// bandeau VehiclePricing affiché plus haut → on ne la duplique pas ici).
+// Options ciblées sur l'état du véhicule — slim à 4 cas les plus
+// fréquents (vs 6 avant), pour ne pas surcharger le client.
 const OPTIONS = [
   { icon: <PawIcon size={16} />, label: "Poils d'animaux", price: "+15 à 30 €" },
   { icon: <SprayIcon size={16} />, label: "Taches tenaces", price: "+10 à 20 €" },
   { icon: <SprayIcon size={16} />, label: "Sièges très sales", price: "+15 à 25 €" },
-  { icon: <SprayIcon size={16} />, label: "Coffre très sale", price: "+10 à 20 €" },
   { icon: <SprayIcon size={16} />, label: "Traitement odeurs", price: "+20 à 40 €" },
-  { icon: <SprayIcon size={16} />, label: "Moisissure", price: "+15 à 30 €" },
 ];
 
 export default function PricingSection() {
@@ -94,58 +90,6 @@ export default function PricingSection() {
                   <span className="shrink-0 rounded-full bg-brand-500/15 px-2 py-0.5 text-xs font-semibold text-brand-700">
                     {o.price}
                   </span>
-                </li>
-              ))}
-            </ul>
-          </div>
-        </Reveal>
-
-        {/* Prestations complémentaires — uniquement les prestations
-            qui sortent du cadre des formules (extérieur seul + revente). */}
-        <Reveal>
-          <div className="mt-8 rounded-3xl border border-slate-200 bg-slate-50 p-6 sm:p-8">
-            <div className="flex flex-col gap-1 sm:flex-row sm:items-end sm:justify-between">
-              <div>
-                <h3 className="h-display text-xl font-semibold text-slate-900 sm:text-2xl">
-                  Prestations complémentaires
-                </h3>
-                <p className="mt-1 text-sm text-slate-500">
-                  Deux prestations en plus des formules — pour un besoin
-                  précis : extérieur uniquement, ou remise à neuf pour la revente.
-                </p>
-              </div>
-            </div>
-
-            <ul className="mt-5 grid gap-3 sm:grid-cols-2">
-              {SERVICES.filter((s) =>
-                ["lavage-exterieur-voiture", "remise-a-neuf-voiture-revente"].includes(s.slug)
-              ).map((s) => (
-                <li key={s.slug}>
-                  <Link
-                    href={servicePath(s, DEFAULT_CITY)}
-                    className="group flex h-full items-start gap-3 rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 transition hover:-translate-y-0.5 hover:border-brand-400/40 hover:bg-brand-500/10"
-                  >
-                    <span className="grid h-9 w-9 shrink-0 place-items-center rounded-xl bg-brand-500/10 text-lg leading-none">
-                      {s.emoji}
-                    </span>
-                    <span className="min-w-0 flex-1">
-                      <span className="block truncate text-sm font-semibold text-slate-900">
-                        {s.name}
-                      </span>
-                      <span className="mt-0.5 inline-flex items-center gap-1.5 text-[11px] text-slate-600">
-                        <ClockIcon size={11} />
-                        {s.duration}
-                        <span className="text-slate-300">·</span>
-                        <span className="text-brand-600 font-semibold">
-                          dès {s.priceFrom} €
-                        </span>
-                      </span>
-                    </span>
-                    <ArrowRightIcon
-                      size={14}
-                      className="mt-2 shrink-0 text-slate-400 transition group-hover:translate-x-0.5 group-hover:text-brand-600"
-                    />
-                  </Link>
                 </li>
               ))}
             </ul>

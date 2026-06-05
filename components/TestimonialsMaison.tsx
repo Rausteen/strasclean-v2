@@ -78,9 +78,10 @@ export default function TestimonialsMaison({
         </Reveal>
 
         {hasMaisonReviews ? (
-          // Grille des vrais avis Maison
+          // Grille des vrais avis Maison — 5 avis + 6e card "voir tous"
+          // (pendant visuel de la grille Testimonials Auto)
           <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {googleReviews!.slice(0, 6).map((r, i) => (
+            {googleReviews!.slice(0, 5).map((r, i) => (
               <Reveal key={r.id} delay={i * 60}>
                 <article className="card card-hover h-full">
                   <div className="flex items-center gap-3">
@@ -111,6 +112,38 @@ export default function TestimonialsMaison({
                 </article>
               </Reveal>
             ))}
+
+            {/* 6e tuile : CTA "voir tous les avis" sur la fiche Google */}
+            {googleProfileUrl && (
+              <Reveal delay={5 * 60}>
+                <a
+                  href={googleProfileUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="group flex h-full flex-col items-center justify-center rounded-3xl border border-amber-400/30 bg-gradient-to-br from-amber-500/10 via-slate-100 to-slate-50 p-6 text-center transition hover:-translate-y-1 hover:border-amber-400/60"
+                  aria-label={`Voir les ${googleTotalCount ?? ""} avis Google de StrasClean`}
+                >
+                  <span className="flex items-center gap-0.5 text-amber-600">
+                    {Array.from({ length: 5 }).map((_, i) => (
+                      <StarIcon key={i} size={22} />
+                    ))}
+                  </span>
+                  <p className="h-display mt-3 text-4xl font-extrabold text-slate-900">
+                    {(googleRating ?? 5).toFixed(1).replace(".", ",")}
+                    <span className="text-2xl text-slate-600">/5</span>
+                  </p>
+                  <p className="mt-1 text-sm text-slate-600">
+                    {googleTotalCount
+                      ? `${googleTotalCount} avis Google vérifiés`
+                      : "Avis Google vérifiés"}
+                  </p>
+                  <span className="mt-5 inline-flex items-center gap-1.5 rounded-full border border-slate-300 bg-white px-4 py-2 text-sm font-semibold text-slate-900 transition group-hover:border-amber-400/40 group-hover:bg-amber-500/10 group-hover:text-amber-700">
+                    Voir tous les avis
+                    <span aria-hidden className="transition group-hover:translate-x-0.5">→</span>
+                  </span>
+                </a>
+              </Reveal>
+            )}
           </div>
         ) : (
           // Bandeau confiance condensé (note globale + équipe + 100% domicile)

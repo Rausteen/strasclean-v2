@@ -1,6 +1,7 @@
 import Header from "@/components/Header";
 import MobileOfferStrip from "@/components/MobileOfferStrip";
 import Hero from "@/components/Hero";
+import TrustBar from "@/components/TrustBar";
 import PricingSection from "@/components/PricingSection";
 import PriceCalculator from "@/components/PriceCalculatorLazy";
 import BeforeAfter from "@/components/BeforeAfter";
@@ -30,6 +31,7 @@ export default async function Page() {
       <MobileOfferStrip />
       <main>
         <Hero />
+        <TrustBar />
         <PricingSection />
         <PriceCalculator />
         <BeforeAfter />

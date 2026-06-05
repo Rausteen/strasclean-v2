@@ -132,42 +132,50 @@ export default function Header() {
         </div>
       </div>
 
-      {/* Mobile drawer */}
+      {/* Mobile drawer — version aérée :
+          - Items espacés, type liste de menu native
+          - Couleur de fond paper + séparateur entre nav et CTA */}
       {open && (
         <div className="lg:hidden">
-          <div className="border-t border-slate-100 bg-white">
-            <div className="container-x flex flex-col gap-3 py-4">
-              <div className="flex flex-col gap-1">
-                {nav.map((n) => (
-                  <Link
-                    key={n.href}
-                    href={n.href}
-                    onClick={() => setOpen(false)}
-                    className="rounded-xl px-3 py-2.5 text-base font-medium text-slate-800 hover:bg-slate-50"
-                  >
-                    {n.label}
-                  </Link>
-                ))}
-                {/* À propos — accessible depuis chaque page, hors NAV
-                    section pour ne pas alourdir la nav desktop. */}
+          <div className="border-t border-slate-200 bg-slate-100">
+            <div className="container-x flex flex-col gap-1 py-4">
+              {nav.map((n) => (
                 <Link
-                  href="/qui-sommes-nous"
+                  key={n.href}
+                  href={n.href}
                   onClick={() => setOpen(false)}
-                  className="rounded-xl px-3 py-2.5 text-base font-medium text-slate-800 hover:bg-slate-50"
+                  className="flex items-center justify-between rounded-2xl px-4 py-3.5 text-[16px] font-semibold text-slate-800 transition hover:bg-white"
                 >
-                  À propos
+                  <span>{n.label}</span>
+                  <span aria-hidden className="text-slate-400">
+                    →
+                  </span>
                 </Link>
-              </div>
+              ))}
+              <Link
+                href="/qui-sommes-nous"
+                onClick={() => setOpen(false)}
+                className="flex items-center justify-between rounded-2xl px-4 py-3.5 text-[16px] font-semibold text-slate-800 transition hover:bg-white"
+              >
+                <span>À propos</span>
+                <span aria-hidden className="text-slate-400">
+                  →
+                </span>
+              </Link>
 
-              <div className="mt-2 grid grid-cols-2 gap-2">
-                <a href={SITE.phoneHref} className="btn-ghost w-full">
+              {/* CTA row — fond paper-2 pour distinguer du nav */}
+              <div className="mt-3 grid grid-cols-2 gap-2 border-t border-slate-200 pt-4">
+                <a
+                  href={SITE.phoneHref}
+                  className="inline-flex h-12 items-center justify-center gap-2 rounded-full border border-slate-300 bg-white text-[15px] font-semibold text-slate-900 active:scale-[0.98]"
+                >
                   <PhoneIcon size={16} /> Appeler
                 </a>
                 <a
                   href={SITE.whatsappHref}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="btn-wa w-full"
+                  className="btn-wa h-12 w-full text-[15px]"
                 >
                   <WhatsAppIcon size={18} /> WhatsApp
                 </a>
