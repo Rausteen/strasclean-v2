@@ -1,0 +1,29 @@
+# ─────────────────────────────────────────────────────────────────────────
+#  Nixpacks config — utilisée par Dokploy / Railway / Coolify, etc.
+#
+#  Force Node 20 (better-sqlite3 12 demande ≥ 20) et installe les outils
+#  natifs nécessaires pour compiler better-sqlite3 via node-gyp :
+#    - python3 : node-gyp en a besoin pour ses scripts de config
+#    - gcc / make : pour compiler sqlite3.c
+# ─────────────────────────────────────────────────────────────────────────
+
+# Phase "setup" : packages système requis pour le build
+[phases.setup]
+nixPkgs = ["nodejs_20", "python3", "gcc", "gnumake"]
+
+# Phase "install" : utilise npm ci pour un install reproductible depuis le lock
+[phases.install]
+cmds = ["npm ci"]
+
+# Phase "build" : exécute next build (output static + SSR)
+[phases.build]
+cmds = ["npm run build"]
+
+# Démarrage : Next 15 en mode prod sur le port fourni par la plateforme
+[start]
+cmd = "npm start"
+
+# Variables d'environnement par défaut (override possible côté Dokploy)
+[variables]
+NODE_ENV = "production"
+NEXT_TELEMETRY_DISABLED = "1"
