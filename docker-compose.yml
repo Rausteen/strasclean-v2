@@ -56,11 +56,14 @@ services:
     volumes:
       # DB SQLite (analytics, avis cachés, demandes RDV, tags d'avis)
       - ./data:/app/data
-      # Photos uploadées — persistées hors du container pour que les
-      # uploads via SCP sur le VPS ne soient pas perdus à chaque rebuild
-      - ./public/avant-apres:/app/public/avant-apres
-      - ./public/maison/before-after:/app/public/maison/before-after
-      - ./public/maison/hero:/app/public/maison/hero
+      # ⚠️ Bind mounts photos commentés tant qu'on n'a pas de vraies
+      # photos à uploader. Un dossier hôte vide MASQUE les placeholders
+      # baked-in dans l'image (qui sont des gradients CSS).
+      # Pour réactiver : crée les dossiers + upload des .webp, puis
+      # décommente + docker compose up -d --build.
+      # - ./public/avant-apres:/app/public/avant-apres
+      # - ./public/maison/before-after:/app/public/maison/before-after
+      # - ./public/maison/hero:/app/public/maison/hero
 
     restart: unless-stopped
 
