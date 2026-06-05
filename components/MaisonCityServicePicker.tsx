@@ -4,7 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { CITIES } from "@/lib/cities";
 import { HOME_SERVICES, homeServiceCityPath } from "@/lib/homeServices";
-import { MapPinIcon, ArrowRightIcon } from "./Icon";
+import { MapPinIcon } from "./Icon";
 
 /**
  * Carte "Zone d'intervention" Maison.
@@ -21,16 +21,17 @@ export default function MaisonCityServicePicker() {
     HOME_SERVICES.find((s) => s.slug === serviceSlug) ?? HOME_SERVICES[0];
 
   return (
-    <div className="relative overflow-hidden rounded-3xl border border-slate-200 bg-gradient-to-br from-slate-100 to-slate-50 p-7 sm:p-9">
-      <div className="absolute inset-0 -z-10 bg-grid-light bg-[size:36px_36px] opacity-[0.25]" />
-      <div className="absolute -right-20 -top-24 h-64 w-64 rounded-full bg-amber-500/15 blur-2xl sm:blur-3xl" />
-
-      <h3 className="h-display text-xl font-semibold text-slate-900">
-        12 communes desservies
-      </h3>
-      <p className="mt-1 text-sm text-slate-500">
-        Choisissez votre prestation puis tapez sur votre commune.
-      </p>
+    <div className="relative overflow-hidden rounded-[28px] border border-slate-200 bg-white p-6 shadow-soft sm:p-8">
+      <div className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
+        <div>
+          <h3 className="h-display text-[19px] font-bold text-slate-900 sm:text-xl">
+            12 communes desservies
+          </h3>
+          <p className="mt-1 text-sm text-slate-500">
+            Choisissez votre prestation puis tapez sur votre commune.
+          </p>
+        </div>
+      </div>
 
       {/* Service picker — 4 pills, default = canapé */}
       <div
@@ -47,10 +48,10 @@ export default function MaisonCityServicePicker() {
               role="tab"
               aria-selected={active}
               onClick={() => setServiceSlug(s.slug)}
-              className={`rounded-full border px-3 py-1.5 text-xs font-semibold transition ${
+              className={`rounded-full border px-3.5 py-1.5 text-[13px] font-bold transition ${
                 active
-                  ? "border-amber-400/60 bg-amber-400 text-slate-900 shadow"
-                  : "border-slate-200 bg-slate-100 text-slate-600 hover:border-amber-400/30 hover:text-slate-900"
+                  ? "border-[#E0A100] bg-[#E0A100] text-[#2a1f00] shadow-sm"
+                  : "border-slate-200 bg-slate-50 text-slate-500 hover:border-amber-400/30 hover:text-slate-900"
               }`}
             >
               {s.shortName}
@@ -59,26 +60,25 @@ export default function MaisonCityServicePicker() {
         })}
       </div>
 
-      <ul className="mt-6 grid grid-cols-2 gap-2 sm:grid-cols-3">
+      <ul className="mt-6 grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-4">
         {CITIES.map((c) => (
           <li key={c.slug}>
             <Link
               href={homeServiceCityPath(service, c)}
               prefetch={false}
-              className="group flex items-center justify-between gap-2 rounded-xl border border-slate-200 bg-slate-50 px-3 py-2.5 text-sm text-slate-800 transition hover:border-amber-400/40 hover:bg-amber-500/10 hover:text-slate-900"
+              className="group flex h-full items-center justify-between gap-2 rounded-2xl border border-slate-200 bg-slate-50 px-3.5 py-2.5 text-[14px] font-semibold text-slate-800 transition hover:-translate-y-0.5 hover:border-amber-400/40 hover:bg-amber-50 hover:text-slate-900"
             >
               <span className="inline-flex items-center gap-2">
                 <MapPinIcon size={14} className="text-amber-600" />
                 {c.name}
               </span>
-              <ArrowRightIcon
-                size={12}
-                className="text-slate-400 transition group-hover:translate-x-0.5 group-hover:text-amber-600"
-              />
+              <span className="text-slate-400 transition group-hover:translate-x-0.5">
+                →
+              </span>
             </Link>
           </li>
         ))}
-        <li className="flex items-center justify-center rounded-xl border border-dashed border-slate-300 bg-slate-50 px-3 py-2.5 text-sm text-slate-600">
+        <li className="flex h-full items-center justify-center rounded-2xl border border-dashed border-slate-300 bg-slate-50/50 px-3.5 py-2.5 text-[14px] font-medium text-slate-500">
           + alentours
         </li>
       </ul>

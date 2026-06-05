@@ -95,34 +95,25 @@ function MaisonServiceCard({
     >
       {/* Badge */}
       {popular && !current && (
-        <span className="absolute left-1/2 top-0 z-10 -translate-x-1/2 -translate-y-1/2 whitespace-nowrap rounded-full bg-amber-400 px-3 py-1 text-[11px] font-bold uppercase tracking-wider text-slate-900 shadow-lg">
+        <span className="absolute left-1/2 top-0 z-10 -translate-x-1/2 -translate-y-1/2 whitespace-nowrap rounded-full bg-[#E0A100] px-3.5 py-1.5 text-[11px] font-extrabold uppercase tracking-[0.04em] text-[#2a1f00] shadow-card">
           Le + populaire ⭐
         </span>
       )}
       {current && (
-        <span className="absolute left-1/2 top-0 z-10 -translate-x-1/2 -translate-y-1/2 whitespace-nowrap rounded-full bg-slate-200 px-3 py-1 text-[11px] font-bold uppercase tracking-wider text-slate-900 shadow-lg backdrop-blur">
+        <span className="absolute left-1/2 top-0 z-10 -translate-x-1/2 -translate-y-1/2 whitespace-nowrap rounded-full bg-slate-200 px-3.5 py-1.5 text-[11px] font-extrabold uppercase tracking-[0.04em] text-slate-900 shadow-card">
           Vous êtes ici
         </span>
       )}
 
       <div
-        className={`relative flex h-full flex-col overflow-hidden rounded-3xl border p-5 transition-all duration-300 sm:p-6 ${
+        className={`relative flex h-full flex-col overflow-hidden rounded-[28px] border p-6 transition-all duration-300 sm:p-7 ${
           current
             ? "border-slate-300 bg-slate-100"
             : popular
-              ? "border-amber-400/40 bg-gradient-to-b from-amber-500/15 to-slate-50 shadow-glow-amber"
-              : "border-slate-200 bg-slate-50 group-hover:-translate-y-1 group-hover:border-amber-400/30"
+              ? "border-amber-400/50 bg-white shadow-glow-amber lg:scale-[1.02]"
+              : "border-slate-200 bg-white shadow-soft group-hover:-translate-y-1 group-hover:border-slate-300 group-hover:shadow-card"
         }`}
       >
-        {/* Glow */}
-        <div
-          aria-hidden
-          className={`pointer-events-none absolute inset-x-0 -top-24 h-40 bg-gradient-to-b blur-2xl ${
-            popular
-              ? "from-amber-400/30 to-amber-500/0"
-              : "from-amber-300/10 to-amber-500/0"
-          }`}
-        />
 
         {/* Header : emoji + nom */}
         <div className="flex items-center gap-3">
