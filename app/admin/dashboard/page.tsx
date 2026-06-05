@@ -16,6 +16,7 @@ import {
 } from "@/lib/db";
 import { getGooglePlaceData } from "@/lib/reviews";
 import LogoutButton from "./LogoutButton";
+import RefreshButton from "./RefreshButton";
 import { HideIpButton, UnhideIpButton } from "./HideIpButton";
 import ReviewTagger from "./ReviewTagger";
 
@@ -119,7 +120,8 @@ export default async function DashboardPage({
             )}
           </p>
         </div>
-        <div className="flex gap-2">
+        <div className="flex flex-wrap gap-2">
+          <RefreshButton />
           <Link href="/" className="btn-ghost h-10 px-4 text-sm">
             ↗ Voir le site
           </Link>
