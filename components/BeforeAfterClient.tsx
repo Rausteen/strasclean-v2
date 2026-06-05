@@ -7,24 +7,15 @@ import Reveal from "./Reveal";
 // ─────────────────────────────────────────────────────────────────────────
 //  BeforeAfter — onglets Sièges / Tapis / Tableau / Carrosserie
 //
-//  Comportement maquette : 4 onglets, un seul "avant + après" affiché à la
-//  fois. Quand on clique un autre onglet, swap immédiat.
-//
-//  Les chemins d'image sont résolus côté serveur (au build) puis passés
-//  en props. Le composant ne fait que la logique d'onglet côté client.
-//
-//  Workflow upload photos sur le VPS :
-//    /public/avant-apres/siegeavant.webp + siegeapres.webp
-//    /public/avant-apres/tapisavant.webp + tapisapres.webp
-//    /public/avant-apres/tableauavant.webp + tableauapres.webp
-//    /public/avant-apres/carrosserieavant.webp + carrosserieapres.webp
-//
-//  Si une photo manque, un placeholder gradient prend le relais.
+//  Perf : toutes les paires sont rendues dans le DOM (4 stages empilés
+//  en absolute), seul l'actif est visible (opacity-100 vs opacity-0).
+//  → toutes les images se téléchargent au mount, le swap d'onglet est
+//  instantané (pas de re-fetch).
 // ─────────────────────────────────────────────────────────────────────────
 
 export type BeforeAfterPair = {
   id: string;
-  label: string; // affiché sur l'onglet
+  label: string;
   description: string;
   before: { src: string | null; alt: string; tone: "before" };
   after: { src: string | null; alt: string; tone: "after" };
@@ -36,7 +27,6 @@ export default function BeforeAfterClient({
   pairs: BeforeAfterPair[];
 }) {
   const [active, setActive] = useState(pairs[0]?.id);
-  const current = pairs.find((p) => p.id === active) ?? pairs[0];
 
   return (
     <section
@@ -83,29 +73,63 @@ export default function BeforeAfterClient({
           })}
         </div>
 
-        {/* Scène avant / après */}
-        {current && (
-          <div className="mx-auto mt-8 grid max-w-5xl gap-4 sm:grid-cols-2 sm:gap-4">
-            <Tile
-              label="Avant"
-              tone="before"
-              src={current.before.src}
-              alt={current.before.alt}
-            />
-            <Tile
-              label="Après"
-              tone="after"
-              src={current.after.src}
-              alt={current.after.alt}
-            />
+        {/* Stage : toutes les paires empilées, seule l'active est visible.
+            Les images sont chargées toutes en eager au mount → swap d'onglet
+            instantané (pas de download au clic). */}
+        <div className="relative mx-auto mt-8 max-w-5xl">
+          {/* Spacer qui définit la hauteur (la 1re paire en aspect-[4/3]
+              maintient la dimension ; les autres absolute sont superposées) */}
+          <div className="grid gap-4 sm:grid-cols-2">
+            <div className="aspect-[4/3]" aria-hidden />
+            <div className="aspect-[4/3]" aria-hidden />
           </div>
-        )}
 
-        {current?.description && (
-          <p className="mx-auto mt-6 max-w-2xl text-center text-sm text-slate-600">
-            {current.description}
-          </p>
-        )}
+          {pairs.map((p, i) => {
+            const isActive = p.id === active;
+            return (
+              <div
+                key={p.id}
+                role="tabpanel"
+                aria-hidden={!isActive}
+                className={`absolute inset-0 grid gap-4 transition-opacity duration-300 sm:grid-cols-2 ${
+                  isActive
+                    ? "pointer-events-auto opacity-100"
+                    : "pointer-events-none opacity-0"
+                }`}
+              >
+                <Tile
+                  label="Avant"
+                  tone="before"
+                  src={p.before.src}
+                  alt={p.before.alt}
+                  priority={i === 0}
+                />
+                <Tile
+                  label="Après"
+                  tone="after"
+                  src={p.after.src}
+                  alt={p.after.alt}
+                  priority={i === 0}
+                />
+              </div>
+            );
+          })}
+        </div>
+
+        {/* Description : suit l'onglet actif */}
+        <div className="relative mx-auto mt-6 min-h-[3rem] max-w-2xl text-center">
+          {pairs.map((p) => (
+            <p
+              key={p.id}
+              aria-hidden={p.id !== active}
+              className={`absolute inset-x-0 text-sm text-slate-600 transition-opacity duration-300 ${
+                p.id === active ? "opacity-100" : "opacity-0"
+              }`}
+            >
+              {p.description}
+            </p>
+          ))}
+        </div>
       </div>
     </section>
   );
@@ -116,11 +140,16 @@ function Tile({
   tone,
   src,
   alt,
+  priority,
 }: {
   label: string;
   tone: "before" | "after";
   src: string | null;
   alt: string;
+  /** True pour la 1re paire — préchargée immédiatement.
+   *  Les autres sont chargées en eager (pas lazy) pour éviter le délai
+   *  au tab switch, sans bloquer le LCP. */
+  priority?: boolean;
 }) {
   const isAfter = tone === "after";
   return (
@@ -130,7 +159,10 @@ function Tile({
           src={src}
           alt={alt}
           fill
-          loading="lazy"
+          // eager sur toutes (sauf priority dédié à la 1re) pour que le
+          // navigateur cache les 8 images dès le mount → swap onglet instant
+          loading={priority ? undefined : "eager"}
+          priority={priority}
           sizes="(max-width: 768px) 92vw, 480px"
           quality={82}
           className="object-cover"
@@ -145,7 +177,6 @@ function Tile({
         </div>
       )}
 
-      {/* Overlay foncé en haut pour les labels lisibles sur n'importe quelle photo */}
       {src && (
         <div className="pointer-events-none absolute inset-x-0 top-0 h-16 bg-gradient-to-b from-black/40 to-transparent" />
       )}
