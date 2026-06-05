@@ -94,19 +94,9 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "monthly" as const,
       priority: 0.75,
     })),
-    // Formulaires de réservation
-    {
-      url: `${SITE.url}/reserver-auto`,
-      lastModified: now,
-      changeFrequency: "monthly" as const,
-      priority: 0.6,
-    },
-    {
-      url: `${SITE.url}/reserver-maison`,
-      lastModified: now,
-      changeFrequency: "monthly" as const,
-      priority: 0.6,
-    },
+    // NOTE : /reserver-auto et /reserver-maison existent en code mais sont
+    // volontairement non listés ici tant qu'ils ne sont pas linkés depuis
+    // le site (les pages ont également noindex côté metadata).
     // Hub guide / blog
     {
       url: `${SITE.url}/guide`,

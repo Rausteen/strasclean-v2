@@ -97,11 +97,6 @@ export default function Footer() {
                 </Link>
               </li>
               <li>
-                <Link href="/reserver-auto" className="hover:text-white">
-                  Réserver en ligne
-                </Link>
-              </li>
-              <li>
                 <Link
                   href={cityPath(CITIES[0])}
                   prefetch={false}
@@ -127,14 +122,6 @@ export default function Footer() {
                   className="hover:text-white"
                 >
                   Hub Maison
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/reserver-maison"
-                  className="hover:text-white"
-                >
-                  Réserver en ligne
                 </Link>
               </li>
               {HOME_SERVICES.map((s) => (
