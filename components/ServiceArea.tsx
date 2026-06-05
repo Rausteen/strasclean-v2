@@ -34,20 +34,22 @@ export default function ServiceArea({ variant = "auto" }: Props = {}) {
         <div className="grid gap-10 lg:grid-cols-12 lg:gap-12">
           <Reveal className="lg:col-span-5">
             <p
-              className={`text-sm font-semibold uppercase tracking-[0.18em] ${accent}`}
+              className={`inline-flex items-center gap-2.5 text-sm font-bold uppercase tracking-[0.18em] ${accent} before:h-px before:w-6 ${isMaison ? "before:bg-amber-500" : "before:bg-brand-500"} before:opacity-80 before:content-['']`}
             >
               Zone d'intervention
             </p>
-            <h2 className="h-display mt-3 text-balance text-3xl font-bold text-slate-900 sm:text-4xl">
+            <h2 className="h-display mt-3.5 text-balance text-[clamp(26px,6vw,40px)] font-bold leading-[1.05] tracking-[-0.02em] text-slate-900">
               {title}
             </h2>
-            <p className="mt-4 text-slate-600">{intro}</p>
+            <p className="mt-4 text-[16px] leading-relaxed text-slate-600 sm:text-[17px]">
+              {intro}
+            </p>
 
             <a
               href={waLink(message)}
               target="_blank"
               rel="noopener noreferrer"
-              className="btn-wa mt-6"
+              className="btn-wa mt-6 h-12 px-6"
             >
               <WhatsAppIcon size={18} />
               Demander si ma ville est couverte
@@ -58,11 +60,8 @@ export default function ServiceArea({ variant = "auto" }: Props = {}) {
             {isMaison ? (
               <MaisonCityServicePicker />
             ) : (
-              <div className="relative overflow-hidden rounded-3xl border border-slate-200 bg-gradient-to-br from-slate-100 to-slate-50 p-7 sm:p-9">
-                <div className="absolute inset-0 -z-10 bg-grid-light bg-[size:36px_36px] opacity-[0.25]" />
-                <div className="absolute -right-20 -top-24 h-64 w-64 rounded-full bg-brand-500/15 blur-2xl sm:blur-3xl" />
-
-                <h3 className="h-display text-xl font-semibold text-slate-900">
+              <div className="relative overflow-hidden rounded-[28px] border border-slate-200 bg-white p-7 shadow-soft sm:p-9">
+                <h3 className="h-display text-[19px] font-bold text-slate-900 sm:text-xl">
                   12 communes desservies
                 </h3>
                 <p className="mt-1 text-sm text-slate-500">
@@ -75,20 +74,19 @@ export default function ServiceArea({ variant = "auto" }: Props = {}) {
                       <Link
                         href={cityPath(c)}
                         prefetch={false}
-                        className={`group flex items-center justify-between gap-2 rounded-xl border border-slate-200 bg-slate-50 px-3 py-2.5 text-sm text-slate-800 transition ${hoverBorder} hover:text-slate-900`}
+                        className={`group flex items-center justify-between gap-2 rounded-2xl border border-slate-200 bg-slate-50 px-3.5 py-2.5 text-[14px] font-medium text-slate-800 transition ${hoverBorder} hover:text-slate-900`}
                       >
                         <span className="inline-flex items-center gap-2">
                           <MapPinIcon size={14} className={pinColor} />
                           {c.name}
                         </span>
-                        <ArrowRightIcon
-                          size={12}
-                          className={`text-slate-400 transition group-hover:translate-x-0.5 group-hover:${pinColor}`}
-                        />
+                        <span className="text-slate-400 transition group-hover:translate-x-0.5">
+                          →
+                        </span>
                       </Link>
                     </li>
                   ))}
-                  <li className="flex items-center justify-center rounded-xl border border-dashed border-slate-300 bg-slate-50 px-3 py-2.5 text-sm text-slate-600">
+                  <li className="flex items-center justify-center rounded-2xl border border-dashed border-slate-300 bg-slate-50 px-3.5 py-2.5 text-[14px] font-medium text-slate-500">
                     + alentours
                   </li>
                 </ul>
