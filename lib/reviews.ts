@@ -264,10 +264,15 @@ export function filterReviewsBySection(
 ): GoogleReview[] {
   const filtered = reviews.filter((r) => {
     const t = tags[r.id];
+    // Règle d'affichage :
+    //  - untagged → visible des 2 côtés (défaut le + permissif)
+    //  - "both"   → visible des 2 côtés (explicite)
+    //  - "auto"   → visible uniquement sur Auto (exclu de Maison)
+    //  - "maison" → visible uniquement sur Maison (exclu de Auto)
     if (section === "auto") {
       return t === undefined || t === "auto" || t === "both";
     }
-    return t === "maison" || t === "both";
+    return t === undefined || t === "maison" || t === "both";
   });
   return filtered.slice(0, limit);
 }
