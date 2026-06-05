@@ -4,6 +4,10 @@ const nextConfig = {
   poweredByHeader: false,
   compress: true,
   productionBrowserSourceMaps: false,
+  // Output "standalone" : Next.js émet un dossier .next/standalone autonome
+  // avec node_modules + server.js minimal. Idéal pour Docker (image ~150 MB
+  // vs ~1 GB sans, sans node_modules superflu).
+  output: "standalone",
   // better-sqlite3 est un module natif Node : il ne doit pas être bundlé
   // (sinon Next essaie de l'embarquer côté client → crash au build).
   serverExternalPackages: ["better-sqlite3"],
