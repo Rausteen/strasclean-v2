@@ -6,7 +6,8 @@ import { SITE, waLink } from "@/lib/site";
 import { CITIES, cityPath } from "@/lib/cities";
 import { QUARTIERS } from "@/lib/quartiers";
 import { HOME_SERVICES, homeServicePath, homeServiceCityPath } from "@/lib/homeServices";
-import { WhatsAppIcon, PhoneIcon, SparklesIcon, MapPinIcon } from "./Icon";
+import { WhatsAppIcon, PhoneIcon, MapPinIcon } from "./Icon";
+import LogoMark from "./LogoMark";
 import { isMaisonPathname } from "@/lib/section";
 
 export default function Footer() {
@@ -18,9 +19,6 @@ export default function Footer() {
   // avec le Header / Hero (brand vert pour Auto, ambre pour Maison).
   const accent = isMaison ? "text-amber-300" : "text-brand-300";
   const accentMuted = isMaison ? "text-amber-200/80" : "text-brand-200/80";
-  const logoGradient = isMaison
-    ? "from-amber-300 to-amber-500"
-    : "from-brand-400 to-brand-600";
 
   const waHref = isMaison
     ? waLink(
@@ -43,11 +41,11 @@ export default function Footer() {
           {/* COL 1 — Brand + CTAs */}
           <div className="lg:col-span-5">
             <Link href="/" className="inline-flex items-center gap-2">
-              <span
-                className={`grid h-9 w-9 place-items-center rounded-xl bg-gradient-to-br ${logoGradient} shadow-glow`}
-              >
-                <SparklesIcon size={18} className="text-slate-900" />
-              </span>
+              <LogoMark
+                size={36}
+                variant={isMaison ? "amber" : "brand"}
+                className={isMaison ? "rounded-xl shadow-glow-amber" : "rounded-xl shadow-glow"}
+              />
               <span className="h-display text-lg font-bold text-white">
                 Stras<span className={accent}>Clean</span>
               </span>

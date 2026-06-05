@@ -6,7 +6,7 @@
       <stop offset="100%" stop-color="#047857"/>
     </linearGradient>
   </defs>
-  <rect width="64" height="64" rx="14" fill="url(#strascleanBg)"/>
+  <rect width="64" height="64" fill="url(#strascleanBg)"/>
   <path d="M32 8 Q36 28 56 32 Q36 36 32 56 Q28 36 8 32 Q28 28 32 8 Z" fill="#FFFFFF"/>
   <circle cx="48" cy="16" r="2.5" fill="#FFFFFF" opacity="0.55"/>
 </svg>

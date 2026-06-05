@@ -9,10 +9,10 @@ import {
   PhoneIcon,
   MenuIcon,
   CloseIcon,
-  SparklesIcon,
   CarIcon,
   HomeIcon,
 } from "./Icon";
+import LogoMark from "./LogoMark";
 import { isMaisonPathname, NAV_AUTO, NAV_MAISON } from "@/lib/section";
 
 export default function Header() {
@@ -57,15 +57,11 @@ export default function Header() {
           className="shrink-0"
         >
           <span className="flex items-center gap-2">
-            <span
-              className={`grid h-9 w-9 place-items-center rounded-xl bg-gradient-to-br ${
-                onMaison
-                  ? "from-amber-300 to-amber-500 shadow-glow-amber"
-                  : "from-brand-400 to-brand-600 shadow-glow"
-              }`}
-            >
-              <SparklesIcon size={18} className="text-slate-900" />
-            </span>
+            <LogoMark
+              size={36}
+              variant={onMaison ? "amber" : "brand"}
+              className={onMaison ? "shadow-glow-amber rounded-xl" : "shadow-glow rounded-xl"}
+            />
             <span className="h-display text-lg font-bold tracking-tight text-slate-900">
               Stras
               <span className={onMaison ? "text-amber-600" : "text-brand-600"}>
