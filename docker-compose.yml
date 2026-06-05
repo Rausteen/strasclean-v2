@@ -29,10 +29,12 @@ services:
         NEXT_PUBLIC_META_PIXEL_ID: ${NEXT_PUBLIC_META_PIXEL_ID:-}
 
     ports:
-      # Expose 3000 du container sur 3000 de l'hôte. Si tu mets un reverse
-      # proxy (nginx/caddy) devant, change pour "127.0.0.1:3000:3000"
-      # pour ne pas exposer publiquement.
-      - "3000:3000"
+      # ⚠️ Bind sur 127.0.0.1 uniquement : le port n'est PAS exposé
+      # publiquement. Tout passe par Caddy (réseau "web" ci-dessous)
+      # qui termine le HTTPS et reverse-proxy vers strasclean:3000.
+      # Pratique aussi pour debug local : curl http://localhost:3000
+      # depuis le VPS reste possible.
+      - "127.0.0.1:3000:3000"
 
     # Secrets runtime (clé Google Places API, session secret admin, etc.)
     # → mets-les dans un fichier .env (gitignored) à la racine.
@@ -44,6 +46,11 @@ services:
       - NODE_ENV=production
       - PORT=3000
       - HOSTNAME=0.0.0.0
+
+    # Réseau partagé avec Caddy. Le service Caddy résoudra ce container
+    # via son nom DNS interne : `reverse_proxy strasclean:3000`.
+    networks:
+      - web
 
     # Volumes persistants — survivent à `docker compose down`
     volumes:
@@ -72,3 +79,9 @@ services:
           memory: 1G
         reservations:
           memory: 256M
+
+# Réseau partagé avec Caddy. Déclaré external = créé hors de ce compose
+# (par Caddy ou manuellement avec : docker network create web).
+networks:
+  web:
+    external: true
