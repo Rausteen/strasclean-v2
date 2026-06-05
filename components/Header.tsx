@@ -93,30 +93,41 @@ export default function Header() {
             WhatsApp est retiré du Header pour ne pas surcharger : il y a
             déjà les CTA Hero et la sticky bar en bas qui prennent le
             relais après scroll. */}
-        <div className="ml-auto flex shrink-0 items-center gap-2">
+        <div className="ml-auto flex shrink-0 items-center gap-2.5">
+          {/* WhatsApp desktop (pill texte) */}
           <a
             href={SITE.whatsappHref}
             target="_blank"
             rel="noopener noreferrer"
-            className="btn-wa hidden lg:inline-flex"
+            className="btn-wa hidden h-11 px-[18px] lg:inline-flex"
           >
             <WhatsAppIcon size={18} />
             WhatsApp
+          </a>
+          {/* WhatsApp mobile (cercle icône uniquement) */}
+          <a
+            href={SITE.whatsappHref}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Réserver sur WhatsApp"
+            className="grid h-11 w-11 place-items-center rounded-full bg-whatsapp text-white shadow-glow active:scale-95 lg:hidden"
+          >
+            <WhatsAppIcon size={20} />
           </a>
           <button
             onClick={() => setOpen((s) => !s)}
             aria-label={open ? "Fermer le menu" : "Ouvrir le menu"}
             aria-expanded={open}
-            className="grid h-10 w-10 place-items-center rounded-full border border-slate-200 bg-slate-50 text-slate-900 active:scale-95 lg:hidden"
+            className="grid h-11 w-11 place-items-center rounded-full border border-slate-200 bg-white text-slate-900 active:scale-95 lg:hidden"
           >
-            {open ? <CloseIcon size={18} /> : <MenuIcon size={18} />}
+            {open ? <CloseIcon size={18} /> : <MenuIcon size={20} />}
           </button>
         </div>
       </div>
 
       {/* SOUS-STRIP — pill Auto/Maison toujours visible, position stable */}
-      <div className="border-t border-slate-100 bg-white/60 backdrop-blur-sm">
-        <div className="container-x flex h-10 items-center justify-center">
+      <div className="border-t border-slate-200 bg-slate-100/70 backdrop-blur-sm">
+        <div className="container-x flex h-[42px] items-center justify-center">
           <SectionToggle onMaison={onMaison} />
         </div>
       </div>
@@ -174,16 +185,16 @@ function SectionToggle({ onMaison }: { onMaison: boolean }) {
     <div
       role="tablist"
       aria-label="Section StrasClean"
-      className="inline-flex items-center rounded-full border border-slate-200 bg-slate-100 p-0.5 text-xs"
+      className="inline-flex items-center gap-0.5 rounded-full border border-slate-200 bg-slate-100 p-1 text-[13px]"
     >
       <Link
         href="/"
         role="tab"
         aria-selected={!onMaison}
-        className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 font-semibold transition ${
+        className={`inline-flex items-center gap-1.5 rounded-full px-4 py-1.5 font-bold transition-all ${
           !onMaison
-            ? "bg-brand-500 text-slate-900 shadow"
-            : "text-slate-600 hover:text-slate-900"
+            ? "bg-brand-500 text-[#062b1e] shadow-sm"
+            : "text-slate-500 hover:text-slate-900"
         }`}
       >
         <CarIcon size={13} />
@@ -193,10 +204,10 @@ function SectionToggle({ onMaison }: { onMaison: boolean }) {
         href="/strasclean-maison"
         role="tab"
         aria-selected={onMaison}
-        className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 font-semibold transition ${
+        className={`inline-flex items-center gap-1.5 rounded-full px-4 py-1.5 font-bold transition-all ${
           onMaison
-            ? "bg-amber-400 text-slate-900 shadow"
-            : "text-slate-600 hover:text-slate-900"
+            ? "bg-[#E0A100] text-[#2a1f00] shadow-sm"
+            : "text-slate-500 hover:text-slate-900"
         }`}
       >
         <HomeIcon size={13} />

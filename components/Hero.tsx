@@ -51,17 +51,17 @@ export default function Hero() {
               Nettoyage auto à domicile à Strasbourg
             </span>
 
-            <h1 className="h-display mt-4 text-balance text-[34px] font-bold leading-[1.05] text-slate-900 sm:text-5xl lg:text-6xl">
+            <h1 className="h-display mt-5 text-balance text-[clamp(34px,10vw,64px)] font-bold leading-[1.02] tracking-[-0.02em] text-slate-900">
               Votre voiture propre comme neuve,{" "}
-              <span className="bg-gradient-to-r from-brand-500 via-brand-600 to-emerald-700 bg-clip-text text-transparent">
+              <span className="bg-gradient-to-r from-brand-600 to-brand-900 bg-clip-text text-transparent">
                 sans vous déplacer.
               </span>
             </h1>
 
-            <p className="mt-4 max-w-xl text-balance text-[15px] leading-relaxed text-slate-600 sm:mt-5 sm:text-lg">
-              StrasClean se déplace chez vous pour nettoyer votre véhicule en
-              profondeur, avec des formules adaptées à votre besoin&nbsp;:
-              entretien rapide, rénovation intérieure ou detailing complet.
+            <p className="mt-5 max-w-[36ch] text-balance text-[16px] leading-relaxed text-slate-700 sm:text-[19px]">
+              On vient chez vous nettoyer votre véhicule en profondeur — entretien
+              rapide, rénovation intérieure ou detailing complet. Vous ne bougez
+              pas.
             </p>
 
             <div className="mt-5 flex flex-col gap-3 sm:mt-7 sm:flex-row">
@@ -85,21 +85,21 @@ export default function Hero() {
             </div>
 
             {/* Preuve sociale + dispo — fusionnés en un seul bandeau dense */}
-            <div className="mt-4 flex flex-wrap items-center gap-x-4 gap-y-2 text-[13px] sm:mt-5 sm:text-sm">
+            <div className="mt-6 flex flex-wrap items-center gap-x-[18px] gap-y-2 text-sm">
               <span className="inline-flex items-center gap-1.5">
-                <span className="flex items-center gap-0.5 text-amber-600">
-                  <StarIcon size={14} />
-                  <StarIcon size={14} />
-                  <StarIcon size={14} />
-                  <StarIcon size={14} />
-                  <StarIcon size={14} />
+                <span className="flex items-center gap-px text-amber-600">
+                  <StarIcon size={15} />
+                  <StarIcon size={15} />
+                  <StarIcon size={15} />
+                  <StarIcon size={15} />
+                  <StarIcon size={15} />
                 </span>
-                <span className="font-semibold text-slate-900">Service local de confiance</span>
+                <span className="font-bold text-slate-900">Service local de confiance</span>
               </span>
-              <span className="inline-flex items-center gap-1.5 text-brand-700">
+              <span className="inline-flex items-center gap-1.5 font-semibold text-brand-700">
                 <span className="relative flex h-2 w-2">
                   <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-brand-400/70" />
-                  <span className="relative inline-flex h-2 w-2 rounded-full bg-brand-400" />
+                  <span className="relative inline-flex h-2 w-2 rounded-full bg-brand-500" />
                 </span>
                 Dispo cette semaine
               </span>
@@ -146,9 +146,9 @@ function HeroVisual() {
     <div className="relative mx-auto w-full max-w-xl lg:ml-auto">
       {/* Main car card */}
       <div className="relative">
-        <div className="relative overflow-hidden rounded-3xl border border-slate-200 bg-gradient-to-br from-slate-100 to-slate-50 p-6 shadow-card">
+        <div className="relative overflow-hidden rounded-[32px] border border-slate-200 bg-gradient-to-br from-white to-slate-50 p-3.5 shadow-card">
           {/* Photo (avec fallback gradient si /public/hero.webp absent) */}
-          <div className="relative aspect-[4/3] w-full overflow-hidden rounded-2xl bg-white">
+          <div className="relative aspect-[4/3] w-full overflow-hidden rounded-[26px] bg-white">
             {HERO_IMAGE_PATH ? (
               <Image
                 src={HERO_IMAGE_PATH}
@@ -172,11 +172,11 @@ function HeroVisual() {
             )}
             {/* Subtle overlay to blend top/bottom edges with the dark UI */}
             <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-black/10" />
-            <span className="absolute left-4 top-4 chip !bg-black/70 sm:!bg-black/50 sm:backdrop-blur-md">
-              <SparklesIcon size={12} className="text-brand-600" />
+            <span className="absolute left-6 top-6 inline-flex items-center gap-1.5 rounded-full bg-[rgba(11,36,26,0.72)] px-3 py-1.5 text-[12px] font-bold text-white backdrop-blur-md">
+              <SparklesIcon size={12} />
               Rendu showroom
             </span>
-            <span className="absolute right-4 top-4 chip !bg-black/70 !text-brand-700 sm:!bg-black/50 sm:backdrop-blur-md">
+            <span className="absolute right-6 top-6 inline-flex items-center gap-1.5 rounded-full bg-[rgba(11,36,26,0.72)] px-3 py-1.5 text-[12px] font-bold text-[#ffd66b] backdrop-blur-md">
               ★★★★★
             </span>
           </div>

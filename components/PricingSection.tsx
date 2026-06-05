@@ -161,74 +161,79 @@ function PlanCard({ plan }: { plan: Plan }) {
   return (
     <div id={plan.id} className="group relative h-full scroll-mt-24">
       {plan.badge && (
-        <span className="absolute left-1/2 top-0 z-10 -translate-x-1/2 -translate-y-1/2 whitespace-nowrap rounded-full bg-brand-500 px-3 py-1 text-[11px] font-bold uppercase tracking-wider text-slate-900 shadow-lg">
+        <span className="absolute left-1/2 top-0 z-10 -translate-x-1/2 -translate-y-1/2 whitespace-nowrap rounded-full bg-brand-500 px-3.5 py-1.5 text-[11px] font-extrabold uppercase tracking-[0.04em] text-[#062b1e] shadow-card">
           {plan.badge}
         </span>
       )}
       <div
-        className={`relative h-full overflow-hidden rounded-3xl border p-6 transition-all duration-300 sm:p-7 ${
+        className={`relative h-full overflow-hidden rounded-[28px] border p-6 transition-all duration-300 sm:p-7 ${
           popular
-            ? "border-brand-400/60 bg-white shadow-glow ring-1 ring-brand-400/30"
-            : "border-slate-200 bg-white shadow-sm group-hover:-translate-y-1 group-hover:border-slate-300 group-hover:shadow-md"
+            ? "border-brand-500/50 bg-white shadow-glow lg:scale-[1.03]"
+            : "border-slate-200 bg-white shadow-soft group-hover:-translate-y-1 group-hover:border-slate-300 group-hover:shadow-card"
         }`}
       >
-        {/* Glow */}
-        <div
-          aria-hidden
-          className={`pointer-events-none absolute inset-x-0 -top-24 h-40 bg-gradient-to-b ${plan.accent} blur-2xl`}
-        />
-
         <div className="flex items-center gap-3">
-          <span className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-slate-50 text-xl">
+          <span className="grid h-11 w-11 shrink-0 place-items-center rounded-[13px] bg-slate-100 text-[22px]">
             {plan.emoji}
           </span>
-          <h3 className="h-display text-lg font-semibold text-slate-900 sm:text-xl">{plan.name}</h3>
+          <h3 className="h-display text-lg font-bold text-slate-900 sm:text-[19px]">
+            {plan.name}
+          </h3>
         </div>
 
-      <div className="mt-5 flex items-baseline gap-2">
-        <span className="text-xs font-medium uppercase tracking-wider text-slate-600">
-          à partir de
-        </span>
-      </div>
-      <div className="mt-1 flex items-baseline gap-2">
-        <span className="h-display text-5xl font-extrabold text-slate-900">{plan.priceFrom}</span>
-        <span className="text-2xl font-semibold text-slate-600">€</span>
-      </div>
+        <div className="mt-5 flex items-baseline gap-2">
+          <span className="text-[12px] font-bold uppercase tracking-[0.1em] text-slate-500">
+            à partir de
+          </span>
+        </div>
+        <div className="mt-0.5 flex items-baseline gap-1">
+          <span className="h-display text-[52px] font-bold leading-none tracking-[-0.03em] text-slate-900">
+            {plan.priceFrom}
+          </span>
+          <span className="text-[26px] font-semibold text-slate-500">€</span>
+        </div>
 
-      <p className="mt-3 text-sm leading-relaxed text-slate-600">{plan.tagline}</p>
+        <p className="mt-3 text-[14.5px] leading-relaxed text-slate-700">
+          {plan.tagline}
+        </p>
 
-      <ul className="mt-6 space-y-3">
-        {plan.features.map((f) => (
-          <li key={f} className="flex items-start gap-3 text-sm text-slate-800">
-            <span
-              className={`mt-0.5 grid h-5 w-5 place-items-center rounded-full ${
-                popular ? "bg-brand-500 text-slate-900" : "bg-slate-100 text-brand-600"
-              }`}
+        <ul className="mt-5 space-y-3">
+          {plan.features.map((f) => (
+            <li
+              key={f}
+              className="flex items-start gap-3 text-[14.5px] text-slate-700"
             >
-              <CheckIcon size={12} />
-            </span>
-            {f}
-          </li>
-        ))}
-      </ul>
+              <span
+                className={`mt-0.5 grid h-5 w-5 shrink-0 place-items-center rounded-full ${
+                  popular
+                    ? "bg-brand-500 text-[#062b1e]"
+                    : "bg-brand-50 text-brand-700"
+                }`}
+              >
+                <CheckIcon size={12} />
+              </span>
+              <span>{f}</span>
+            </li>
+          ))}
+        </ul>
 
-      <div className="mt-7 flex flex-col gap-2">
-        <a
-          href={waLink(plan.ctaMessage)}
-          target="_blank"
-          rel="noopener noreferrer"
-          className={`${popular ? "btn-wa" : "btn-primary"} h-12 w-full text-base`}
-        >
-          {popular ? <WhatsAppIcon size={18} /> : null}
-          Réserver maintenant
-        </a>
-        <Link
-          href={`/formules#${plan.id}`}
-          className="inline-flex items-center justify-center gap-2 text-sm font-medium text-slate-600 hover:text-slate-900"
-        >
-          Voir les villes desservies <ArrowRightIcon size={14} />
-        </Link>
-      </div>
+        <div className="mt-6 flex flex-col gap-2.5">
+          <a
+            href={waLink(plan.ctaMessage)}
+            target="_blank"
+            rel="noopener noreferrer"
+            className={`${popular ? "btn-wa" : "btn-primary"} h-12 w-full text-base`}
+          >
+            {popular ? <WhatsAppIcon size={18} /> : null}
+            Réserver maintenant
+          </a>
+          <Link
+            href={`/formules#${plan.id}`}
+            className="inline-flex items-center justify-center gap-1.5 text-sm font-semibold text-slate-500 transition hover:text-slate-900"
+          >
+            Voir les villes desservies <ArrowRightIcon size={14} />
+          </Link>
+        </div>
       </div>
     </div>
   );
