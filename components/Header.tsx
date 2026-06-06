@@ -39,11 +39,15 @@ export default function Header() {
     setOpen(false);
   }, [pathname]);
 
-  // Scroll fiable vers une ancre de LA MÊME page. Le <Link> Next (App
-  // Router) scrolle parfois avant que le layout soit stabilisé (sections
-  // lazy), d'où le "il faut recliquer". On intercepte donc le clic pour
-  // faire un scrollIntoView nous-mêmes. Les liens vers une AUTRE page
-  // (base ≠ pathname) ne sont pas interceptés → navigation Next normale.
+  // Scroll fiable vers une ancre de LA MÊME page. Deux pièges :
+  //  1) le <Link> Next scrolle parfois avant que la cible existe/soit prête ;
+  //  2) du contenu au-dessus de la cible grandit APRÈS le clic (calculateur
+  //     lazy qui passe du skeleton à sa vraie hauteur, images qui chargent),
+  //     donc un seul scrollIntoView atterrit à côté → "il faut recliquer".
+  // On intercepte donc le clic et on RE-CALE tant que la position absolue de
+  // la cible bouge (layout pas stabilisé), pendant ~2s max, en s'arrêtant dès
+  // que l'utilisateur scrolle lui-même. Les liens cross-page (base ≠ pathname)
+  // ne sont pas interceptés → navigation Next normale.
   const scrollToAnchor = (
     e: MouseEvent<HTMLAnchorElement>,
     href: string,
@@ -55,8 +59,39 @@ export default function Header() {
     const el = document.getElementById(href.slice(i + 1));
     if (!el) return;
     e.preventDefault();
-    el.scrollIntoView({ behavior: "smooth", block: "start" });
     window.history.replaceState(null, "", href.slice(i));
+
+    // Position absolue dans le document (indépendante du scroll en cours).
+    const absTop = () => el.getBoundingClientRect().top + window.scrollY;
+    let last = absTop();
+    el.scrollIntoView({ behavior: "smooth", block: "start" });
+
+    let cancelled = false;
+    const stop = () => {
+      cancelled = true;
+      window.removeEventListener("wheel", stop);
+      window.removeEventListener("touchstart", stop);
+      window.removeEventListener("keydown", stop);
+    };
+    // Annule le recalage dès une interaction utilisateur (pas le scroll
+    // programmatique, qui n'émet pas ces événements).
+    window.addEventListener("wheel", stop, { passive: true });
+    window.addEventListener("touchstart", stop, { passive: true });
+    window.addEventListener("keydown", stop);
+
+    let tries = 0;
+    const tick = () => {
+      if (cancelled) return;
+      const now = absTop();
+      if (Math.abs(now - last) > 1) {
+        // La cible a bougé (layout shift au-dessus) → on se réaligne.
+        last = now;
+        el.scrollIntoView({ behavior: "smooth", block: "start" });
+      }
+      if (++tries < 20) window.setTimeout(tick, 100);
+      else stop();
+    };
+    window.setTimeout(tick, 100);
   };
 
   return (
