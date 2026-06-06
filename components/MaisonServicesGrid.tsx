@@ -186,7 +186,7 @@ function MaisonServiceCard({
         )}
 
         {/* CTAs */}
-        <div className="mt-6 flex flex-col gap-2">
+        <div className="mt-auto flex flex-col gap-2 pt-6">
           <a
             href={waLink(s.ctaMessage)}
             target="_blank"
