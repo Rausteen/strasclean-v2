@@ -110,7 +110,7 @@ function PlanCard({ plan }: { plan: Plan }) {
         </span>
       )}
       <div
-        className={`relative h-full overflow-hidden rounded-[28px] border p-6 transition-all duration-300 sm:p-7 ${
+        className={`relative flex h-full flex-col overflow-hidden rounded-[28px] border p-6 transition-all duration-300 sm:p-7 ${
           popular
             ? "border-brand-500/50 bg-white shadow-glow lg:scale-[1.03]"
             : "border-slate-200 bg-white shadow-soft group-hover:-translate-y-1 group-hover:border-slate-300 group-hover:shadow-card"
@@ -161,7 +161,7 @@ function PlanCard({ plan }: { plan: Plan }) {
           ))}
         </ul>
 
-        <div className="mt-6 flex flex-col gap-2.5">
+        <div className="mt-auto flex flex-col gap-2.5 pt-6">
           <a
             href={waLink(plan.ctaMessage)}
             target="_blank"

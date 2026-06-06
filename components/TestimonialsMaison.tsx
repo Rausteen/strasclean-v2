@@ -83,7 +83,7 @@ export default function TestimonialsMaison({
           <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {googleReviews!.slice(0, 5).map((r, i) => (
               <Reveal key={r.id} delay={i * 60}>
-                <article className="card card-hover h-full">
+                <article className="card card-hover flex h-full flex-col">
                   <div className="flex items-center gap-3">
                     <span
                       className={`grid h-10 w-10 shrink-0 place-items-center rounded-full bg-gradient-to-br ${
