@@ -217,6 +217,22 @@ export default function Footer() {
             </a>
           </div>
         </div>
+
+        {/* Crédit agence */}
+        <div className="mt-6 flex justify-center">
+          <a
+            href="https://naviel.fr"
+            target="_blank"
+            rel="noopener"
+            className="inline-flex items-center gap-1.5 text-[13px] font-medium text-slate-500 transition hover:text-slate-300"
+          >
+            <span
+              aria-hidden
+              className="inline-block h-[7px] w-[7px] rotate-45 rounded-[1px] bg-[#c8f24e]"
+            />
+            Réalisé par Naviel
+          </a>
+        </div>
       </div>
     </footer>
   );
