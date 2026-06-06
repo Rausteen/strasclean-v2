@@ -1,39 +1,40 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import dynamic from "next/dynamic";
 
-// Chargement lazy du calculateur Auto : le code (~15 kB gzippé) n'est
-// téléchargé qu'à l'approche du viewport, économisant ~15 kB sur le
-// First Load JS de la home et des pages city/service-city où il est rendu.
+// Chargement lazy du calculateur Auto : le code (~15 kB gzippé) reste dans un
+// chunk séparé (dynamic import), il n'alourdit pas le First Load JS.
 const PriceCalculator = dynamic(() => import("./PriceCalculator"), {
   ssr: false,
 });
 
 export default function PriceCalculatorLazy() {
   const [visible, setVisible] = useState(false);
-  const ref = useRef<HTMLDivElement>(null);
 
+  // On monte le calculateur dès que le navigateur est disponible (idle),
+  // juste après le 1er paint — et NON à l'approche du viewport en scrollant.
+  // Raison : monté pendant le scroll, il passait du skeleton à sa vraie
+  // hauteur en plein défilement et poussait les sections du bas (avis, faq)
+  // → les ancres du menu tombaient à côté. En le montant tôt, sa hauteur est
+  // figée avant tout clic du menu. Le réajustement de hauteur a lieu hors
+  // écran (le calculateur est loin sous la ligne de flottaison), donc
+  // invisible pour l'utilisateur.
   useEffect(() => {
-    if (!ref.current) return;
-    const el = ref.current;
-    const observer = new IntersectionObserver(
-      (entries) => {
-        if (entries[0]?.isIntersecting) {
-          setVisible(true);
-          observer.disconnect();
-        }
-      },
-      // Préchargement 300px avant d'entrer dans le viewport pour ne pas
-      // afficher le skeleton à l'utilisateur en scroll rapide.
-      { rootMargin: "300px" },
-    );
-    observer.observe(el);
-    return () => observer.disconnect();
+    const w = window as typeof window & {
+      requestIdleCallback?: (cb: () => void) => number;
+      cancelIdleCallback?: (id: number) => void;
+    };
+    if (typeof w.requestIdleCallback === "function") {
+      const id = w.requestIdleCallback(() => setVisible(true));
+      return () => w.cancelIdleCallback?.(id);
+    }
+    const t = window.setTimeout(() => setVisible(true), 200);
+    return () => window.clearTimeout(t);
   }, []);
 
   return (
-    <div ref={ref} className="min-h-[600px]" aria-hidden={!visible}>
+    <div className="min-h-[600px]" aria-hidden={!visible}>
       {visible ? <PriceCalculator /> : <CalculatorSkeleton variant="brand" />}
     </div>
   );
