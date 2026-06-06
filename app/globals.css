@@ -27,6 +27,17 @@ html {
   overflow-x: clip;
 }
 
+/* Décale les ancres sous le header sticky (h-16). scroll-padding-top gère
+   le scroll natif ; scroll-margin-top gère scrollIntoView (nav interceptée
+   dans le Header). :where() = spécificité 0, n'écrase pas les scroll-mt
+   locaux (ex. cartes de formules). */
+:where(
+  #formules, #avis, #avant-apres, #fonctionnement,
+  #process, #faq, #prestations
+) {
+  scroll-margin-top: 88px;
+}
+
 body {
   background: var(--bg);
   color: var(--fg);

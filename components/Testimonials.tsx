@@ -157,9 +157,13 @@ export default function Testimonials({
             Avis clients
           </p>
 
+          <h2 className="h-display mt-3 text-balance text-3xl font-bold text-slate-900 sm:text-4xl lg:text-5xl">
+            Ils ont retrouvé une voiture propre.
+          </h2>
+
           {hasGoogle && googleRating !== undefined && googleTotalCount !== undefined ? (
             // Bandeau "preuve sociale" en cas d'avis Google connectés
-            <div className="mt-4 inline-flex flex-wrap items-center justify-center gap-x-3 gap-y-1 rounded-full border border-brand-500/30 bg-brand-500/[0.08] px-4 py-2">
+            <div className="mt-5 inline-flex flex-wrap items-center justify-center gap-x-3 gap-y-1 rounded-full border border-brand-500/30 bg-brand-500/[0.08] px-4 py-2">
               <span className="flex items-center gap-0.5 text-amber-600">
                 {Array.from({ length: 5 }).map((_, i) => (
                   <StarIcon key={i} size={18} />
@@ -173,7 +177,7 @@ export default function Testimonials({
               </span>
             </div>
           ) : (
-            <div className="mt-4 inline-flex items-center gap-2">
+            <div className="mt-5 inline-flex items-center gap-2">
               <span className="flex items-center gap-0.5 text-amber-600">
                 {Array.from({ length: 5 }).map((_, i) => (
                   <StarIcon key={i} size={16} />
@@ -184,10 +188,6 @@ export default function Testimonials({
               </span>
             </div>
           )}
-
-          <h2 className="h-display mt-4 text-balance text-3xl font-bold text-slate-900 sm:text-4xl lg:text-5xl">
-            Ils ont retrouvé une voiture propre.
-          </h2>
         </Reveal>
 
         <div className="mt-12 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
