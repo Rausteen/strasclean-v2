@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, type MouseEvent } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { SITE } from "@/lib/site";
@@ -38,61 +38,6 @@ export default function Header() {
   useEffect(() => {
     setOpen(false);
   }, [pathname]);
-
-  // Scroll fiable vers une ancre de LA MÊME page. Deux pièges :
-  //  1) le <Link> Next scrolle parfois avant que la cible existe/soit prête ;
-  //  2) du contenu au-dessus de la cible grandit APRÈS le clic (calculateur
-  //     lazy qui passe du skeleton à sa vraie hauteur, images qui chargent),
-  //     donc un seul scrollIntoView atterrit à côté → "il faut recliquer".
-  // On intercepte donc le clic et on RE-CALE tant que la position absolue de
-  // la cible bouge (layout pas stabilisé), pendant ~2s max, en s'arrêtant dès
-  // que l'utilisateur scrolle lui-même. Les liens cross-page (base ≠ pathname)
-  // ne sont pas interceptés → navigation Next normale.
-  const scrollToAnchor = (
-    e: MouseEvent<HTMLAnchorElement>,
-    href: string,
-  ) => {
-    const i = href.indexOf("#");
-    if (i < 0) return;
-    const base = href.slice(0, i) || "/";
-    if (base !== pathname) return; // cross-page → laisse Next gérer
-    const el = document.getElementById(href.slice(i + 1));
-    if (!el) return;
-    e.preventDefault();
-    window.history.replaceState(null, "", href.slice(i));
-
-    // Position absolue dans le document (indépendante du scroll en cours).
-    const absTop = () => el.getBoundingClientRect().top + window.scrollY;
-    let last = absTop();
-    el.scrollIntoView({ behavior: "smooth", block: "start" });
-
-    let cancelled = false;
-    const stop = () => {
-      cancelled = true;
-      window.removeEventListener("wheel", stop);
-      window.removeEventListener("touchstart", stop);
-      window.removeEventListener("keydown", stop);
-    };
-    // Annule le recalage dès une interaction utilisateur (pas le scroll
-    // programmatique, qui n'émet pas ces événements).
-    window.addEventListener("wheel", stop, { passive: true });
-    window.addEventListener("touchstart", stop, { passive: true });
-    window.addEventListener("keydown", stop);
-
-    let tries = 0;
-    const tick = () => {
-      if (cancelled) return;
-      const now = absTop();
-      if (Math.abs(now - last) > 1) {
-        // La cible a bougé (layout shift au-dessus) → on se réaligne.
-        last = now;
-        el.scrollIntoView({ behavior: "smooth", block: "start" });
-      }
-      if (++tries < 20) window.setTimeout(tick, 100);
-      else stop();
-    };
-    window.setTimeout(tick, 100);
-  };
 
   return (
     <header
@@ -144,7 +89,6 @@ export default function Header() {
             <Link
               key={n.href}
               href={n.href}
-              onClick={(e) => scrollToAnchor(e, n.href)}
               className="text-sm font-medium text-slate-600 transition hover:text-slate-900"
             >
               {n.label}
@@ -240,10 +184,7 @@ export default function Header() {
               <li key={n.href}>
                 <Link
                   href={n.href}
-                  onClick={(e) => {
-                    setOpen(false);
-                    scrollToAnchor(e, n.href);
-                  }}
+                  onClick={() => setOpen(false)}
                   className="flex items-center justify-between rounded-2xl px-4 py-3.5 text-[17px] font-semibold text-slate-800 transition active:scale-[0.98] active:bg-white"
                 >
                   <span>{n.label}</span>
