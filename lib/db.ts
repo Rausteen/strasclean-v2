@@ -13,16 +13,33 @@ const DATA_DIR = process.env.DATA_DIR
   : path.join(process.cwd(), "data");
 const DB_PATH = path.join(DATA_DIR, "analytics.db");
 
-if (!fs.existsSync(DATA_DIR)) {
-  fs.mkdirSync(DATA_DIR, { recursive: true });
-}
-
 // ─── Connexion partagée (Singleton) ─────────────────────────────────────
 type GlobalWithDb = typeof globalThis & { __strascleanDb?: Database.Database };
 const g = globalThis as GlobalWithDb;
 
+// Ouvre la base sur disque. Si le chemin n'est pas inscriptible (volume non
+// monté pendant le build, mauvaises permissions du volume au runtime, FS en
+// lecture seule…), on NE DOIT PAS planter tout le site : on bascule sur une
+// base en mémoire. Les analytics ne persistent pas dans ce process, mais les
+// pages rendent normalement au lieu de renvoyer une erreur serveur.
+function openOnDiskOrMemory(): Database.Database {
+  try {
+    if (!fs.existsSync(DATA_DIR)) {
+      fs.mkdirSync(DATA_DIR, { recursive: true });
+    }
+    return new Database(DB_PATH);
+  } catch (err) {
+    console.error(
+      `[db] Impossible d'ouvrir ${DB_PATH} (${(err as Error).message}). ` +
+        `Bascule sur une base EN MÉMOIRE (non persistée). Vérifie DATA_DIR ` +
+        `et les permissions du volume monté.`,
+    );
+    return new Database(":memory:");
+  }
+}
+
 function openDb(): Database.Database {
-  const db = new Database(DB_PATH);
+  const db = openOnDiskOrMemory();
   db.pragma("journal_mode = WAL");
   db.pragma("synchronous = NORMAL");
   db.pragma("foreign_keys = ON");
