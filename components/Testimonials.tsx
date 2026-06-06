@@ -193,10 +193,10 @@ export default function Testimonials({
         <div className="mt-12 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
           {reviews.map((r, i) => (
             <Reveal key={`${r.name}-${i}`} delay={i * 70}>
-              <article className="card card-hover h-full">
+              <article className="card card-hover flex h-full flex-col">
                 <div className="flex items-center gap-3">
                   <span
-                    className={`grid h-11 w-11 place-items-center rounded-full bg-gradient-to-br ${r.tone} text-sm font-bold text-slate-900`}
+                    className={`grid h-11 w-11 shrink-0 place-items-center rounded-full bg-gradient-to-br ${r.tone} text-sm font-bold text-slate-900`}
                   >
                     {r.initials}
                   </span>
@@ -212,7 +212,7 @@ export default function Testimonials({
                 </div>
                 <p className="mt-4 text-sm leading-relaxed text-slate-700">“{r.text}”</p>
                 {r.source === "google" && (
-                  <p className="mt-3 text-[11px] uppercase tracking-wider text-slate-400">
+                  <p className="mt-auto pt-3 text-[11px] uppercase tracking-wider text-slate-400">
                     Avis Google
                   </p>
                 )}
