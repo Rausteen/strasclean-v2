@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, type MouseEvent } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { SITE } from "@/lib/site";
@@ -38,6 +38,26 @@ export default function Header() {
   useEffect(() => {
     setOpen(false);
   }, [pathname]);
+
+  // Scroll fiable vers une ancre de LA MÊME page. Le <Link> Next (App
+  // Router) scrolle parfois avant que le layout soit stabilisé (sections
+  // lazy), d'où le "il faut recliquer". On intercepte donc le clic pour
+  // faire un scrollIntoView nous-mêmes. Les liens vers une AUTRE page
+  // (base ≠ pathname) ne sont pas interceptés → navigation Next normale.
+  const scrollToAnchor = (
+    e: MouseEvent<HTMLAnchorElement>,
+    href: string,
+  ) => {
+    const i = href.indexOf("#");
+    if (i < 0) return;
+    const base = href.slice(0, i) || "/";
+    if (base !== pathname) return; // cross-page → laisse Next gérer
+    const el = document.getElementById(href.slice(i + 1));
+    if (!el) return;
+    e.preventDefault();
+    el.scrollIntoView({ behavior: "smooth", block: "start" });
+    window.history.replaceState(null, "", href.slice(i));
+  };
 
   return (
     <header
@@ -89,6 +109,7 @@ export default function Header() {
             <Link
               key={n.href}
               href={n.href}
+              onClick={(e) => scrollToAnchor(e, n.href)}
               className="text-sm font-medium text-slate-600 transition hover:text-slate-900"
             >
               {n.label}
@@ -184,7 +205,10 @@ export default function Header() {
               <li key={n.href}>
                 <Link
                   href={n.href}
-                  onClick={() => setOpen(false)}
+                  onClick={(e) => {
+                    setOpen(false);
+                    scrollToAnchor(e, n.href);
+                  }}
                   className="flex items-center justify-between rounded-2xl px-4 py-3.5 text-[17px] font-semibold text-slate-800 transition active:scale-[0.98] active:bg-white"
                 >
                   <span>{n.label}</span>
