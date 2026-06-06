@@ -3,8 +3,14 @@ import Database from "better-sqlite3";
 import fs from "node:fs";
 import path from "node:path";
 
-// ─── Path : data/analytics.db à la racine du projet ─────────────────────
-const DATA_DIR = path.join(process.cwd(), "data");
+// ─── Path : data/analytics.db ───────────────────────────────────────────
+// En prod, on stocke la base sur un VOLUME PERSISTANT (sinon elle est
+// recréée vide à chaque rebuild/redeploy, le conteneur étant éphémère).
+// → définir DATA_DIR=/data côté hébergeur + monter un volume sur /data.
+// En dev (DATA_DIR absent), on retombe sur data/ à la racine du projet.
+const DATA_DIR = process.env.DATA_DIR
+  ? path.resolve(process.env.DATA_DIR)
+  : path.join(process.cwd(), "data");
 const DB_PATH = path.join(DATA_DIR, "analytics.db");
 
 if (!fs.existsSync(DATA_DIR)) {
