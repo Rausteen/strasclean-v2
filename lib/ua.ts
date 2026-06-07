@@ -42,7 +42,16 @@ export function parseUserAgent(ua: string | null | undefined): ParsedUA {
 }
 
 // ─── Classification de la source de la visite ──────────────────────────
-export type TrafficSource = "ads" | "organic" | "direct" | "referral" | "social";
+// "ai" = trafic référé par un assistant IA (ChatGPT, Perplexity, Claude,
+// Gemini, Copilot…). On le distingue de "organic"/"referral" pour mesurer la
+// visibilité GEO (Generative Engine Optimization).
+export type TrafficSource =
+  | "ads"
+  | "ai"
+  | "organic"
+  | "direct"
+  | "referral"
+  | "social";
 
 export function classifySource(
   params: Record<string, string | undefined>,
@@ -80,6 +89,18 @@ export function classifySource(
 
   // Self-referral → direct
   if (host.includes("strasclean.fr")) return "direct";
+
+  // Assistants IA → "ai" (visibilité GEO). À tester en priorité car certains
+  // domaines (ex. google) matcheraient sinon la règle "organic" plus bas.
+  if (
+    /chatgpt\.com|chat\.openai\.com|openai\.com/.test(host) ||
+    /perplexity\.ai/.test(host) ||
+    /claude\.ai|anthropic\.com/.test(host) ||
+    /copilot\.microsoft\.com|bing\.com\/chat/.test(host) ||
+    /gemini\.google\.com|bard\.google\.com/.test(host)
+  ) {
+    return "ai";
+  }
 
   // Moteurs de recherche → organic
   if (
