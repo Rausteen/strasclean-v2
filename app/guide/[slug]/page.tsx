@@ -17,7 +17,9 @@ import { SITE, waLink } from "@/lib/site";
 
 type Params = { slug: string };
 
-export const dynamicParams = false;
+// true : voir app/[slug]/page.tsx — évite NoFallbackError sur les slugs
+// inconnus (sert une vraie 404 via notFound() à la place).
+export const dynamicParams = true;
 export const revalidate = 86400; // 24h
 
 export function generateStaticParams(): Params[] {
