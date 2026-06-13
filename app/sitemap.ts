@@ -94,9 +94,20 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "monthly" as const,
       priority: 0.75,
     })),
-    // NOTE : /reserver-auto et /reserver-maison existent en code mais sont
-    // volontairement non listés ici tant qu'ils ne sont pas linkés depuis
-    // le site (les pages ont également noindex côté metadata).
+    // Pages de réservation en ligne (3e canal d'acquisition, désormais
+    // actives, indexables et liées depuis les CTA + le Footer).
+    {
+      url: `${SITE.url}/reserver-auto`,
+      lastModified: now,
+      changeFrequency: "monthly" as const,
+      priority: 0.9,
+    },
+    {
+      url: `${SITE.url}/reserver-maison`,
+      lastModified: now,
+      changeFrequency: "monthly" as const,
+      priority: 0.9,
+    },
     // Hub guide / blog
     {
       url: `${SITE.url}/guide`,

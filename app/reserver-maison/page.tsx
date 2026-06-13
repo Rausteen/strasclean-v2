@@ -12,10 +12,9 @@ export const metadata: Metadata = {
   description:
     "Réservez en ligne un nettoyage canapé, tapis, matelas ou fauteuils à domicile à Strasbourg. Formulaire en 1 minute, confirmation par téléphone ou WhatsApp sous 1 h.",
   alternates: { canonical: "/reserver-maison" },
-  // Désactivé tant que le canal n'est pas activé publiquement.
-  // Pour ré-ouvrir : retirer ce robots + relinker depuis Hero/FinalCTA/Footer
-  // + ré-ajouter au sitemap.
-  robots: { index: false, follow: false },
+  // Canal de réservation en ligne ACTIF : indexable, lié depuis le CTA final
+  // Maison + Footer, et présent dans le sitemap. 3e voie d'acquisition.
+  robots: { index: true, follow: true },
   openGraph: {
     type: "website",
     url: `${SITE.url}/reserver-maison`,

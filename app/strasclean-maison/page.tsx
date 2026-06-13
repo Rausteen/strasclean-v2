@@ -380,6 +380,18 @@ export default async function HubMaisonPage() {
                     {SITE.phoneDisplay}
                   </a>
                 </div>
+                {/* 3e canal : réservation en ligne (capte les leads qui ne
+                    veulent pas appeler/écrire tout de suite). */}
+                <p className="mt-4 text-sm text-slate-600">
+                  ou{" "}
+                  <Link
+                    href="/reserver-maison"
+                    className="inline-flex items-center gap-1 font-semibold text-amber-700 underline-offset-4 hover:underline"
+                  >
+                    réservez en ligne en 1 minute
+                    <ArrowRightIcon size={14} />
+                  </Link>
+                </p>
               </div>
             </Reveal>
           </div>
