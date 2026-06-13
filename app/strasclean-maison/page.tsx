@@ -379,19 +379,14 @@ export default async function HubMaisonPage() {
                     <PhoneIcon size={16} />
                     {SITE.phoneDisplay}
                   </a>
-                </div>
-                {/* 3e canal : réservation en ligne (capte les leads qui ne
-                    veulent pas appeler/écrire tout de suite). */}
-                <p className="mt-4 text-sm text-slate-600">
-                  ou{" "}
                   <Link
                     href="/reserver-maison"
-                    className="inline-flex items-center gap-1 font-semibold text-amber-700 underline-offset-4 hover:underline"
+                    className="btn h-12 px-6 border border-amber-400/50 bg-amber-500/10 text-amber-800 hover:bg-amber-500/20"
                   >
-                    réservez en ligne en 1 minute
-                    <ArrowRightIcon size={14} />
+                    Réserver en ligne
+                    <ArrowRightIcon size={16} />
                   </Link>
-                </p>
+                </div>
               </div>
             </Reveal>
           </div>

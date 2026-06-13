@@ -51,21 +51,14 @@ export default function FinalCTA() {
                 <PhoneIcon size={18} />
                 Appeler maintenant
               </a>
-            </div>
-
-            {/* 3e canal : réservation en ligne pour ceux qui préfèrent ne pas
-                appeler / écrire tout de suite (capture le lead + ses
-                coordonnées même hors horaires). */}
-            <p className="relative mt-4 text-sm text-slate-300">
-              ou{" "}
               <Link
                 href="/reserver-auto"
-                className="inline-flex items-center gap-1 font-semibold text-white underline-offset-4 hover:underline"
+                className="btn h-14 px-7 text-base border border-white/25 bg-white/5 text-white hover:bg-white/10 sm:h-12 sm:w-auto"
               >
-                réservez en ligne en 1 minute
-                <ArrowRightIcon size={14} />
+                Réserver en ligne
+                <ArrowRightIcon size={16} />
               </Link>
-            </p>
+            </div>
 
             <ul className="relative mt-8 flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-sm text-slate-300">
               <li className="inline-flex items-center gap-2">
