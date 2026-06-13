@@ -149,32 +149,23 @@ export default function Analytics() {
               return false;
             }
 
-            document.addEventListener('click', function(e){
-              var a = e.target && e.target.closest ? e.target.closest('a') : null;
-              if (!a) return;
-              var href = a.getAttribute('href') || '';
-              var isWa  = href.indexOf('wa.me') !== -1 || href.indexOf('whatsapp') !== -1;
-              var isTel = href.indexOf('tel:') === 0;
-              if (!isWa && !isTel) return;
-
-              var section = isMaisonPath(window.location.pathname) ? 'maison' : 'auto';
-              var sendTo;
-              if (section === 'maison') {
-                sendTo = isWa ? MAISON_WA : MAISON_TEL;
-              } else {
-                sendTo = isWa ? AUTO_WA : AUTO_TEL;
-              }
-
+            // Tire une conversion (GA4 + Google Ads + Meta) pour un type de
+            // contact ('whatsapp' | 'phone') et une section ('auto'|'maison').
+            // Exposée en global (window.scConvert) pour être réutilisée à la
+            // soumission du formulaire de réservation → un lead formulaire
+            // compte alors comme une conversion WhatsApp dans Google Ads.
+            function fireConversion(kind, section){
+              var isWa = kind === 'whatsapp';
+              var sendTo = section === 'maison'
+                ? (isWa ? MAISON_WA : MAISON_TEL)
+                : (isWa ? AUTO_WA : AUTO_TEL);
               try {
                 if (typeof gtag === 'function') {
-                  // GA4 — événement générique avec param de section
                   gtag('event', isWa ? 'whatsapp_click' : 'phone_click', {
                     event_category: 'contact',
-                    event_label: href,
                     section: section,
                     value: 56
                   });
-                  // Google Ads — conversion routée vers le bon compte
                   if (sendTo) {
                     gtag('event', 'conversion', {
                       'send_to': sendTo,
@@ -192,6 +183,19 @@ export default function Analytics() {
                   });
                 }
               } catch (_) { /* silencieux */ }
+            }
+            window.scConvert = fireConversion;
+
+            document.addEventListener('click', function(e){
+              var a = e.target && e.target.closest ? e.target.closest('a') : null;
+              if (!a) return;
+              var href = a.getAttribute('href') || '';
+              var isWa  = href.indexOf('wa.me') !== -1 || href.indexOf('whatsapp') !== -1;
+              var isTel = href.indexOf('tel:') === 0;
+              if (!isWa && !isTel) return;
+
+              var section = isMaisonPath(window.location.pathname) ? 'maison' : 'auto';
+              fireConversion(isWa ? 'whatsapp' : 'phone', section);
             }, true);
           })();
         `}

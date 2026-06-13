@@ -163,13 +163,18 @@ export default function BookingForm({
         throw new Error(data.error ?? "Erreur lors de l'envoi.");
       }
 
-      // Conversion tracking — un event différent par section pour pouvoir
-      // les importer comme conversions distinctes dans les comptes Ads.
+      // Conversion tracking — un event GA4 dédié par section (métrique propre).
       if (typeof window !== "undefined" && typeof window.gtag === "function") {
         window.gtag("event", `booking_request_${section}`, {
           event_category: "lead",
           value: section === "maison" ? 15 : 12,
         });
+      }
+      // + compte la soumission comme une conversion WhatsApp (même action
+      // Google Ads que le clic WhatsApp) → le lead formulaire entre dans les
+      // conversions Ads et nourrit les enchères intelligentes.
+      if (typeof window !== "undefined" && typeof window.scConvert === "function") {
+        window.scConvert("whatsapp", section);
       }
 
       setStep("success");
@@ -650,9 +655,13 @@ function SuccessPanel({
   );
 }
 
-// Type augmentation pour gtag (déjà chargé via Analytics.tsx)
+// Type augmentation : gtag + helper de conversion exposé par Analytics.tsx
 declare global {
   interface Window {
     gtag?: (...args: unknown[]) => void;
+    scConvert?: (
+      kind: "whatsapp" | "phone",
+      section: "auto" | "maison",
+    ) => void;
   }
 }
