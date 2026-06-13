@@ -101,6 +101,14 @@ export default function Header() {
             déjà les CTA Hero et la sticky bar en bas qui prennent le
             relais après scroll. */}
         <div className="ml-auto flex shrink-0 items-center gap-2.5">
+          {/* Réserver en ligne (desktop) — 3e canal, présent sur toutes les
+              pages. Section-aware. */}
+          <Link
+            href={onMaison ? "/reserver-maison" : "/reserver-auto"}
+            className="btn hidden h-11 px-4 text-sm font-semibold border border-slate-300 bg-white text-slate-900 hover:border-slate-900 lg:inline-flex"
+          >
+            Réserver
+          </Link>
           {/* WhatsApp desktop (pill texte) */}
           <a
             href={SITE.whatsappHref}
@@ -212,6 +220,13 @@ export default function Header() {
             paddingBottom: "calc(env(safe-area-inset-bottom, 0px) + 16px)",
           }}
         >
+          <Link
+            href={onMaison ? "/reserver-maison" : "/reserver-auto"}
+            onClick={() => setOpen(false)}
+            className="mb-2 flex h-12 w-full items-center justify-center gap-1.5 rounded-full bg-slate-900 text-[15px] font-semibold text-white active:scale-[0.98]"
+          >
+            Réserver en ligne <span aria-hidden>→</span>
+          </Link>
           <div className="grid grid-cols-2 gap-2">
             <a
               href={SITE.phoneHref}

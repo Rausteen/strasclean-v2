@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { SITE, waLink } from "@/lib/site";
 import { WhatsAppIcon, PhoneIcon } from "./Icon";
@@ -27,6 +28,9 @@ export default function FloatingWhatsApp() {
       )
     : SITE.whatsappHref;
 
+  // Formulaire de réservation de la bonne section (3e canal d'acquisition).
+  const reserveHref = isMaison ? "/reserver-maison" : "/reserver-auto";
+
   return (
     <>
       {/* Mobile sticky bar — n'apparaît qu'après scroll au-delà du hero */}
@@ -41,15 +45,21 @@ export default function FloatingWhatsApp() {
           paddingRight: "max(env(safe-area-inset-right, 0px), 12px)",
         }}
       >
-        <div className="mx-auto flex max-w-md gap-2">
+        <div className="mx-auto flex max-w-md items-center gap-2">
           <a
             href={waHref}
             target="_blank"
             rel="noopener noreferrer"
-            className="btn-wa flex-1 h-12 text-[15px] font-semibold active:scale-[0.98]"
+            className="btn-wa h-12 flex-1 text-[15px] font-semibold active:scale-[0.98]"
           >
-            <WhatsAppIcon size={20} /> Réserver sur WhatsApp
+            <WhatsAppIcon size={20} /> WhatsApp
           </a>
+          <Link
+            href={reserveHref}
+            className="flex h-12 shrink-0 items-center justify-center rounded-full border border-slate-300 bg-white px-4 text-[14px] font-semibold text-slate-900 active:scale-[0.98]"
+          >
+            Devis
+          </Link>
           <a
             href={SITE.phoneHref}
             aria-label="Appeler StrasClean"
