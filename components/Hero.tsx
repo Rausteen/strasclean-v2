@@ -26,6 +26,7 @@ import {
   CheckIcon,
   BoltIcon,
   StarIcon,
+  ArrowRightIcon,
 } from "./Icon";
 
 export default function Hero() {
@@ -64,7 +65,7 @@ export default function Hero() {
               pas.
             </p>
 
-            <div className="mt-5 flex flex-col gap-3 sm:mt-7 sm:flex-row">
+            <div className="mt-5 flex flex-col gap-3 sm:mt-7 sm:flex-row sm:flex-wrap">
               <a
                 href={SITE.whatsappHref}
                 target="_blank"
@@ -73,6 +74,13 @@ export default function Hero() {
               >
                 <WhatsAppIcon size={20} />
                 Réserver sur WhatsApp
+              </a>
+              <a
+                href="/reserver-auto"
+                className="btn h-14 w-full px-6 text-base border border-brand-500/40 bg-brand-500/10 text-brand-700 hover:bg-brand-500/20 active:scale-[0.98] sm:h-12 sm:w-auto"
+              >
+                Réserver en ligne
+                <ArrowRightIcon size={16} />
               </a>
               <a
                 href={SITE.phoneHref}

@@ -200,7 +200,7 @@ export default async function HubMaisonPage() {
                   Particuliers et pros (Airbnb, hôtels, restaurants).
                 </p>
 
-                <div className="mt-6 flex flex-col gap-3 sm:mt-7 sm:flex-row">
+                <div className="mt-6 flex flex-col gap-3 sm:mt-7 sm:flex-row sm:flex-wrap">
                   <a
                     href={waLink(MESSAGE)}
                     target="_blank"
@@ -210,6 +210,13 @@ export default async function HubMaisonPage() {
                     <WhatsAppIcon size={20} />
                     Demander un devis
                   </a>
+                  <Link
+                    href="/reserver-maison"
+                    className="btn h-14 w-full px-6 text-base border border-amber-400/50 bg-amber-500/10 text-amber-800 hover:bg-amber-500/20 sm:h-12 sm:w-auto"
+                  >
+                    Réserver en ligne
+                    <ArrowRightIcon size={16} />
+                  </Link>
                   <a
                     href={SITE.phoneHref}
                     className="btn-ghost h-14 w-full px-6 text-base sm:h-12 sm:w-auto"
