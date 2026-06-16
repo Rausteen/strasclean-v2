@@ -106,15 +106,16 @@ export async function POST(req: Request) {
       { status: 400 },
     );
   }
-  if (!email || !isLikelyEmail(email)) {
-    return NextResponse.json(
-      { error: "Email invalide" },
-      { status: 400 },
-    );
-  }
   if (!phone || !isLikelyPhone(phone)) {
     return NextResponse.json(
       { error: "Numéro de téléphone invalide" },
+      { status: 400 },
+    );
+  }
+  // Email facultatif : on ne valide le format que s'il est fourni.
+  if (email && !isLikelyEmail(email)) {
+    return NextResponse.json(
+      { error: "Email invalide" },
       { status: 400 },
     );
   }
@@ -136,7 +137,8 @@ export async function POST(req: Request) {
     service_label: item.label,
     variant,
     first_name: firstName,
-    email,
+    // Colonne email NOT NULL en base : "" si non fourni (email facultatif).
+    email: email ?? "",
     phone,
     postal_code: postalCode,
     address_note: addressNote,

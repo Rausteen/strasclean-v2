@@ -99,7 +99,9 @@ export async function notifyNewLead(lead: LeadInput): Promise<void> {
         subject,
         html,
         text,
-        reply_to: lead.email, // répondre = écrire directement au client
+        // répondre = écrire directement au client (uniquement s'il a laissé
+        // un email, désormais facultatif dans le formulaire).
+        ...(lead.email ? { reply_to: lead.email } : {}),
       }),
     });
     if (!res.ok) {
