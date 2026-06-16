@@ -66,9 +66,8 @@ export default function ReserverMaisonPage() {
                 Réservez votre nettoyage à domicile en 1 minute.
               </h1>
               <p className="mt-4 text-balance text-base text-slate-600 sm:text-lg">
-                Choisissez votre prestation, indiquez votre créneau préféré et
-                vos coordonnées. On vous confirme par téléphone ou WhatsApp
-                sous 1 h ouvrée.
+                Choisissez votre prestation et laissez vos coordonnées. On vous
+                rappelle pour confirmer le créneau, sous 1 h ouvrée.
               </p>
             </div>
 
