@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 import { SITE, waLink } from "@/lib/site";
 import { CITIES, cityPath } from "@/lib/cities";
 import { QUARTIERS } from "@/lib/quartiers";
+import { USE_CASES, useCasePath } from "@/lib/usecases";
 import { HOME_SERVICES, homeServicePath, homeServiceCityPath } from "@/lib/homeServices";
 import { WhatsAppIcon, PhoneIcon, MapPinIcon } from "./Icon";
 import LogoMark from "./LogoMark";
@@ -196,6 +197,28 @@ export default function Footer() {
                   {q.name}
                 </Link>
                 {i < QUARTIERS.length - 1 && (
+                  <span className="ml-3 text-white/20">·</span>
+                )}
+              </li>
+            ))}
+          </ul>
+
+          {/* Cas fréquents (auto) — délie les pages "pain point" qui étaient
+              orphelines (uniquement dans le sitemap) → découverte + maillage. */}
+          <p className="mt-6 text-xs font-semibold uppercase tracking-wider text-slate-400">
+            Problèmes & cas fréquents
+          </p>
+          <ul className="mt-3 flex flex-wrap gap-x-3 gap-y-1.5 text-xs text-slate-400">
+            {USE_CASES.map((uc, i) => (
+              <li key={uc.slug}>
+                <Link
+                  href={useCasePath(uc)}
+                  prefetch={false}
+                  className="hover:text-white"
+                >
+                  {uc.shortName}
+                </Link>
+                {i < USE_CASES.length - 1 && (
                   <span className="ml-3 text-white/20">·</span>
                 )}
               </li>
