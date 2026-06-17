@@ -141,18 +141,17 @@ export default function BookingForm({
         throw new Error(data.error ?? "Erreur lors de l'envoi.");
       }
 
-      // Conversion tracking — un event GA4 dédié par section (métrique propre).
-      if (typeof window !== "undefined" && typeof window.gtag === "function") {
-        window.gtag("event", `booking_request_${section}`, {
-          event_category: "lead",
-          value: section === "maison" ? 15 : 12,
-        });
-      }
-      // + compte la soumission comme une conversion WhatsApp (même action
-      // Google Ads que le clic WhatsApp) → le lead formulaire entre dans les
-      // conversions Ads et nourrit les enchères intelligentes.
-      if (typeof window !== "undefined" && typeof window.scConvert === "function") {
-        window.scConvert("whatsapp", section);
+      // Tracking de la soumission du formulaire via le Google Tag, centralisé
+      // dans window.scConvert (cf. Analytics.tsx) :
+      //  - GA4 : event 'generate_lead' (avec param section)
+      //  - Google Ads : action de conversion "Formulaire" si configurée,
+      //    sinon repli sur le label WhatsApp (la soumission compte quand même)
+      //  - Meta : Lead
+      if (
+        typeof window !== "undefined" &&
+        typeof window.scConvert === "function"
+      ) {
+        window.scConvert("form", section);
       }
 
       setStep("success");
@@ -542,7 +541,7 @@ declare global {
   interface Window {
     gtag?: (...args: unknown[]) => void;
     scConvert?: (
-      kind: "whatsapp" | "phone",
+      kind: "whatsapp" | "phone" | "form",
       section: "auto" | "maison",
     ) => void;
   }

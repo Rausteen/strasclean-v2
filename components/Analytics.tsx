@@ -40,11 +40,16 @@ const GA_ID = process.env.NEXT_PUBLIC_GA_ID;
 const ADS_AUTO_ID = process.env.NEXT_PUBLIC_GOOGLE_ADS_AUTO_ID;
 const ADS_AUTO_WA_LABEL = process.env.NEXT_PUBLIC_GOOGLE_ADS_AUTO_WA_LABEL;
 const ADS_AUTO_PHONE_LABEL = process.env.NEXT_PUBLIC_GOOGLE_ADS_AUTO_PHONE_LABEL;
+// Action de conversion dédiée au formulaire (optionnelle). Si absente, on
+// retombe sur le label WhatsApp pour que la soumission compte quand même.
+const ADS_AUTO_FORM_LABEL = process.env.NEXT_PUBLIC_GOOGLE_ADS_AUTO_FORM_LABEL;
 
 const ADS_MAISON_ID = process.env.NEXT_PUBLIC_GOOGLE_ADS_MAISON_ID;
 const ADS_MAISON_WA_LABEL = process.env.NEXT_PUBLIC_GOOGLE_ADS_MAISON_WA_LABEL;
 const ADS_MAISON_PHONE_LABEL =
   process.env.NEXT_PUBLIC_GOOGLE_ADS_MAISON_PHONE_LABEL;
+const ADS_MAISON_FORM_LABEL =
+  process.env.NEXT_PUBLIC_GOOGLE_ADS_MAISON_FORM_LABEL;
 
 const PIXEL_ID = process.env.NEXT_PUBLIC_META_PIXEL_ID;
 
@@ -121,8 +126,10 @@ export default function Analytics() {
           (function(){
             var AUTO_WA   = ${j(ADS_AUTO_WA_LABEL)};
             var AUTO_TEL  = ${j(ADS_AUTO_PHONE_LABEL)};
+            var AUTO_FORM = ${j(ADS_AUTO_FORM_LABEL)};
             var MAISON_WA  = ${j(ADS_MAISON_WA_LABEL)};
             var MAISON_TEL = ${j(ADS_MAISON_PHONE_LABEL)};
+            var MAISON_FORM = ${j(ADS_MAISON_FORM_LABEL)};
 
             // Préfixes slug Maison — DOIT rester synchro avec lib/section.ts
             var MAISON_PREFIXES = [
@@ -149,20 +156,31 @@ export default function Analytics() {
               return false;
             }
 
-            // Tire une conversion (GA4 + Google Ads + Meta) pour un type de
-            // contact ('whatsapp' | 'phone') et une section ('auto'|'maison').
-            // Exposée en global (window.scConvert) pour être réutilisée à la
-            // soumission du formulaire de réservation → un lead formulaire
-            // compte alors comme une conversion WhatsApp dans Google Ads.
+            // Tire une conversion (GA4 + Google Ads + Meta) pour un type
+            // d'action : 'whatsapp' | 'phone' | 'form', routée vers le bon
+            // compte selon la section ('auto'|'maison'). Exposée en global
+            // (window.scConvert) → utilisée par les clics ET la soumission du
+            // formulaire de réservation. Pour 'form', on cible l'action de
+            // conversion dédiée si elle existe, sinon repli sur le label
+            // WhatsApp (la soumission compte quand même).
             function fireConversion(kind, section){
-              var isWa = kind === 'whatsapp';
-              var sendTo = section === 'maison'
-                ? (isWa ? MAISON_WA : MAISON_TEL)
-                : (isWa ? AUTO_WA : AUTO_TEL);
+              var maison = section === 'maison';
+              var sendTo;
+              if (kind === 'form') {
+                sendTo = maison ? (MAISON_FORM || MAISON_WA)
+                                : (AUTO_FORM || AUTO_WA);
+              } else if (kind === 'phone') {
+                sendTo = maison ? MAISON_TEL : AUTO_TEL;
+              } else {
+                sendTo = maison ? MAISON_WA : AUTO_WA;
+              }
+              var ga4Event = kind === 'form' ? 'generate_lead'
+                           : kind === 'phone' ? 'phone_click'
+                           : 'whatsapp_click';
               try {
                 if (typeof gtag === 'function') {
-                  gtag('event', isWa ? 'whatsapp_click' : 'phone_click', {
-                    event_category: 'contact',
+                  gtag('event', ga4Event, {
+                    event_category: kind === 'form' ? 'lead' : 'contact',
                     section: section,
                     value: 56
                   });
@@ -176,7 +194,7 @@ export default function Analytics() {
                 }
                 if (typeof fbq === 'function') {
                   fbq('track', 'Lead', {
-                    content_name: isWa ? 'whatsapp_click' : 'phone_click',
+                    content_name: ga4Event,
                     section: section,
                     value: 56,
                     currency: 'EUR'
