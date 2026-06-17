@@ -77,6 +77,16 @@ export default function Footer() {
               <MapPinIcon size={12} className={accent} />
               Strasbourg + 12 communes desservies
             </p>
+
+            <a
+              href="https://www.tiktok.com/@strasclean67000"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mt-4 inline-flex items-center gap-1.5 text-xs font-semibold text-slate-300 transition hover:text-white"
+            >
+              🎵 Suivez-nous sur TikTok
+              <span className="text-slate-500">@strasclean67000</span>
+            </a>
           </div>
 
           {/* COL 2 — Auto */}
