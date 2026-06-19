@@ -13,11 +13,13 @@ import {
   getReviewTagsMap,
   getRecentBookingRequests,
   countBookingRequests,
+  getDailySeries,
 } from "@/lib/db";
 import { getGooglePlaceData } from "@/lib/reviews";
 import LogoutButton from "./LogoutButton";
 import { HideIpButton, UnhideIpButton } from "./HideIpButton";
 import ReviewTagger from "./ReviewTagger";
+import TrendChart from "./TrendChart";
 
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
@@ -48,8 +50,8 @@ function sourceBadge(src: string | null) {
     ai: { label: "IA", cls: "bg-violet-500/15 text-violet-700 border-violet-500/30" },
     organic: { label: "Organic", cls: "bg-brand-500/15 text-brand-700 border-brand-500/30" },
     direct: { label: "Direct", cls: "bg-slate-100 text-slate-600 border-slate-300" },
-    referral: { label: "Referral", cls: "bg-sky-500/15 text-sky-200 border-sky-500/30" },
-    social: { label: "Social", cls: "bg-fuchsia-500/15 text-fuchsia-200 border-fuchsia-500/30" },
+    referral: { label: "Referral", cls: "bg-sky-500/15 text-sky-700 border-sky-500/30" },
+    social: { label: "Social", cls: "bg-fuchsia-500/15 text-fuchsia-700 border-fuchsia-500/30" },
   };
   const m = map[src ?? ""] ?? { label: src ?? "?", cls: "bg-slate-50 text-slate-600 border-slate-200" };
   return (
@@ -58,6 +60,22 @@ function sourceBadge(src: string | null) {
     </span>
   );
 }
+
+/** Variation en % entre la valeur courante et la précédente. null si la
+ *  période précédente est vide ET la courante aussi (rien à comparer). */
+function delta(cur: number, prev: number): number | null {
+  if (prev === 0) return cur === 0 ? null : 100;
+  return ((cur - prev) / prev) * 100;
+}
+
+const SECTIONS = [
+  { id: "kpis", label: "Synthèse" },
+  { id: "tendances", label: "Tendances" },
+  { id: "sources", label: "Sources" },
+  { id: "leads", label: "Leads" },
+  { id: "avis", label: "Avis" },
+  { id: "journal", label: "Journal" },
+];
 
 function parsePage(v: string | string[] | undefined): number {
   if (!v) return 1;
@@ -105,6 +123,15 @@ export default async function DashboardPage({
   const bookingRequests = getRecentBookingRequests(20);
   const bookingTotal = countBookingRequests();
 
+  // Série quotidienne (30j) pour le graphique de tendance
+  const daily = getDailySeries(30);
+
+  // Taux de conversion sur 7j : part des visites qui aboutissent à un
+  // contact (clic WhatsApp/téléphone) ou à un lead (formulaire).
+  const contacts7d = k.whatsappClicks7d + k.phoneClicks7d;
+  const contactRate = k.visits7d > 0 ? (contacts7d / k.visits7d) * 100 : 0;
+  const leadRate = k.visits7d > 0 ? (k.leads7d / k.visits7d) * 100 : 0;
+
   return (
     <div className="container-x py-8">
       {/* Top bar */}
@@ -128,12 +155,26 @@ export default async function DashboardPage({
         </div>
       </header>
 
+      {/* Navigation par ancres — collante en haut, facilite le parcours d'une
+          page longue. */}
+      <nav className="sticky top-0 z-20 -mx-4 mb-8 flex gap-1 overflow-x-auto border-b border-slate-200 bg-white/90 px-4 py-2 backdrop-blur sm:gap-2">
+        {SECTIONS.map((s) => (
+          <a
+            key={s.id}
+            href={`#${s.id}`}
+            className="shrink-0 rounded-lg px-3 py-1.5 text-xs font-medium text-slate-600 hover:bg-slate-100 hover:text-slate-900"
+          >
+            {s.label}
+          </a>
+        ))}
+      </nav>
+
       {/* KPIs */}
-      <section className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-        <Kpi label="Visites 24h" value={k.visits24h} />
-        <Kpi label="Visites 7j" value={k.visits7d} hint={`${k.visits30d} sur 30j`} />
-        <Kpi label="Clics WhatsApp 7j" value={k.whatsappClicks7d} hint={`${k.whatsappClicksTotal} au total`} tone="brand" />
-        <Kpi label="Clics téléphone 7j" value={k.phoneClicks7d} hint={`${k.phoneClicksTotal} au total`} tone="brand" />
+      <section id="kpis" className="scroll-mt-16 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+        <Kpi label="Visites 24h" value={k.visits24h} delta={delta(k.visits24h, k.visitsPrev24h)} deltaLabel="vs 24h préc." />
+        <Kpi label="Visites 7j" value={k.visits7d} hint={`${k.visits30d} sur 30j`} delta={delta(k.visits7d, k.visitsPrev7d)} deltaLabel="vs 7j préc." />
+        <Kpi label="Clics WhatsApp 7j" value={k.whatsappClicks7d} hint={`${k.whatsappClicksTotal} au total`} tone="brand" delta={delta(k.whatsappClicks7d, k.whatsappPrev7d)} deltaLabel="vs 7j préc." />
+        <Kpi label="Clics téléphone 7j" value={k.phoneClicks7d} hint={`${k.phoneClicksTotal} au total`} tone="brand" delta={delta(k.phoneClicks7d, k.phonePrev7d)} deltaLabel="vs 7j préc." />
       </section>
 
       {/* Conversions split Auto / Maison */}
@@ -156,8 +197,44 @@ export default async function DashboardPage({
         />
       </section>
 
+      {/* Tendances — graphique 30j + taux de conversion */}
+      <section id="tendances" className="mt-10 scroll-mt-16">
+        <h2 className="h-display mb-4 text-lg font-semibold text-slate-900">
+          Tendances — 30 derniers jours
+        </h2>
+        <div className="grid gap-6 lg:grid-cols-[2fr_1fr]">
+          <Panel title="Activité quotidienne">
+            <TrendChart data={daily} />
+          </Panel>
+          <div className="grid content-start gap-3">
+            <Kpi
+              label="Demandes 7j"
+              value={k.leads7d}
+              hint={`${k.leadsTotal} au total`}
+              tone="amber"
+              delta={delta(k.leads7d, k.leadsPrev7d)}
+              deltaLabel="vs 7j préc."
+            />
+            <Kpi
+              label="Taux de contact 7j"
+              value={contactRate}
+              suffix="%"
+              hint={`${contacts7d} contacts / ${k.visits7d} visites`}
+              tone="sky"
+            />
+            <Kpi
+              label="Taux de lead 7j"
+              value={leadRate}
+              suffix="%"
+              hint={`${k.leads7d} leads / ${k.visits7d} visites`}
+              tone="violet"
+            />
+          </div>
+        </div>
+      </section>
+
       {/* Sources 7j */}
-      <section className="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-5">
+      <section id="sources" className="mt-10 scroll-mt-16 grid gap-3 sm:grid-cols-2 lg:grid-cols-5">
         <Kpi label="Ads 7j" value={k.visitsAds7d} tone="amber" />
         <Kpi label="IA 7j" value={k.visitsAi7d} tone="violet" />
         <Kpi label="Organic 7j" value={k.visitsOrganic7d} tone="brand" />
@@ -168,7 +245,7 @@ export default async function DashboardPage({
       {/* Top paths + Top referers */}
       <section className="mt-8 grid gap-6 lg:grid-cols-2">
         <Panel title="Pages les plus visitées (30j)">
-          <ul className="divide-y divide-white/5">
+          <ul className="divide-y divide-slate-100">
             {topPaths.length === 0 && <li className="py-4 text-sm text-slate-500">Aucune donnée encore.</li>}
             {topPaths.map((p) => (
               <li key={p.path} className="flex items-center justify-between gap-4 py-2.5">
@@ -181,7 +258,7 @@ export default async function DashboardPage({
           </ul>
         </Panel>
         <Panel title="Sources externes (30j)">
-          <ul className="divide-y divide-white/5">
+          <ul className="divide-y divide-slate-100">
             {topReferers.length === 0 && <li className="py-4 text-sm text-slate-500">Aucune donnée encore.</li>}
             {topReferers.map((r) => (
               <li key={r.referer} className="flex items-center justify-between gap-4 py-2.5">
@@ -198,7 +275,7 @@ export default async function DashboardPage({
       </section>
 
       {/* Demandes de RDV Maison */}
-      <section className="mt-8">
+      <section id="leads" className="mt-10 scroll-mt-16">
         <Panel
           title={`Demandes de RDV Maison (${bookingTotal}${bookingTotal > 20 ? " — 20 dernières affichées" : ""})`}
         >
@@ -297,7 +374,7 @@ export default async function DashboardPage({
       )}
 
       {/* Tagger les avis Google par section (Auto / Maison / Les deux) */}
-      <section className="mt-8">
+      <section id="avis" className="mt-10 scroll-mt-16">
         <Panel
           title={`Avis Google — tagger par section (${reviewsForTagger.length})`}
         >
@@ -319,7 +396,7 @@ export default async function DashboardPage({
       </section>
 
       {/* Visites récentes */}
-      <section className="mt-8">
+      <section id="journal" className="mt-10 scroll-mt-16">
         <Panel
           title={`Visites récentes — page ${visitsPage}/${visitsPages} (${visitsTotal} au total)`}
         >
@@ -337,7 +414,7 @@ export default async function DashboardPage({
                   <th className="px-2 py-2">Referer</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-white/5">
+              <tbody className="divide-y divide-slate-100">
                 {visits.length === 0 && (
                   <tr><td colSpan={8} className="py-6 text-center text-slate-500">Aucune visite sur cette page.</td></tr>
                 )}
@@ -386,7 +463,7 @@ export default async function DashboardPage({
                   <th className="px-2 py-2">UA</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-white/5">
+              <tbody className="divide-y divide-slate-100">
                 {events.length === 0 && (
                   <tr><td colSpan={5} className="py-6 text-center text-slate-500">Aucun clic sur cette page.</td></tr>
                 )}
@@ -397,7 +474,7 @@ export default async function DashboardPage({
                       <span className={`inline-flex items-center rounded-full border px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider ${
                         e.type === "whatsapp_click"
                           ? "bg-brand-500/15 text-brand-700 border-brand-500/30"
-                          : "bg-sky-500/15 text-sky-200 border-sky-500/30"
+                          : "bg-sky-500/15 text-sky-700 border-sky-500/30"
                       }`}>
                         {e.type === "whatsapp_click" ? "WhatsApp" : "Téléphone"}
                       </span>
@@ -478,11 +555,19 @@ function Kpi({
   value,
   hint,
   tone,
+  suffix,
+  delta,
+  deltaLabel,
 }: {
   label: string;
   value: number;
   hint?: string;
   tone?: "brand" | "amber" | "sky" | "violet";
+  /** Suffixe collé à la valeur (ex "%"). Force aussi un affichage à 1 décimale. */
+  suffix?: string;
+  /** Variation en % vs période précédente (null = pas de base de comparaison). */
+  delta?: number | null;
+  deltaLabel?: string;
 }) {
   const ring =
     tone === "brand"
@@ -494,12 +579,41 @@ function Kpi({
           : tone === "violet"
             ? "border-violet-500/30 bg-violet-500/[0.06]"
             : "border-slate-200 bg-slate-50";
+  const display = suffix === "%" ? value.toFixed(1) : value.toLocaleString("fr-FR");
   return (
     <div className={`rounded-2xl border p-5 ${ring}`}>
       <p className="text-xs font-medium uppercase tracking-wider text-slate-600">{label}</p>
-      <p className="mt-2 h-display text-3xl font-extrabold text-slate-900">{value}</p>
+      <p className="mt-2 flex items-baseline gap-2">
+        <span className="h-display text-3xl font-extrabold text-slate-900">
+          {display}
+          {suffix && <span className="text-xl">{suffix}</span>}
+        </span>
+        {delta !== undefined && <DeltaBadge delta={delta} title={deltaLabel} />}
+      </p>
       {hint && <p className="mt-1 text-xs text-slate-600">{hint}</p>}
     </div>
+  );
+}
+
+function DeltaBadge({ delta, title }: { delta: number | null; title?: string }) {
+  if (delta === null)
+    return (
+      <span className="text-xs text-slate-400" title={title}>
+        —
+      </span>
+    );
+  const rounded = Math.round(delta);
+  const up = rounded >= 0;
+  const flat = rounded === 0;
+  const cls = flat
+    ? "text-slate-500"
+    : up
+      ? "text-brand-700"
+      : "text-red-600";
+  return (
+    <span className={`inline-flex items-center text-xs font-semibold ${cls}`} title={title}>
+      {flat ? "→" : up ? "↑" : "↓"} {Math.abs(rounded)}%
+    </span>
   );
 }
 

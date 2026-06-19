@@ -388,7 +388,9 @@ export function getKpis() {
   const now = Date.now();
   const dayMs = 24 * 60 * 60 * 1000;
   const cutoff24h = now - dayMs;
+  const cutoff48h = now - 2 * dayMs;
   const cutoff7d = now - 7 * dayMs;
+  const cutoff14d = now - 14 * dayMs;
   const cutoff30d = now - 30 * dayMs;
 
   const hidden = excludeHiddenClause();
@@ -488,7 +490,120 @@ export function getKpis() {
       cutoff7d,
       ...hidden.params,
     ),
+
+    // Demandes de RDV (leads) — non filtrées par IP cachée (un lead reste
+    // un lead même s'il vient d'une IP qu'on exclut des stats de trafic).
+    leads24h: row(`SELECT COUNT(*) as c FROM booking_requests WHERE ts >= ?`, cutoff24h),
+    leads7d: row(`SELECT COUNT(*) as c FROM booking_requests WHERE ts >= ?`, cutoff7d),
+    leads30d: row(`SELECT COUNT(*) as c FROM booking_requests WHERE ts >= ?`, cutoff30d),
+    leadsTotal: row(`SELECT COUNT(*) as c FROM booking_requests`),
+
+    // ── Comparaison période précédente (pour les variations ↑/↓) ──────────
+    // Fenêtre N-1 : même durée, juste avant la fenêtre courante.
+    visitsPrev24h: row(
+      `SELECT COUNT(*) as c FROM visits WHERE ts >= ? AND ts < ?${hidden.sql}`,
+      cutoff48h,
+      cutoff24h,
+      ...hidden.params,
+    ),
+    visitsPrev7d: row(
+      `SELECT COUNT(*) as c FROM visits WHERE ts >= ? AND ts < ?${hidden.sql}`,
+      cutoff14d,
+      cutoff7d,
+      ...hidden.params,
+    ),
+    whatsappPrev7d: row(
+      `SELECT COUNT(*) as c FROM events WHERE ts >= ? AND ts < ? AND type = 'whatsapp_click'${hidden.sql}`,
+      cutoff14d,
+      cutoff7d,
+      ...hidden.params,
+    ),
+    phonePrev7d: row(
+      `SELECT COUNT(*) as c FROM events WHERE ts >= ? AND ts < ? AND type = 'phone_click'${hidden.sql}`,
+      cutoff14d,
+      cutoff7d,
+      ...hidden.params,
+    ),
+    leadsPrev7d: row(
+      `SELECT COUNT(*) as c FROM booking_requests WHERE ts >= ? AND ts < ?`,
+      cutoff14d,
+      cutoff7d,
+    ),
   };
+}
+
+// ─── Série quotidienne pour les graphiques de tendance ──────────────────
+// Renvoie un point par jour (fuseau Europe/Paris) sur les `days` derniers
+// jours, du plus ancien au plus récent. On agrège en JS pour gérer
+// proprement le fuseau/DST (SQLite n'a pas de support tz natif fiable).
+const PARIS_DAY = new Intl.DateTimeFormat("en-CA", {
+  timeZone: "Europe/Paris",
+  year: "numeric",
+  month: "2-digit",
+  day: "2-digit",
+});
+
+export type DailyPoint = {
+  /** Clé ISO du jour, ex "2026-06-19". */
+  day: string;
+  /** Libellé court fr pour l'axe, ex "19/06". */
+  label: string;
+  visits: number;
+  whatsapp: number;
+  phone: number;
+  leads: number;
+};
+
+export function getDailySeries(days = 30): DailyPoint[] {
+  const dayMs = 24 * 60 * 60 * 1000;
+  const now = Date.now();
+  const since = now - days * dayMs;
+  const hidden = excludeHiddenClause();
+
+  const visitRows = db
+    .prepare(`SELECT ts FROM visits WHERE ts >= ?${hidden.sql}`)
+    .all(since, ...hidden.params) as { ts: number }[];
+  const eventRows = db
+    .prepare(`SELECT ts, type FROM events WHERE ts >= ?${hidden.sql}`)
+    .all(since, ...hidden.params) as { ts: number; type: string }[];
+  const bookingRows = db
+    .prepare(`SELECT ts FROM booking_requests WHERE ts >= ?`)
+    .all(since) as { ts: number }[];
+
+  // Pré-remplit chaque jour de la fenêtre (même ceux sans donnée → 0).
+  const buckets = new Map<string, DailyPoint>();
+  const order: string[] = [];
+  for (let i = days - 1; i >= 0; i--) {
+    const key = PARIS_DAY.format(now - i * dayMs);
+    if (!buckets.has(key)) {
+      buckets.set(key, {
+        day: key,
+        label: `${key.slice(8, 10)}/${key.slice(5, 7)}`,
+        visits: 0,
+        whatsapp: 0,
+        phone: 0,
+        leads: 0,
+      });
+      order.push(key);
+    }
+  }
+
+  for (const v of visitRows) {
+    const b = buckets.get(PARIS_DAY.format(v.ts));
+    if (b) b.visits++;
+  }
+  for (const e of eventRows) {
+    const b = buckets.get(PARIS_DAY.format(e.ts));
+    if (!b) continue;
+    if (e.type === "whatsapp_click") b.whatsapp++;
+    else if (e.type === "phone_click") b.phone++;
+  }
+  for (const r of bookingRows) {
+    const b = buckets.get(PARIS_DAY.format(r.ts));
+    if (b) b.leads++;
+  }
+
+  return order.map((k) => buckets.get(k)!);
 }
 
 export function getRecentVisits(limit = 20, offset = 0): Visit[] {
