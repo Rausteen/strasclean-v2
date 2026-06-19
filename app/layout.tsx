@@ -32,10 +32,13 @@ const description =
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE.url),
-  title: {
-    default: "StrasClean — Nettoyage voiture à domicile à Strasbourg",
-    template: "%s | StrasClean",
-  },
+  // Titre en chaîne simple (pas de `template`) : chaque page fournit un
+  // <title> complet qui contient déjà la marque (« … — StrasClean » /
+  // « … — StrasClean Maison » / « … — StrasClean Pro »). Un template
+  // « %s | StrasClean » dupliquait la marque sur ~290 pages. Les pages guide,
+  // dont le metaTitle n'a pas de marque, l'ajoutent elles-mêmes
+  // (voir app/guide/[slug]/page.tsx).
+  title: "StrasClean — Nettoyage voiture à domicile à Strasbourg",
   description,
   keywords: [
     "nettoyage voiture domicile Strasbourg",

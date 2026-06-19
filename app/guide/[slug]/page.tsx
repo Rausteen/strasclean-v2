@@ -35,15 +35,19 @@ export async function generateMetadata({
   const g = findGuide(slug);
   if (!g) return {};
 
+  // Les metaTitle de guides n'incluent pas la marque (cf. lib/guides.ts) :
+  // on l'ajoute ici puisque le layout n'applique plus de template global.
+  const title = `${g.metaTitle} — StrasClean`;
+
   return {
-    title: g.metaTitle,
+    title,
     description: g.metaDescription,
     alternates: { canonical: guidePath(g) },
     openGraph: {
       type: "article",
       url: `${SITE.url}${guidePath(g)}`,
       siteName: SITE.name,
-      title: g.metaTitle,
+      title,
       description: g.metaDescription,
       locale: "fr_FR",
       publishedTime: g.publishedAt,
