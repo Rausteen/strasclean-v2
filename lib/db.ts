@@ -424,6 +424,13 @@ export function getKpis() {
       cutoff7d,
       ...hidden.params,
     ),
+    // Trafic référé par les assistants IA (ChatGPT, Perplexity, Claude…) —
+    // indicateur de visibilité GEO.
+    visitsAi7d: row(
+      `SELECT COUNT(*) as c FROM visits WHERE ts >= ? AND source = 'ai'${hidden.sql}`,
+      cutoff7d,
+      ...hidden.params,
+    ),
     visitsOrganic7d: row(
       `SELECT COUNT(*) as c FROM visits WHERE ts >= ? AND source = 'organic'${hidden.sql}`,
       cutoff7d,

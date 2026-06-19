@@ -45,6 +45,7 @@ function shortPath(p: string | null) {
 function sourceBadge(src: string | null) {
   const map: Record<string, { label: string; cls: string }> = {
     ads: { label: "Ads", cls: "bg-amber-500/15 text-amber-700 border-amber-500/30" },
+    ai: { label: "IA", cls: "bg-violet-500/15 text-violet-700 border-violet-500/30" },
     organic: { label: "Organic", cls: "bg-brand-500/15 text-brand-700 border-brand-500/30" },
     direct: { label: "Direct", cls: "bg-slate-100 text-slate-600 border-slate-300" },
     referral: { label: "Referral", cls: "bg-sky-500/15 text-sky-200 border-sky-500/30" },
@@ -156,8 +157,9 @@ export default async function DashboardPage({
       </section>
 
       {/* Sources 7j */}
-      <section className="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+      <section className="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-5">
         <Kpi label="Ads 7j" value={k.visitsAds7d} tone="amber" />
+        <Kpi label="IA 7j" value={k.visitsAi7d} tone="violet" />
         <Kpi label="Organic 7j" value={k.visitsOrganic7d} tone="brand" />
         <Kpi label="Direct 7j" value={k.visitsDirect7d} />
         <Kpi label="Référents 7j" value={k.visitsReferral7d} tone="sky" />
@@ -480,7 +482,7 @@ function Kpi({
   label: string;
   value: number;
   hint?: string;
-  tone?: "brand" | "amber" | "sky";
+  tone?: "brand" | "amber" | "sky" | "violet";
 }) {
   const ring =
     tone === "brand"
@@ -489,7 +491,9 @@ function Kpi({
         ? "border-amber-500/30 bg-amber-500/[0.06]"
         : tone === "sky"
           ? "border-sky-500/30 bg-sky-500/[0.06]"
-          : "border-slate-200 bg-slate-50";
+          : tone === "violet"
+            ? "border-violet-500/30 bg-violet-500/[0.06]"
+            : "border-slate-200 bg-slate-50";
   return (
     <div className={`rounded-2xl border p-5 ${ring}`}>
       <p className="text-xs font-medium uppercase tracking-wider text-slate-600">{label}</p>

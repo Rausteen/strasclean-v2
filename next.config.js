@@ -18,6 +18,22 @@ const nextConfig = {
     minimumCacheTTL: 60 * 60 * 24 * 30, // 30 jours
     deviceSizes: [360, 480, 640, 768, 1024, 1280, 1536, 1920],
   },
+  // Redirige www → non-www (le canonique du site est https://strasclean.fr).
+  // Évite le contenu dupliqué et consolide le SEO sur une seule origine.
+  // ⚠️ Nécessite que `www.strasclean.fr` ait un certificat TLS valide côté
+  // hébergeur (Dokploy/Traefik) : cette redirection s'exécute APRÈS la
+  // terminaison TLS, donc le cert www doit exister sinon Googlebot échoue
+  // avant d'arriver ici.
+  async redirects() {
+    return [
+      {
+        source: "/:path*",
+        has: [{ type: "host", value: "www.strasclean.fr" }],
+        destination: "https://strasclean.fr/:path*",
+        permanent: true,
+      },
+    ];
+  },
   async headers() {
     const securityHeaders = [
       { key: "X-Content-Type-Options", value: "nosniff" },

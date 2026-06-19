@@ -34,7 +34,12 @@ import { getReviewTagsMap } from "@/lib/db";
 
 type Params = { slug: string };
 
-export const dynamicParams = false;
+// dynamicParams = true : les URLs INCONNUES (bots, vieux liens, scanners,
+// crawlers IA) sont rendues à la demande → matchSlug() renvoie null →
+// notFound() → vraie page 404. Avec `false`, le runtime self-hosted levait
+// `NoFallbackError` au lieu de servir une 404, ce qui polluait les logs.
+// Toutes les vraies pages restent pré-générées via generateStaticParams.
+export const dynamicParams = true;
 // Régénération en arrière-plan toutes les 6h (les pages ville/service
 // changent peu, on n'a pas besoin du même rythme que la home).
 export const revalidate = 21600;

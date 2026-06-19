@@ -21,7 +21,7 @@ import {
 import { SITE, waLink } from "@/lib/site";
 import { CITIES } from "@/lib/cities";
 import { SERVICES, servicePath } from "@/lib/services";
-import { UseCase } from "@/lib/usecases";
+import { UseCase, useCasePath } from "@/lib/usecases";
 import type { PlaceData } from "@/lib/reviews";
 
 type Props = {
@@ -38,6 +38,46 @@ export default function UseCasePage({ useCase: uc, place }: Props) {
   const recommendedService = SERVICES.find(
     (s) => s.slug === uc.recommendedServiceSlug,
   );
+
+  // ─── JSON-LD : Service + Breadcrumb (aide Google AI Overviews & ChatGPT
+  // à extraire l'offre + le fil d'ariane). La FAQPage est émise par <FAQ />.
+  const url = `${SITE.url}${useCasePath(uc)}`;
+  const serviceJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Service",
+    name: uc.shortName,
+    description: uc.metaDescription,
+    serviceType: uc.shortName,
+    provider: {
+      "@type": "AutoDetailing",
+      name: SITE.name,
+      telephone: SITE.phoneDisplay,
+      url: SITE.url,
+      address: {
+        "@type": "PostalAddress",
+        addressLocality: SITE.city,
+        addressRegion: SITE.region,
+        addressCountry: SITE.country,
+      },
+    },
+    areaServed: { "@type": "City", name: SITE.city },
+    offers: {
+      "@type": "Offer",
+      priceCurrency: "EUR",
+      price: uc.pricing.priceFrom,
+      url,
+      availability: "https://schema.org/InStock",
+    },
+  };
+
+  const breadcrumbJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "Accueil", item: SITE.url },
+      { "@type": "ListItem", position: 2, name: uc.shortName, item: url },
+    ],
+  };
 
   return (
     <>
@@ -295,6 +335,14 @@ export default function UseCasePage({ useCase: uc, place }: Props) {
       </main>
       <Footer />
       <FloatingWhatsApp />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceJsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
+      />
     </>
   );
 }

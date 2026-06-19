@@ -1,11 +1,10 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import dynamic from "next/dynamic";
 
-// Chargement lazy du calculateur Maison (~20 kB gzippé) — déclenché à
-// l'approche du viewport via IntersectionObserver. Rend ~20 kB invisibles
-// au First Load JS sur les 56 pages Maison qui utilisent le calculateur.
+// Chargement lazy du calculateur Maison (~20 kB gzippé) — chunk séparé
+// (dynamic import), n'alourdit pas le First Load JS.
 const MaisonPriceCalculator = dynamic(
   () => import("./MaisonPriceCalculator"),
   { ssr: false },
@@ -13,26 +12,27 @@ const MaisonPriceCalculator = dynamic(
 
 export default function MaisonPriceCalculatorLazy() {
   const [visible, setVisible] = useState(false);
-  const ref = useRef<HTMLDivElement>(null);
 
+  // Monté dès que le navigateur est idle (après le 1er paint), pas à
+  // l'approche du viewport : sa vraie hauteur est ainsi figée avant tout
+  // clic du menu, ce qui évite que les ancres du bas (avis, faq) tombent à
+  // côté à cause du déploiement du calculateur pendant le scroll. Voir
+  // PriceCalculatorLazy pour le détail.
   useEffect(() => {
-    if (!ref.current) return;
-    const el = ref.current;
-    const observer = new IntersectionObserver(
-      (entries) => {
-        if (entries[0]?.isIntersecting) {
-          setVisible(true);
-          observer.disconnect();
-        }
-      },
-      { rootMargin: "300px" },
-    );
-    observer.observe(el);
-    return () => observer.disconnect();
+    const w = window as typeof window & {
+      requestIdleCallback?: (cb: () => void) => number;
+      cancelIdleCallback?: (id: number) => void;
+    };
+    if (typeof w.requestIdleCallback === "function") {
+      const id = w.requestIdleCallback(() => setVisible(true));
+      return () => w.cancelIdleCallback?.(id);
+    }
+    const t = window.setTimeout(() => setVisible(true), 200);
+    return () => window.clearTimeout(t);
   }, []);
 
   return (
-    <div ref={ref} className="min-h-[600px]" aria-hidden={!visible}>
+    <div className="min-h-[600px]" aria-hidden={!visible}>
       {visible ? <MaisonPriceCalculator /> : <MaisonCalculatorSkeleton />}
     </div>
   );

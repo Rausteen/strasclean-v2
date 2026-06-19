@@ -31,6 +31,7 @@ export const SITE = {
   socials: [
     // Fiche Google Business (la plus importante pour le SEO local)
     "https://maps.app.goo.gl/qSzgbJbMYC17HQnc6",
+    "https://www.tiktok.com/@strasclean67000",
     // 👇 décommente / ajoute les profils existants
     // "https://www.facebook.com/strasclean",
     // "https://www.instagram.com/strasclean",

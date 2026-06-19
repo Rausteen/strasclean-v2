@@ -3,6 +3,7 @@ import {
   insertBookingRequest,
   type BookingRequest,
 } from "@/lib/db";
+import { notifyNewLead } from "@/lib/notify";
 import { checkSameOrigin } from "@/lib/auth";
 import { checkRateLimit, getClientIp } from "@/lib/ratelimit";
 import { HOME_SERVICES } from "@/lib/homeServices";
@@ -105,15 +106,16 @@ export async function POST(req: Request) {
       { status: 400 },
     );
   }
-  if (!email || !isLikelyEmail(email)) {
-    return NextResponse.json(
-      { error: "Email invalide" },
-      { status: 400 },
-    );
-  }
   if (!phone || !isLikelyPhone(phone)) {
     return NextResponse.json(
       { error: "Numéro de téléphone invalide" },
+      { status: 400 },
+    );
+  }
+  // Email facultatif : on ne valide le format que s'il est fourni.
+  if (email && !isLikelyEmail(email)) {
+    return NextResponse.json(
+      { error: "Email invalide" },
       { status: 400 },
     );
   }
@@ -135,7 +137,8 @@ export async function POST(req: Request) {
     service_label: item.label,
     variant,
     first_name: firstName,
-    email,
+    // Colonne email NOT NULL en base : "" si non fourni (email facultatif).
+    email: email ?? "",
     phone,
     postal_code: postalCode,
     address_note: addressNote,
@@ -156,6 +159,11 @@ export async function POST(req: Request) {
       { status: 500 },
     );
   }
+
+  // Notification email du nouveau lead (no-op si RESEND_API_KEY absente).
+  // notifyNewLead avale ses propres erreurs → ne peut pas faire échouer la
+  // réponse au client, dont le lead est déjà enregistré en base.
+  await notifyNewLead({ ...record, id });
 
   return NextResponse.json({ ok: true, id });
 }

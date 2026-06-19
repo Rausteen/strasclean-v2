@@ -1226,6 +1226,322 @@ export const GUIDES: Guide[] = [
         "Bonjour StrasClean 👋 J'aimerais un devis pour le nettoyage de mon canapé à Strasbourg. Je vous envoie une photo ?",
     },
   },
+
+  // ─── Guide AEO — Prix nettoyage voiture à Strasbourg ────────────────────
+  {
+    slug: "prix-nettoyage-voiture-strasbourg-guide",
+    category: "voiture",
+    metaTitle:
+      "Combien coûte un nettoyage de voiture à Strasbourg ? Prix 2026",
+    metaDescription:
+      "Prix d'un nettoyage de voiture à domicile à Strasbourg en 2026 : à partir de 39 € (entretien), 79 € (intérieur approfondi) et 119 € (detailing complet). Détail des tarifs, ce qui est inclus et ce qui fait varier le prix.",
+    title: "Combien coûte un nettoyage de voiture à Strasbourg ? (prix 2026)",
+    excerpt:
+      "Tarifs clairs et à jour du nettoyage auto à domicile à Strasbourg : les 3 niveaux de prestation, ce qui est inclus à chaque formule, et les 4 facteurs qui font varier le devis final.",
+    publishedAt: "2026-06-07",
+    updatedAt: "2026-06-07",
+    readingMinutes: 6,
+    relatedServiceSlug: "nettoyage-voiture-domicile-strasbourg",
+    intro:
+      "À Strasbourg, un nettoyage de voiture à domicile coûte à partir de 39 € pour un entretien intérieur, 79 € pour un nettoyage intérieur approfondi avec shampouinage des sièges, et 119 € pour un detailing complet intérieur + extérieur. Le tarif final dépend surtout de la taille du véhicule et de son état. Voici le détail, ce que comprend chaque formule, et comment estimer votre prix sans surprise.",
+    sections: [
+      {
+        title: "Les prix par formule (à domicile, à Strasbourg)",
+        paragraphs: [
+          "StrasClean propose trois niveaux de prestation, tous réalisés à domicile, sur votre lieu de travail ou à l'adresse de votre choix, à Strasbourg et dans les communes voisines. Les tarifs sont annoncés « à partir de » pour une citadine.",
+        ],
+        bullets: [
+          "Formule Confort — dès 39 € (30 à 45 min) : aspiration complète, plastiques, vitres intérieures, finitions.",
+          "Formule Premium — dès 79 € (1h à 1h30) : intérieur approfondi + shampouinage des sièges + désinfection.",
+          "Formule Luxury Detailing — dès 119 € (2h) : intérieur premium + lavage extérieur à la main + décontamination carrosserie + traitement poils d'animaux inclus.",
+        ],
+      },
+      {
+        title: "Ce qui fait varier le prix",
+        paragraphs: [
+          "Le prix « à partir de » correspond à une citadine en état d'entretien courant. Quatre facteurs principaux peuvent l'ajuster :",
+        ],
+        bullets: [
+          "La taille du véhicule : berline +10 €, SUV/monospace +20 €, utilitaire +30 €.",
+          "L'état intérieur : taches incrustées, sièges très sales ou véhicule très encrassé demandent plus de temps.",
+          "Les poils d'animaux : inclus en Luxury, en option (+15 à 30 €) sur les autres formules.",
+          "Les options spécifiques : traitement des odeurs (+20 à 40 €), taches tenaces (+10 à 20 €).",
+        ],
+      },
+      {
+        title: "Pourquoi le tarif à domicile est compétitif",
+        paragraphs: [
+          "Un nettoyage à domicile évite le déplacement vers un centre et l'attente sur place : l'équipe vient à vous, le déplacement est inclus dans le tarif annoncé sur toute la zone desservie.",
+          "StrasClean travaille en équipe de 2 professionnels, ce qui divise par deux le temps d'intervention par rapport à un detailer seul, à qualité équivalente. Le matériel est professionnel (injecteur-extracteur), pour un séchage rapide et sans auréole.",
+        ],
+      },
+      {
+        title: "Comment obtenir un prix ferme avant de réserver",
+        paragraphs: [
+          "Le plus simple est d'envoyer une photo de l'intérieur du véhicule par WhatsApp avec votre ville. Le tarif est confirmé avant l'intervention : pas de surprise une fois sur place.",
+        ],
+        bullets: [
+          "Indiquez le type de véhicule (citadine, berline, SUV, utilitaire).",
+          "Précisez l'état (entretien courant, poils d'animaux, taches, odeurs).",
+          "Donnez votre commune pour confirmer la disponibilité du créneau.",
+        ],
+      },
+      {
+        title: "Questions fréquentes sur le prix",
+        paragraphs: [],
+        bullets: [
+          "Quel est le prix minimum ? À partir de 39 € pour une citadine (formule Confort).",
+          "Le lavage extérieur est-il compris ? Oui, dans la formule Luxury Detailing (119 €).",
+          "Le déplacement est-il facturé en plus ? Non, il est inclus dans le tarif annoncé sur la zone desservie.",
+          "Le prix peut-il changer une fois sur place ? Non : le tarif est confirmé avant l'intervention, après description ou photo.",
+        ],
+      },
+    ],
+    conclusion:
+      "À Strasbourg, comptez 39 € (entretien), 79 € (intérieur approfondi) ou 119 € (detailing complet) pour un nettoyage de voiture à domicile, avec un supplément selon la taille du véhicule. Le meilleur réflexe pour un devis exact : envoyer une photo de l'intérieur par WhatsApp.",
+    cta: {
+      title: "Un devis précis en 2 minutes ?",
+      description:
+        "Envoyez une photo de votre véhicule par WhatsApp : on vous confirme la formule adaptée, le tarif ferme et un créneau à domicile à Strasbourg.",
+      message:
+        "Bonjour StrasClean 👋 J'aimerais le prix pour un nettoyage de ma voiture à Strasbourg. Je vous envoie une photo de l'intérieur ?",
+    },
+  },
+
+  // ─── Guide AEO — Canapé : domicile, pressing ou soi-même ? ──────────────
+  {
+    slug: "nettoyage-canape-domicile-ou-pressing",
+    category: "canape",
+    metaTitle:
+      "Nettoyage de canapé : à domicile, pressing ou soi-même ? Comparatif",
+    metaDescription:
+      "Faut-il nettoyer son canapé soi-même, l'emmener au pressing ou faire venir un pro à domicile ? Comparatif honnête des 3 options (coût, résultat, risques) pour bien choisir à Strasbourg.",
+    title: "Nettoyage de canapé : à domicile, pressing ou soi-même ?",
+    excerpt:
+      "Les 3 façons de nettoyer un canapé comparées sans langue de bois : coût réel, qualité du résultat, risques d'auréole, et le cas où chaque option est la bonne.",
+    publishedAt: "2026-06-07",
+    updatedAt: "2026-06-07",
+    readingMinutes: 7,
+    relatedServiceSlug: "nettoyage-canape-strasbourg",
+    intro:
+      "Pour nettoyer un canapé en profondeur, trois options existent : le faire soi-même, le confier à un pressing/professionnel en atelier, ou faire venir un pro à domicile avec un injecteur-extracteur. La meilleure dépend de la matière, de l'état du canapé et de votre budget. Voici un comparatif clair pour décider rapidement.",
+    sections: [
+      {
+        title: "Option 1 — Le faire soi-même",
+        paragraphs: [
+          "Le DIY (chiffon + savon, ou location d'un appareil type Kärcher) convient pour un entretien léger ou une petite tache fraîche. En revanche, sur un canapé encrassé, le risque principal est le surmouillage : trop d'eau mal extraite laisse des auréoles et peut faire moisir la mousse.",
+        ],
+        bullets: [
+          "Coût : faible (produits) à ~30 € (location d'appareil).",
+          "Résultat : correct en surface, limité en profondeur.",
+          "Risque : auréoles, surmouillage, tissu détendu.",
+          "Idéal pour : entretien courant, taches fraîches localisées.",
+        ],
+      },
+      {
+        title: "Option 2 — Le pressing / atelier",
+        paragraphs: [
+          "Confier les coussins déhoussables à un pressing est possible, mais la plupart des canapés ne sont pas (entièrement) déhoussables, et transporter une assise fixe est impraticable. Le pressing traite bien le textile déhoussable, moins la structure.",
+        ],
+        bullets: [
+          "Coût : variable, souvent au coussin/housse.",
+          "Résultat : bon sur housses déhoussables uniquement.",
+          "Contrainte : transport, délai, canapé indisponible plusieurs jours.",
+          "Idéal pour : housses amovibles, petites pièces textiles.",
+        ],
+      },
+      {
+        title: "Option 3 — Un pro à domicile (injecteur-extracteur)",
+        paragraphs: [
+          "L'intervention à domicile avec un injecteur-extracteur professionnel pulvérise une solution puis aspire immédiatement l'eau et la saleté : c'est ce qui permet un nettoyage en profondeur SANS surmouillage, avec un séchage rapide et sans auréole. Le canapé reste chez vous, traité sur place en une intervention.",
+        ],
+        bullets: [
+          "Coût : à partir de 79 € à Strasbourg (selon taille et matière).",
+          "Résultat : nettoyage en profondeur, sans auréole.",
+          "Avantage : aucun transport, séchage rapide, adapté tissu/cuir/alcantara.",
+          "Idéal pour : canapé encrassé, taches anciennes, odeurs, poils d'animaux.",
+        ],
+      },
+      {
+        title: "Tableau de décision rapide",
+        paragraphs: [
+          "Pour choisir en 10 secondes :",
+        ],
+        bullets: [
+          "Petite tache fraîche → soi-même.",
+          "Housses entièrement déhoussables → pressing possible.",
+          "Canapé fixe, encrassé, taches anciennes ou odeurs → pro à domicile.",
+          "Cuir, alcantara, tissu fragile → pro à domicile (produits adaptés à la matière).",
+        ],
+      },
+      {
+        title: "Questions fréquentes",
+        paragraphs: [],
+        bullets: [
+          "Combien coûte un nettoyage de canapé à domicile à Strasbourg ? À partir de 79 €.",
+          "Combien de temps de séchage ? Quelques heures avec l'injection-extraction (vs 1 à 2 jours en surmouillage maison).",
+          "Le cuir peut-il être nettoyé à domicile ? Oui, avec des produits spécifiques cuir (jamais les mêmes que pour le tissu).",
+        ],
+      },
+    ],
+    conclusion:
+      "Pour une petite tache, le DIY suffit. Pour des housses amovibles, le pressing peut convenir. Mais pour un canapé fixe, encrassé ou taché en profondeur, l'intervention d'un pro à domicile avec injecteur-extracteur (dès 79 € à Strasbourg) reste la solution la plus sûre : profondeur, séchage rapide, zéro auréole.",
+    cta: {
+      title: "Un canapé comme neuf, sans risque ?",
+      description:
+        "Devis par photo WhatsApp, intervention à domicile à Strasbourg, séchage rapide et sans auréole. Tissu, cuir ou alcantara.",
+      message:
+        "Bonjour StrasClean 👋 J'hésite pour le nettoyage de mon canapé. Pouvez-vous me conseiller et me donner un prix ? Je vous envoie une photo.",
+    },
+  },
+
+  // ─── Guide AEO — Prix nettoyage tapis à Strasbourg ──────────────────────
+  {
+    slug: "prix-nettoyage-tapis-strasbourg-guide",
+    category: "tapis",
+    metaTitle:
+      "Combien coûte un nettoyage de tapis à domicile à Strasbourg ? 2026",
+    metaDescription:
+      "Prix d'un nettoyage de tapis à domicile à Strasbourg en 2026 : à partir de 49 €. Ce qui fait varier le tarif (taille, matière, état), et pourquoi le nettoyage à domicile évite le pressing.",
+    title: "Combien coûte un nettoyage de tapis à domicile à Strasbourg ?",
+    excerpt:
+      "Tarifs à jour du nettoyage de tapis à domicile à Strasbourg, les facteurs qui font varier le prix selon la taille et la matière, et l'avantage du traitement sur place sans transport vers un pressing.",
+    publishedAt: "2026-06-07",
+    updatedAt: "2026-06-07",
+    readingMinutes: 5,
+    relatedServiceSlug: "nettoyage-tapis-domicile-strasbourg",
+    intro:
+      "À Strasbourg, un nettoyage de tapis à domicile démarre à 49 €. Le prix dépend ensuite de la surface, de la matière (synthétique, laine, berbère) et de l'état (taches, odeurs, urine d'animaux). L'intérêt du nettoyage à domicile : pas de transport vers un pressing, le tapis est traité sur place avec un séchage maîtrisé.",
+    sections: [
+      {
+        title: "Le prix de base et ce qui le fait varier",
+        paragraphs: [
+          "Le tarif « à partir de 49 € » correspond à un tapis de taille standard en entretien courant. Plusieurs éléments l'ajustent :",
+        ],
+        bullets: [
+          "La surface : un grand tapis de salon demande plus de produit et de temps.",
+          "La matière : laine et tapis berbères demandent des produits doux et un soin particulier.",
+          "L'état : taches anciennes, odeurs, urine d'animaux nécessitent un traitement renforcé.",
+          "L'épaisseur / les franges : les tapis épais ou à franges allongent le travail.",
+        ],
+      },
+      {
+        title: "Pourquoi nettoyer son tapis à domicile plutôt qu'en pressing",
+        paragraphs: [
+          "Emmener un tapis au pressing implique de le rouler, le transporter, puis attendre plusieurs jours. À domicile, le tapis est shampouiné et aspiré sur place avec un matériel professionnel (injection-extraction) : la saleté et l'eau sont extraites dans la foulée, pour un séchage rapide et sans auréole.",
+          "C'est particulièrement utile pour les grands tapis ou les tapis fragiles qu'on préfère ne pas déplacer.",
+        ],
+      },
+      {
+        title: "Comment obtenir un devis exact",
+        paragraphs: [
+          "Le plus simple : envoyer une photo du tapis par WhatsApp avec ses dimensions approximatives et la matière si vous la connaissez. Le tarif est confirmé avant l'intervention.",
+        ],
+        bullets: [
+          "Dimensions approximatives (longueur × largeur).",
+          "Matière si connue (synthétique, laine, berbère…).",
+          "Nature des taches éventuelles (boue, vin, urine animale…).",
+        ],
+      },
+      {
+        title: "Questions fréquentes",
+        paragraphs: [],
+        bullets: [
+          "Prix minimum d'un nettoyage de tapis à Strasbourg ? À partir de 49 € à domicile.",
+          "Combien de temps de séchage ? Quelques heures grâce à l'extraction (vs un tapis détrempé en lavage maison).",
+          "Les odeurs d'animaux partent-elles ? Oui, avec un traitement désodorisant adapté en complément.",
+        ],
+      },
+    ],
+    conclusion:
+      "Comptez à partir de 49 € pour un nettoyage de tapis à domicile à Strasbourg, le tarif final dépendant de la taille, de la matière et de l'état. Le nettoyage sur place évite le transport et garantit un séchage rapide sans auréole.",
+    cta: {
+      title: "Un tapis ravivé, sans le déplacer ?",
+      description:
+        "Envoyez une photo et les dimensions par WhatsApp : devis ferme et intervention à domicile à Strasbourg, séchage rapide.",
+      message:
+        "Bonjour StrasClean 👋 J'aimerais le prix pour le nettoyage de mon tapis à Strasbourg. Je vous envoie une photo avec les dimensions ?",
+    },
+  },
+
+  // ─── Guide AEO — Detailing vs lavage classique ──────────────────────────
+  {
+    slug: "detailing-vs-lavage-classique-difference",
+    category: "voiture",
+    metaTitle:
+      "Detailing auto vs lavage classique : quelle différence ? (2026)",
+    metaDescription:
+      "Detailing ou simple lavage : quelle différence concrète, pour quel résultat et quel prix ? Explication claire par un pro à Strasbourg pour savoir quelle prestation choisir.",
+    title: "Detailing auto vs lavage classique : quelle différence ?",
+    excerpt:
+      "Lavage, nettoyage intérieur, detailing complet : ce que recouvre vraiment chaque terme, le résultat attendu, le prix, et comment choisir la bonne prestation pour votre voiture.",
+    publishedAt: "2026-06-07",
+    updatedAt: "2026-06-07",
+    readingMinutes: 6,
+    relatedServiceSlug: "nettoyage-voiture-domicile-strasbourg",
+    intro:
+      "Un lavage classique nettoie la surface (carrosserie, vitres, aspiration rapide). Le detailing, lui, est une remise en état complète et minutieuse, intérieure ET extérieure : shampouinage des sièges, décontamination de la carrosserie, finitions. La différence se voit surtout sur les voitures encrassées ou que l'on veut retrouver « comme neuves ». Voici comment distinguer les prestations et choisir la bonne.",
+    sections: [
+      {
+        title: "Le lavage classique : l'entretien de surface",
+        paragraphs: [
+          "Le lavage classique vise la propreté visible et rapide : extérieur (carrosserie, vitres) et/ou une aspiration intérieure. C'est l'entretien régulier, idéal entre deux nettoyages plus poussés.",
+        ],
+        bullets: [
+          "Objectif : propreté de surface, rapidité.",
+          "Intérieur : aspiration, plastiques, vitres.",
+          "À Strasbourg : formule Confort, dès 39 € à domicile.",
+        ],
+      },
+      {
+        title: "Le detailing : la remise à neuf complète",
+        paragraphs: [
+          "Le detailing est un travail minutieux, zone par zone. À l'intérieur : shampouinage et extraction des sièges, désinfection, traitement des plastiques et points de contact. À l'extérieur : lavage à la main, décontamination de la carrosserie (clay-bar), finition. L'objectif est un rendu « showroom », pas seulement « propre ».",
+        ],
+        bullets: [
+          "Objectif : remise à neuf intérieure + extérieure.",
+          "Intérieur : shampouinage sièges, désinfection, traitement complet.",
+          "Extérieur : lavage main, décontamination, finition brillante.",
+          "À Strasbourg : formule Luxury Detailing, dès 119 € à domicile.",
+        ],
+      },
+      {
+        title: "Entre les deux : le nettoyage intérieur approfondi",
+        paragraphs: [
+          "Beaucoup de besoins se situent entre le lavage rapide et le detailing complet : un intérieur vraiment approfondi avec shampouinage des sièges et désinfection, sans la partie extérieure poussée. C'est la formule Premium (dès 79 €), idéale après un hiver, des trajets en famille ou avec des animaux.",
+        ],
+      },
+      {
+        title: "Comment choisir",
+        paragraphs: [
+          "Le bon choix dépend de l'état de la voiture et de votre objectif :",
+        ],
+        bullets: [
+          "Entretien régulier, voiture déjà suivie → lavage / formule Confort (39 €).",
+          "Intérieur sale, sièges tachés, poils, odeurs → intérieur approfondi / Premium (79 €).",
+          "Voiture très encrassée, avant une revente, rendu « comme neuf » → detailing / Luxury (119 €).",
+        ],
+      },
+      {
+        title: "Questions fréquentes",
+        paragraphs: [],
+        bullets: [
+          "Le detailing inclut-il l'extérieur ? Oui : lavage à la main + décontamination carrosserie.",
+          "Un detailing aide-t-il à revendre ? Oui, un intérieur/extérieur remis à neuf valorise nettement le véhicule.",
+          "Peut-on faire le detailing à domicile ? Oui, StrasClean le réalise chez vous à Strasbourg, en équipe de 2.",
+        ],
+      },
+    ],
+    conclusion:
+      "Le lavage classique entretient, le detailing remet à neuf (intérieur + extérieur). Entre les deux, le nettoyage intérieur approfondi couvre la majorité des besoins. À Strasbourg, cela correspond à 39 € (Confort), 79 € (Premium) et 119 € (Luxury Detailing), tout à domicile.",
+    cta: {
+      title: "Pas sûr de la prestation qu'il vous faut ?",
+      description:
+        "Envoyez une photo de votre voiture par WhatsApp : on vous oriente vers la bonne formule et un tarif ferme, à domicile à Strasbourg.",
+      message:
+        "Bonjour StrasClean 👋 Je ne sais pas s'il me faut un lavage ou un detailing. Pouvez-vous me conseiller ? Je vous envoie une photo.",
+    },
+  },
 ];
 
 /** Construit l'URL d'un guide */

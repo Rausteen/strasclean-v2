@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, type MouseEvent } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { SITE } from "@/lib/site";
@@ -38,26 +38,6 @@ export default function Header() {
   useEffect(() => {
     setOpen(false);
   }, [pathname]);
-
-  // Scroll fiable vers une ancre de LA MÊME page. Le <Link> Next (App
-  // Router) scrolle parfois avant que le layout soit stabilisé (sections
-  // lazy), d'où le "il faut recliquer". On intercepte donc le clic pour
-  // faire un scrollIntoView nous-mêmes. Les liens vers une AUTRE page
-  // (base ≠ pathname) ne sont pas interceptés → navigation Next normale.
-  const scrollToAnchor = (
-    e: MouseEvent<HTMLAnchorElement>,
-    href: string,
-  ) => {
-    const i = href.indexOf("#");
-    if (i < 0) return;
-    const base = href.slice(0, i) || "/";
-    if (base !== pathname) return; // cross-page → laisse Next gérer
-    const el = document.getElementById(href.slice(i + 1));
-    if (!el) return;
-    e.preventDefault();
-    el.scrollIntoView({ behavior: "smooth", block: "start" });
-    window.history.replaceState(null, "", href.slice(i));
-  };
 
   return (
     <header
@@ -109,7 +89,6 @@ export default function Header() {
             <Link
               key={n.href}
               href={n.href}
-              onClick={(e) => scrollToAnchor(e, n.href)}
               className="text-sm font-medium text-slate-600 transition hover:text-slate-900"
             >
               {n.label}
@@ -122,6 +101,14 @@ export default function Header() {
             déjà les CTA Hero et la sticky bar en bas qui prennent le
             relais après scroll. */}
         <div className="ml-auto flex shrink-0 items-center gap-2.5">
+          {/* Réserver en ligne (desktop) — 3e canal, présent sur toutes les
+              pages. Section-aware. */}
+          <Link
+            href={onMaison ? "/reserver-maison" : "/reserver-auto"}
+            className="btn hidden h-11 px-4 text-sm font-semibold border border-slate-300 bg-white text-slate-900 hover:border-slate-900 lg:inline-flex"
+          >
+            Réserver
+          </Link>
           {/* WhatsApp desktop (pill texte) */}
           <a
             href={SITE.whatsappHref}
@@ -205,10 +192,7 @@ export default function Header() {
               <li key={n.href}>
                 <Link
                   href={n.href}
-                  onClick={(e) => {
-                    setOpen(false);
-                    scrollToAnchor(e, n.href);
-                  }}
+                  onClick={() => setOpen(false)}
                   className="flex items-center justify-between rounded-2xl px-4 py-3.5 text-[17px] font-semibold text-slate-800 transition active:scale-[0.98] active:bg-white"
                 >
                   <span>{n.label}</span>
@@ -236,6 +220,13 @@ export default function Header() {
             paddingBottom: "calc(env(safe-area-inset-bottom, 0px) + 16px)",
           }}
         >
+          <Link
+            href={onMaison ? "/reserver-maison" : "/reserver-auto"}
+            onClick={() => setOpen(false)}
+            className="mb-2 flex h-12 w-full items-center justify-center gap-1.5 rounded-full bg-slate-900 text-[15px] font-semibold text-white active:scale-[0.98]"
+          >
+            Réserver en ligne <span aria-hidden>→</span>
+          </Link>
           <div className="grid grid-cols-2 gap-2">
             <a
               href={SITE.phoneHref}

@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 import { SITE, waLink } from "@/lib/site";
 import { CITIES, cityPath } from "@/lib/cities";
 import { QUARTIERS } from "@/lib/quartiers";
+import { USE_CASES, useCasePath } from "@/lib/usecases";
 import { HOME_SERVICES, homeServicePath, homeServiceCityPath } from "@/lib/homeServices";
 import { WhatsAppIcon, PhoneIcon, MapPinIcon } from "./Icon";
 import LogoMark from "./LogoMark";
@@ -76,6 +77,16 @@ export default function Footer() {
               <MapPinIcon size={12} className={accent} />
               Strasbourg + 12 communes desservies
             </p>
+
+            <a
+              href="https://www.tiktok.com/@strasclean67000"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mt-4 inline-flex items-center gap-1.5 text-xs font-semibold text-slate-300 transition hover:text-white"
+            >
+              🎵 Suivez-nous sur TikTok
+              <span className="text-slate-500">@strasclean67000</span>
+            </a>
           </div>
 
           {/* COL 2 — Auto */}
@@ -92,6 +103,11 @@ export default function Footer() {
               <li>
                 <Link href="/formules" className="hover:text-white">
                   Formules (39 / 79 / 119 €)
+                </Link>
+              </li>
+              <li>
+                <Link href="/reserver-auto" className="hover:text-white">
+                  Réserver en ligne
                 </Link>
               </li>
               <li>
@@ -120,6 +136,11 @@ export default function Footer() {
                   className="hover:text-white"
                 >
                   Hub Maison
+                </Link>
+              </li>
+              <li>
+                <Link href="/reserver-maison" className="hover:text-white">
+                  Réserver en ligne
                 </Link>
               </li>
               {HOME_SERVICES.map((s) => (
@@ -191,6 +212,28 @@ export default function Footer() {
               </li>
             ))}
           </ul>
+
+          {/* Cas fréquents (auto) — délie les pages "pain point" qui étaient
+              orphelines (uniquement dans le sitemap) → découverte + maillage. */}
+          <p className="mt-6 text-xs font-semibold uppercase tracking-wider text-slate-400">
+            Problèmes & cas fréquents
+          </p>
+          <ul className="mt-3 flex flex-wrap gap-x-3 gap-y-1.5 text-xs text-slate-400">
+            {USE_CASES.map((uc, i) => (
+              <li key={uc.slug}>
+                <Link
+                  href={useCasePath(uc)}
+                  prefetch={false}
+                  className="hover:text-white"
+                >
+                  {uc.shortName}
+                </Link>
+                {i < USE_CASES.length - 1 && (
+                  <span className="ml-3 text-white/20">·</span>
+                )}
+              </li>
+            ))}
+          </ul>
         </div>
 
         {/* Bottom : copyright + légal */}
@@ -214,6 +257,18 @@ export default function Footer() {
             </Link>
             <a href={`mailto:${SITE.email}`} className="hover:text-white">
               {SITE.email}
+            </a>
+            <a
+              href="https://naviel.fr"
+              target="_blank"
+              rel="noopener"
+              className="inline-flex items-center gap-1.5 transition hover:text-slate-300"
+            >
+              <span
+                aria-hidden
+                className="inline-block h-[7px] w-[7px] rotate-45 rounded-[1px] bg-[#c8f24e]"
+              />
+              Réalisé par Naviel
             </a>
           </div>
         </div>

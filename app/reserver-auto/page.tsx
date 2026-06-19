@@ -12,10 +12,10 @@ export const metadata: Metadata = {
   description:
     "Réservez en ligne votre nettoyage auto à domicile à Strasbourg : Confort 39 €, Premium 79 €, Luxury 119 €. Formulaire en 1 minute, confirmation par téléphone ou WhatsApp sous 1 h.",
   alternates: { canonical: "/reserver-auto" },
-  // Désactivé tant que le canal n'est pas activé publiquement.
-  // Pour ré-ouvrir : retirer ce robots + relinker depuis Hero/FinalCTA/Footer
-  // + ré-ajouter au sitemap.
-  robots: { index: false, follow: false },
+  // Canal de réservation en ligne ACTIF : indexable, lié depuis FinalCTA +
+  // Footer, et présent dans le sitemap. 3e voie d'acquisition (à côté de
+  // WhatsApp et téléphone) pour capter les leads qui ne veulent pas appeler.
+  robots: { index: true, follow: true },
   openGraph: {
     type: "website",
     url: `${SITE.url}/reserver-auto`,
@@ -75,9 +75,9 @@ export default function ReserverAutoPage() {
                 Réservez votre nettoyage voiture en 1 minute.
               </h1>
               <p className="mt-4 text-balance text-base text-slate-600 sm:text-lg">
-                Choisissez votre formule et votre véhicule, indiquez votre
-                créneau préféré et vos coordonnées. On vous confirme par
-                téléphone ou WhatsApp sous 1 h ouvrée.
+                Choisissez votre formule et votre véhicule, puis laissez vos
+                coordonnées. On vous rappelle pour confirmer le créneau, sous
+                1 h ouvrée.
               </p>
             </div>
 

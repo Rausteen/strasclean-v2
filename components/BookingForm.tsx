@@ -45,25 +45,10 @@ type Props = {
   };
 };
 
-type StepId = "service" | "details" | "contact" | "success";
-
-const DAY_OPTIONS = [
-  "Cette semaine",
-  "Semaine prochaine",
-  "Le plus vite possible",
-  "Je suis flexible",
-];
-
-const SLOT_OPTIONS = [
-  { id: "matin", label: "Matin", hint: "8h–12h" },
-  { id: "aprem", label: "Après-midi", hint: "12h–17h" },
-  { id: "soir", label: "Soir", hint: "17h–22h" },
-  { id: "flexible", label: "Peu importe", hint: "Vous proposez" },
-];
+type StepId = "service" | "contact" | "success";
 
 const STEPS: { id: StepId; label: string }[] = [
   { id: "service", label: "Prestation" },
-  { id: "details", label: "Détails" },
   { id: "contact", label: "Coordonnées" },
 ];
 
@@ -108,10 +93,6 @@ export default function BookingForm({
   // Données du formulaire
   const [itemId, setItemId] = useState<string | null>(null);
   const [variant, setVariant] = useState(""); // texte libre OU id du variantPicker
-  const [postalCode, setPostalCode] = useState("");
-  const [addressNote, setAddressNote] = useState("");
-  const [preferredDay, setPreferredDay] = useState(DAY_OPTIONS[0]);
-  const [preferredSlot, setPreferredSlot] = useState<string>("flexible");
   const [firstName, setFirstName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
@@ -129,11 +110,12 @@ export default function BookingForm({
     setError(null);
 
     if (!firstName.trim()) return setError("Indiquez votre prénom.");
-    if (!email.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-      return setError("Email invalide.");
-    }
     if (!phone.trim() || phone.replace(/[^0-9]/g, "").length < 8) {
       return setError("Numéro de téléphone invalide.");
+    }
+    // Email facultatif : on ne le valide que s'il est renseigné.
+    if (email.trim() && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      return setError("Email invalide.");
     }
 
     setSubmitting(true);
@@ -145,12 +127,8 @@ export default function BookingForm({
           section,
           itemId,
           variant: variant.trim() || null,
-          postalCode: postalCode.trim() || null,
-          addressNote: addressNote.trim() || null,
-          preferredDay,
-          preferredSlot,
           firstName: firstName.trim(),
-          email: email.trim(),
+          email: email.trim() || null,
           phone: phone.trim(),
           notes: notes.trim() || null,
         }),
@@ -163,13 +141,17 @@ export default function BookingForm({
         throw new Error(data.error ?? "Erreur lors de l'envoi.");
       }
 
-      // Conversion tracking — un event différent par section pour pouvoir
-      // les importer comme conversions distinctes dans les comptes Ads.
-      if (typeof window !== "undefined" && typeof window.gtag === "function") {
-        window.gtag("event", `booking_request_${section}`, {
-          event_category: "lead",
-          value: section === "maison" ? 15 : 12,
-        });
+      // Tracking de la soumission du formulaire via le Google Tag, centralisé
+      // dans window.scConvert (cf. Analytics.tsx) :
+      //  - GA4 : event 'generate_lead' (avec param section)
+      //  - Google Ads : action de conversion "Formulaire" si configurée,
+      //    sinon repli sur le label WhatsApp (la soumission compte quand même)
+      //  - Meta : Lead
+      if (
+        typeof window !== "undefined" &&
+        typeof window.scConvert === "function"
+      ) {
+        window.scConvert("form", section);
       }
 
       setStep("success");
@@ -282,158 +264,68 @@ export default function BookingForm({
             })}
           </div>
 
+          {/* Variante (Auto : type de véhicule en taps / Maison : champ
+              libre facultatif) — intégrée ici pour rester en 2 étapes. */}
+          {item &&
+            (variantPicker ? (
+              <div className="mt-5">
+                <Field label={variantPicker.label}>
+                  <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
+                    {variantPicker.options.map((v) => {
+                      const active = variant === v.id;
+                      return (
+                        <button
+                          key={v.id}
+                          type="button"
+                          onClick={() => setVariant(v.id)}
+                          className={`rounded-xl border px-3 py-3 text-center transition ${
+                            active
+                              ? `${accent.borderActive} ${accent.bgSoft}`
+                              : `border-slate-200 bg-slate-50 ${accent.borderHover}`
+                          }`}
+                        >
+                          {v.emoji && (
+                            <span aria-hidden className="block text-2xl">
+                              {v.emoji}
+                            </span>
+                          )}
+                          <span className="mt-1 block text-xs font-semibold text-slate-900">
+                            {v.label}
+                          </span>
+                          {v.hint && (
+                            <span className="block text-[11px] text-slate-500">
+                              {v.hint}
+                            </span>
+                          )}
+                        </button>
+                      );
+                    })}
+                  </div>
+                </Field>
+              </div>
+            ) : (
+              <div className="mt-5">
+                <Field label="Type / taille (facultatif)">
+                  <input
+                    type="text"
+                    value={variant}
+                    onChange={(e) => setVariant(e.target.value)}
+                    placeholder={freeTextVariantPlaceholderByItem?.[item.id] ?? ""}
+                    className={`w-full rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-sm text-slate-900 outline-none transition ${accent.ring} focus:ring-2`}
+                  />
+                </Field>
+              </div>
+            ))}
+
           <FooterRow
-            onPrimary={() => goToStep("details")}
+            onPrimary={() => goToStep("contact")}
             primaryDisabled={!itemId}
             primaryLabel="Continuer"
           />
         </div>
       )}
 
-      {/* Étape 2 — Détails */}
-      {step === "details" && item && (
-        <div>
-          <h2 className="h-display text-xl font-bold text-slate-900 sm:text-2xl">
-            {copy.detailsQuestion.replace("{name}", item.shortName.toLowerCase())}
-          </h2>
-          <p className="mt-1 text-sm text-slate-600">
-            Plus c'est précis, plus le devis est juste du premier coup.
-          </p>
-
-          <div className="mt-5 space-y-4">
-            {variantPicker ? (
-              <Field label={variantPicker.label}>
-                <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
-                  {variantPicker.options.map((v) => {
-                    const active = variant === v.id;
-                    return (
-                      <button
-                        key={v.id}
-                        type="button"
-                        onClick={() => setVariant(v.id)}
-                        className={`rounded-xl border px-3 py-3 text-center transition ${
-                          active
-                            ? `${accent.borderActive} ${accent.bgSoft}`
-                            : `border-slate-200 bg-slate-50 ${accent.borderHover}`
-                        }`}
-                      >
-                        {v.emoji && (
-                          <span aria-hidden className="block text-2xl">
-                            {v.emoji}
-                          </span>
-                        )}
-                        <span className="mt-1 block text-xs font-semibold text-slate-900">
-                          {v.label}
-                        </span>
-                        {v.hint && (
-                          <span className="block text-[11px] text-slate-500">
-                            {v.hint}
-                          </span>
-                        )}
-                      </button>
-                    );
-                  })}
-                </div>
-              </Field>
-            ) : (
-              <Field label="Type / taille (facultatif)">
-                <input
-                  type="text"
-                  value={variant}
-                  onChange={(e) => setVariant(e.target.value)}
-                  placeholder={
-                    freeTextVariantPlaceholderByItem?.[item.id] ?? ""
-                  }
-                  className={`w-full rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-sm text-slate-900 outline-none transition ${accent.ring} focus:ring-2`}
-                />
-              </Field>
-            )}
-
-            <div className="grid gap-4 sm:grid-cols-2">
-              <Field label="Code postal">
-                <input
-                  type="text"
-                  inputMode="numeric"
-                  value={postalCode}
-                  onChange={(e) =>
-                    setPostalCode(
-                      e.target.value.replace(/[^0-9]/g, "").slice(0, 5),
-                    )
-                  }
-                  placeholder="67000"
-                  className={`w-full rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-sm text-slate-900 outline-none transition ${accent.ring} focus:ring-2`}
-                />
-              </Field>
-              <Field label="Quartier / commune (facultatif)">
-                <input
-                  type="text"
-                  value={addressNote}
-                  onChange={(e) => setAddressNote(e.target.value)}
-                  placeholder="Krutenau, Schiltigheim…"
-                  className={`w-full rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-sm text-slate-900 outline-none transition ${accent.ring} focus:ring-2`}
-                />
-              </Field>
-            </div>
-
-            <Field label="Quand préférez-vous l'intervention ?">
-              <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
-                {DAY_OPTIONS.map((d) => {
-                  const active = preferredDay === d;
-                  return (
-                    <button
-                      key={d}
-                      type="button"
-                      onClick={() => setPreferredDay(d)}
-                      className={`rounded-xl border px-3 py-2 text-xs font-semibold transition ${
-                        active
-                          ? `${accent.borderActive} ${accent.bgSoft} text-slate-900`
-                          : `border-slate-200 bg-slate-50 text-slate-600 ${accent.borderHover}`
-                      }`}
-                    >
-                      {d}
-                    </button>
-                  );
-                })}
-              </div>
-            </Field>
-
-            <Field label="Créneau préféré">
-              <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
-                {SLOT_OPTIONS.map((s) => {
-                  const active = preferredSlot === s.id;
-                  return (
-                    <button
-                      key={s.id}
-                      type="button"
-                      onClick={() => setPreferredSlot(s.id)}
-                      className={`rounded-xl border px-3 py-2 text-left transition ${
-                        active
-                          ? `${accent.borderActive} ${accent.bgSoft}`
-                          : `border-slate-200 bg-slate-50 ${accent.borderHover}`
-                      }`}
-                    >
-                      <span className="block text-xs font-semibold text-slate-900">
-                        {s.label}
-                      </span>
-                      <span className="block text-[11px] text-slate-500">
-                        {s.hint}
-                      </span>
-                    </button>
-                  );
-                })}
-              </div>
-            </Field>
-          </div>
-
-          <FooterRow
-            onBack={() => goToStep("service")}
-            onPrimary={() => goToStep("contact")}
-            primaryLabel="Continuer"
-          />
-        </div>
-      )}
-
-      {/* Étape 3 — Coordonnées */}
+      {/* Étape 2 — Coordonnées */}
       {step === "contact" && item && (
         <div>
           <h2 className="h-display text-xl font-bold text-slate-900 sm:text-2xl">
@@ -467,26 +359,25 @@ export default function BookingForm({
               </Field>
             </div>
 
-            <Field label="Email" required>
+            <Field label="Email (facultatif)">
               <input
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="marie@exemple.fr"
-                required
                 className={`w-full rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-sm text-slate-900 outline-none transition ${accent.ring} focus:ring-2`}
               />
             </Field>
 
-            <Field label="Précisions (facultatif)">
+            <Field label="Précisions, créneau souhaité… (facultatif)">
               <textarea
                 value={notes}
                 onChange={(e) => setNotes(e.target.value)}
                 rows={3}
                 placeholder={
                   isMaison
-                    ? "Étage, accès, taches particulières, animaux…"
-                    : "Modèle / marque, accès, options souhaitées…"
+                    ? "Quand ? Étage, accès, taches, animaux…"
+                    : "Quand ? Modèle, accès, options souhaitées…"
                 }
                 className={`w-full rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-sm text-slate-900 outline-none transition ${accent.ring} focus:ring-2`}
               />
@@ -502,12 +393,7 @@ export default function BookingForm({
                   : variant
                     ? ` (${variant})`
                     : ""}
-                {postalCode ? ` — ${postalCode}` : ""}
-                {" "}· {preferredDay}, créneau{" "}
-                {SLOT_OPTIONS.find(
-                  (s) => s.id === preferredSlot,
-                )?.label.toLowerCase()}
-                .
+                . On vous rappelle pour confirmer le créneau.
               </p>
             </div>
           </div>
@@ -519,7 +405,7 @@ export default function BookingForm({
           )}
 
           <FooterRow
-            onBack={() => goToStep("details")}
+            onBack={() => goToStep("service")}
             onPrimary={handleSubmit}
             primaryLabel={submitting ? "Envoi…" : "Envoyer ma demande"}
             primaryDisabled={submitting}
@@ -650,9 +536,13 @@ function SuccessPanel({
   );
 }
 
-// Type augmentation pour gtag (déjà chargé via Analytics.tsx)
+// Type augmentation : gtag + helper de conversion exposé par Analytics.tsx
 declare global {
   interface Window {
     gtag?: (...args: unknown[]) => void;
+    scConvert?: (
+      kind: "whatsapp" | "phone" | "form",
+      section: "auto" | "maison",
+    ) => void;
   }
 }

@@ -1,6 +1,7 @@
+import Link from "next/link";
 import { SITE } from "@/lib/site";
 import Reveal from "./Reveal";
-import { WhatsAppIcon, PhoneIcon, MapPinIcon, BoltIcon, CheckIcon } from "./Icon";
+import { WhatsAppIcon, PhoneIcon, MapPinIcon, BoltIcon, CheckIcon, ArrowRightIcon } from "./Icon";
 
 export default function FinalCTA() {
   return (
@@ -50,6 +51,13 @@ export default function FinalCTA() {
                 <PhoneIcon size={18} />
                 Appeler maintenant
               </a>
+              <Link
+                href="/reserver-auto"
+                className="btn h-14 px-7 text-base border border-white/25 bg-white/5 text-white hover:bg-white/10 sm:h-12 sm:w-auto"
+              >
+                Réserver en ligne
+                <ArrowRightIcon size={16} />
+              </Link>
             </div>
 
             <ul className="relative mt-8 flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-sm text-slate-300">
