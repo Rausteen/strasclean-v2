@@ -7,7 +7,7 @@ import { WhatsAppIcon, CarIcon, SparklesIcon, CheckIcon } from "./Icon";
 // ─── Données — sync avec lib/plans.ts et lib/services.ts ──────────────────
 
 type VehicleId = "citadine" | "berline" | "suv" | "utilitaire";
-type FormulaId = "confort" | "premium" | "luxury" | "exterieur" | "revente";
+type FormulaId = "confort" | "premium" | "luxury" | "exterieur";
 
 const VEHICLES: {
   id: VehicleId;
@@ -57,13 +57,6 @@ const FORMULAS: {
     desc: "Lavage main carrosserie + vitres + jantes",
     basePrice: 29,
     duration: "20-30 min",
-  },
-  {
-    id: "revente",
-    name: "Remise à neuf revente",
-    desc: "Préparation complète avant mise en vente",
-    basePrice: 129,
-    duration: "2h - 2h30",
   },
 ];
 
