@@ -68,7 +68,7 @@ export default function MaisonTrustSection({
                 Note Google
               </p>
               <p className="h-display mt-3 flex items-center justify-center gap-1.5 text-4xl font-extrabold text-slate-900">
-                {hasGoogle ? googleRating!.toFixed(1) : "5.0"}
+                {hasGoogle ? googleRating!.toFixed(1).replace(".", ",") : "5,0"}
                 <span className="inline-flex text-amber-600">
                   <StarIcon size={22} />
                 </span>

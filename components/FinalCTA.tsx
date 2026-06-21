@@ -34,33 +34,45 @@ export default function FinalCTA() {
               secondes. On vous répond rapidement et on s'occupe de tout.
             </p>
 
-            <div className="mx-auto mt-7 flex w-full max-w-md flex-col items-stretch justify-center gap-3 sm:max-w-none sm:flex-row">
+            {/* CTA — 1 primaire (WhatsApp) + 2 secondaires démotés pour ne
+                pas diluer le clic. */}
+            <div className="mx-auto mt-7 flex w-full max-w-md flex-col items-center justify-center gap-3">
               <a
                 href={SITE.whatsappHref}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="btn-wa h-14 px-7 text-base sm:h-12 sm:w-auto"
+                className="btn-wa h-14 w-full px-7 text-base active:scale-[0.98] sm:h-12 sm:w-auto"
               >
                 <WhatsAppIcon size={20} />
                 Réserver sur WhatsApp
               </a>
-              <a
-                href={SITE.phoneHref}
-                className="btn h-14 px-7 text-base bg-white text-slate-900 hover:bg-slate-100 sm:h-12 sm:w-auto"
-              >
-                <PhoneIcon size={18} />
-                Appeler maintenant
-              </a>
-              <Link
-                href="/reserver-auto"
-                className="btn h-14 px-7 text-base border border-white/25 bg-white/5 text-white hover:bg-white/10 sm:h-12 sm:w-auto"
-              >
-                Réserver en ligne
-                <ArrowRightIcon size={16} />
-              </Link>
+              <div className="grid w-full grid-cols-2 gap-2 sm:flex sm:w-auto sm:gap-2.5">
+                <a
+                  href={SITE.phoneHref}
+                  className="btn h-12 px-5 text-sm border border-white/25 bg-white/5 text-white hover:bg-white/10 active:scale-[0.98] sm:w-auto"
+                >
+                  <PhoneIcon size={16} />
+                  Appeler
+                </a>
+                <Link
+                  href="/reserver-auto"
+                  className="btn h-12 px-5 text-sm border border-white/25 bg-white/5 text-white hover:bg-white/10 active:scale-[0.98] sm:w-auto"
+                >
+                  Réserver en ligne
+                  <ArrowRightIcon size={14} />
+                </Link>
+              </div>
             </div>
 
             <ul className="relative mt-8 flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-sm text-slate-300">
+              <li className="inline-flex items-center gap-2">
+                <CheckIcon size={16} className="text-brand-300" />
+                Satisfait ou on repasse
+              </li>
+              <li className="inline-flex items-center gap-2">
+                <CheckIcon size={16} className="text-brand-300" />
+                Devis gratuit · sans engagement
+              </li>
               <li className="inline-flex items-center gap-2">
                 <MapPinIcon size={16} className="text-brand-300" />
                 Strasbourg & alentours
@@ -68,10 +80,6 @@ export default function FinalCTA() {
               <li className="inline-flex items-center gap-2">
                 <BoltIcon size={16} className="text-brand-300" />
                 Réponse rapide
-              </li>
-              <li className="inline-flex items-center gap-2">
-                <CheckIcon size={16} className="text-brand-300" />
-                Devis gratuit
               </li>
             </ul>
           </div>

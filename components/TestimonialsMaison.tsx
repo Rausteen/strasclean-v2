@@ -154,7 +154,7 @@ export default function TestimonialsMaison({
                   Note Google
                 </p>
                 <p className="mt-3 flex items-center justify-center gap-1.5 text-3xl font-bold text-slate-900">
-                  {hasGoogle ? googleRating!.toFixed(1) : "—"}
+                  {hasGoogle ? googleRating!.toFixed(1).replace(".", ",") : "—"}
                   <span className="inline-flex text-amber-600">
                     <StarIcon size={20} />
                   </span>

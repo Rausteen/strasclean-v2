@@ -97,6 +97,13 @@ export default function BookingForm({
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
   const [notes, setNotes] = useState("");
+  // Validation inline (au blur) : corrige avant le submit → moins d'abandon.
+  const [fieldErrors, setFieldErrors] = useState<{ phone?: string; email?: string }>(
+    {},
+  );
+
+  const phoneIsValid = (v: string) => v.replace(/[^0-9]/g, "").length >= 8;
+  const emailIsValid = (v: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
 
   const item = items.find((s) => s.id === itemId);
   const currentStepIndex = STEPS.findIndex((s) => s.id === step);
@@ -344,29 +351,81 @@ export default function BookingForm({
                   onChange={(e) => setFirstName(e.target.value)}
                   placeholder="Marie"
                   required
+                  autoComplete="given-name"
+                  autoCapitalize="words"
                   className={`w-full rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-sm text-slate-900 outline-none transition ${accent.ring} focus:ring-2`}
                 />
               </Field>
               <Field label="Téléphone" required>
                 <input
                   type="tel"
+                  inputMode="tel"
+                  autoComplete="tel"
                   value={phone}
-                  onChange={(e) => setPhone(e.target.value)}
+                  onChange={(e) => {
+                    setPhone(e.target.value);
+                    if (fieldErrors.phone)
+                      setFieldErrors((f) => ({ ...f, phone: undefined }));
+                  }}
+                  onBlur={(e) =>
+                    setFieldErrors((f) => ({
+                      ...f,
+                      phone:
+                        e.target.value.trim() && !phoneIsValid(e.target.value)
+                          ? "Numéro de téléphone invalide."
+                          : undefined,
+                    }))
+                  }
                   placeholder="06 12 34 56 78"
                   required
-                  className={`w-full rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-sm text-slate-900 outline-none transition ${accent.ring} focus:ring-2`}
+                  aria-invalid={!!fieldErrors.phone}
+                  className={`w-full rounded-xl border bg-white px-3 py-2.5 text-sm text-slate-900 outline-none transition focus:ring-2 ${
+                    fieldErrors.phone
+                      ? "border-rose-300 focus:border-rose-400 focus:ring-rose-400/20"
+                      : `border-slate-200 ${accent.ring}`
+                  }`}
                 />
+                {fieldErrors.phone && (
+                  <span className="mt-1 block text-xs text-rose-600">
+                    {fieldErrors.phone}
+                  </span>
+                )}
               </Field>
             </div>
 
             <Field label="Email (facultatif)">
               <input
                 type="email"
+                inputMode="email"
+                autoComplete="email"
                 value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                onChange={(e) => {
+                  setEmail(e.target.value);
+                  if (fieldErrors.email)
+                    setFieldErrors((f) => ({ ...f, email: undefined }));
+                }}
+                onBlur={(e) =>
+                  setFieldErrors((f) => ({
+                    ...f,
+                    email:
+                      e.target.value.trim() && !emailIsValid(e.target.value)
+                        ? "Email invalide."
+                        : undefined,
+                  }))
+                }
                 placeholder="marie@exemple.fr"
-                className={`w-full rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-sm text-slate-900 outline-none transition ${accent.ring} focus:ring-2`}
+                aria-invalid={!!fieldErrors.email}
+                className={`w-full rounded-xl border bg-white px-3 py-2.5 text-sm text-slate-900 outline-none transition focus:ring-2 ${
+                  fieldErrors.email
+                    ? "border-rose-300 focus:border-rose-400 focus:ring-rose-400/20"
+                    : `border-slate-200 ${accent.ring}`
+                }`}
               />
+              {fieldErrors.email && (
+                <span className="mt-1 block text-xs text-rose-600">
+                  {fieldErrors.email}
+                </span>
+              )}
             </Field>
 
             <Field label="Précisions, créneau souhaité… (facultatif)">
@@ -403,6 +462,20 @@ export default function BookingForm({
               {error}
             </p>
           )}
+
+          {/* Réassurance AVANT l'envoi (et pas seulement sur l'écran de
+              succès) : délai de réponse + absence d'engagement → lève la
+              dernière hésitation au moment du clic. */}
+          <div className="mt-5 flex flex-wrap items-center gap-x-4 gap-y-1.5 text-xs text-slate-500">
+            <span className="inline-flex items-center gap-1.5">
+              <ClockIcon size={13} className={accent.text} />
+              Réponse sous 1 h ouvrée (≈ 17 min en moyenne)
+            </span>
+            <span className="inline-flex items-center gap-1.5">
+              <CheckIcon size={13} className={accent.text} />
+              Devis gratuit · sans engagement
+            </span>
+          </div>
 
           <FooterRow
             onBack={() => goToStep("service")}

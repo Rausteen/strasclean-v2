@@ -30,14 +30,19 @@ export default async function Page() {
       <Header />
       <MobileOfferStrip />
       <main>
-        <Hero />
-        <TrustBar />
-        <PricingSection />
+        <Hero
+          rating={place.rating}
+          reviewCount={place.totalCount}
+          reviewsUrl={place.profileUrl}
+        />
+        <TrustBar rating={place.rating} reviewCount={place.totalCount} />
+        {/* compact : pas de tableau "tarif véhicule" ni bloc "Options" —
+            le calculateur juste en dessous porte déjà ces infos. */}
+        <PricingSection compact />
         <PriceCalculator />
         <BeforeAfter />
         <HowItWorks />
         <ServiceArea />
-        <HomeServicesPromo />
         <Testimonials
           googleReviews={autoReviews}
           googleRating={place.rating}
@@ -45,6 +50,9 @@ export default async function Page() {
           googleProfileUrl={place.profileUrl}
         />
         <FAQ />
+        {/* Cross-sell Maison descendu après la FAQ : ne plus détourner le
+            prospect Auto vers un autre produit en plein tunnel de conversion. */}
+        <HomeServicesPromo />
         <FinalCTA />
       </main>
       <Footer />

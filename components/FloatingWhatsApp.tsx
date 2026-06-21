@@ -13,9 +13,10 @@ export default function FloatingWhatsApp() {
   const isMaison = isMaisonPathname(pathname);
 
   useEffect(() => {
-    // Apparaît après le hero — évite la triplette d'écran à l'ouverture
-    // (Header + Hero CTA + sticky). 480 px = sous le hero sur mobile.
-    const onScroll = () => setScrolled(window.scrollY > 480);
+    // Apparaît après le 1er repli d'écran — assez bas pour ne pas faire
+    // doublon avec les CTA du Hero à l'ouverture, assez haut pour qu'il n'y
+    // ait pas de "trou" sans CTA persistant sur les mobiles courts (iPhone SE).
+    const onScroll = () => setScrolled(window.scrollY > 300);
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);

@@ -15,7 +15,15 @@ const OPTIONS = [
   { icon: <SprayIcon size={16} />, label: "Traitement odeurs", price: "+20 à 40 €" },
 ];
 
-export default function PricingSection() {
+type PricingSectionProps = {
+  /** Mode allégé (accueil mobile) : masque le tableau "tarif véhicule" et le
+   *  bloc "Options". Le calculateur juste en dessous porte déjà ces infos →
+   *  évite le double pavé tarifaire. Les pages ville/use-case gardent le
+   *  détail complet (compact=false). */
+  compact?: boolean;
+};
+
+export default function PricingSection({ compact = false }: PricingSectionProps = {}) {
   return (
     <section id="formules" className="relative overflow-hidden bg-slate-50 py-16 sm:py-24">
       <div className="container-x">
@@ -42,59 +50,67 @@ export default function PricingSection() {
           </PlansCarousel>
         </div>
 
-        {/* Tarif selon le type de véhicule */}
-        <Reveal>
-          <div className="mt-10">
-            <VehiclePricing />
-          </div>
-        </Reveal>
+        {/* Tarif selon le type de véhicule — masqué en mode compact (accueil) :
+            le calculateur juste en dessous affiche déjà le supplément par
+            véhicule. */}
+        {!compact && (
+          <Reveal>
+            <div className="mt-10">
+              <VehiclePricing />
+            </div>
+          </Reveal>
+        )}
 
         <p className="mx-auto mt-8 max-w-3xl text-center text-sm text-slate-600">
           Le tarif final peut varier selon l'état intérieur du véhicule et les
           options demandées.
         </p>
 
-        {/* Options */}
-        <Reveal>
-          <div className="mt-14 rounded-3xl border border-slate-200 bg-slate-50 p-6 sm:p-8">
-            <div className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
-              <div>
-                <h3 className="h-display text-xl font-semibold text-slate-900 sm:text-2xl">
-                  Options & cas particuliers
-                </h3>
-                <p className="mt-1 text-sm text-slate-500">
-                  Indiquez vos besoins lors de la réservation, on adapte la
-                  formule.
-                </p>
-              </div>
-              <a
-                href={waLink(
-                  "Bonjour StrasClean 👋 Je voudrais ajouter une option à ma formule. Pouvez-vous me conseiller ?"
-                )}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="btn-wa w-full sm:w-auto"
-              >
-                <WhatsAppIcon size={16} /> Demander une option
-              </a>
-            </div>
-
-            <ul className="mt-6 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
-              {OPTIONS.map((o) => (
-                <li
-                  key={o.label}
-                  className="flex items-center gap-3 rounded-xl border border-slate-200 bg-slate-50 px-4 py-3"
+        {/* Options — masqué en mode compact (accueil) pour éviter d'allonger
+            la section avant le calculateur. L'info reste dans le calculateur
+            (« état très sale → on confirme ») et la FAQ. */}
+        {!compact && (
+          <Reveal>
+            <div className="mt-14 rounded-3xl border border-slate-200 bg-slate-50 p-6 sm:p-8">
+              <div className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
+                <div>
+                  <h3 className="h-display text-xl font-semibold text-slate-900 sm:text-2xl">
+                    Options & cas particuliers
+                  </h3>
+                  <p className="mt-1 text-sm text-slate-500">
+                    Indiquez vos besoins lors de la réservation, on adapte la
+                    formule.
+                  </p>
+                </div>
+                <a
+                  href={waLink(
+                    "Bonjour StrasClean 👋 Je voudrais ajouter une option à ma formule. Pouvez-vous me conseiller ?"
+                  )}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="btn-wa w-full sm:w-auto"
                 >
-                  <span className="text-brand-600 shrink-0">{o.icon}</span>
-                  <span className="flex-1 text-sm text-slate-800">{o.label}</span>
-                  <span className="shrink-0 rounded-full bg-brand-500/15 px-2 py-0.5 text-xs font-semibold text-brand-700">
-                    {o.price}
-                  </span>
-                </li>
-              ))}
-            </ul>
-          </div>
-        </Reveal>
+                  <WhatsAppIcon size={16} /> Demander une option
+                </a>
+              </div>
+
+              <ul className="mt-6 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
+                {OPTIONS.map((o) => (
+                  <li
+                    key={o.label}
+                    className="flex items-center gap-3 rounded-xl border border-slate-200 bg-slate-50 px-4 py-3"
+                  >
+                    <span className="text-brand-600 shrink-0">{o.icon}</span>
+                    <span className="flex-1 text-sm text-slate-800">{o.label}</span>
+                    <span className="shrink-0 rounded-full bg-brand-500/15 px-2 py-0.5 text-xs font-semibold text-brand-700">
+                      {o.price}
+                    </span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </Reveal>
+        )}
       </div>
     </section>
   );

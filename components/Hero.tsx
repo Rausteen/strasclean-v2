@@ -29,7 +29,17 @@ import {
   ArrowRightIcon,
 } from "./Icon";
 
-export default function Hero() {
+type HeroProps = {
+  /** Note moyenne Google réelle (ex. 5). Si absente → repli "Service local de confiance". */
+  rating?: number;
+  /** Nombre total d'avis Google. */
+  reviewCount?: number;
+  /** URL publique de la fiche Google (pour rendre la note cliquable). */
+  reviewsUrl?: string;
+};
+
+export default function Hero({ rating, reviewCount, reviewsUrl }: HeroProps = {}) {
+  const hasRating = typeof rating === "number" && typeof reviewCount === "number" && reviewCount > 0;
   return (
     <section id="top" className="relative overflow-hidden">
       {/* Background — atmosphère light : grille discrète + un radial
@@ -65,7 +75,9 @@ export default function Hero() {
               pas.
             </p>
 
-            <div className="mt-5 flex flex-col gap-3 sm:mt-7 sm:flex-row sm:flex-wrap">
+            {/* CTA — hiérarchie claire : 1 primaire (WhatsApp), 2 secondaires
+                démotés visuellement pour ne pas diluer le clic (loi de Hick). */}
+            <div className="mt-5 flex flex-col gap-3 sm:mt-7 sm:flex-row sm:flex-wrap sm:items-center">
               <a
                 href={SITE.whatsappHref}
                 target="_blank"
@@ -75,35 +87,62 @@ export default function Hero() {
                 <WhatsAppIcon size={20} />
                 Réserver sur WhatsApp
               </a>
-              <a
-                href="/reserver-auto"
-                className="btn h-14 w-full px-6 text-base border border-brand-500/40 bg-brand-500/10 text-brand-700 hover:bg-brand-500/20 active:scale-[0.98] sm:h-12 sm:w-auto"
-              >
-                Réserver en ligne
-                <ArrowRightIcon size={16} />
-              </a>
-              <a
-                href={SITE.phoneHref}
-                className="btn-ghost h-14 w-full px-6 text-base active:scale-[0.98] sm:h-12 sm:w-auto"
-              >
-                <PhoneIcon size={18} />
-                <span className="sm:hidden">Appeler {SITE.phoneDisplay}</span>
-                <span className="hidden sm:inline">Appeler maintenant</span>
-              </a>
+              <div className="grid grid-cols-2 gap-2 sm:flex sm:gap-2.5">
+                <a
+                  href="/reserver-auto"
+                  className="btn h-12 w-full px-4 text-sm border border-slate-300 bg-white text-slate-700 hover:border-slate-900 active:scale-[0.98] sm:w-auto"
+                >
+                  Réserver en ligne
+                  <ArrowRightIcon size={14} />
+                </a>
+                <a
+                  href={SITE.phoneHref}
+                  className="btn-ghost h-12 w-full px-4 text-sm active:scale-[0.98] sm:w-auto"
+                >
+                  <PhoneIcon size={16} />
+                  Appeler
+                </a>
+              </div>
             </div>
 
-            {/* Preuve sociale + dispo — fusionnés en un seul bandeau dense */}
+            {/* Preuve sociale + dispo — fusionnés en un seul bandeau dense.
+                La note vient des vrais avis Google (props) ; repli neutre
+                si la fiche n'est pas connectée. */}
             <div className="mt-6 flex flex-wrap items-center gap-x-[18px] gap-y-2 text-sm">
-              <span className="inline-flex items-center gap-1.5">
-                <span className="flex items-center gap-px text-amber-600">
-                  <StarIcon size={15} />
-                  <StarIcon size={15} />
-                  <StarIcon size={15} />
-                  <StarIcon size={15} />
-                  <StarIcon size={15} />
+              {hasRating ? (
+                <a
+                  href={reviewsUrl ?? "#avis"}
+                  {...(reviewsUrl
+                    ? { target: "_blank", rel: "noopener noreferrer" }
+                    : {})}
+                  className="inline-flex items-center gap-1.5 transition hover:opacity-80"
+                >
+                  <span className="flex items-center gap-px text-amber-600">
+                    <StarIcon size={15} />
+                    <StarIcon size={15} />
+                    <StarIcon size={15} />
+                    <StarIcon size={15} />
+                    <StarIcon size={15} />
+                  </span>
+                  <span className="font-bold text-slate-900">
+                    {rating!.toFixed(1).replace(".", ",")}/5
+                  </span>
+                  <span className="text-slate-600">
+                    · {reviewCount} avis Google
+                  </span>
+                </a>
+              ) : (
+                <span className="inline-flex items-center gap-1.5">
+                  <span className="flex items-center gap-px text-amber-600">
+                    <StarIcon size={15} />
+                    <StarIcon size={15} />
+                    <StarIcon size={15} />
+                    <StarIcon size={15} />
+                    <StarIcon size={15} />
+                  </span>
+                  <span className="font-bold text-slate-900">Service local de confiance</span>
                 </span>
-                <span className="font-bold text-slate-900">Service local de confiance</span>
-              </span>
+              )}
               <span className="inline-flex items-center gap-1.5 font-semibold text-brand-700">
                 <span className="relative flex h-2 w-2">
                   <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-brand-400/70" />
@@ -128,10 +167,47 @@ export default function Hero() {
                 </li>
               ))}
             </ul>
+
+            {/* Visuel hero — MOBILE uniquement. Pour un service visuel, le
+                mobinaute doit voir un rendu sans attendre la section
+                Avant/Après. Version compacte sans stickers flottants (qui
+                cassent sur petit écran). Pas de `priority` : le LCP reste le
+                H1, on ne concurrence pas le titre. */}
+            <div className="mt-7 lg:hidden">
+              <div className="relative aspect-[16/10] w-full overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-card">
+                {HERO_IMAGE_PATH ? (
+                  <Image
+                    src={HERO_IMAGE_PATH}
+                    alt="Voiture nettoyée par StrasClean — rendu showroom à Strasbourg"
+                    fill
+                    sizes="100vw"
+                    quality={80}
+                    className="object-cover"
+                  />
+                ) : (
+                  <div className="absolute inset-0 bg-gradient-to-br from-brand-700/40 via-slate-100 to-slate-50">
+                    <span
+                      aria-hidden="true"
+                      className="absolute inset-0 grid place-items-center text-[96px] opacity-25"
+                    >
+                      🚗
+                    </span>
+                  </div>
+                )}
+                <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent" />
+                <span className="absolute left-3.5 top-3.5 inline-flex items-center gap-1.5 rounded-full bg-[rgba(11,36,26,0.72)] px-2.5 py-1 text-[11px] font-bold text-white backdrop-blur-md">
+                  <SparklesIcon size={12} />
+                  Rendu showroom
+                </span>
+                <span className="absolute right-3.5 top-3.5 inline-flex items-center gap-1 rounded-full bg-[rgba(11,36,26,0.72)] px-2.5 py-1 text-[11px] font-bold text-[#ffd66b] backdrop-blur-md">
+                  ★★★★★
+                </span>
+              </div>
+            </div>
           </div>
 
-          {/* Visual — desktop only : sur mobile, on file directement vers
-              les Formules en dessous pour réduire le scroll avant prix. */}
+          {/* Visual — desktop only : sur mobile, c'est le visuel compact
+              ci-dessus qui prend le relais. */}
           <div className="hidden lg:block">
             <HeroVisual />
           </div>

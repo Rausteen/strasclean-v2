@@ -73,6 +73,16 @@ export default async function HubMaisonPage() {
   const tags = getReviewTagsMap();
   const maisonReviews = filterReviewsBySection(place.reviews, tags, "maison");
 
+  // Note Google globale (l'aggregateRating de la fiche, auto + maison
+  // confondus) — utilisée pour la preuve sociale du hero.
+  const hasRating =
+    typeof place.rating === "number" &&
+    typeof place.totalCount === "number" &&
+    place.totalCount > 0;
+  const ratingDisplay = place.rating
+    ? place.rating.toFixed(1).replace(".", ",")
+    : null;
+
   const hubUrl = `${SITE.url}/strasclean-maison`;
 
   // ─── JSON-LD : LocalBusiness pour le hub Maison ─────────────────────
@@ -200,33 +210,62 @@ export default async function HubMaisonPage() {
                   Particuliers et pros (Airbnb, hôtels, restaurants).
                 </p>
 
-                <div className="mt-6 flex flex-col gap-3 sm:mt-7 sm:flex-row sm:flex-wrap">
+                {/* CTA — hiérarchie : 1 primaire (WhatsApp) + 2 secondaires
+                    démotés pour ne pas diluer le clic (loi de Hick). */}
+                <div className="mt-6 flex flex-col gap-3 sm:mt-7 sm:flex-row sm:flex-wrap sm:items-center">
                   <a
                     href={waLink(MESSAGE)}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="btn-wa h-14 w-full px-6 text-base sm:h-12 sm:w-auto"
+                    className="btn-wa h-14 w-full px-6 text-base active:scale-[0.98] sm:h-12 sm:w-auto"
                   >
                     <WhatsAppIcon size={20} />
                     Demander un devis
                   </a>
-                  <Link
-                    href="/reserver-maison"
-                    className="btn h-14 w-full px-6 text-base border border-amber-400/50 bg-amber-500/10 text-amber-800 hover:bg-amber-500/20 sm:h-12 sm:w-auto"
-                  >
-                    Réserver en ligne
-                    <ArrowRightIcon size={16} />
-                  </Link>
-                  <a
-                    href={SITE.phoneHref}
-                    className="btn-ghost h-14 w-full px-6 text-base sm:h-12 sm:w-auto"
-                  >
-                    <PhoneIcon size={18} />
-                    {SITE.phoneDisplay}
-                  </a>
+                  <div className="grid grid-cols-2 gap-2 sm:flex sm:gap-2.5">
+                    <Link
+                      href="/reserver-maison"
+                      className="btn h-12 w-full px-4 text-sm border border-slate-300 bg-white text-slate-700 hover:border-slate-900 active:scale-[0.98] sm:w-auto"
+                    >
+                      Réserver en ligne
+                      <ArrowRightIcon size={14} />
+                    </Link>
+                    <a
+                      href={SITE.phoneHref}
+                      className="btn-ghost h-12 w-full px-4 text-sm active:scale-[0.98] sm:w-auto"
+                    >
+                      <PhoneIcon size={16} />
+                      Appeler
+                    </a>
+                  </div>
                 </div>
 
-                <ul className="mt-6 flex flex-wrap items-center gap-x-4 gap-y-2 text-[13px] text-slate-600 sm:mt-7 sm:text-sm">
+                {/* Preuve sociale — vraie note Google de la fiche. */}
+                {hasRating && (
+                  <a
+                    href={place.profileUrl ?? "#avis"}
+                    {...(place.profileUrl
+                      ? { target: "_blank", rel: "noopener noreferrer" }
+                      : {})}
+                    className="mt-6 inline-flex items-center gap-1.5 text-sm transition hover:opacity-80"
+                  >
+                    <span className="flex items-center gap-px text-amber-600">
+                      <StarIcon size={15} />
+                      <StarIcon size={15} />
+                      <StarIcon size={15} />
+                      <StarIcon size={15} />
+                      <StarIcon size={15} />
+                    </span>
+                    <span className="font-bold text-slate-900">
+                      {ratingDisplay}/5
+                    </span>
+                    <span className="text-slate-600">
+                      · {place.totalCount} avis Google
+                    </span>
+                  </a>
+                )}
+
+                <ul className="mt-5 flex flex-wrap items-center gap-x-4 gap-y-2 text-[13px] text-slate-600 sm:mt-6 sm:text-sm">
                   <li className="inline-flex items-center gap-1.5">
                     <CheckIcon size={14} className="text-amber-600" />À domicile
                   </li>
@@ -372,28 +411,46 @@ export default async function HubMaisonPage() {
                   Envoyez quelques photos sur WhatsApp, on revient avec un tarif
                   précis et un créneau adapté.
                 </p>
-                <div className="mt-6 flex flex-col items-stretch justify-center gap-3 sm:flex-row">
+                {/* CTA — 1 primaire (WhatsApp) + 2 secondaires démotés. */}
+                <div className="mx-auto mt-6 flex w-full max-w-md flex-col items-center justify-center gap-3">
                   <a
                     href={waLink(MESSAGE)}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="btn-wa h-12 px-6"
+                    className="btn-wa h-14 w-full px-7 text-base active:scale-[0.98] sm:h-12 sm:w-auto"
                   >
-                    <WhatsAppIcon size={18} />
-                    WhatsApp
+                    <WhatsAppIcon size={20} />
+                    Demander un devis
                   </a>
-                  <a href={SITE.phoneHref} className="btn-ghost h-12 px-6">
-                    <PhoneIcon size={16} />
-                    {SITE.phoneDisplay}
-                  </a>
-                  <Link
-                    href="/reserver-maison"
-                    className="btn h-12 px-6 border border-amber-400/50 bg-amber-500/10 text-amber-800 hover:bg-amber-500/20"
-                  >
-                    Réserver en ligne
-                    <ArrowRightIcon size={16} />
-                  </Link>
+                  <div className="grid w-full grid-cols-2 gap-2 sm:flex sm:w-auto sm:gap-2.5">
+                    <a
+                      href={SITE.phoneHref}
+                      className="btn h-12 px-5 text-sm border border-amber-400/50 bg-white text-amber-800 hover:border-amber-500 active:scale-[0.98] sm:w-auto"
+                    >
+                      <PhoneIcon size={16} />
+                      Appeler
+                    </a>
+                    <Link
+                      href="/reserver-maison"
+                      className="btn h-12 px-5 text-sm border border-amber-400/50 bg-white text-amber-800 hover:border-amber-500 active:scale-[0.98] sm:w-auto"
+                    >
+                      Réserver en ligne
+                      <ArrowRightIcon size={14} />
+                    </Link>
+                  </div>
                 </div>
+
+                {/* Réassurance / garantie */}
+                <ul className="mt-6 flex flex-wrap items-center justify-center gap-x-5 gap-y-2 text-sm text-slate-600">
+                  <li className="inline-flex items-center gap-1.5">
+                    <CheckIcon size={15} className="text-amber-600" />
+                    Satisfait ou on repasse
+                  </li>
+                  <li className="inline-flex items-center gap-1.5">
+                    <CheckIcon size={15} className="text-amber-600" />
+                    Devis gratuit · sans engagement
+                  </li>
+                </ul>
               </div>
             </Reveal>
           </div>
