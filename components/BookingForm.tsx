@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { CheckIcon, ArrowRightIcon, ClockIcon, WhatsAppIcon } from "./Icon";
 import { SITE, waLink } from "@/lib/site";
 
@@ -20,6 +20,9 @@ export type BookingFormVariant = {
   label: string;
   emoji?: string;
   hint?: string;
+  /** Supplément en € au-dessus du prix de base (Auto : véhicule). Sert au
+   *  récapitulatif de prix à l'étape coordonnées. */
+  surcharge?: number;
 };
 
 export type BookingFormSection = "auto" | "maison";
@@ -108,6 +111,23 @@ export default function BookingForm({
   const item = items.find((s) => s.id === itemId);
   const currentStepIndex = STEPS.findIndex((s) => s.id === step);
 
+  // Auto : la variante (véhicule) devient obligatoire pour capter le
+  // supplément. Maison (texte libre, pas de variantPicker) : facultative.
+  const canContinue = !!itemId && (!variantPicker || !!variant);
+
+  // Remonter le formulaire en haut de l'écran à chaque changement d'étape :
+  // sur mobile, sans ça, le 1er champ de l'étape suivante peut rester
+  // hors-écran et l'utilisateur croit qu'il ne s'est rien passé.
+  const containerRef = useRef<HTMLDivElement>(null);
+  const mountedRef = useRef(false);
+  useEffect(() => {
+    if (!mountedRef.current) {
+      mountedRef.current = true;
+      return;
+    }
+    containerRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+  }, [step]);
+
   function goToStep(target: StepId) {
     setError(null);
     setStep(target);
@@ -185,8 +205,12 @@ export default function BookingForm({
   }
 
   return (
-    <div className="rounded-3xl border border-slate-200 bg-white p-5 shadow-sm sm:p-8">
-      {/* Progress */}
+    <div
+      ref={containerRef}
+      className="scroll-mt-24 rounded-3xl border border-slate-200 bg-white p-5 shadow-sm sm:p-8"
+    >
+      {/* Progress — labels + ligne de liaison visibles dès le mobile (avant,
+          il ne restait que deux pastilles orphelines sur petit écran). */}
       <div className="mb-6 flex items-center gap-2 text-xs font-medium text-slate-500">
         {STEPS.map((s, i) => {
           const done = i < currentStepIndex;
@@ -205,17 +229,13 @@ export default function BookingForm({
                 {done ? <CheckIcon size={12} /> : i + 1}
               </span>
               <span
-                className={`hidden text-xs sm:inline ${
-                  active ? "font-semibold text-slate-900" : ""
-                }`}
+                className={`text-xs ${active ? "font-semibold text-slate-900" : ""}`}
               >
                 {s.label}
               </span>
               {i < STEPS.length - 1 && (
                 <span
-                  className={`hidden h-px flex-1 sm:block ${
-                    done ? accent.bgActive : "bg-slate-200"
-                  }`}
+                  className={`h-px flex-1 ${done ? accent.bgActive : "bg-slate-200"}`}
                 />
               )}
             </div>
@@ -225,7 +245,12 @@ export default function BookingForm({
 
       {/* Étape 1 — Prestation */}
       {step === "service" && (
-        <div>
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+            if (canContinue) goToStep("contact");
+          }}
+        >
           <h2 className="h-display text-xl font-bold text-slate-900 sm:text-2xl">
             {copy.serviceQuestion}
           </h2>
@@ -325,16 +350,21 @@ export default function BookingForm({
             ))}
 
           <FooterRow
-            onPrimary={() => goToStep("contact")}
-            primaryDisabled={!itemId}
+            isSubmit
+            primaryDisabled={!canContinue}
             primaryLabel="Continuer"
           />
-        </div>
+        </form>
       )}
 
       {/* Étape 2 — Coordonnées */}
       {step === "contact" && item && (
-        <div>
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+            handleSubmit();
+          }}
+        >
           <h2 className="h-display text-xl font-bold text-slate-900 sm:text-2xl">
             Comment on vous recontacte ?
           </h2>
@@ -442,23 +472,20 @@ export default function BookingForm({
               />
             </Field>
 
-            {/* Récap discret avant envoi */}
-            <div className="rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-xs text-slate-600">
-              <p>
-                Récap :{" "}
-                <strong className="text-slate-900">{item.shortName}</strong>
-                {variant && variantPicker
-                  ? ` (${variantPicker.options.find((v) => v.id === variant)?.label ?? variant})`
-                  : variant
-                    ? ` (${variant})`
-                    : ""}
-                . On vous rappelle pour confirmer le créneau.
-              </p>
-            </div>
+            {/* Récapitulatif de prix avant envoi */}
+            <PriceRecap
+              item={item}
+              variant={variant}
+              variantPicker={variantPicker}
+              accent={accent}
+            />
           </div>
 
           {error && (
-            <p className="mt-4 rounded-xl border border-rose-200 bg-rose-50 px-4 py-2.5 text-sm text-rose-700">
+            <p
+              role="alert"
+              className="mt-4 rounded-xl border border-rose-200 bg-rose-50 px-4 py-2.5 text-sm text-rose-700"
+            >
               {error}
             </p>
           )}
@@ -478,8 +505,8 @@ export default function BookingForm({
           </div>
 
           <FooterRow
+            isSubmit
             onBack={() => goToStep("service")}
-            onPrimary={handleSubmit}
             primaryLabel={submitting ? "Envoi…" : "Envoyer ma demande"}
             primaryDisabled={submitting}
           />
@@ -496,7 +523,7 @@ export default function BookingForm({
             </a>
             .
           </p>
-        </div>
+        </form>
       )}
     </div>
   );
@@ -525,11 +552,16 @@ function Field({
 function FooterRow({
   onBack,
   onPrimary,
+  isSubmit,
   primaryLabel,
   primaryDisabled,
 }: {
   onBack?: () => void;
-  onPrimary: () => void;
+  /** Action au clic (boutons hors form). Ignoré si isSubmit (le <form> gère). */
+  onPrimary?: () => void;
+  /** Bouton de type submit : déclenche le onSubmit du <form> parent
+   *  → soumission au clavier (Entrée / touche "OK" mobile). */
+  isSubmit?: boolean;
   primaryLabel: string;
   primaryDisabled?: boolean;
 }) {
@@ -547,14 +579,74 @@ function FooterRow({
         <span />
       )}
       <button
-        type="button"
-        onClick={onPrimary}
+        type={isSubmit ? "submit" : "button"}
+        onClick={isSubmit ? undefined : onPrimary}
         disabled={primaryDisabled}
         className="inline-flex items-center justify-center gap-2 rounded-full bg-slate-900 px-5 py-3 text-sm font-semibold text-white shadow transition hover:bg-slate-800 disabled:cursor-not-allowed disabled:opacity-50"
       >
         {primaryLabel}
         <ArrowRightIcon size={14} />
       </button>
+    </div>
+  );
+}
+
+/** Récapitulatif de prix affiché à l'étape coordonnées, juste avant l'envoi.
+ *  Auto : prix de base de la formule + supplément véhicule. Maison : prix
+ *  « à partir de » du service (la taille reste en texte libre). Toujours
+ *  présenté comme une estimation, le prix final étant confirmé au rappel. */
+function PriceRecap({
+  item,
+  variant,
+  variantPicker,
+  accent,
+}: {
+  item: BookingFormItem;
+  variant: string;
+  variantPicker?: Props["variantPicker"];
+  accent: { text: string; bgSoft: string; borderActive: string };
+}) {
+  const base = parseInt(item.priceFrom, 10);
+  const selected = variantPicker?.options.find((v) => v.id === variant);
+  const surcharge = selected?.surcharge ?? 0;
+  const hasBase = !Number.isNaN(base);
+  const total = hasBase ? base + surcharge : null;
+  const variantLabel = selected?.label ?? (variant.trim() || null);
+
+  return (
+    <div
+      className={`rounded-2xl border ${accent.borderActive} ${accent.bgSoft} px-4 py-3.5`}
+    >
+      <div className="flex items-center justify-between gap-3">
+        <div className="min-w-0">
+          <p className="text-[11px] font-medium uppercase tracking-wide text-slate-500">
+            Votre demande
+          </p>
+          <p className="mt-0.5 truncate text-sm font-semibold text-slate-900">
+            {item.shortName}
+            {variantLabel ? ` · ${variantLabel}` : ""}
+          </p>
+        </div>
+        {total != null && (
+          <div className="shrink-0 text-right">
+            <p className="text-[11px] text-slate-500">À partir de</p>
+            <p className={`h-display text-xl font-bold ${accent.text}`}>
+              {total} €
+            </p>
+          </div>
+        )}
+      </div>
+
+      {surcharge > 0 && selected && (
+        <p className="mt-2.5 border-t border-slate-200/70 pt-2.5 text-[11px] text-slate-500">
+          Base {base} € + {selected.label} (+{surcharge} €)
+        </p>
+      )}
+
+      <p className="mt-2 text-[11px] leading-snug text-slate-500">
+        Estimation indicative — prix final confirmé après échange. On vous
+        rappelle pour valider le créneau, sans engagement.
+      </p>
     </div>
   );
 }

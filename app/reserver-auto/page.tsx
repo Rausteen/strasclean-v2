@@ -57,6 +57,7 @@ export default function ReserverAutoPage() {
       label: v.label,
       emoji: v.emoji,
       hint: v.surcharge === 0 ? "Inclus" : `+${v.surcharge} €`,
+      surcharge: v.surcharge,
     })),
   };
 
