@@ -17,7 +17,7 @@ import {
 } from "@/lib/db";
 import { getGooglePlaceData } from "@/lib/reviews";
 import LogoutButton from "./LogoutButton";
-import { HideIpButton, UnhideIpButton } from "./HideIpButton";
+import { HideIpButton, UnhideIpButton, AddHiddenIpForm } from "./HideIpButton";
 import ReviewTagger from "./ReviewTagger";
 import TrendChart from "./TrendChart";
 
@@ -347,12 +347,17 @@ export default async function DashboardPage({
       </section>
 
       {/* IPs cachées */}
-      {hiddenIps.length > 0 && (
-        <section className="mt-8">
-          <Panel title={`IPs masquées (${hiddenIps.length})`}>
-            <p className="mb-3 text-xs text-slate-600">
-              Toutes les visites/clics de ces IPs sont exclus des statistiques affichées ci-dessus.
-            </p>
+      <section className="mt-8">
+        <Panel title={`IPs masquées (${hiddenIps.length})`}>
+          <p className="mb-3 text-xs text-slate-600">
+            Toutes les visites/clics de ces IPs sont exclus des statistiques
+            affichées ci-dessus. Vous pouvez masquer une IP exacte ou un{" "}
+            <strong>préfixe</strong> : saisissez par ex.{" "}
+            <span className="font-mono">162.158</span> pour exclure toutes les IPs
+            commençant par 162.158 (utile pour les plages Cloudflare/bots).
+          </p>
+          <AddHiddenIpForm />
+          {hiddenIps.length > 0 ? (
             <ul className="grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
               {hiddenIps.map((h) => (
                 <li
@@ -369,9 +374,11 @@ export default async function DashboardPage({
                 </li>
               ))}
             </ul>
-          </Panel>
-        </section>
-      )}
+          ) : (
+            <p className="text-xs text-slate-400">Aucune IP masquée pour le moment.</p>
+          )}
+        </Panel>
+      </section>
 
       {/* Tagger les avis Google par section (Auto / Maison / Les deux) */}
       <section id="avis" className="mt-10 scroll-mt-16">

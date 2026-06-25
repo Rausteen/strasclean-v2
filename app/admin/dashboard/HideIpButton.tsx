@@ -38,6 +38,66 @@ export function HideIpButton({ ip }: { ip: string | null }) {
   );
 }
 
+/** Saisie libre pour masquer une IP exacte OU un préfixe (ex. "162.158",
+ *  "162.158.*") sans avoir à attendre qu'une visite de cette plage apparaisse
+ *  dans la liste. */
+export function AddHiddenIpForm() {
+  const router = useRouter();
+  const [ip, setIp] = useState("");
+  const [label, setLabel] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  async function submit(e: React.FormEvent) {
+    e.preventDefault();
+    const value = ip.trim();
+    if (!value) return;
+    setLoading(true);
+    await fetch("/api/admin/hide-ip", {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({ ip: value, action: "hide", label: label.trim() || undefined }),
+    });
+    setIp("");
+    setLabel("");
+    setLoading(false);
+    router.refresh();
+  }
+
+  return (
+    <form onSubmit={submit} className="mb-4 flex flex-wrap items-end gap-2">
+      <label className="min-w-[160px] flex-1">
+        <span className="mb-1 block text-[11px] font-medium text-slate-600">
+          IP ou préfixe
+        </span>
+        <input
+          value={ip}
+          onChange={(e) => setIp(e.target.value)}
+          placeholder="162.158 ou 162.158.*"
+          className="w-full rounded-lg border border-slate-300 bg-white px-2.5 py-1.5 font-mono text-xs text-slate-800 outline-none focus:border-slate-500"
+        />
+      </label>
+      <label className="min-w-[140px] flex-1">
+        <span className="mb-1 block text-[11px] font-medium text-slate-600">
+          Label (optionnel)
+        </span>
+        <input
+          value={label}
+          onChange={(e) => setLabel(e.target.value)}
+          placeholder="Cloudflare, bots…"
+          className="w-full rounded-lg border border-slate-300 bg-white px-2.5 py-1.5 text-xs text-slate-800 outline-none focus:border-slate-500"
+        />
+      </label>
+      <button
+        type="submit"
+        disabled={loading || !ip.trim()}
+        className="rounded-lg border border-slate-300 bg-slate-900 px-3 py-1.5 text-xs font-semibold text-white hover:bg-slate-700 disabled:opacity-50"
+      >
+        {loading ? "…" : "Masquer"}
+      </button>
+    </form>
+  );
+}
+
 export function UnhideIpButton({ ip }: { ip: string }) {
   const router = useRouter();
   const [loading, setLoading] = useState(false);

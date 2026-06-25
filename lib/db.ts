@@ -372,15 +372,51 @@ export function countStoredReviews(): number {
   ).c;
 }
 
-/** Renvoie la clause SQL "AND ip NOT IN (...)" + params à passer. Vide si aucune IP cachée. */
+/** Une entrée `hidden_ips` peut être :
+ *   - une IP complète (IPv4 "162.158.1.2" ou IPv6) → match exact ;
+ *   - un préfixe ("162.158", "162.158.", "162.158.*") → masque toutes les IPs
+ *     qui commencent par ce préfixe (utile pour exclure une plage entière,
+ *     ex. les IPs Cloudflare/bots en 162.158.x.x).
+ *  Renvoie le préfixe normalisé (sans le "*" final) pour un LIKE 'prefix%',
+ *  ou null si l'entrée est une IP complète. */
+function ipPrefixPattern(value: string): string | null {
+  let v = value.trim();
+  if (!v) return null;
+  if (v.endsWith("*")) v = v.slice(0, -1); // wildcard explicite "162.158.*"
+  const isFullIpv4 = /^\d{1,3}(\.\d{1,3}){3}$/.test(v);
+  const isIpv6 = v.includes(":");
+  if (isFullIpv4 || isIpv6) return null; // IP complète → match exact
+  return v; // motif partiel → préfixe
+}
+
+/** Renvoie la clause SQL excluant les IPs cachées (match exact + préfixes)
+ *  + les params à passer. Vide si aucune IP cachée. */
 function excludeHiddenClause(): { sql: string; params: string[] } {
-  const ips = db.prepare(`SELECT ip FROM hidden_ips`).all() as { ip: string }[];
-  if (ips.length === 0) return { sql: "", params: [] };
-  const placeholders = ips.map(() => "?").join(",");
-  return {
-    sql: ` AND ip NOT IN (${placeholders})`,
-    params: ips.map((r) => r.ip),
-  };
+  const rows = db.prepare(`SELECT ip FROM hidden_ips`).all() as { ip: string }[];
+  if (rows.length === 0) return { sql: "", params: [] };
+
+  const exact: string[] = [];
+  const prefixes: string[] = [];
+  for (const { ip } of rows) {
+    const prefix = ipPrefixPattern(ip);
+    if (prefix !== null) prefixes.push(prefix);
+    else exact.push(ip);
+  }
+
+  let sql = "";
+  const params: string[] = [];
+  if (exact.length > 0) {
+    sql += ` AND ip NOT IN (${exact.map(() => "?").join(",")})`;
+    params.push(...exact);
+  }
+  for (const prefix of prefixes) {
+    // LIKE 'prefix%' : les IPs (sous forme texte) ne contiennent ni '%' ni '_',
+    // pas besoin d'échapper. Une ip NULL est exclue (comportement déjà en place
+    // avec NOT IN).
+    sql += ` AND ip NOT LIKE ?`;
+    params.push(`${prefix}%`);
+  }
+  return { sql, params };
 }
 
 // ─── Queries pour le dashboard ──────────────────────────────────────────
