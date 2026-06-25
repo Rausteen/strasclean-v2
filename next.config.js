@@ -32,6 +32,14 @@ const nextConfig = {
         destination: "https://strasclean.fr/:path*",
         permanent: true,
       },
+      // Lien court d'avis Google : à partager de vive voix, par WhatsApp/SMS
+      // ou via un QR code. Ouvre directement le formulaire « écrire un avis ».
+      // permanent: false (307) → pas de cache agressif si le lien Google change.
+      {
+        source: "/avis",
+        destination: "https://g.page/r/CRa5hY3dnAMDEAE/review",
+        permanent: false,
+      },
     ];
   },
   async headers() {
