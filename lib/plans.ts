@@ -1,10 +1,11 @@
 // ─────────────────────────────────────────────────────────────────────────
 //  StrasClean — Formules (packages tarifaires)
 //
-//  3 formules :
-//    - Confort  (39 €) — entretien rapide
-//    - Premium  (79 €) — nettoyage complet (la plus populaire)
-//    - Luxury   (119 €) — detailing showroom
+//  3 formules (l'id technique reste confort/premium/luxury pour les ancres
+//  URL et le routage ; seul le nom affiché change) :
+//    - Essentiel           (39 €)  — entretien rapide        [id: confort]
+//    - Premium Intérieur   (79 €)  — nettoyage complet (la plus populaire) [id: premium]
+//    - Intégrale StrasClean (119 €) — intérieur + extérieur   [id: luxury]
 //
 //  Pour modifier les prix / inclus / nom : tout est ici.
 // ─────────────────────────────────────────────────────────────────────────
@@ -34,7 +35,7 @@ export const PLANS: Plan[] = [
   {
     id: "confort",
     emoji: "🚗",
-    name: "Formule Confort",
+    name: "Formule Essentiel",
     priceFrom: "39",
     tagline: "L'essentiel pour un intérieur propre, sain et rafraîchi.",
     features: [
@@ -42,50 +43,49 @@ export const PLANS: Plan[] = [
       "Nettoyage tableau de bord et plastiques",
       "Vitres intérieures sans traces",
       "Désinfection des points de contact",
-      "Déodorisation professionnelle",
+      "Désodorisation professionnelle",
     ],
     ctaMessage:
-      "Bonjour StrasClean 👋 Je voudrais réserver la formule Confort dès 39 €. Quels sont vos prochains créneaux ?",
+      "Bonjour StrasClean 👋 Je voudrais réserver la formule Essentiel dès 39 €. Quels sont vos prochains créneaux ?",
     accent: "from-white/10 to-white/0",
   },
   {
     id: "premium",
     emoji: "✨",
-    name: "Formule Premium",
+    name: "Formule Premium Intérieur",
     priceFrom: "79",
     tagline: "Nettoyage complet en profondeur — intérieur rénové comme neuf.",
     highlight: true,
     badge: "Le plus populaire ⭐",
     features: [
-      "Aspiration complète",
+      "Tout l'Essentiel inclus",
       "Shampouinage sièges, moquettes et tapis",
       "Traitement cuir ou tissu",
-      "Dégraissage & protection plastiques",
+      "Dégraissage & protection des plastiques",
       "Nettoyage contours de portes & coffre",
       "Désinfection bactéricide + désodorisation renforcée",
     ],
     ctaMessage:
-      "Bonjour StrasClean 👋 Je voudrais réserver la formule Premium dès 79 €. Quels sont vos prochains créneaux ?",
+      "Bonjour StrasClean 👋 Je voudrais réserver la formule Premium Intérieur dès 79 €. Quels sont vos prochains créneaux ?",
     accent: "from-brand-500/30 to-brand-500/0",
   },
   {
     id: "luxury",
     emoji: "💠",
-    name: "Formule Luxury Detailing",
+    name: "Formule Intégrale StrasClean",
     priceFrom: "119",
     tagline:
-      "Service d'exception à domicile — rendu showroom intérieur + extérieur.",
+      "Nettoyage complet intérieur et extérieur à domicile. Idéal pour retrouver une voiture propre, saine et soignée sans se déplacer.",
     features: [
-      "Tout le contenu Premium inclus",
+      "Tout le Premium Intérieur inclus",
       "Lavage extérieur à la main",
       "Décontamination carrosserie",
-      "Vitres intérieures & extérieures",
-      "Traitement plastiques extérieurs",
-      "Traitement poils d'animaux inclus",
+      "Jantes nettoyées + finitions",
+      "Vitres extérieures sans traces",
       "Parfum de finition",
     ],
     ctaMessage:
-      "Bonjour StrasClean 👋 Je voudrais réserver la formule Luxury Detailing dès 119 €. Quels sont vos prochains créneaux ?",
+      "Bonjour StrasClean 👋 Je voudrais réserver la formule Intégrale StrasClean dès 119 €. Quels sont vos prochains créneaux ?",
     accent: "from-violet-500/20 to-violet-500/0",
   },
 ];
@@ -111,3 +111,50 @@ export const VEHICLE_TYPES: VehicleType[] = [
   { id: "suv", label: "SUV", emoji: "🚐", surcharge: 20 },
   { id: "utilitaire", label: "Utilitaire", emoji: "🚛", surcharge: 30 },
 ];
+
+// ─── Options selon l'état du véhicule ────────────────────────────────────
+//  Suppléments facultatifs facturés selon l'état réel. Le prix est FIXE mais
+//  dépend du type de véhicule (SUV et utilitaire partagent la même colonne).
+//  Source unique consommée par le calculateur ET le formulaire de
+//  réservation Auto.
+
+export type AutoOptionId = "poils" | "tres-sale" | "odeur" | "coffre" | "taches";
+
+export type AutoOption = {
+  id: AutoOptionId;
+  label: string;
+  /** Prix fixe (€) selon le type de véhicule. */
+  priceByVehicle: Record<VehicleType["id"], number>;
+};
+
+export const AUTO_OPTIONS: AutoOption[] = [
+  {
+    id: "poils",
+    label: "Poils d'animaux",
+    priceByVehicle: { citadine: 39, berline: 59, suv: 79, utilitaire: 79 },
+  },
+  {
+    id: "tres-sale",
+    label: "Véhicule très sale",
+    priceByVehicle: { citadine: 39, berline: 59, suv: 89, utilitaire: 89 },
+  },
+  {
+    id: "odeur",
+    label: "Odeur persistante",
+    priceByVehicle: { citadine: 49, berline: 69, suv: 89, utilitaire: 89 },
+  },
+  {
+    id: "coffre",
+    label: "Coffre très sale",
+    priceByVehicle: { citadine: 29, berline: 39, suv: 59, utilitaire: 59 },
+  },
+  {
+    id: "taches",
+    label: "Taches tenaces",
+    priceByVehicle: { citadine: 25, berline: 39, suv: 49, utilitaire: 49 },
+  },
+];
+
+/** Prix d'une option pour un véhicule (fallback citadine si véhicule inconnu). */
+export const autoOptionPrice = (o: AutoOption, vehicleId: string): number =>
+  o.priceByVehicle[vehicleId as VehicleType["id"]] ?? o.priceByVehicle.citadine;

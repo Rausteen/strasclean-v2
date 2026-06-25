@@ -2,6 +2,7 @@
 
 import { useMemo, useState } from "react";
 import { waLink } from "@/lib/site";
+import { AUTO_OPTIONS } from "@/lib/plans";
 import { WhatsAppIcon, CarIcon, SparklesIcon, CheckIcon } from "./Icon";
 
 // ─── Données — sync avec lib/plans.ts et lib/services.ts ──────────────────
@@ -31,14 +32,14 @@ const FORMULAS: {
 }[] = [
   {
     id: "confort",
-    name: "Confort",
+    name: "Essentiel",
     desc: "Entretien rapide — aspiration profonde + intérieur",
     basePrice: 39,
     duration: "30-50 min",
   },
   {
     id: "premium",
-    name: "Premium",
+    name: "Premium Intérieur",
     desc: "Nettoyage complet + shampouinage sièges (le plus populaire)",
     basePrice: 79,
     duration: "45 min - 1h30",
@@ -46,8 +47,8 @@ const FORMULAS: {
   },
   {
     id: "luxury",
-    name: "Luxury Detailing",
-    desc: "Intérieur + extérieur main + finition showroom",
+    name: "Intégrale StrasClean",
+    desc: "Intérieur complet + extérieur à la main + jantes & finitions",
     basePrice: 119,
     duration: "2h - 2h30",
   },
@@ -63,18 +64,36 @@ const FORMULAS: {
 export default function PriceCalculator() {
   const [vehicle, setVehicle] = useState<VehicleId | null>(null);
   const [formula, setFormula] = useState<FormulaId | null>(null);
+  const [options, setOptions] = useState<string[]>([]);
+
+  function toggleOption(id: string) {
+    setOptions((prev) =>
+      prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id],
+    );
+  }
 
   const result = useMemo(() => {
     if (!vehicle || !formula) return null;
     const v = VEHICLES.find((x) => x.id === vehicle)!;
     const f = FORMULAS.find((x) => x.id === formula)!;
-    const total = f.basePrice + v.surcharge;
-    return { v, f, total };
-  }, [vehicle, formula]);
+    const selectedOptions = AUTO_OPTIONS.filter((o) => options.includes(o.id));
+    const optionsTotal = selectedOptions.reduce(
+      (s, o) => s + o.priceByVehicle[v.id],
+      0,
+    );
+    const total = f.basePrice + v.surcharge + optionsTotal;
+    return { v, f, total, selectedOptions, optionsTotal };
+  }, [vehicle, formula, options]);
 
   const waHref = result
     ? waLink(
-        `Bonjour StrasClean 👋 Je voudrais réserver la formule ${result.f.name} pour ma ${result.v.name.toLowerCase()} — devis ${result.total} €. Quels sont vos prochains créneaux ?`,
+        `Bonjour StrasClean 👋 Je voudrais réserver la formule ${result.f.name} pour ma ${result.v.name.toLowerCase()}${
+          result.selectedOptions.length
+            ? ` (options : ${result.selectedOptions
+                .map((o) => `${o.label} ${o.priceByVehicle[result.v.id]} €`)
+                .join(", ")})`
+            : ""
+        } — devis ${result.total} €. Quels sont vos prochains créneaux ?`,
       )
     : null;
 
@@ -229,6 +248,62 @@ export default function PriceCalculator() {
             </div>
           </div>
 
+          {/* Étape 3 — Options (facultatif) */}
+          <div className="mt-6">
+            <div className="mb-3 flex items-center gap-2">
+              <span
+                className={`grid h-6 w-6 place-items-center rounded-full text-[11px] font-bold ${
+                  formula
+                    ? "bg-brand-500 text-slate-900"
+                    : "bg-slate-100 text-slate-600"
+                }`}
+              >
+                3
+              </span>
+              <h3 className="h-display text-base font-semibold text-slate-900">
+                Options selon l'état{" "}
+                <span className="font-normal text-slate-500">(facultatif)</span>
+              </h3>
+            </div>
+            <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
+              {AUTO_OPTIONS.map((o) => {
+                const active = options.includes(o.id);
+                return (
+                  <button
+                    key={o.id}
+                    type="button"
+                    onClick={() => toggleOption(o.id)}
+                    disabled={!formula}
+                    aria-pressed={active}
+                    className={`group relative flex h-full flex-col items-start gap-1 rounded-2xl border px-3 py-3 text-left transition disabled:cursor-not-allowed disabled:opacity-50 ${
+                      active
+                        ? "border-brand-400/60 bg-brand-500/15 shadow-glow"
+                        : "border-slate-200 bg-slate-50 hover:border-white/25 hover:bg-slate-100"
+                    }`}
+                  >
+                    <span
+                      className={`text-sm font-semibold ${
+                        active ? "text-slate-900" : "text-slate-800"
+                      }`}
+                    >
+                      {o.label}
+                    </span>
+                    <span className="text-[11px] font-medium text-slate-600">
+                      {vehicle
+                        ? `${o.priceByVehicle[vehicle]} €`
+                        : `dès ${o.priceByVehicle.citadine} €`}
+                    </span>
+                    {active && (
+                      <span className="absolute right-2 top-2 grid h-4 w-4 place-items-center rounded-full bg-brand-500 text-[9px] text-slate-900">
+                        <CheckIcon size={10} />
+                      </span>
+                    )}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+
           {/* Résultat */}
           <div className="mt-6">
             {result ? (
@@ -240,14 +315,18 @@ export default function PriceCalculator() {
                     </p>
                     <p className="mt-1 text-sm text-slate-600">
                       Formule {result.f.name} · {result.v.name}
+                      {result.selectedOptions.length > 0
+                        ? ` · ${result.selectedOptions.map((o) => o.label).join(", ")}`
+                        : ""}
                     </p>
-                    <p className="mt-2 flex items-baseline gap-2">
+                    <p className="mt-2 flex flex-wrap items-baseline gap-x-2 gap-y-1">
                       <span className="h-display text-4xl font-extrabold text-slate-900 sm:text-5xl">
                         {result.total} €
                       </span>
                       <span className="text-xs text-slate-600">
                         ({result.f.basePrice} €
-                        {result.v.surcharge > 0 ? ` + ${result.v.surcharge} € ${result.v.name.toLowerCase()}` : ""})
+                        {result.v.surcharge > 0 ? ` + ${result.v.surcharge} € ${result.v.name.toLowerCase()}` : ""}
+                        {result.optionsTotal > 0 ? ` + ${result.optionsTotal} € options` : ""})
                       </span>
                     </p>
                     <p className="mt-2 text-xs text-slate-600">

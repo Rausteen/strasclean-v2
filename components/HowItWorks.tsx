@@ -6,7 +6,7 @@ const STEPS = [
   {
     n: "01",
     title: "Vous choisissez votre formule",
-    desc: "Confort, Premium ou Luxury Detailing — selon l'état de votre véhicule et votre besoin.",
+    desc: "Essentiel, Premium Intérieur ou Intégrale StrasClean — selon l'état de votre véhicule et votre besoin.",
   },
   {
     n: "02",

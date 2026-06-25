@@ -251,8 +251,8 @@ export const SERVICES: Service[] = [
         a: "Oui, l'aspiration du coffre est incluse. Pour un coffre très chargé, on peut ajouter un traitement renforcé en option.",
       },
       {
-        q: "Quelle différence avec la formule Premium ?",
-        a: "Le nettoyage intérieur (Confort) est de l'entretien. La Premium ajoute un shampouinage complet des sièges et de la moquette — utile quand la voiture est très sale ou tachée.",
+        q: "Quelle différence avec la formule Premium Intérieur ?",
+        a: "Le nettoyage intérieur (Essentiel) est de l'entretien. La Premium Intérieur ajoute un shampouinage complet des sièges et de la moquette — utile quand la voiture est très sale ou tachée.",
       },
     ],
     ctaMessage: "Bonjour StrasClean 👋 Je voudrais un nettoyage intérieur",
@@ -413,8 +413,8 @@ export const SERVICES: Service[] = [
         a: "Encore plus que pour un véhicule récent. Plus la voiture est marquée au départ, plus l'effet « avant-après » est spectaculaire — c'est sur ces véhicules qu'on a vu les plus gros écarts (jusqu'à +2 500 € sur des SUV âgés).",
       },
       {
-        q: "Différence avec la formule Luxury Detailing à 119 € ?",
-        a: "Le Luxury Detailing est un service haut de gamme généraliste. La Remise à neuf revente est ciblée sur les besoins d'un véhicule à vendre : polissage des optiques, conseils photos d'annonce, accent sur le rendu « impression de neuf ».",
+        q: "Différence avec la formule Intégrale StrasClean à 119 € ?",
+        a: "L'Intégrale StrasClean est un service haut de gamme généraliste. La Remise à neuf revente est ciblée sur les besoins d'un véhicule à vendre : polissage des optiques, conseils photos d'annonce, accent sur le rendu « impression de neuf ».",
       },
     ],
     ctaMessage: "Bonjour StrasClean 👋 Je voudrais une préparation revente dès 129 €",

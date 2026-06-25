@@ -728,7 +728,7 @@ export const USE_CASES: UseCase[] = [
       },
       {
         q: "Vous lavez aussi l'extérieur du SUV ?",
-        a: "L'intérieur SUV est inclus dans le forfait de base. L'extérieur (lavage main + carrosserie) est en option (+30 €) ou inclus si vous prenez la formule Luxury Detailing complète à 169 € pour SUV.",
+        a: "L'intérieur SUV est inclus dans le forfait de base. L'extérieur (lavage main + carrosserie) est en option (+30 €) ou inclus si vous prenez la formule Intégrale StrasClean complète à 169 € pour SUV.",
       },
     ],
     ctaMessage:
@@ -1067,7 +1067,7 @@ export const USE_CASES: UseCase[] = [
     whyDiy: {
       title: "Ce qui fait vraiment varier le prix",
       paragraphs: [
-        "Trois facteurs principaux font varier le prix réel d'un nettoyage à domicile : la formule choisie (Confort, Premium, Luxury Detailing), la taille du véhicule (citadine, berline, SUV, utilitaire), et l'état initial (entretien régulier vs très sale, présence de poils d'animaux, taches importantes, odeurs persistantes). Quelques options ponctuelles peuvent s'ajouter selon votre besoin spécifique.",
+        "Trois facteurs principaux font varier le prix réel d'un nettoyage à domicile : la formule choisie (Essentiel, Premium Intérieur, Intégrale StrasClean), la taille du véhicule (citadine, berline, SUV, utilitaire), et l'état initial (entretien régulier vs très sale, présence de poils d'animaux, taches importantes, odeurs persistantes). Quelques options ponctuelles peuvent s'ajouter selon votre besoin spécifique.",
         "Le déplacement à domicile à Strasbourg et dans les 12 communes desservies (Schiltigheim, Illkirch, Ostwald, Lingolsheim, etc.) est inclus dans tous nos tarifs — pas de frais kilométriques surprise. Au-delà de cette zone, on vous indique honnêtement le supplément éventuel avant l'intervention.",
       ],
     },
@@ -1077,16 +1077,16 @@ export const USE_CASES: UseCase[] = [
         "Les tarifs ci-dessous sont valables pour une citadine en état standard. Pour une berline, comptez +10 €. Pour un SUV, +20 €. Pour un utilitaire, +30 €. Les options éventuelles sont indiquées en bas. Aucun supplément non annoncé.",
       steps: [
         {
-          title: "Formule Confort — dès 39 €",
+          title: "Formule Essentiel — dès 39 €",
           desc: "Entretien rapide : aspiration profonde, tableau de bord, vitres intérieures, désinfection points de contact, désodorisation. Durée 30-50 min. Idéale pour un entretien régulier mensuel.",
         },
         {
-          title: "Formule Premium — dès 79 €",
-          desc: "Nettoyage complet : tout le Confort + shampouinage sièges et moquettes, traitement cuir/tissu, dégraissage plastiques, désinfection bactéricide renforcée. Durée 45 min à 1h30. Le meilleur rapport qualité-prix.",
+          title: "Formule Premium Intérieur — dès 79 €",
+          desc: "Nettoyage complet : tout l'Essentiel + shampouinage sièges et moquettes, traitement cuir/tissu, dégraissage plastiques, désinfection bactéricide renforcée. Durée 45 min à 1h30. Le meilleur rapport qualité-prix.",
         },
         {
-          title: "Formule Luxury Detailing — dès 119 €",
-          desc: "Service d'exception : tout le Premium + lavage extérieur main, décontamination, vitres extérieures, plastiques extérieurs, traitement poils d'animaux inclus, parfum finition. Durée 2h-2h30. Rendu showroom complet.",
+          title: "Formule Intégrale StrasClean — dès 119 €",
+          desc: "Service d'exception : tout le Premium Intérieur + lavage extérieur main, décontamination, vitres extérieures, plastiques extérieurs, traitement poils d'animaux inclus, parfum finition. Durée 2h-2h30. Rendu showroom complet.",
         },
         {
           title: "Lavage extérieur seul — dès 29 €",

@@ -136,7 +136,7 @@ export default function NotFound() {
                   className="inline-flex items-center gap-1.5 text-slate-700 hover:text-slate-900"
                 >
                   <ArrowRightIcon size={12} className="text-brand-600" />
-                  Formules auto (Confort / Premium / Luxury)
+                  Formules auto (Essentiel / Premium Intérieur / Intégrale)
                 </Link>
               </li>
               <li>

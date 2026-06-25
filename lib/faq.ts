@@ -10,7 +10,7 @@ export const FAQS: FAQItem[] = [
   },
   {
     q: "Combien de temps dure un nettoyage ?",
-    a: "Comptez environ 30 à 45 min pour la formule Confort, 1h à 1h30 pour la Premium, et 2h pour la Luxury Detailing. La durée dépend de la taille du véhicule et de son état. On travaille en équipe de 2, ce qui divise par 2 le temps versus un detailer solo.",
+    a: "Comptez environ 30 à 45 min pour la formule Essentiel, 1h à 1h30 pour la Premium Intérieur, et 2h pour l'Intégrale StrasClean. La durée dépend de la taille du véhicule et de son état. On travaille en équipe de 2, ce qui divise par 2 le temps versus un detailer solo.",
   },
   {
     q: "Le prix peut-il changer ?",
@@ -22,11 +22,11 @@ export const FAQS: FAQItem[] = [
   },
   {
     q: "Nettoyez-vous les poils d'animaux ?",
-    a: "Oui. Le traitement poils d'animaux est inclus dans la formule Luxury Detailing, et disponible en option sur les autres formules. On utilise un matériel adapté pour vraiment décoller les poils des tissus.",
+    a: "Oui. Le traitement poils d'animaux est inclus dans la formule Intégrale StrasClean, et disponible en option sur les autres formules. On utilise un matériel adapté pour vraiment décoller les poils des tissus.",
   },
   {
     q: "Faites-vous le lavage extérieur ?",
-    a: "Oui. Le lavage extérieur à la main, la décontamination de la carrosserie et le nettoyage des vitres extérieures sont inclus dans la formule Luxury Detailing.",
+    a: "Oui. Le lavage extérieur à la main, la décontamination de la carrosserie et le nettoyage des vitres extérieures sont inclus dans la formule Intégrale StrasClean.",
   },
   {
     q: "Comment réserver ?",

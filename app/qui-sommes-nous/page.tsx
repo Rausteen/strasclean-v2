@@ -228,7 +228,7 @@ export default async function QuiSommesNousPage() {
                   </div>
                   <p className="mt-4 text-sm leading-relaxed text-slate-600">
                     Intérieur, shampouinage, désinfection, lavage extérieur,
-                    detailing complet. 3 formules (Confort, Premium, Luxury)
+                    detailing complet. 3 formules (Essentiel, Premium Intérieur, Intégrale)
                     de 39 à 119 €. À Strasbourg + 12 communes.
                   </p>
                   <ul className="mt-4 space-y-1.5 text-xs text-slate-600">

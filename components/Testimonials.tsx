@@ -71,7 +71,7 @@ const FALLBACK_REVIEWS: Review[] = [
     name: "Antoine R.",
     city: "Ostwald",
     text:
-      "J'ai pris la formule Luxury, rendu vraiment showroom. Carrosserie brillante, intérieur comme neuf.",
+      "J'ai pris la formule Intégrale, rendu vraiment showroom. Carrosserie brillante, intérieur comme neuf.",
     initials: "AR",
     tone: TONES[4],
     source: "fixture",

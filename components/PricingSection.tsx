@@ -1,10 +1,9 @@
-import Link from "next/link";
 import Reveal from "./Reveal";
 import { waLink } from "@/lib/site";
 import { PLANS, Plan } from "@/lib/plans";
 import VehiclePricing from "./VehiclePricing";
 import PlansCarousel from "./PlansCarousel";
-import { CheckIcon, WhatsAppIcon, ArrowRightIcon, PawIcon, SprayIcon } from "./Icon";
+import { CheckIcon, WhatsAppIcon, PawIcon, SprayIcon } from "./Icon";
 
 // Options ciblées sur l'état du véhicule — slim à 4 cas les plus
 // fréquents (vs 6 avant), pour ne pas surcharger le client.
@@ -158,26 +157,36 @@ function PlanCard({ plan }: { plan: Plan }) {
         </p>
 
         <ul className="mt-5 space-y-3">
-          {plan.features.map((f) => (
-            <li
-              key={f}
-              className="flex items-start gap-3 text-[14.5px] text-slate-700"
-            >
-              <span
-                className={`mt-0.5 grid h-5 w-5 shrink-0 place-items-center rounded-full ${
-                  popular
-                    ? "bg-brand-500 text-[#062b1e]"
-                    : "bg-brand-50 text-brand-700"
+          {plan.features.map((f) => {
+            // La 1re ligne « Tout l'Essentiel / le Premium Intérieur inclus »
+            // signale la nature cumulative de la formule → mise en avant
+            // (texte gras, pastille pleine, séparateur sous la ligne).
+            const isCumulative = f.startsWith("Tout ");
+            return (
+              <li
+                key={f}
+                className={`flex items-start gap-3 text-[14.5px] ${
+                  isCumulative
+                    ? "mb-1 border-b border-slate-200 pb-3 font-bold text-slate-900"
+                    : "text-slate-700"
                 }`}
               >
-                <CheckIcon size={12} />
-              </span>
-              <span>{f}</span>
-            </li>
-          ))}
+                <span
+                  className={`mt-0.5 grid h-5 w-5 shrink-0 place-items-center rounded-full ${
+                    popular || isCumulative
+                      ? "bg-brand-500 text-[#062b1e]"
+                      : "bg-brand-50 text-brand-700"
+                  }`}
+                >
+                  <CheckIcon size={12} />
+                </span>
+                <span>{f}</span>
+              </li>
+            );
+          })}
         </ul>
 
-        <div className="mt-auto flex flex-col gap-2.5 pt-6">
+        <div className="mt-auto pt-6">
           <a
             href={waLink(plan.ctaMessage)}
             target="_blank"
@@ -187,12 +196,6 @@ function PlanCard({ plan }: { plan: Plan }) {
             {popular ? <WhatsAppIcon size={18} /> : null}
             Réserver maintenant
           </a>
-          <Link
-            href={`/formules#${plan.id}`}
-            className="inline-flex items-center justify-center gap-1.5 text-sm font-semibold text-slate-500 transition hover:text-slate-900"
-          >
-            Voir les villes desservies <ArrowRightIcon size={14} />
-          </Link>
         </div>
       </div>
     </div>

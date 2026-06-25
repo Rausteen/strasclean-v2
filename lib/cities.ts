@@ -118,7 +118,7 @@ export const CITIES: City[] = [
     angle: "Pas de frais de déplacement",
     review: {
       name: "Antoine R.",
-      text: "Formule Luxury à Ostwald, rendu vraiment showroom. Carrosserie brillante et habitacle comme neuf.",
+      text: "Formule Intégrale à Ostwald, rendu vraiment showroom. Carrosserie brillante et habitacle comme neuf.",
     },
   },
   {

@@ -25,6 +25,20 @@ export type BookingFormVariant = {
   surcharge?: number;
 };
 
+/** Option facultative multi-sélection (Auto : suppléments selon l'état).
+ *  Prix fixe selon l'id de variante (véhicule) sélectionnée. */
+export type BookingFormOption = {
+  id: string;
+  label: string;
+  priceByVariant: Record<string, number>;
+};
+
+/** Prix d'une option pour une variante donnée (fallback : le plus bas). */
+function optionPrice(o: BookingFormOption, variantId: string): number {
+  const prices = Object.values(o.priceByVariant);
+  return o.priceByVariant[variantId] ?? (prices.length ? Math.min(...prices) : 0);
+}
+
 export type BookingFormSection = "auto" | "maison";
 
 type Props = {
@@ -38,6 +52,8 @@ type Props = {
   };
   /** Texte du picker (Maison : texte libre, Auto : remplacé par variantPicker) */
   freeTextVariantPlaceholderByItem?: Record<string, string>;
+  /** Options facultatives multi-sélection (Auto : suppléments selon l'état). */
+  options?: BookingFormOption[];
   /** Titres adaptés à la section. detailsQuestion utilise {name} comme
    *  placeholder pour l'item courant (sera remplacé côté client). */
   copy: {
@@ -60,6 +76,7 @@ export default function BookingForm({
   items,
   variantPicker,
   freeTextVariantPlaceholderByItem,
+  options,
   copy,
 }: Props) {
   const isMaison = section === "maison";
@@ -100,6 +117,14 @@ export default function BookingForm({
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
   const [notes, setNotes] = useState("");
+  // Options facultatives cochées (ids). Vide si la section n'en propose pas.
+  const [selectedOptions, setSelectedOptions] = useState<string[]>([]);
+
+  function toggleOption(id: string) {
+    setSelectedOptions((prev) =>
+      prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id],
+    );
+  }
   // Validation inline (au blur) : corrige avant le submit → moins d'abandon.
   const [fieldErrors, setFieldErrors] = useState<{ phone?: string; email?: string }>(
     {},
@@ -145,6 +170,19 @@ export default function BookingForm({
       return setError("Email invalide.");
     }
 
+    // Les options cochées sont préfixées aux notes : visibles dans la
+    // notification de lead + l'admin, sans nouvelle colonne en base.
+    const optionLabels = (options ?? [])
+      .filter((o) => selectedOptions.includes(o.id))
+      .map((o) => `${o.label} (${optionPrice(o, variant)} €)`);
+    const notesPayload =
+      [
+        optionLabels.length ? `Options : ${optionLabels.join(", ")}` : null,
+        notes.trim() || null,
+      ]
+        .filter(Boolean)
+        .join("\n") || null;
+
     setSubmitting(true);
     try {
       const res = await fetch("/api/booking-request", {
@@ -157,7 +195,7 @@ export default function BookingForm({
           firstName: firstName.trim(),
           email: email.trim() || null,
           phone: phone.trim(),
-          notes: notes.trim() || null,
+          notes: notesPayload,
         }),
       });
 
@@ -349,6 +387,48 @@ export default function BookingForm({
               </div>
             ))}
 
+          {/* Options facultatives (Auto : suppléments selon l'état) */}
+          {item && options && options.length > 0 && (
+            <div className="mt-5">
+              <Field label="Options selon l'état (facultatif)">
+                <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
+                  {options.map((o) => {
+                    const active = selectedOptions.includes(o.id);
+                    return (
+                      <button
+                        key={o.id}
+                        type="button"
+                        onClick={() => toggleOption(o.id)}
+                        aria-pressed={active}
+                        className={`relative rounded-xl border px-3 py-3 text-left transition ${
+                          active
+                            ? `${accent.borderActive} ${accent.bgSoft}`
+                            : `border-slate-200 bg-slate-50 ${accent.borderHover}`
+                        }`}
+                      >
+                        <span className="block text-xs font-semibold text-slate-900">
+                          {o.label}
+                        </span>
+                        <span className="mt-0.5 block text-[11px] text-slate-500">
+                          {variant
+                            ? `${optionPrice(o, variant)} €`
+                            : `dès ${optionPrice(o, "")} €`}
+                        </span>
+                        {active && (
+                          <span
+                            className={`absolute right-1.5 top-1.5 grid h-4 w-4 place-items-center rounded-full text-white ${accent.bgActive}`}
+                          >
+                            <CheckIcon size={10} />
+                          </span>
+                        )}
+                      </button>
+                    );
+                  })}
+                </div>
+              </Field>
+            </div>
+          )}
+
           <FooterRow
             isSubmit
             primaryDisabled={!canContinue}
@@ -477,6 +557,8 @@ export default function BookingForm({
               item={item}
               variant={variant}
               variantPicker={variantPicker}
+              options={options}
+              selectedOptions={selectedOptions}
               accent={accent}
             />
           </div>
@@ -599,18 +681,29 @@ function PriceRecap({
   item,
   variant,
   variantPicker,
+  options,
+  selectedOptions,
   accent,
 }: {
   item: BookingFormItem;
   variant: string;
   variantPicker?: Props["variantPicker"];
+  options?: BookingFormOption[];
+  selectedOptions: string[];
   accent: { text: string; bgSoft: string; borderActive: string };
 }) {
   const base = parseInt(item.priceFrom, 10);
   const selected = variantPicker?.options.find((v) => v.id === variant);
   const surcharge = selected?.surcharge ?? 0;
+  const selectedOpts = (options ?? []).filter((o) =>
+    selectedOptions.includes(o.id),
+  );
+  const optionsTotal = selectedOpts.reduce(
+    (s, o) => s + optionPrice(o, variant),
+    0,
+  );
   const hasBase = !Number.isNaN(base);
-  const total = hasBase ? base + surcharge : null;
+  const total = hasBase ? base + surcharge + optionsTotal : null;
   const variantLabel = selected?.label ?? (variant.trim() || null);
 
   return (
@@ -626,6 +719,11 @@ function PriceRecap({
             {item.shortName}
             {variantLabel ? ` · ${variantLabel}` : ""}
           </p>
+          {selectedOpts.length > 0 && (
+            <p className="mt-0.5 text-[11px] text-slate-500">
+              Options : {selectedOpts.map((o) => o.label).join(", ")}
+            </p>
+          )}
         </div>
         {total != null && (
           <div className="shrink-0 text-right">
@@ -637,9 +735,11 @@ function PriceRecap({
         )}
       </div>
 
-      {surcharge > 0 && selected && (
+      {(surcharge > 0 || optionsTotal > 0) && (
         <p className="mt-2.5 border-t border-slate-200/70 pt-2.5 text-[11px] text-slate-500">
-          Base {base} € + {selected.label} (+{surcharge} €)
+          Base {base} €
+          {surcharge > 0 && selected ? ` + ${selected.label} (+${surcharge} €)` : ""}
+          {optionsTotal > 0 ? ` + options (+${optionsTotal} €)` : ""}
         </p>
       )}
 

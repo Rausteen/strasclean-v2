@@ -1251,9 +1251,9 @@ export const GUIDES: Guide[] = [
           "StrasClean propose trois niveaux de prestation, tous réalisés à domicile, sur votre lieu de travail ou à l'adresse de votre choix, à Strasbourg et dans les communes voisines. Les tarifs sont annoncés « à partir de » pour une citadine.",
         ],
         bullets: [
-          "Formule Confort — dès 39 € (30 à 45 min) : aspiration complète, plastiques, vitres intérieures, finitions.",
-          "Formule Premium — dès 79 € (1h à 1h30) : intérieur approfondi + shampouinage des sièges + désinfection.",
-          "Formule Luxury Detailing — dès 119 € (2h) : intérieur premium + lavage extérieur à la main + décontamination carrosserie + traitement poils d'animaux inclus.",
+          "Formule Essentiel — dès 39 € (30 à 45 min) : aspiration complète, plastiques, vitres intérieures, finitions.",
+          "Formule Premium Intérieur — dès 79 € (1h à 1h30) : intérieur approfondi + shampouinage des sièges + désinfection.",
+          "Formule Intégrale StrasClean — dès 119 € (2h) : intérieur complet + lavage extérieur à la main + décontamination carrosserie + traitement poils d'animaux inclus.",
         ],
       },
       {
@@ -1264,7 +1264,7 @@ export const GUIDES: Guide[] = [
         bullets: [
           "La taille du véhicule : berline +10 €, SUV/monospace +20 €, utilitaire +30 €.",
           "L'état intérieur : taches incrustées, sièges très sales ou véhicule très encrassé demandent plus de temps.",
-          "Les poils d'animaux : inclus en Luxury, en option (+15 à 30 €) sur les autres formules.",
+          "Les poils d'animaux : inclus en Intégrale, en option (+15 à 30 €) sur les autres formules.",
           "Les options spécifiques : traitement des odeurs (+20 à 40 €), taches tenaces (+10 à 20 €).",
         ],
       },
@@ -1290,8 +1290,8 @@ export const GUIDES: Guide[] = [
         title: "Questions fréquentes sur le prix",
         paragraphs: [],
         bullets: [
-          "Quel est le prix minimum ? À partir de 39 € pour une citadine (formule Confort).",
-          "Le lavage extérieur est-il compris ? Oui, dans la formule Luxury Detailing (119 €).",
+          "Quel est le prix minimum ? À partir de 39 € pour une citadine (formule Essentiel).",
+          "Le lavage extérieur est-il compris ? Oui, dans la formule Intégrale StrasClean (119 €).",
           "Le déplacement est-il facturé en plus ? Non, il est inclus dans le tarif annoncé sur la zone desservie.",
           "Le prix peut-il changer une fois sur place ? Non : le tarif est confirmé avant l'intervention, après description ou photo.",
         ],
@@ -1490,7 +1490,7 @@ export const GUIDES: Guide[] = [
         bullets: [
           "Objectif : propreté de surface, rapidité.",
           "Intérieur : aspiration, plastiques, vitres.",
-          "À Strasbourg : formule Confort, dès 39 € à domicile.",
+          "À Strasbourg : formule Essentiel, dès 39 € à domicile.",
         ],
       },
       {
@@ -1502,13 +1502,13 @@ export const GUIDES: Guide[] = [
           "Objectif : remise à neuf intérieure + extérieure.",
           "Intérieur : shampouinage sièges, désinfection, traitement complet.",
           "Extérieur : lavage main, décontamination, finition brillante.",
-          "À Strasbourg : formule Luxury Detailing, dès 119 € à domicile.",
+          "À Strasbourg : formule Intégrale StrasClean, dès 119 € à domicile.",
         ],
       },
       {
         title: "Entre les deux : le nettoyage intérieur approfondi",
         paragraphs: [
-          "Beaucoup de besoins se situent entre le lavage rapide et le detailing complet : un intérieur vraiment approfondi avec shampouinage des sièges et désinfection, sans la partie extérieure poussée. C'est la formule Premium (dès 79 €), idéale après un hiver, des trajets en famille ou avec des animaux.",
+          "Beaucoup de besoins se situent entre le lavage rapide et le detailing complet : un intérieur vraiment approfondi avec shampouinage des sièges et désinfection, sans la partie extérieure poussée. C'est la formule Premium Intérieur (dès 79 €), idéale après un hiver, des trajets en famille ou avec des animaux.",
         ],
       },
       {
@@ -1517,9 +1517,9 @@ export const GUIDES: Guide[] = [
           "Le bon choix dépend de l'état de la voiture et de votre objectif :",
         ],
         bullets: [
-          "Entretien régulier, voiture déjà suivie → lavage / formule Confort (39 €).",
-          "Intérieur sale, sièges tachés, poils, odeurs → intérieur approfondi / Premium (79 €).",
-          "Voiture très encrassée, avant une revente, rendu « comme neuf » → detailing / Luxury (119 €).",
+          "Entretien régulier, voiture déjà suivie → lavage / formule Essentiel (39 €).",
+          "Intérieur sale, sièges tachés, poils, odeurs → intérieur approfondi / Premium Intérieur (79 €).",
+          "Voiture très encrassée, avant une revente, rendu « comme neuf » → detailing / Intégrale (119 €).",
         ],
       },
       {
@@ -1533,7 +1533,7 @@ export const GUIDES: Guide[] = [
       },
     ],
     conclusion:
-      "Le lavage classique entretient, le detailing remet à neuf (intérieur + extérieur). Entre les deux, le nettoyage intérieur approfondi couvre la majorité des besoins. À Strasbourg, cela correspond à 39 € (Confort), 79 € (Premium) et 119 € (Luxury Detailing), tout à domicile.",
+      "Le lavage classique entretient, le detailing remet à neuf (intérieur + extérieur). Entre les deux, le nettoyage intérieur approfondi couvre la majorité des besoins. À Strasbourg, cela correspond à 39 € (Essentiel), 79 € (Premium Intérieur) et 119 € (Intégrale StrasClean), tout à domicile.",
     cta: {
       title: "Pas sûr de la prestation qu'il vous faut ?",
       description:
