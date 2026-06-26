@@ -13,10 +13,21 @@ export default function FloatingWhatsApp() {
   const isMaison = isMaisonPathname(pathname);
 
   useEffect(() => {
-    // Apparaît après le 1er repli d'écran — assez bas pour ne pas faire
-    // doublon avec les CTA du Hero à l'ouverture, assez haut pour qu'il n'y
-    // ait pas de "trou" sans CTA persistant sur les mobiles courts (iPhone SE).
-    const onScroll = () => setScrolled(window.scrollY > 300);
+    // Apparaît quand le hero (#top) a entièrement quitté l'écran → plus de
+    // doublon avec les CTA du hero (qui portent déjà WhatsApp + le formulaire),
+    // et pas de "trou" : tant que le hero est visible, ses CTA prennent le
+    // relais. Plus fiable qu'un seuil px fixe (hero de hauteur variable).
+    const hero = document.getElementById("top");
+    if (hero && "IntersectionObserver" in window) {
+      const io = new IntersectionObserver(
+        ([entry]) => setScrolled(!entry.isIntersecting),
+        { threshold: 0 },
+      );
+      io.observe(hero);
+      return () => io.disconnect();
+    }
+    // Repli (pages sans hero #top) : seuil de scroll généreux.
+    const onScroll = () => setScrolled(window.scrollY > 600);
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);

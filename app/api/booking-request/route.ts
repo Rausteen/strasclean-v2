@@ -7,7 +7,7 @@ import { notifyNewLead } from "@/lib/notify";
 import { checkSameOrigin } from "@/lib/auth";
 import { checkRateLimit, getClientIp } from "@/lib/ratelimit";
 import { HOME_SERVICES } from "@/lib/homeServices";
-import { PLANS } from "@/lib/plans";
+import { PLANS, AUTO_QUICK_SERVICES } from "@/lib/plans";
 
 // On limite à 5 demandes par heure et par IP — protège contre l'abus
 // tout en restant largement au-dessus d'un usage normal.
@@ -51,7 +51,11 @@ function resolveItem(
   }
   if (section === "auto") {
     const p = PLANS.find((p) => p.id === itemId);
-    return p ? { slug: p.id, label: p.name } : null;
+    if (p) return { slug: p.id, label: p.name };
+    // Services "rapides" du formulaire d'accueil (intérieur / extérieur /
+    // complet) — choix larges, pas une formule détaillée.
+    const q = AUTO_QUICK_SERVICES.find((s) => s.id === itemId);
+    return q ? { slug: q.id, label: q.label } : null;
   }
   return null;
 }

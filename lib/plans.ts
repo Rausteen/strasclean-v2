@@ -158,3 +158,17 @@ export const AUTO_OPTIONS: AutoOption[] = [
 /** Prix d'une option pour un véhicule (fallback citadine si véhicule inconnu). */
 export const autoOptionPrice = (o: AutoOption, vehicleId: string): number =>
   o.priceByVehicle[vehicleId as VehicleType["id"]] ?? o.priceByVehicle.citadine;
+
+// ─── Services rapides du formulaire d'accueil (hero) ─────────────────────
+//  Choix volontairement larges (≠ formules détaillées) pour un 1er contact
+//  sans friction. Les ids sont acceptés par /api/booking-request (auto).
+export type AutoQuickService = {
+  id: "auto-interieur" | "auto-exterieur" | "auto-complet";
+  label: string;
+};
+
+export const AUTO_QUICK_SERVICES: AutoQuickService[] = [
+  { id: "auto-interieur", label: "Nettoyage auto intérieur" },
+  { id: "auto-exterieur", label: "Nettoyage auto extérieur" },
+  { id: "auto-complet", label: "Nettoyage auto complet" },
+];
