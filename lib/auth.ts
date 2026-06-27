@@ -85,13 +85,30 @@ function verify(token: string): { exp: number } | null {
 }
 
 // ─── Password check ─────────────────────────────────────────────────────
-export function checkPassword(input: string): boolean {
-  const pwd = getAdminPassword();
-  if (!pwd) return false;
+function constantTimeEquals(input: string, secret: string): boolean {
+  if (!secret) return false;
   const a = Buffer.from(input);
-  const b = Buffer.from(pwd);
+  const b = Buffer.from(secret);
   if (a.length !== b.length) return false;
   return crypto.timingSafeEqual(a, b);
+}
+
+export function checkPassword(input: string): boolean {
+  return constantTimeEquals(input, getAdminPassword());
+}
+
+// ─── Auth ÉQUIPE (app /equipe pour les nettoyeurs) ───────────────────────
+// Mot de passe d'équipe distinct de l'admin. À défaut de TEAM_PASSWORD, on
+// retombe sur ADMIN_PASSWORD pour que ça marche tout de suite (tu peux poser
+// un TEAM_PASSWORD séparé plus tard pour que l'équipe n'ait PAS le mdp admin).
+const TEAM_COOKIE_NAME = "strasclean_team";
+
+function getTeamPassword(): string {
+  return process.env.TEAM_PASSWORD || process.env.ADMIN_PASSWORD || "";
+}
+
+export function checkTeamPassword(input: string): boolean {
+  return constantTimeEquals(input, getTeamPassword());
 }
 
 // ─── Cookie helpers ─────────────────────────────────────────────────────
@@ -136,6 +153,37 @@ export async function isAuthenticated(): Promise<boolean> {
   }
 
   return true;
+}
+
+// ─── Cookie helpers ÉQUIPE ──────────────────────────────────────────────
+export async function createTeamSessionCookie() {
+  const token = sign({ exp: Date.now() + SESSION_DURATION_MS, role: "team" });
+  const jar = await cookies();
+  jar.set(TEAM_COOKIE_NAME, token, {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+    sameSite: "lax",
+    path: "/",
+    maxAge: Math.floor(SESSION_DURATION_MS / 1000),
+  });
+}
+
+export async function clearTeamSessionCookie() {
+  const jar = await cookies();
+  jar.delete(TEAM_COOKIE_NAME);
+}
+
+/** Vrai si l'utilisateur est un membre de l'équipe OU l'admin (le gérant
+ *  connecté à l'admin accède aussi à /equipe sans re-login). */
+export async function isTeamAuthenticated(): Promise<boolean> {
+  const jar = await cookies();
+  const token = jar.get(TEAM_COOKIE_NAME)?.value;
+  if (token) {
+    const payload = verify(token);
+    if (payload && payload.exp > Date.now()) return true;
+  }
+  // Repli : session admin valide.
+  return isAuthenticated();
 }
 
 /**

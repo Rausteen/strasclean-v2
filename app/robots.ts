@@ -26,7 +26,7 @@ const AI_BOTS = [
 ];
 
 export default function robots(): MetadataRoute.Robots {
-  const disallow = ["/admin", "/admin/", "/api/", "/_next/"];
+  const disallow = ["/admin", "/admin/", "/equipe", "/equipe/", "/api/", "/_next/"];
   return {
     rules: [
       {

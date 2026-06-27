@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import {
   insertBookingRequest,
+  insertJob,
   type BookingRequest,
 } from "@/lib/db";
 import { notifyNewLead } from "@/lib/notify";
@@ -162,6 +163,29 @@ export async function POST(req: Request) {
       { error: "Erreur serveur. Réessayez ou contactez-nous par WhatsApp." },
       { status: 500 },
     );
+  }
+
+  // Carnet de l'équipe (app /equipe) : on crée le job correspondant. Les
+  // montants restent à 0 (le nettoyeur saisit le prix réel après la presta).
+  // N'échoue jamais la requête : le lead est déjà enregistré.
+  try {
+    insertJob({
+      ts: record.ts,
+      phone: record.phone,
+      prestation: record.service_label,
+      vehicle_type: record.variant,
+      price: 0,
+      supplements: 0,
+      total: 0,
+      collected: 0,
+      payment: null,
+      source: "Formulaire",
+      status: "a_faire",
+      notes: record.notes,
+      booking_id: id,
+    });
+  } catch (err) {
+    console.error("Job auto-insert failed", err);
   }
 
   // Notification email du nouveau lead (no-op si RESEND_API_KEY absente).

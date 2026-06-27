@@ -136,6 +136,29 @@ function openDb(): Database.Database {
     CREATE INDEX IF NOT EXISTS booking_requests_ts ON booking_requests(ts DESC);
     CREATE INDEX IF NOT EXISTS booking_requests_status ON booking_requests(status);
 
+    -- Carnet de jobs pour l'équipe de nettoyeurs (app mobile /equipe).
+    -- Remplace le Google Sheet : 1 ligne = 1 intervention. Les devis du site
+    -- y sont auto-insérés (source 'Site web'), et les jobs pris par téléphone
+    -- sont ajoutés à la main.
+    CREATE TABLE IF NOT EXISTS jobs (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      ts INTEGER NOT NULL,                       -- Date du job
+      phone TEXT,                                -- Téléphone
+      prestation TEXT,                           -- Prestation
+      vehicle_type TEXT,                         -- Type de véhicule
+      price INTEGER NOT NULL DEFAULT 0,          -- Prix (€)
+      supplements INTEGER NOT NULL DEFAULT 0,    -- Suppléments (€)
+      total INTEGER NOT NULL DEFAULT 0,          -- Total (€)
+      collected INTEGER NOT NULL DEFAULT 0,      -- Encaissé (0/1)
+      payment TEXT,                              -- Paiement (espèces / CB / virement)
+      source TEXT,                               -- Source du lead
+      status TEXT NOT NULL DEFAULT 'a_faire',    -- Statut
+      notes TEXT,
+      booking_id INTEGER,                        -- lien vers booking_requests si auto
+      created_at INTEGER NOT NULL
+    );
+    CREATE INDEX IF NOT EXISTS jobs_ts ON jobs(ts DESC);
+
     -- Cache persistant des avis Google. Google Places API ne renvoie que
     -- les 5 derniers à chaque requête, mais ils varient dans le temps.
     -- En accumulant ici, on a TOUS les avis qu'on a vus passer, et on
@@ -772,4 +795,102 @@ export function countBookingRequests(): number {
       .prepare(`SELECT COUNT(*) as c FROM booking_requests`)
       .get() as { c: number }
   ).c;
+}
+
+// ─── Jobs (carnet de l'équipe — app /equipe) ─────────────────────────────
+export type JobStatus = "a_faire" | "en_route" | "termine";
+
+export type Job = {
+  id: number;
+  ts: number;
+  phone: string | null;
+  prestation: string | null;
+  vehicle_type: string | null;
+  price: number;
+  supplements: number;
+  total: number;
+  collected: number; // 0/1
+  payment: string | null;
+  source: string | null;
+  status: string;
+  notes: string | null;
+  booking_id: number | null;
+  created_at: number;
+};
+
+/** Champs modifiables par l'app (le reste est géré en interne). */
+export type JobInput = {
+  ts: number;
+  phone: string | null;
+  prestation: string | null;
+  vehicle_type: string | null;
+  price: number;
+  supplements: number;
+  total: number;
+  collected: number;
+  payment: string | null;
+  source: string | null;
+  status: string;
+  notes: string | null;
+  booking_id?: number | null;
+};
+
+const insertJobStmt = db.prepare(`
+  INSERT INTO jobs
+    (ts, phone, prestation, vehicle_type, price, supplements, total,
+     collected, payment, source, status, notes, booking_id, created_at)
+  VALUES
+    (@ts, @phone, @prestation, @vehicle_type, @price, @supplements, @total,
+     @collected, @payment, @source, @status, @notes, @booking_id, @created_at)
+`);
+
+export function insertJob(j: JobInput): number {
+  const r = insertJobStmt.run({
+    booking_id: null,
+    ...j,
+    created_at: Date.now(),
+  });
+  return r.lastInsertRowid as number;
+}
+
+export function listJobs(limit = 300): Job[] {
+  return db
+    .prepare(`SELECT * FROM jobs ORDER BY ts DESC, id DESC LIMIT ?`)
+    .all(limit) as Job[];
+}
+
+export function getJob(id: number): Job | null {
+  return (db.prepare(`SELECT * FROM jobs WHERE id = ?`).get(id) as Job) ?? null;
+}
+
+/** Met à jour les champs fournis d'un job (whitelist stricte). */
+export function updateJob(id: number, fields: Partial<JobInput>): void {
+  const allowed: (keyof JobInput)[] = [
+    "ts",
+    "phone",
+    "prestation",
+    "vehicle_type",
+    "price",
+    "supplements",
+    "total",
+    "collected",
+    "payment",
+    "source",
+    "status",
+    "notes",
+  ];
+  const sets: string[] = [];
+  const params: Record<string, unknown> = { id };
+  for (const key of allowed) {
+    if (key in fields) {
+      sets.push(`${key} = @${key}`);
+      params[key] = (fields as Record<string, unknown>)[key];
+    }
+  }
+  if (sets.length === 0) return;
+  db.prepare(`UPDATE jobs SET ${sets.join(", ")} WHERE id = @id`).run(params);
+}
+
+export function deleteJob(id: number): void {
+  db.prepare(`DELETE FROM jobs WHERE id = ?`).run(id);
 }
