@@ -115,6 +115,30 @@ export default async function HubMaisonPage() {
             bestRating: "5",
             worstRating: "1",
           },
+          // review imbriqué avec aggregateRating (sinon Google : "avis
+          // multiples sans aggregateRating").
+          ...(maisonReviews.length > 0
+            ? {
+                review: maisonReviews.map((r) => ({
+                  "@type": "Review",
+                  author: { "@type": "Person", name: r.author_name },
+                  reviewRating: {
+                    "@type": "Rating",
+                    ratingValue: String(r.rating),
+                    bestRating: "5",
+                    worstRating: "1",
+                  },
+                  reviewBody: r.text,
+                  ...(r.time
+                    ? {
+                        datePublished: new Date(r.time * 1000)
+                          .toISOString()
+                          .slice(0, 10),
+                      }
+                    : {}),
+                })),
+              }
+            : {}),
         }
       : {}),
     // OfferCatalog des 4 prestations principales
@@ -135,31 +159,6 @@ export default async function HubMaisonPage() {
         },
       })),
     },
-    // Reviews schema — propage les avis Maison tagués (vide tant qu'aucun
-    // n'a été tagué Maison/both dans l'admin, ce qui est OK : Google
-    // ignorera juste le champ et continuera d'afficher aggregateRating).
-    ...(maisonReviews.length > 0
-      ? {
-          review: maisonReviews.map((r) => ({
-            "@type": "Review",
-            author: { "@type": "Person", name: r.author_name },
-            reviewRating: {
-              "@type": "Rating",
-              ratingValue: String(r.rating),
-              bestRating: "5",
-              worstRating: "1",
-            },
-            reviewBody: r.text,
-            ...(r.time
-              ? {
-                  datePublished: new Date(r.time * 1000)
-                    .toISOString()
-                    .slice(0, 10),
-                }
-              : {}),
-          })),
-        }
-      : {}),
   };
 
   const breadcrumbJsonLd = {

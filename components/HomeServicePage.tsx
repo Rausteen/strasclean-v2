@@ -101,6 +101,32 @@ export default function HomeServicePage({ service, place, city }: Props) {
               bestRating: "5",
               worstRating: "1",
             },
+            // Les avis vont sur le LocalBusiness (type supporté par Google),
+            // PAS sur le Service (type invalide pour les avis), et toujours
+            // avec aggregateRating ci-dessus → corrige les 2 erreurs du test
+            // de résultats enrichis.
+            ...(place.reviews && place.reviews.length > 0
+              ? {
+                  review: place.reviews.map((r) => ({
+                    "@type": "Review",
+                    author: { "@type": "Person", name: r.author_name },
+                    reviewRating: {
+                      "@type": "Rating",
+                      ratingValue: String(r.rating),
+                      bestRating: "5",
+                      worstRating: "1",
+                    },
+                    reviewBody: r.text,
+                    ...(r.time
+                      ? {
+                          datePublished: new Date(r.time * 1000)
+                            .toISOString()
+                            .slice(0, 10),
+                        }
+                      : {}),
+                  })),
+                }
+              : {}),
           }
         : {}),
     },
@@ -132,31 +158,6 @@ export default function HomeServicePage({ service, place, city }: Props) {
               ...(t.note ? { description: t.note } : {}),
             })),
           },
-        }
-      : {}),
-    // Reviews schema — propage les avis filtrés Maison (place.reviews est
-    // déjà filtré à la section). Les rich snippets ⭐ apparaîtront dans
-    // Google dès qu'un avis Maison sera tagué dans l'admin.
-    ...(place.reviews && place.reviews.length > 0
-      ? {
-          review: place.reviews.map((r) => ({
-            "@type": "Review",
-            author: { "@type": "Person", name: r.author_name },
-            reviewRating: {
-              "@type": "Rating",
-              ratingValue: String(r.rating),
-              bestRating: "5",
-              worstRating: "1",
-            },
-            reviewBody: r.text,
-            ...(r.time
-              ? {
-                  datePublished: new Date(r.time * 1000)
-                    .toISOString()
-                    .slice(0, 10),
-                }
-              : {}),
-          })),
         }
       : {}),
   };
