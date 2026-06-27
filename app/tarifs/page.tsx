@@ -12,7 +12,7 @@ import { CheckIcon, WhatsAppIcon, PhoneIcon } from "@/components/Icon";
 export const metadata: Metadata = {
   title: "Tarifs — Nettoyage auto à domicile à Strasbourg | StrasClean",
   description:
-    "Nos 3 formules de nettoyage auto à domicile à Strasbourg (Essentiel 39 €, Premium Intérieur 79 €, Intégrale StrasClean 119 €), suppléments véhicule et options.",
+    "Nos 3 formules de nettoyage auto à domicile à Strasbourg (Essentiel 59 €, Premium Intérieur 89 €, Intégrale StrasClean 139 €), suppléments véhicule et options.",
   robots: { index: false, follow: false },
 };
 

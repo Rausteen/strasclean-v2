@@ -14,7 +14,7 @@ import { SITE, waLink } from "@/lib/site";
  * chaude au lieu de le laisser inerte. Le chevron signale l'affordance.
  *
  * Auto-adaptatif selon la section :
- *  - Auto   → "Dès 39 € · Réponse WhatsApp en moins de 30 min" (vert)
+ *  - Auto   → "Dès 49 € · Réponse WhatsApp en moins de 30 min" (vert)
  *  - Maison → "Dès 39 € · Canapé, tapis, matelas à domicile"   (ambre)
  */
 export default function MobileOfferStrip() {
@@ -57,7 +57,7 @@ export default function MobileOfferStrip() {
       >
         <BoltIcon size={14} className="text-brand-600" />
         <span>
-          <strong className="font-bold text-slate-900">Dès 39 €</strong> · Réponse
+          <strong className="font-bold text-slate-900">Dès 49 €</strong> · Réponse
           WhatsApp en moins de 30 min
         </span>
         <span aria-hidden className="font-bold text-brand-600">›</span>

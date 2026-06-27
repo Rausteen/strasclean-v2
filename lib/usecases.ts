@@ -1041,7 +1041,7 @@ export const USE_CASES: UseCase[] = [
     emoji: "💶",
     metaTitle: "Prix nettoyage voiture Strasbourg — StrasClean",
     metaDescription:
-      "Combien coûte un nettoyage de voiture à domicile à Strasbourg ? Tarifs détaillés par formule (39-119 €), par taille de véhicule (citadine, berline, SUV, utilitaire) et par prestation à la carte. Sans frais cachés.",
+      "Combien coûte un nettoyage de voiture à domicile à Strasbourg ? Tarifs détaillés par formule (59-139 €), par taille de véhicule (citadine, berline, SUV, utilitaire) et par prestation à la carte. Sans frais cachés.",
     hero: {
       chip: "Tarifs 2026 détaillés",
       h1: "Prix d'un nettoyage de voiture à domicile à Strasbourg.",
@@ -1077,19 +1077,19 @@ export const USE_CASES: UseCase[] = [
         "Les tarifs ci-dessous sont valables pour une citadine en état standard. Pour une berline, comptez +10 €. Pour un SUV, +20 €. Pour un utilitaire, +30 €. Les options éventuelles sont indiquées en bas. Aucun supplément non annoncé.",
       steps: [
         {
-          title: "Formule Essentiel — dès 39 €",
+          title: "Formule Essentiel — dès 59 €",
           desc: "Entretien rapide : aspiration profonde, tableau de bord, vitres intérieures, désinfection points de contact, désodorisation. Durée 30-50 min. Idéale pour un entretien régulier mensuel.",
         },
         {
-          title: "Formule Premium Intérieur — dès 79 €",
+          title: "Formule Premium Intérieur — dès 89 €",
           desc: "Nettoyage complet : tout l'Essentiel + shampouinage sièges et moquettes, traitement cuir/tissu, dégraissage plastiques, désinfection bactéricide renforcée. Durée 45 min à 1h30. Le meilleur rapport qualité-prix.",
         },
         {
-          title: "Formule Intégrale StrasClean — dès 119 €",
-          desc: "Service d'exception : tout le Premium Intérieur + lavage extérieur main, décontamination, vitres extérieures, plastiques extérieurs, traitement poils d'animaux inclus, parfum finition. Durée 2h-2h30. Rendu showroom complet.",
+          title: "Formule Intégrale StrasClean — dès 139 €",
+          desc: "Service d'exception : tout le Premium Intérieur + lavage extérieur main, décontamination, vitres extérieures, plastiques extérieurs, parfum finition. Durée 2h-2h30. Rendu showroom complet.",
         },
         {
-          title: "Lavage extérieur seul — dès 29 €",
+          title: "Lavage extérieur seul — dès 49 €",
           desc: "Pour ceux qui veulent juste un lavage extérieur main de qualité : pré-lavage mousse, lavage manuel microfibre, vitres extérieures, jantes. Durée 20-30 min.",
         },
         {
@@ -1101,7 +1101,7 @@ export const USE_CASES: UseCase[] = [
           desc: "Protocole spécifique poils incrustés (chien, chat) : turbo-brosse, adhésifs pro, désinfection allergènes. Durée 1h-1h30. Plus efficace qu'un aspirateur 10× plus longtemps.",
         },
         {
-          title: "Remise à neuf revente — dès 129 €",
+          title: "Remise à neuf revente — dès 199 €",
           desc: "Préparation complète avant mise en vente : extérieur, intérieur, polissage léger, conseils photos d'annonce. ROI moyen +800 à +1 200 € sur le prix de vente. Durée 2h-2h30.",
         },
         {
@@ -1205,8 +1205,8 @@ export const USE_CASES: UseCase[] = [
     pricing: { priceFrom: "49", duration: "30 min à 1 h" },
     tariffs: [
       { label: "Nettoyage flash (entre 2 services)", price: "49 €", note: "Aspiration + désinfection + vitres" },
-      { label: "Nettoyage complet quotidien", price: "79 €", note: "Aspi + shampouinage léger + désinfection" },
-      { label: "Detailing hebdomadaire", price: "119 €", note: "Intérieur complet + extérieur" },
+      { label: "Nettoyage complet quotidien", price: "89 €", note: "Aspi + shampouinage léger + désinfection" },
+      { label: "Detailing hebdomadaire", price: "139 €", note: "Intérieur complet + extérieur" },
       { label: "Abonnement flotte 3+ véhicules", price: "Sur devis", note: "Tarif dégressif, facture pro mensuelle" },
       { label: "Intervention urgence (incident client)", price: "+30 %", note: "Sous 4 h" },
     ],

@@ -3,9 +3,9 @@
 //
 //  3 formules (l'id technique reste confort/premium/luxury pour les ancres
 //  URL et le routage ; seul le nom affiché change) :
-//    - Essentiel           (39 €)  — entretien rapide        [id: confort]
-//    - Premium Intérieur   (79 €)  — nettoyage complet (la plus populaire) [id: premium]
-//    - Intégrale StrasClean (119 €) — intérieur + extérieur   [id: luxury]
+//    - Essentiel           (59 €)  — entretien rapide        [id: confort]
+//    - Premium Intérieur   (89 €)  — nettoyage complet (la plus populaire) [id: premium]
+//    - Intégrale StrasClean (139 €) — intérieur + extérieur   [id: luxury]
 //
 //  Pour modifier les prix / inclus / nom : tout est ici.
 // ─────────────────────────────────────────────────────────────────────────
@@ -36,7 +36,7 @@ export const PLANS: Plan[] = [
     id: "confort",
     emoji: "🚗",
     name: "Formule Essentiel",
-    priceFrom: "39",
+    priceFrom: "59",
     tagline: "L'essentiel pour un intérieur propre, sain et rafraîchi.",
     features: [
       "Aspiration profonde",
@@ -46,14 +46,14 @@ export const PLANS: Plan[] = [
       "Désodorisation professionnelle",
     ],
     ctaMessage:
-      "Bonjour StrasClean 👋 Je voudrais réserver la formule Essentiel dès 39 €. Quels sont vos prochains créneaux ?",
+      "Bonjour StrasClean 👋 Je voudrais réserver la formule Essentiel dès 59 €. Quels sont vos prochains créneaux ?",
     accent: "from-white/10 to-white/0",
   },
   {
     id: "premium",
     emoji: "✨",
     name: "Formule Premium Intérieur",
-    priceFrom: "79",
+    priceFrom: "89",
     tagline: "Nettoyage complet en profondeur — intérieur rénové comme neuf.",
     highlight: true,
     badge: "Le plus populaire ⭐",
@@ -66,14 +66,14 @@ export const PLANS: Plan[] = [
       "Désinfection bactéricide + désodorisation renforcée",
     ],
     ctaMessage:
-      "Bonjour StrasClean 👋 Je voudrais réserver la formule Premium Intérieur dès 79 €. Quels sont vos prochains créneaux ?",
+      "Bonjour StrasClean 👋 Je voudrais réserver la formule Premium Intérieur dès 89 €. Quels sont vos prochains créneaux ?",
     accent: "from-brand-500/30 to-brand-500/0",
   },
   {
     id: "luxury",
     emoji: "💠",
     name: "Formule Intégrale StrasClean",
-    priceFrom: "119",
+    priceFrom: "139",
     tagline:
       "Nettoyage complet intérieur et extérieur à domicile. Idéal pour retrouver une voiture propre, saine et soignée sans se déplacer.",
     features: [
@@ -85,7 +85,7 @@ export const PLANS: Plan[] = [
       "Parfum de finition",
     ],
     ctaMessage:
-      "Bonjour StrasClean 👋 Je voudrais réserver la formule Intégrale StrasClean dès 119 €. Quels sont vos prochains créneaux ?",
+      "Bonjour StrasClean 👋 Je voudrais réserver la formule Intégrale StrasClean dès 139 €. Quels sont vos prochains créneaux ?",
     accent: "from-violet-500/20 to-violet-500/0",
   },
 ];

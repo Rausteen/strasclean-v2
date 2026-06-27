@@ -118,7 +118,7 @@ export const SERVICES: Service[] = [
     introTemplate: (c) =>
       `Le detailing auto, c'est le niveau d'exigence au-dessus du nettoyage classique. À ${c.name}, StrasClean traite chaque surface avec des produits professionnels — lavage extérieur main, décontamination carrosserie, shampouinage complet, traitement des plastiques — pour un rendu showroom à la sortie.`,
     duration: "2h à 3h",
-    priceFrom: "119",
+    priceFrom: "139",
     recommendedPlanId: "luxury",
     whatsIncluded: [
       "Lavage extérieur à la main + décontamination carrosserie",
@@ -218,7 +218,7 @@ export const SERVICES: Service[] = [
     introTemplate: (c) =>
       `Le nettoyage intérieur, c'est la prestation d'entretien régulier qui maintient l'habitacle propre, sain et agréable à conduire. À ${c.name}, StrasClean se déplace à votre domicile pour aspirer en profondeur, nettoyer tous les plastiques, désinfecter les points de contact et redonner un aspect impeccable à votre intérieur.`,
     duration: "30 à 50 min",
-    priceFrom: "39",
+    priceFrom: "49",
     recommendedPlanId: "confort",
     whatsIncluded: [
       "Aspiration profonde de l'habitacle (sièges, moquette, coffre)",
@@ -238,7 +238,7 @@ export const SERVICES: Service[] = [
       },
       {
         title: "Prix accessible",
-        desc: "À partir de 39 € — la prestation la plus demandée chez StrasClean.",
+        desc: "À partir de 49 € — la prestation la plus demandée chez StrasClean.",
       },
     ],
     faq: [
@@ -268,7 +268,7 @@ export const SERVICES: Service[] = [
     introTemplate: (c) =>
       `Plus besoin de faire la queue en station. À ${c.name}, StrasClean vient laver votre voiture directement à votre domicile ou sur votre lieu de travail, à la main, avec un matériel autonome et des produits qui respectent la peinture.`,
     duration: "30 min à 1h",
-    priceFrom: "39",
+    priceFrom: "49",
     recommendedPlanId: "luxury",
     whatsIncluded: [
       "Pré-lavage à la mousse active",
@@ -308,22 +308,24 @@ export const SERVICES: Service[] = [
     ctaMessage: "Bonjour StrasClean 👋 Je voudrais un lavage complet à domicile",
   },
 
-  // ─── 6. Lavage extérieur (entrée de gamme à 29 €) ──────────────────────
+  // ─── 6. Lavage extérieur seul (49 €, jantes + vitres incluses) ─────────
   {
     slug: "lavage-exterieur-voiture",
     name: "Lavage extérieur voiture",
     shortName: "Lavage extérieur",
     emoji: "🚿",
     shortDesc:
-      "Lavage carrosserie à la main, à domicile — la formule la plus accessible pour garder votre voiture propre.",
+      "Lavage extérieur complet à la main — carrosserie, jantes et vitres, à domicile, pour garder votre voiture impeccable.",
     introTemplate: (c) =>
-      `À ${c.name}, StrasClean vient laver la carrosserie de votre véhicule à la main, directement à votre domicile. C'est notre prestation d'entrée — rapide, soignée et idéale pour un entretien régulier sans engagement.`,
+      `À ${c.name}, StrasClean lave l'extérieur de votre véhicule à la main — carrosserie, jantes et vitres — directement à votre domicile. Rapide, soigné et idéal pour un entretien régulier sans engagement.`,
     duration: "20 à 30 min",
-    priceFrom: "29",
+    priceFrom: "49",
     recommendedPlanId: "luxury",
     whatsIncluded: [
       "Pré-lavage à la mousse active",
       "Lavage manuel carrosserie à la microfibre",
+      "Jantes nettoyées en détail",
+      "Vitres extérieures sans trace",
       "Rinçage et séchage sans trace",
       "Nettoyage des bas de caisse",
       "Méthode 2 seaux : zéro risque de micro-rayure",
@@ -344,12 +346,12 @@ export const SERVICES: Service[] = [
     ],
     faq: [
       {
-        q: "Quelle différence avec le « Lavage à domicile » à 39 € ?",
-        a: "La version à 29 € est la plus basique : carrosserie uniquement. Le Lavage à domicile à 39 € ajoute le nettoyage détaillé des jantes et des vitres extérieures pour un rendu plus complet.",
+        q: "Qu'est-ce qui est inclus à 49 € ?",
+        a: "Tout l'extérieur : carrosserie lavée à la main (méthode 2 seaux), jantes nettoyées en détail, vitres extérieures sans trace, bas de caisse, rinçage et séchage sans trace. Le tout à votre domicile, sans déplacement.",
       },
       {
         q: "Inclut-il les jantes et les vitres ?",
-        a: "Non, pour rester au tarif d'entrée. Pour des jantes et vitres traitées, choisissez la formule Lavage à domicile à 39 €.",
+        a: "Oui — jantes et vitres extérieures sont comprises dans le lavage extérieur à 49 €.",
       },
       {
         q: "Faut-il un point d'eau sur place ?",
@@ -360,10 +362,10 @@ export const SERVICES: Service[] = [
         a: "Idéal toutes les 2-4 semaines pour garder une carrosserie présentable. Beaucoup de clients prennent un rendez-vous récurrent à ce tarif.",
       },
     ],
-    ctaMessage: "Bonjour StrasClean 👋 Je voudrais un lavage extérieur dès 29 €",
+    ctaMessage: "Bonjour StrasClean 👋 Je voudrais un lavage extérieur dès 49 €",
   },
 
-  // ─── 7. Remise à neuf pour revente (129 €) ──────────────────────────────
+  // ─── 7. Remise à neuf pour revente (199 €) ──────────────────────────────
   {
     slug: "remise-a-neuf-voiture-revente",
     name: "Remise à neuf pour revente",
@@ -374,7 +376,7 @@ export const SERVICES: Service[] = [
     introTemplate: (c) =>
       `Vous mettez votre voiture en vente ? À ${c.name}, StrasClean prépare votre véhicule pour qu'il sorte du lot sur les annonces. Lavage extérieur + décontamination + polissage léger + shampouinage complet + conseils photos. Une intervention qui rapporte en moyenne 800 à 1 200 € sur le prix de vente final.`,
     duration: "2h à 2h30",
-    priceFrom: "129",
+    priceFrom: "199",
     recommendedPlanId: "luxury",
     whatsIncluded: [
       "Lavage extérieur main + décontamination carrosserie",
@@ -388,7 +390,7 @@ export const SERVICES: Service[] = [
     whyChoose: [
       {
         title: "ROI ×6 à ×10",
-        desc: "L'investissement de 129 € rapporte régulièrement 800 € à 2 000 € sur le prix de vente final.",
+        desc: "L'investissement de 199 € rapporte régulièrement 800 € à 2 000 € sur le prix de vente final.",
       },
       {
         title: "Vente 2× plus rapide",
@@ -413,11 +415,11 @@ export const SERVICES: Service[] = [
         a: "Encore plus que pour un véhicule récent. Plus la voiture est marquée au départ, plus l'effet « avant-après » est spectaculaire — c'est sur ces véhicules qu'on a vu les plus gros écarts (jusqu'à +2 500 € sur des SUV âgés).",
       },
       {
-        q: "Différence avec la formule Intégrale StrasClean à 119 € ?",
+        q: "Différence avec la formule Intégrale StrasClean à 139 € ?",
         a: "L'Intégrale StrasClean est un service haut de gamme généraliste. La Remise à neuf revente est ciblée sur les besoins d'un véhicule à vendre : polissage des optiques, conseils photos d'annonce, accent sur le rendu « impression de neuf ».",
       },
     ],
-    ctaMessage: "Bonjour StrasClean 👋 Je voudrais une préparation revente dès 129 €",
+    ctaMessage: "Bonjour StrasClean 👋 Je voudrais une préparation revente dès 199 €",
   },
 ];
 

@@ -102,7 +102,7 @@ export default function Footer() {
               </li>
               <li>
                 <Link href="/formules" className="hover:text-white">
-                  Formules (39 / 79 / 119 €)
+                  Formules (59 / 89 / 139 €)
                 </Link>
               </li>
               <li>

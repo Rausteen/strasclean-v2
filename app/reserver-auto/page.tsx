@@ -10,7 +10,7 @@ import { PLANS, VEHICLE_TYPES, AUTO_OPTIONS } from "@/lib/plans";
 export const metadata: Metadata = {
   title: "Réserver un nettoyage voiture à domicile à Strasbourg — StrasClean",
   description:
-    "Réservez en ligne votre nettoyage auto à domicile à Strasbourg : Essentiel 39 €, Premium Intérieur 79 €, Intégrale 119 €. Formulaire en 1 minute, confirmation par téléphone ou WhatsApp sous 1 h.",
+    "Réservez en ligne votre nettoyage auto à domicile à Strasbourg : Essentiel 59 €, Premium Intérieur 89 €, Intégrale 139 €. Formulaire en 1 minute, confirmation par téléphone ou WhatsApp sous 1 h.",
   alternates: { canonical: "/reserver-auto" },
   // Canal de réservation en ligne ACTIF : indexable, lié depuis FinalCTA +
   // Footer, et présent dans le sitemap. 3e voie d'acquisition (à côté de

@@ -22,7 +22,7 @@ export const FAQS: FAQItem[] = [
   },
   {
     q: "Nettoyez-vous les poils d'animaux ?",
-    a: "Oui. Le traitement poils d'animaux est inclus dans la formule Intégrale StrasClean, et disponible en option sur les autres formules. On utilise un matériel adapté pour vraiment décoller les poils des tissus.",
+    a: "Oui. Le traitement des poils d'animaux est disponible en option sur toutes nos formules (39 à 79 € selon le véhicule). On utilise un matériel adapté pour vraiment décoller les poils incrustés dans les tissus.",
   },
   {
     q: "Faites-vous le lavage extérieur ?",
