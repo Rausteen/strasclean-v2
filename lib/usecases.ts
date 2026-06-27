@@ -1202,9 +1202,9 @@ export const USE_CASES: UseCase[] = [
         },
       ],
     },
-    pricing: { priceFrom: "49", duration: "30 min à 1 h" },
+    pricing: { priceFrom: "59", duration: "30 min à 1 h" },
     tariffs: [
-      { label: "Nettoyage flash (entre 2 services)", price: "49 €", note: "Aspiration + désinfection + vitres" },
+      { label: "Nettoyage flash (entre 2 services)", price: "59 €", note: "Aspiration + désinfection + vitres" },
       { label: "Nettoyage complet quotidien", price: "89 €", note: "Aspi + shampouinage léger + désinfection" },
       { label: "Detailing hebdomadaire", price: "139 €", note: "Intérieur complet + extérieur" },
       { label: "Abonnement flotte 3+ véhicules", price: "Sur devis", note: "Tarif dégressif, facture pro mensuelle" },

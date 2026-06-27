@@ -218,7 +218,7 @@ export const SERVICES: Service[] = [
     introTemplate: (c) =>
       `Le nettoyage intérieur, c'est la prestation d'entretien régulier qui maintient l'habitacle propre, sain et agréable à conduire. À ${c.name}, StrasClean se déplace à votre domicile pour aspirer en profondeur, nettoyer tous les plastiques, désinfecter les points de contact et redonner un aspect impeccable à votre intérieur.`,
     duration: "30 à 50 min",
-    priceFrom: "49",
+    priceFrom: "59",
     recommendedPlanId: "confort",
     whatsIncluded: [
       "Aspiration profonde de l'habitacle (sièges, moquette, coffre)",
@@ -238,7 +238,7 @@ export const SERVICES: Service[] = [
       },
       {
         title: "Prix accessible",
-        desc: "À partir de 49 € — la prestation la plus demandée chez StrasClean.",
+        desc: "À partir de 59 € — la prestation la plus demandée chez StrasClean.",
       },
     ],
     faq: [
