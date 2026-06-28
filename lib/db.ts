@@ -180,6 +180,14 @@ function openDb(): Database.Database {
     CREATE INDEX IF NOT EXISTS reviews_rating ON reviews(rating);
   `);
 
+  // Nettoyage : les pages internes (app équipe, dashboard admin) ne polluent
+  // pas les statistiques. On purge celles déjà enregistrées (idempotent —
+  // /api/track ne les enregistre plus). Devient un no-op une fois nettoyé.
+  db.exec(`
+    DELETE FROM visits WHERE path LIKE '/equipe%' OR path LIKE '/admin%';
+    DELETE FROM events WHERE path LIKE '/equipe%' OR path LIKE '/admin%';
+  `);
+
   return db;
 }
 

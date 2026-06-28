@@ -74,6 +74,12 @@ export async function POST(req: NextRequest) {
   const path = (payload.path as string) || "/";
   const referer = (payload.referer as string) || null;
 
+  // Pages internes (app équipe, dashboard admin) : jamais comptées dans les
+  // statistiques publiques.
+  if (path.startsWith("/equipe") || path.startsWith("/admin")) {
+    return NextResponse.json({ ok: true, ignored: true });
+  }
+
   if (type === "pageview") {
     const query = (payload.query as string) || "";
     const params = parseQueryParams(query);

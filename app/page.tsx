@@ -36,24 +36,29 @@ export default async function Page() {
           reviewsUrl={place.profileUrl}
         />
         <TrustBar rating={place.rating} reviewCount={place.totalCount} />
-        {/* compact : pas de tableau "tarif véhicule" ni bloc "Options" —
-            le calculateur juste en dessous porte déjà ces infos. */}
+        {/* Avant/Après remonté ici : on montre le RÉSULTAT (le « waouh », le
+            désir) juste après la preuve de confiance — mais AVANT le prix. */}
+        <BeforeAfter />
+        {/* Prix tôt malgré tout (compromis) : un visiteur prêt à acheter
+            trouve les tarifs sans scroller longtemps. Le calculateur juste en
+            dessous porte le tarif véhicule + options. */}
         <PricingSection compact />
         <PriceCalculator />
-        <BeforeAfter />
-        <HowItWorks />
-        <ServiceArea />
+        {/* Avis juste après le prix : la preuve sociale justifie le tarif. */}
         <Testimonials
           googleReviews={autoReviews}
           googleRating={place.rating}
           googleTotalCount={place.totalCount}
           googleProfileUrl={place.profileUrl}
         />
+        <HowItWorks />
+        <ServiceArea />
         <FAQ />
-        {/* Cross-sell Maison descendu après la FAQ : ne plus détourner le
-            prospect Auto vers un autre produit en plein tunnel de conversion. */}
-        <HomeServicesPromo />
         <FinalCTA />
+        {/* Cross-sell Maison APRÈS le CTA final : on ne coupe pas la
+            conversion Auto au moment de conclure ; on capte ceux qui n'ont
+            pas réservé pour leur présenter l'autre service. */}
+        <HomeServicesPromo />
       </main>
       <Footer />
       <FloatingWhatsApp />

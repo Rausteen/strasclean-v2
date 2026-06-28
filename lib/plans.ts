@@ -118,7 +118,7 @@ export const VEHICLE_TYPES: VehicleType[] = [
 //  Source unique consommée par le calculateur ET le formulaire de
 //  réservation Auto.
 
-export type AutoOptionId = "poils" | "tres-sale" | "odeur" | "coffre" | "taches";
+export type AutoOptionId = "poils" | "tres-sale" | "odeur" | "taches";
 
 export type AutoOption = {
   id: AutoOptionId;
@@ -131,27 +131,22 @@ export const AUTO_OPTIONS: AutoOption[] = [
   {
     id: "poils",
     label: "Poils d'animaux",
-    priceByVehicle: { citadine: 39, berline: 59, suv: 79, utilitaire: 79 },
+    priceByVehicle: { citadine: 29, berline: 49, suv: 69, utilitaire: 69 },
   },
   {
     id: "tres-sale",
     label: "Véhicule très sale",
-    priceByVehicle: { citadine: 39, berline: 59, suv: 89, utilitaire: 89 },
+    priceByVehicle: { citadine: 29, berline: 49, suv: 69, utilitaire: 69 },
   },
   {
     id: "odeur",
     label: "Odeur persistante",
-    priceByVehicle: { citadine: 49, berline: 69, suv: 89, utilitaire: 89 },
-  },
-  {
-    id: "coffre",
-    label: "Coffre très sale",
-    priceByVehicle: { citadine: 29, berline: 39, suv: 59, utilitaire: 59 },
+    priceByVehicle: { citadine: 49, berline: 59, suv: 69, utilitaire: 69 },
   },
   {
     id: "taches",
     label: "Taches tenaces",
-    priceByVehicle: { citadine: 25, berline: 39, suv: 49, utilitaire: 49 },
+    priceByVehicle: { citadine: 29, berline: 39, suv: 49, utilitaire: 49 },
   },
 ];
 
