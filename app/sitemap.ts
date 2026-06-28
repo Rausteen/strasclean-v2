@@ -29,6 +29,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "weekly",
       priority: 0.9,
     },
+    // Abonnement mensuel
+    {
+      url: `${SITE.url}/abonnement`,
+      lastModified: now,
+      changeFrequency: "monthly",
+      priority: 0.8,
+    },
     // Pages légales (priorité basse, non commerciales)
     {
       url: `${SITE.url}/mentions-legales`,

@@ -7,7 +7,6 @@ import PriceCalculator from "@/components/PriceCalculatorLazy";
 import BeforeAfter from "@/components/BeforeAfter";
 import HowItWorks from "@/components/HowItWorks";
 import ServiceArea from "@/components/ServiceArea";
-import HomeServicesPromo from "@/components/HomeServicesPromo";
 import Testimonials from "@/components/Testimonials";
 import FAQ from "@/components/FAQ";
 import FinalCTA from "@/components/FinalCTA";
@@ -50,9 +49,6 @@ export default async function Page() {
           googleProfileUrl={place.profileUrl}
         />
         <FAQ />
-        {/* Cross-sell Maison descendu après la FAQ : ne plus détourner le
-            prospect Auto vers un autre produit en plein tunnel de conversion. */}
-        <HomeServicesPromo />
         <FinalCTA />
       </main>
       <Footer />
