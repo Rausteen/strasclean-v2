@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { PLANS, VEHICLE_TYPES } from "@/lib/plans";
 
 // Forme d'un job (miroir de lib/db Job — défini ici car lib/db est server-only).
@@ -154,6 +154,10 @@ export default function JobsApp({ initialJobs }: { initialJobs: Job[] }) {
   const [filter, setFilter] = useState<string>("a_faire");
   const [draft, setDraft] = useState<Draft | null>(null); // null = aucun form ouvert
   const [view, setView] = useState<"jobs" | "stats">("jobs");
+  const [refreshing, setRefreshing] = useState(false);
+  const [pull, setPull] = useState(0); // tirer-pour-actualiser (px)
+  const [dragging, setDragging] = useState(false);
+  const rootRef = useRef<HTMLDivElement>(null);
 
   const counts = useMemo(() => {
     const c: Record<string, number> = { a_faire: 0, termine: 0 };
@@ -177,6 +181,81 @@ export default function JobsApp({ initialJobs }: { initialJobs: Job[] }) {
     }
     return groups;
   }, [visible]);
+
+  // Recharge la liste depuis le serveur.
+  const refresh = useCallback(async () => {
+    setRefreshing(true);
+    try {
+      const res = await fetch("/api/equipe/jobs");
+      const data = (await res.json()) as { ok?: boolean; jobs?: Job[] };
+      if (data.ok && Array.isArray(data.jobs)) setJobs(data.jobs);
+    } catch {
+      /* hors-ligne : on garde les données affichées */
+    } finally {
+      setRefreshing(false);
+    }
+  }, []);
+
+  // Actualisation auto quand l'app revient au premier plan (le confort #1 :
+  // plus besoin de quitter pour voir les nouveaux jobs/devis).
+  useEffect(() => {
+    const onVisible = () => {
+      if (document.visibilityState === "visible") refresh();
+    };
+    document.addEventListener("visibilitychange", onVisible);
+    window.addEventListener("focus", refresh);
+    return () => {
+      document.removeEventListener("visibilitychange", onVisible);
+      window.removeEventListener("focus", refresh);
+    };
+  }, [refresh]);
+
+  // Tirer-pour-actualiser (uniquement vue Jobs, en haut de liste, form fermé).
+  useEffect(() => {
+    const el = rootRef.current;
+    if (!el) return;
+    let startY = 0;
+    let active = false;
+    let current = 0;
+    const onStart = (e: TouchEvent) => {
+      if (window.scrollY <= 0 && !draft && view === "jobs") {
+        startY = e.touches[0].clientY;
+        active = true;
+        setDragging(true);
+      }
+    };
+    const onMove = (e: TouchEvent) => {
+      if (!active) return;
+      const dy = e.touches[0].clientY - startY;
+      if (dy > 0 && window.scrollY <= 0) {
+        e.preventDefault();
+        current = Math.min(dy * 0.45, 80);
+        setPull(current);
+      } else {
+        active = false;
+        setDragging(false);
+        setPull(0);
+      }
+    };
+    const onEnd = () => {
+      if (!active) return;
+      active = false;
+      setDragging(false);
+      if (current >= 55) refresh();
+      current = 0;
+      setPull(0);
+    };
+    el.addEventListener("touchstart", onStart, { passive: true });
+    el.addEventListener("touchmove", onMove, { passive: false });
+    el.addEventListener("touchend", onEnd);
+    el.addEventListener("touchcancel", onEnd);
+    return () => {
+      el.removeEventListener("touchstart", onStart);
+      el.removeEventListener("touchmove", onMove);
+      el.removeEventListener("touchend", onEnd);
+      el.removeEventListener("touchcancel", onEnd);
+    };
+  }, [refresh, draft, view]);
 
   async function logout() {
     await fetch("/api/equipe/logout", { method: "POST" });
@@ -245,7 +324,7 @@ export default function JobsApp({ initialJobs }: { initialJobs: Job[] }) {
   }
 
   return (
-    <div className="min-h-screen bg-slate-50 pb-24">
+    <div ref={rootRef} className="min-h-screen bg-slate-50 pb-24">
       {/* Barre du haut */}
       <header className="sticky top-0 z-20 border-b border-slate-200 bg-white px-4 py-3">
         <div className="mx-auto flex max-w-2xl items-center justify-between">
@@ -253,14 +332,43 @@ export default function JobsApp({ initialJobs }: { initialJobs: Job[] }) {
             Stras<span className="text-brand-600">Clean</span>{" "}
             <span className="text-sm font-semibold text-slate-400">Équipe</span>
           </p>
-          <button
-            onClick={logout}
-            className="text-xs font-medium text-slate-500 hover:text-slate-900"
-          >
-            Déconnexion
-          </button>
+          <div className="flex items-center gap-2">
+            <button
+              onClick={() => refresh()}
+              aria-label="Actualiser"
+              className="grid h-9 w-9 place-items-center rounded-full text-xl text-slate-500 active:bg-slate-100"
+            >
+              <span className={`inline-block ${refreshing ? "animate-spin" : ""}`}>
+                ↻
+              </span>
+            </button>
+            <button
+              onClick={logout}
+              className="text-xs font-medium text-slate-500 hover:text-slate-900"
+            >
+              Déconnexion
+            </button>
+          </div>
         </div>
       </header>
+
+      {/* Zone « tirer pour actualiser » (sa hauteur suit le geste) */}
+      <div
+        className={`flex items-end justify-center overflow-hidden text-xs font-semibold text-slate-400 ${
+          dragging ? "" : "transition-[height] duration-200"
+        }`}
+        style={{ height: refreshing ? 40 : pull }}
+      >
+        <span className="pb-2">
+          {refreshing
+            ? "Actualisation…"
+            : pull >= 55
+              ? "Relâchez pour actualiser ↑"
+              : pull > 0
+                ? "Tirez pour actualiser ↓"
+                : ""}
+        </span>
+      </div>
 
       <div className="mx-auto max-w-2xl px-4 pt-3">
         {/* Bascule Jobs / Tableau de bord */}
