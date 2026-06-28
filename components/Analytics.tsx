@@ -12,13 +12,15 @@ import Script from "next/script";
 //
 //  ── Google Ads AUTO (compte n°1) ─────────────────────────────────────
 //    NEXT_PUBLIC_GOOGLE_ADS_AUTO_ID          ex: AW-1111111111
-//    NEXT_PUBLIC_GOOGLE_ADS_AUTO_WA_LABEL    ex: AW-1111111111/abcd...
-//    NEXT_PUBLIC_GOOGLE_ADS_AUTO_PHONE_LABEL ex: AW-1111111111/wxyz...
+//    NEXT_PUBLIC_GOOGLE_ADS_AUTO_LABEL       ex: AW-1111111111/contact
+//        → libellé UNIQUE « Contact » (regroupe WhatsApp + tél + formulaire)
+//    (facultatif, pour séparer par canal :)
+//    NEXT_PUBLIC_GOOGLE_ADS_AUTO_WA_LABEL / _PHONE_LABEL / _FORM_LABEL
 //
 //  ── Google Ads MAISON (compte n°2) ───────────────────────────────────
 //    NEXT_PUBLIC_GOOGLE_ADS_MAISON_ID          ex: AW-2222222222
-//    NEXT_PUBLIC_GOOGLE_ADS_MAISON_WA_LABEL    ex: AW-2222222222/abcd...
-//    NEXT_PUBLIC_GOOGLE_ADS_MAISON_PHONE_LABEL ex: AW-2222222222/wxyz...
+//    NEXT_PUBLIC_GOOGLE_ADS_MAISON_LABEL       ex: AW-2222222222/contact
+//    (facultatif :) _WA_LABEL / _PHONE_LABEL / _FORM_LABEL
 //
 //  ── Meta Pixel (optionnel) ───────────────────────────────────────────
 //    NEXT_PUBLIC_META_PIXEL_ID               ex: 123456789012
@@ -38,13 +40,17 @@ import Script from "next/script";
 const GA_ID = process.env.NEXT_PUBLIC_GA_ID;
 
 const ADS_AUTO_ID = process.env.NEXT_PUBLIC_GOOGLE_ADS_AUTO_ID;
+// Libellé de conversion UNIQUE « Contact » : une seule action regroupe
+// WhatsApp + téléphone + formulaire (option simple, recommandée). Les 3
+// libellés par canal ci-dessous sont FACULTATIFS — à renseigner uniquement
+// pour séparer les conversions par canal ; sinon tout retombe sur ce libellé.
+const ADS_AUTO_LABEL = process.env.NEXT_PUBLIC_GOOGLE_ADS_AUTO_LABEL;
 const ADS_AUTO_WA_LABEL = process.env.NEXT_PUBLIC_GOOGLE_ADS_AUTO_WA_LABEL;
 const ADS_AUTO_PHONE_LABEL = process.env.NEXT_PUBLIC_GOOGLE_ADS_AUTO_PHONE_LABEL;
-// Action de conversion dédiée au formulaire (optionnelle). Si absente, on
-// retombe sur le label WhatsApp pour que la soumission compte quand même.
 const ADS_AUTO_FORM_LABEL = process.env.NEXT_PUBLIC_GOOGLE_ADS_AUTO_FORM_LABEL;
 
 const ADS_MAISON_ID = process.env.NEXT_PUBLIC_GOOGLE_ADS_MAISON_ID;
+const ADS_MAISON_LABEL = process.env.NEXT_PUBLIC_GOOGLE_ADS_MAISON_LABEL;
 const ADS_MAISON_WA_LABEL = process.env.NEXT_PUBLIC_GOOGLE_ADS_MAISON_WA_LABEL;
 const ADS_MAISON_PHONE_LABEL =
   process.env.NEXT_PUBLIC_GOOGLE_ADS_MAISON_PHONE_LABEL;
@@ -124,12 +130,15 @@ export default function Analytics() {
       <Script id="conversion-tracking" strategy="afterInteractive">
         {`
           (function(){
-            var AUTO_WA   = ${j(ADS_AUTO_WA_LABEL)};
-            var AUTO_TEL  = ${j(ADS_AUTO_PHONE_LABEL)};
-            var AUTO_FORM = ${j(ADS_AUTO_FORM_LABEL)};
-            var MAISON_WA  = ${j(ADS_MAISON_WA_LABEL)};
-            var MAISON_TEL = ${j(ADS_MAISON_PHONE_LABEL)};
-            var MAISON_FORM = ${j(ADS_MAISON_FORM_LABEL)};
+            // Libellé unique par section, avec repli par canal (facultatif).
+            var AUTO_LABEL = ${j(ADS_AUTO_LABEL)};
+            var AUTO_WA   = ${j(ADS_AUTO_WA_LABEL)} || AUTO_LABEL;
+            var AUTO_TEL  = ${j(ADS_AUTO_PHONE_LABEL)} || AUTO_LABEL;
+            var AUTO_FORM = ${j(ADS_AUTO_FORM_LABEL)} || AUTO_LABEL;
+            var MAISON_LABEL = ${j(ADS_MAISON_LABEL)};
+            var MAISON_WA  = ${j(ADS_MAISON_WA_LABEL)} || MAISON_LABEL;
+            var MAISON_TEL = ${j(ADS_MAISON_PHONE_LABEL)} || MAISON_LABEL;
+            var MAISON_FORM = ${j(ADS_MAISON_FORM_LABEL)} || MAISON_LABEL;
 
             // Préfixes slug Maison — DOIT rester synchro avec lib/section.ts
             var MAISON_PREFIXES = [
@@ -177,17 +186,21 @@ export default function Analytics() {
               var ga4Event = kind === 'form' ? 'generate_lead'
                            : kind === 'phone' ? 'phone_click'
                            : 'whatsapp_click';
+              // Valeur unique pour toutes les conversions : WhatsApp,
+              // téléphone et formulaire sont regroupés dans UNE seule action
+              // « Contact » côté Google Ads (plus simple). Ajustable ici.
+              var value = 56;
               try {
                 if (typeof gtag === 'function') {
                   gtag('event', ga4Event, {
                     event_category: kind === 'form' ? 'lead' : 'contact',
                     section: section,
-                    value: 56
+                    value: value
                   });
                   if (sendTo) {
                     gtag('event', 'conversion', {
                       'send_to': sendTo,
-                      'value': 56,
+                      'value': value,
                       'currency': 'EUR'
                     });
                   }
@@ -196,7 +209,7 @@ export default function Analytics() {
                   fbq('track', 'Lead', {
                     content_name: ga4Event,
                     section: section,
-                    value: 56,
+                    value: value,
                     currency: 'EUR'
                   });
                 }
