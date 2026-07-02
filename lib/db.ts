@@ -174,8 +174,11 @@ function openDb(): Database.Database {
       phone TEXT,
       email TEXT,
       raw TEXT,                                  -- JSON brut des field_data
-      status TEXT NOT NULL DEFAULT 'nouveau',    -- nouveau|qualifie|perdu|converti
+      status TEXT NOT NULL DEFAULT 'nouveau',    -- nouveau|a_relancer|converti|perdu
       notes TEXT,
+      email_step INTEGER NOT NULL DEFAULT 0,     -- nb de relances email envoyées
+      last_email_at INTEGER,
+      email_opt_out INTEGER NOT NULL DEFAULT 0,  -- désinscription des relances
       created_at INTEGER NOT NULL
     );
     CREATE INDEX IF NOT EXISTS leads_ts ON leads(ts DESC);
@@ -210,6 +213,20 @@ function openDb(): Database.Database {
     DELETE FROM visits WHERE path LIKE '/equipe%' OR path LIKE '/admin%';
     DELETE FROM events WHERE path LIKE '/equipe%' OR path LIKE '/admin%';
   `);
+
+  // Migration douce : colonnes de séquence email des leads (si la table
+  // existait avant leur ajout). SQLite n'a pas d'ADD COLUMN IF NOT EXISTS.
+  for (const stmt of [
+    "ALTER TABLE leads ADD COLUMN email_step INTEGER NOT NULL DEFAULT 0",
+    "ALTER TABLE leads ADD COLUMN last_email_at INTEGER",
+    "ALTER TABLE leads ADD COLUMN email_opt_out INTEGER NOT NULL DEFAULT 0",
+  ]) {
+    try {
+      db.exec(stmt);
+    } catch {
+      /* colonne déjà présente */
+    }
+  }
 
   return db;
 }
@@ -942,6 +959,9 @@ export type Lead = {
   raw: string | null;
   status: string;
   notes: string | null;
+  email_step: number; // nb d'emails de relance envoyés (0..3)
+  last_email_at: number | null;
+  email_opt_out: number; // 0/1 — désinscription des relances
   created_at: number;
 };
 
@@ -1019,4 +1039,31 @@ export function updateLead(
   }
   if (sets.length === 0) return;
   db.prepare(`UPDATE leads SET ${sets.join(", ")} WHERE id = @id`).run(params);
+}
+
+/** Leads éligibles aux relances email : statut nouveau/à-relancer, email
+ *  présent, non désinscrit, séquence pas finie (< 3 emails). */
+export function listLeadsForDrip(maxStep = 4): Lead[] {
+  return db
+    .prepare(
+      `SELECT * FROM leads
+       WHERE status IN ('nouveau','a_relancer')
+         AND email IS NOT NULL AND email != ''
+         AND email_opt_out = 0
+         AND email_step < ?
+       ORDER BY ts ASC`,
+    )
+    .all(maxStep) as Lead[];
+}
+
+/** Marque qu'une relance a été envoyée (avance la séquence). */
+export function markLeadEmailed(id: number, step: number): void {
+  db.prepare(
+    `UPDATE leads SET email_step = ?, last_email_at = ? WHERE id = ?`,
+  ).run(step, Date.now(), id);
+}
+
+/** Désinscrit un lead des relances email. */
+export function setLeadOptOut(id: number): void {
+  db.prepare(`UPDATE leads SET email_opt_out = 1 WHERE id = ?`).run(id);
 }
