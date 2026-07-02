@@ -4,31 +4,22 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { BOOKING_FORMULAS, computePrice, isServedPostal } from "@/lib/booking";
 import { VEHICLE_TYPES, AUTO_OPTIONS, autoOptionPrice } from "@/lib/plans";
+import BookingCalendar, { firstOpenDay } from "@/components/BookingCalendar";
 
 const STEP_LABELS = ["Formule", "Véhicule", "Créneau", "Vous", "Récap"];
 
-type Day = { value: string; weekday: string; num: string; month: string };
-function nextDays(n: number): Day[] {
-  const out: Day[] = [];
-  const base = new Date();
-  base.setHours(0, 0, 0, 0);
-  for (let i = 0; i < n; i++) {
-    const d = new Date(base.getTime() + i * 86400000);
-    const value = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
-    out.push({
-      value,
-      weekday: d.toLocaleDateString("fr-FR", { weekday: "short" }),
-      num: String(d.getDate()),
-      month: d.toLocaleDateString("fr-FR", { month: "short" }),
-    });
-  }
-  return out;
+function prettyWhen(date: string, time: string): string {
+  return `${prettyDay(date)} à ${time}`;
 }
 
-function prettyWhen(date: string, time: string): string {
+function prettyDay(date: string): string {
   const [y, m, d] = date.split("-").map(Number);
   const dt = new Date(y, m - 1, d);
-  return `${dt.toLocaleDateString("fr-FR", { weekday: "long", day: "numeric", month: "long" })} à ${time}`;
+  return dt.toLocaleDateString("fr-FR", {
+    weekday: "long",
+    day: "numeric",
+    month: "long",
+  });
 }
 
 const inputCls =
@@ -56,7 +47,6 @@ export default function ReservationWizard() {
   const [error, setError] = useState("");
   const [done, setDone] = useState<{ when: string; price: number } | null>(null);
 
-  const days = useMemo(() => nextDays(30), []);
   const f = BOOKING_FORMULAS.find((x) => x.id === formula);
   const isExterior = formula === "exterieur";
   const price = useMemo(
@@ -80,6 +70,11 @@ export default function ReservationWizard() {
       setLoadingSlots(false);
     }
   }, [date, formula]);
+
+  // À l'arrivée sur l'étape créneau, présélectionne le 1er jour ouvré.
+  useEffect(() => {
+    if (step === 2 && !date) setDate(firstOpenDay());
+  }, [step, date]);
 
   useEffect(() => {
     if (step === 2 && date) fetchSlots();
@@ -290,61 +285,63 @@ export default function ReservationWizard() {
         </Section>
       )}
 
-      {/* ÉTAPE 2 — Date & créneau */}
+      {/* ÉTAPE 2 — Date & créneau (style cal.com) */}
       {step === 2 && (
         <Section title="Choisissez un créneau">
-          <div className="-mx-4 flex gap-2 overflow-x-auto px-4 pb-1">
-            {days.map((d) => (
-              <button
-                key={d.value}
-                onClick={() => {
-                  setDate(d.value);
-                  setTime("");
-                }}
-                className={`shrink-0 rounded-2xl border px-3.5 py-2.5 text-center transition ${
-                  date === d.value
-                    ? "border-brand-500 bg-brand-500 text-white"
-                    : "border-slate-200 bg-white text-slate-700"
-                }`}
-              >
-                <span className="block text-[11px] uppercase opacity-70">
-                  {d.weekday}
-                </span>
-                <span className="block text-lg font-bold leading-none">{d.num}</span>
-                <span className="block text-[11px] opacity-70">{d.month}</span>
-              </button>
-            ))}
+          <div className="grid gap-5 sm:grid-cols-[1fr_15rem]">
+            <BookingCalendar
+              value={date}
+              onSelect={(d) => {
+                setDate(d);
+                setTime("");
+              }}
+            />
+
+            <div className="min-w-0">
+              <p className="mb-2 text-sm font-semibold capitalize text-slate-700">
+                {date ? prettyDay(date) : "Sélectionnez une date"}
+              </p>
+              {!date ? (
+                <p className="rounded-xl bg-slate-50 px-4 py-8 text-center text-sm text-slate-400">
+                  Choisissez un jour dans le calendrier.
+                </p>
+              ) : loadingSlots ? (
+                <div className="grid grid-cols-2 gap-2 sm:grid-cols-1">
+                  {[0, 1, 2, 3].map((i) => (
+                    <div
+                      key={i}
+                      className="h-11 animate-pulse rounded-xl bg-slate-100"
+                    />
+                  ))}
+                </div>
+              ) : slots.length === 0 ? (
+                <p className="rounded-xl bg-amber-50 px-4 py-8 text-center text-sm text-amber-700">
+                  Complet ce jour-là. Choisissez une autre date 🗓️
+                </p>
+              ) : (
+                <div className="grid max-h-[19rem] grid-cols-2 gap-2 overflow-y-auto pr-1 sm:grid-cols-1">
+                  {slots.map((s) => (
+                    <button
+                      key={s}
+                      onClick={() => setTime(s)}
+                      className={`rounded-xl border py-3 text-sm font-bold transition ${
+                        time === s
+                          ? "border-brand-600 bg-brand-600 text-white shadow"
+                          : "border-slate-200 bg-white text-slate-800 hover:border-brand-400 hover:bg-brand-50"
+                      }`}
+                    >
+                      {s}
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
           </div>
 
-          <div className="mt-5">
-            {!date ? (
-              <p className="text-center text-sm text-slate-400">
-                Sélectionnez un jour.
-              </p>
-            ) : loadingSlots ? (
-              <p className="text-center text-sm text-slate-400">Chargement…</p>
-            ) : slots.length === 0 ? (
-              <p className="rounded-xl bg-slate-100 px-4 py-6 text-center text-sm text-slate-500">
-                Aucun créneau ce jour-là. Choisissez un autre jour 🗓️
-              </p>
-            ) : (
-              <div className="grid grid-cols-3 gap-2 sm:grid-cols-4">
-                {slots.map((s) => (
-                  <button
-                    key={s}
-                    onClick={() => setTime(s)}
-                    className={`rounded-xl border py-2.5 text-sm font-bold transition ${
-                      time === s
-                        ? "border-brand-500 bg-brand-500 text-white"
-                        : "border-slate-200 bg-white text-slate-700 hover:border-brand-300"
-                    }`}
-                  >
-                    {s}
-                  </button>
-                ))}
-              </div>
-            )}
-          </div>
+          <p className="mt-4 text-center text-xs text-slate-400">
+            Interventions le <b className="text-slate-500">mercredi, vendredi et
+            samedi</b> · 8h – 19h
+          </p>
         </Section>
       )}
 

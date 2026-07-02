@@ -9,12 +9,13 @@ import { CITIES } from "./cities";
 
 export const BOOKING_CONFIG = {
   openMin: 8 * 60, // 08:00 (minutes depuis minuit)
-  closeMin: 20 * 60, // 20:00
+  closeMin: 19 * 60, // 19:00
   slotStepMin: 30, // débuts possibles toutes les 30 min
   bufferMin: 30, // marge de déplacement entre 2 RDV
   leadTimeMin: 120, // délai mini avant un RDV (+2 h)
   horizonDays: 30, // réservation jusqu'à 30 j à l'avance
   cancelHoursBefore: 3, // annulation/report possible jusqu'à 3 h avant
+  openDays: [3, 5, 6], // jours ouvrés (0=dim..6=sam) → mer, ven, sam
 };
 
 export type BookingFormula = {
@@ -119,6 +120,8 @@ export function computeSlots(
   const { openMin, closeMin, slotStepMin, bufferMin, leadTimeMin } =
     BOOKING_CONFIG;
   const out: string[] = [];
+  // Jour fermé → aucun créneau.
+  if (!isOpenDay(new Date(dayStartMs).getDay())) return out;
   const minAbsStart = nowMs + leadTimeMin * 60000;
 
   for (let start = openMin; start + durationMin <= closeMin; start += slotStepMin) {
@@ -134,7 +137,7 @@ export function computeSlots(
   return out;
 }
 
-/** Vrai si le jour (0=dim..6=sam) est ouvré (7j/7 par défaut). */
-export function isOpenDay(_weekday: number): boolean {
-  return true;
+/** Vrai si le jour (0=dim..6=sam) est ouvré. */
+export function isOpenDay(weekday: number): boolean {
+  return BOOKING_CONFIG.openDays.includes(weekday);
 }

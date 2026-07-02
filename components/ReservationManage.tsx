@@ -1,31 +1,21 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import Link from "next/link";
 import { SITE } from "@/lib/site";
+import BookingCalendar from "@/components/BookingCalendar";
 
-type Day = { value: string; weekday: string; num: string; month: string };
-function nextDays(n: number): Day[] {
-  const out: Day[] = [];
-  const base = new Date();
-  base.setHours(0, 0, 0, 0);
-  for (let i = 0; i < n; i++) {
-    const d = new Date(base.getTime() + i * 86400000);
-    const value = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
-    out.push({
-      value,
-      weekday: d.toLocaleDateString("fr-FR", { weekday: "short" }),
-      num: String(d.getDate()),
-      month: d.toLocaleDateString("fr-FR", { month: "short" }),
-    });
-  }
-  return out;
-}
-
-function prettyWhen(date: string, time: string): string {
+function prettyDay(date: string): string {
   const [y, m, d] = date.split("-").map(Number);
   const dt = new Date(y, m - 1, d);
-  return `${dt.toLocaleDateString("fr-FR", { weekday: "long", day: "numeric", month: "long" })} à ${time}`;
+  return dt.toLocaleDateString("fr-FR", {
+    weekday: "long",
+    day: "numeric",
+    month: "long",
+  });
+}
+function prettyWhen(date: string, time: string): string {
+  return `${prettyDay(date)} à ${time}`;
 }
 
 type Props = {
@@ -52,8 +42,6 @@ export default function ReservationManage(p: Props) {
   const [loadingSlots, setLoadingSlots] = useState(false);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
-
-  const days = useMemo(() => nextDays(30), []);
 
   const fetchSlots = useCallback(async () => {
     if (!date || !p.formulaId) return;
@@ -210,55 +198,53 @@ export default function ReservationManage(p: Props) {
           <h2 className="h-display mb-3 text-lg font-bold text-slate-900">
             Choisissez un nouveau créneau
           </h2>
-          <div className="-mx-1 flex gap-2 overflow-x-auto px-1 pb-1">
-            {days.map((d) => (
-              <button
-                key={d.value}
-                onClick={() => {
-                  setDate(d.value);
-                  setTime("");
-                }}
-                className={`shrink-0 rounded-2xl border px-3.5 py-2.5 text-center transition ${
-                  date === d.value
-                    ? "border-brand-500 bg-brand-500 text-white"
-                    : "border-slate-200 bg-white text-slate-700"
-                }`}
-              >
-                <span className="block text-[11px] uppercase opacity-70">
-                  {d.weekday}
-                </span>
-                <span className="block text-lg font-bold leading-none">{d.num}</span>
-                <span className="block text-[11px] opacity-70">{d.month}</span>
-              </button>
-            ))}
-          </div>
-
-          <div className="mt-5">
-            {!date ? (
-              <p className="text-center text-sm text-slate-400">Sélectionnez un jour.</p>
-            ) : loadingSlots ? (
-              <p className="text-center text-sm text-slate-400">Chargement…</p>
-            ) : slots.length === 0 ? (
-              <p className="rounded-xl bg-slate-100 px-4 py-6 text-center text-sm text-slate-500">
-                Aucun créneau ce jour-là. Choisissez un autre jour 🗓️
+          <div className="grid gap-5 sm:grid-cols-[1fr_14rem]">
+            <BookingCalendar
+              value={date}
+              onSelect={(d) => {
+                setDate(d);
+                setTime("");
+              }}
+            />
+            <div className="min-w-0">
+              <p className="mb-2 text-sm font-semibold capitalize text-slate-700">
+                {date ? prettyDay(date) : "Sélectionnez une date"}
               </p>
-            ) : (
-              <div className="grid grid-cols-3 gap-2 sm:grid-cols-4">
-                {slots.map((s) => (
-                  <button
-                    key={s}
-                    onClick={() => setTime(s)}
-                    className={`rounded-xl border py-2.5 text-sm font-bold transition ${
-                      time === s
-                        ? "border-brand-500 bg-brand-500 text-white"
-                        : "border-slate-200 bg-white text-slate-700 hover:border-brand-300"
-                    }`}
-                  >
-                    {s}
-                  </button>
-                ))}
-              </div>
-            )}
+              {!date ? (
+                <p className="rounded-xl bg-slate-50 px-4 py-8 text-center text-sm text-slate-400">
+                  Choisissez un jour dans le calendrier.
+                </p>
+              ) : loadingSlots ? (
+                <div className="grid grid-cols-2 gap-2 sm:grid-cols-1">
+                  {[0, 1, 2, 3].map((i) => (
+                    <div
+                      key={i}
+                      className="h-11 animate-pulse rounded-xl bg-slate-100"
+                    />
+                  ))}
+                </div>
+              ) : slots.length === 0 ? (
+                <p className="rounded-xl bg-amber-50 px-4 py-8 text-center text-sm text-amber-700">
+                  Complet ce jour-là. Choisissez une autre date 🗓️
+                </p>
+              ) : (
+                <div className="grid max-h-[19rem] grid-cols-2 gap-2 overflow-y-auto pr-1 sm:grid-cols-1">
+                  {slots.map((s) => (
+                    <button
+                      key={s}
+                      onClick={() => setTime(s)}
+                      className={`rounded-xl border py-3 text-sm font-bold transition ${
+                        time === s
+                          ? "border-brand-600 bg-brand-600 text-white shadow"
+                          : "border-slate-200 bg-white text-slate-800 hover:border-brand-400 hover:bg-brand-50"
+                      }`}
+                    >
+                      {s}
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
           </div>
 
           <div className="mt-6 flex items-center gap-3">

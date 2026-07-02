@@ -3,10 +3,9 @@ import crypto from "crypto";
 import { SITE } from "./site";
 import type { Lead } from "./db";
 
-// Destination des CTA email : le site (re-chauffe le prospect + propose
-// WhatsApp/appel/formulaire). Mettre "/reserver-auto" pour aller droit au
-// formulaire, ou "/" pour la page complète (preuve + form).
-const CTA_PATH = "/";
+// Destination des CTA email : le tunnel de réservation en ligne (créneau à
+// l'heure précise). Mettre "/" pour renvoyer vers la page d'accueil complète.
+const CTA_PATH = "/reserver";
 
 // Séquence de relance des prospects (Resend), pilotée par le statut du lead
 // (nouveau/a_relancer = on envoie ; converti/perdu = stop). J0 / J3 / J5 / J7.
