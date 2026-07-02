@@ -41,6 +41,16 @@ function toJobInput(b: Record<string, unknown>): JobInput {
     source: str(b.source, 60),
     status: statusOf(b.status),
     notes: str(b.notes, 1000),
+    scheduled_at:
+      typeof b.scheduled_at === "number" && Number.isFinite(b.scheduled_at)
+        ? b.scheduled_at
+        : null,
+    duration_min:
+      typeof b.duration_min === "number" && Number.isFinite(b.duration_min)
+        ? b.duration_min
+        : null,
+    customer_name: str(b.customer_name, 120),
+    address: str(b.address, 200),
   };
 }
 
@@ -99,6 +109,14 @@ export async function PATCH(req: Request) {
   if ("source" in body) fields.source = str(body.source, 60);
   if ("status" in body) fields.status = statusOf(body.status);
   if ("notes" in body) fields.notes = str(body.notes, 1000);
+  if ("scheduled_at" in body)
+    fields.scheduled_at =
+      typeof body.scheduled_at === "number" ? body.scheduled_at : null;
+  if ("duration_min" in body)
+    fields.duration_min =
+      typeof body.duration_min === "number" ? body.duration_min : null;
+  if ("customer_name" in body) fields.customer_name = str(body.customer_name, 120);
+  if ("address" in body) fields.address = str(body.address, 200);
   updateJob(id, fields);
   return NextResponse.json({ ok: true });
 }

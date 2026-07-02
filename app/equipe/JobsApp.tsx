@@ -19,6 +19,12 @@ type Job = {
   status: string;
   notes: string | null;
   booking_id: number | null;
+  scheduled_at: number | null;
+  duration_min: number | null;
+  customer_name: string | null;
+  email: string | null;
+  address: string | null;
+  lead_id: number | null;
   created_at: number;
 };
 
@@ -53,6 +59,14 @@ const LEAD_STATUSES: { id: string; label: string; cls: string }[] = [
   { id: "converti", label: "Converti", cls: "bg-brand-100 text-brand-800" },
   { id: "perdu", label: "Perdu", cls: "bg-slate-100 text-slate-500" },
 ];
+
+type Block = {
+  id: number;
+  start_at: number;
+  end_at: number;
+  reason: string | null;
+  created_at: number;
+};
 
 // Prestations + prix de base : les 3 formules (lib/plans) + l'extérieur seul.
 const PRESTATIONS: { label: string; base: number }[] = [
@@ -156,6 +170,30 @@ type Draft = Omit<Job, "id" | "created_at" | "booking_id"> & {
   booking_id?: number | null;
 };
 
+function fmtTime(ts: number): string {
+  return new Date(ts).toLocaleTimeString("fr-FR", {
+    hour: "2-digit",
+    minute: "2-digit",
+  });
+}
+// Durée estimée par prestation (min) — pour occuper l'agenda sur un RDV manuel.
+const PRESTATION_DUR: Record<string, number> = {
+  Essentiel: 60,
+  "Premium Intérieur": 90,
+  "Intégrale StrasClean": 120,
+  "Lavage extérieur seul": 45,
+};
+function prestationDuration(label: string | null): number {
+  return PRESTATION_DUR[label ?? ""] ?? 90;
+}
+// Combine un jour (ts) + une heure "HH:MM" en timestamp précis.
+function combineTs(ts: number, time: string): number {
+  const d = new Date(ts);
+  const [h, m] = time.split(":").map(Number);
+  d.setHours(h || 0, m || 0, 0, 0);
+  return d.getTime();
+}
+
 function emptyDraft(): Draft {
   return {
     ts: Date.now(),
@@ -170,6 +208,12 @@ function emptyDraft(): Draft {
     source: "",
     status: "a_faire",
     notes: "",
+    scheduled_at: null,
+    duration_min: null,
+    customer_name: "",
+    email: "",
+    address: "",
+    lead_id: null,
   };
 }
 
@@ -184,6 +228,7 @@ export default function JobsApp({
   const [leads, setLeads] = useState<Lead[]>(initialLeads);
   const [filter, setFilter] = useState<string>("a_faire");
   const [leadFilter, setLeadFilter] = useState<string>("nouveau");
+  const [blocks, setBlocks] = useState<Block[]>([]);
   const [draft, setDraft] = useState<Draft | null>(null); // null = aucun form ouvert
   const [view, setView] = useState<"jobs" | "prospects" | "stats">("jobs");
   const [refreshing, setRefreshing] = useState(false);
@@ -197,10 +242,16 @@ export default function JobsApp({
     return c;
   }, [jobs]);
 
-  const visible = useMemo(
-    () => (filter === "tous" ? jobs : jobs.filter((j) => j.status === filter)),
-    [jobs, filter],
-  );
+  const visible = useMemo(() => {
+    const base = filter === "tous" ? jobs : jobs.filter((j) => j.status === filter);
+    // Vue « à faire » = agenda → tri chronologique (heure de RDV si présente).
+    if (filter === "a_faire") {
+      return [...base].sort(
+        (a, b) => (a.scheduled_at ?? a.ts) - (b.scheduled_at ?? b.ts),
+      );
+    }
+    return base;
+  }, [jobs, filter]);
   const stats = useMemo(() => computeStats(jobs), [jobs]);
   // Regroupe la liste visible par jour (liste déjà triée par date desc).
   const grouped = useMemo(() => {
@@ -398,6 +449,36 @@ export default function JobsApp({
     });
   }
 
+  const fetchBlocks = useCallback(async () => {
+    try {
+      const res = await fetch("/api/equipe/blocks");
+      const data = (await res.json()) as { ok?: boolean; blocks?: Block[] };
+      if (data.ok && Array.isArray(data.blocks)) setBlocks(data.blocks);
+    } catch {
+      /* ignore */
+    }
+  }, []);
+  useEffect(() => {
+    fetchBlocks();
+  }, [fetchBlocks]);
+
+  async function addBlock(start_at: number, end_at: number, reason: string) {
+    await fetch("/api/equipe/blocks", {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({ start_at, end_at, reason }),
+    });
+    fetchBlocks();
+  }
+  async function removeBlock(id: number) {
+    setBlocks((prev) => prev.filter((b) => b.id !== id));
+    await fetch("/api/equipe/blocks", {
+      method: "DELETE",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({ id }),
+    });
+  }
+
   return (
     <div ref={rootRef} className="min-h-screen bg-slate-50 pb-24">
       {/* Barre du haut */}
@@ -567,6 +648,12 @@ export default function JobsApp({
                 ))}
               </div>
             )}
+
+            <BlocksManager
+              blocks={blocks}
+              onAdd={addBlock}
+              onRemove={removeBlock}
+            />
           </>
         )}
       </div>
@@ -610,12 +697,16 @@ function JobCard({
       <div className="flex items-start justify-between gap-3">
         <button onClick={onOpen} className="min-w-0 flex-1 text-left">
           <p className="truncate text-sm font-bold text-slate-900">
+            {job.scheduled_at ? (
+              <span className="text-brand-700">{fmtTime(job.scheduled_at)} · </span>
+            ) : null}
             {job.prestation || "Job"}
             {job.vehicle_type ? (
               <span className="font-normal text-slate-500"> · {job.vehicle_type}</span>
             ) : null}
           </p>
-          <p className="mt-0.5 text-xs text-slate-500">
+          <p className="mt-0.5 truncate text-xs text-slate-500">
+            {job.customer_name ? `${job.customer_name} · ` : ""}
             {fmtDate(job.ts)}
             {job.source ? ` · ${job.source}` : ""}
           </p>
@@ -753,6 +844,109 @@ function LeadCard({
   );
 }
 
+// ─── Indisponibilités (congés / créneaux bloqués) ─────────────────────────
+function BlocksManager({
+  blocks,
+  onAdd,
+  onRemove,
+}: {
+  blocks: Block[];
+  onAdd: (start: number, end: number, reason: string) => void;
+  onRemove: (id: number) => void;
+}) {
+  const [open, setOpen] = useState(false);
+  const [date, setDate] = useState("");
+  const [from, setFrom] = useState("08:00");
+  const [to, setTo] = useState("20:00");
+  const [reason, setReason] = useState("");
+
+  function add() {
+    if (!date) return;
+    const start = combineTs(dateInputToTs(date), from);
+    const end = combineTs(dateInputToTs(date), to);
+    if (end <= start) return;
+    onAdd(start, end, reason);
+    setReason("");
+  }
+
+  return (
+    <div className="mt-8 overflow-hidden rounded-2xl border border-slate-200 bg-white">
+      <button
+        onClick={() => setOpen((v) => !v)}
+        className="flex w-full items-center justify-between px-4 py-3.5 text-sm font-semibold text-slate-600"
+      >
+        🚫 Indisponibilités{blocks.length > 0 ? ` (${blocks.length})` : ""}
+        <span className="text-slate-400">{open ? "▲" : "▼"}</span>
+      </button>
+      {open && (
+        <div className="space-y-3 border-t border-slate-100 px-4 py-4">
+          <p className="text-xs text-slate-500">
+            Bloque un jour / créneau (congé, perso…) → il disparaît des
+            disponibilités de réservation.
+          </p>
+          <div className="grid grid-cols-3 gap-2">
+            <input
+              type="date"
+              value={date}
+              onChange={(e) => setDate(e.target.value)}
+              className={inputCls}
+            />
+            <input
+              type="time"
+              value={from}
+              onChange={(e) => setFrom(e.target.value)}
+              className={inputCls}
+            />
+            <input
+              type="time"
+              value={to}
+              onChange={(e) => setTo(e.target.value)}
+              className={inputCls}
+            />
+          </div>
+          <input
+            value={reason}
+            onChange={(e) => setReason(e.target.value)}
+            placeholder="Motif (facultatif)"
+            className={inputCls}
+          />
+          <button
+            onClick={add}
+            disabled={!date}
+            className="w-full rounded-xl bg-slate-900 py-3 text-sm font-bold text-white disabled:opacity-40"
+          >
+            Bloquer ce créneau
+          </button>
+
+          {blocks.length > 0 && (
+            <ul className="space-y-2 pt-1">
+              {blocks.map((b) => (
+                <li
+                  key={b.id}
+                  className="flex items-center justify-between gap-2 rounded-xl bg-slate-50 px-3 py-2 text-sm"
+                >
+                  <span className="truncate text-slate-700">
+                    {fmtDate(b.start_at)} · {fmtTime(b.start_at)}–
+                    {fmtTime(b.end_at)}
+                    {b.reason ? ` · ${b.reason}` : ""}
+                  </span>
+                  <button
+                    onClick={() => onRemove(b.id)}
+                    aria-label="Supprimer"
+                    className="shrink-0 text-slate-400 active:scale-90"
+                  >
+                    ✕
+                  </button>
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
+      )}
+    </div>
+  );
+}
+
 // ─── Formulaire job (plein écran mobile) ───────────────────────────────────
 function JobForm({
   draft,
@@ -767,8 +961,11 @@ function JobForm({
 }) {
   const [d, setD] = useState<Draft>(draft);
   const [saving, setSaving] = useState(false);
+  const [time, setTime] = useState<string>(
+    draft.scheduled_at ? new Date(draft.scheduled_at).toTimeString().slice(0, 5) : "",
+  );
   const [showDetails, setShowDetails] = useState(
-    () => !!(draft.phone || draft.notes),
+    () => !!(draft.phone || draft.notes || draft.customer_name),
   );
   const total = d.price + d.supplements;
 
@@ -792,7 +989,9 @@ function JobForm({
 
   async function submit() {
     setSaving(true);
-    await onSave(d);
+    const scheduled_at = time ? combineTs(d.ts, time) : null;
+    const duration_min = scheduled_at ? prestationDuration(d.prestation) : null;
+    await onSave({ ...d, scheduled_at, duration_min });
     setSaving(false);
   }
 
@@ -816,14 +1015,24 @@ function JobForm({
 
       <div className="flex-1 overflow-y-auto px-4 py-4">
         <div className="mx-auto max-w-2xl space-y-3.5">
-          <Field label="Date">
-            <input
-              type="date"
-              value={tsToDateInput(d.ts)}
-              onChange={(e) => set("ts", dateInputToTs(e.target.value))}
-              className={inputCls}
-            />
-          </Field>
+          <div className="grid grid-cols-2 gap-3">
+            <Field label="Date">
+              <input
+                type="date"
+                value={tsToDateInput(d.ts)}
+                onChange={(e) => set("ts", dateInputToTs(e.target.value))}
+                className={inputCls}
+              />
+            </Field>
+            <Field label="Heure (RDV)">
+              <input
+                type="time"
+                value={time}
+                onChange={(e) => setTime(e.target.value)}
+                className={inputCls}
+              />
+            </Field>
+          </div>
 
           <Field label="Prestation">
             <select
@@ -935,6 +1144,14 @@ function JobForm({
             </button>
             {showDetails && (
               <div className="space-y-4 border-t border-slate-100 px-4 py-4">
+                <Field label="Nom du client">
+                  <input
+                    value={d.customer_name ?? ""}
+                    onChange={(e) => set("customer_name", e.target.value)}
+                    placeholder="Prénom Nom"
+                    className={inputCls}
+                  />
+                </Field>
                 <Field label="Téléphone">
                   <input
                     type="tel"

@@ -1,7 +1,12 @@
 import "server-only";
 import crypto from "crypto";
-import { SITE, waLink } from "./site";
+import { SITE } from "./site";
 import type { Lead } from "./db";
+
+// Destination des CTA email : le site (re-chauffe le prospect + propose
+// WhatsApp/appel/formulaire). Mettre "/reserver-auto" pour aller droit au
+// formulaire, ou "/" pour la page complète (preuve + form).
+const CTA_PATH = "/";
 
 // Séquence de relance des prospects (Resend), pilotée par le statut du lead
 // (nouveau/a_relancer = on envoie ; converti/perdu = stop). J0 / J3 / J5 / J7.
@@ -52,8 +57,8 @@ function stepContent(step: number, prenom: string): Step | null {
       heading: `Bien reçu${p}, merci ! 🚗`,
       body:
         `<p style="margin:0 0 14px">Votre demande est bien arrivée. Chez <b>StrasClean</b>, on vient laver et nettoyer votre voiture <b>directement chez vous</b> — intérieur et extérieur, à la main, avec des produits professionnels.</p>` +
-        `<p style="margin:0 0 4px">Notre équipe vous rappelle très vite. Envie d'aller plus vite ? Réservez votre créneau en un message :</p>`,
-      cta: "Réserver sur WhatsApp",
+        `<p style="margin:0 0 4px">Notre équipe vous rappelle très vite. Envie d'aller plus vite ? Réservez votre créneau :</p>`,
+      cta: "Réserver mon nettoyage",
     };
   if (step === 1)
     return {
@@ -111,13 +116,12 @@ export async function sendLeadEmail(lead: Lead, step: number): Promise<boolean> 
   const prenom = firstName(lead.full_name);
   const s = stepContent(step, prenom);
   if (!s) return false;
-  const wa = waLink(
-    `Bonjour StrasClean 👋 ${prenom ? prenom + ", " : ""}je souhaite un nettoyage de ma voiture à domicile.`,
-  );
   const unsub = unsubUrl(lead.id);
-  const html = render(s, wa, unsub);
+  // CTA → site (UTM pour tracer les clics email dans tes analytics).
+  const ctaUrl = `${SITE.url}${CTA_PATH}?utm_source=email&utm_medium=relance&utm_content=j${DRIP_DAYS[step]}`;
+  const html = render(s, ctaUrl, unsub);
   const text =
-    `${s.heading}\n\n${s.body.replace(/<[^>]+>/g, "").replace(/\n{2,}/g, "\n\n")}\n\n${s.cta} : ${wa}\n\n` +
+    `${s.heading}\n\n${s.body.replace(/<[^>]+>/g, "").replace(/\n{2,}/g, "\n\n")}\n\n${s.cta} : ${ctaUrl}\n\n` +
     `StrasClean · ${SITE.url}\nSe désinscrire : ${unsub}`;
 
   try {

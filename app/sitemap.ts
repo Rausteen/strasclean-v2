@@ -104,7 +104,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     // Pages de réservation en ligne (3e canal d'acquisition, désormais
     // actives, indexables et liées depuis les CTA + le Footer).
     {
-      url: `${SITE.url}/reserver-auto`,
+      url: `${SITE.url}/reserver`,
       lastModified: now,
       changeFrequency: "monthly" as const,
       priority: 0.9,

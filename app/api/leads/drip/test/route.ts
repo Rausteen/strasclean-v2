@@ -21,7 +21,10 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({ ok: false, error: "email requis" }, { status: 400 });
   }
   const step = Math.max(0, Math.min(3, Number(p.get("step") ?? 0)));
-  const name = p.get("name") || "Nathan";
+  // Nom du lead FACTICE pour le test uniquement. Le vrai drip utilise le
+  // prénom réel du lead (firstName(lead.full_name)). Passe &name=Prénom pour
+  // tester la personnalisation.
+  const name = p.get("name") || "Julie";
 
   const fake: Lead = {
     id: 999999,

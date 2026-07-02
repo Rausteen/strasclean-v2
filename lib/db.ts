@@ -155,9 +155,28 @@ function openDb(): Database.Database {
       status TEXT NOT NULL DEFAULT 'a_faire',    -- Statut
       notes TEXT,
       booking_id INTEGER,                        -- lien vers booking_requests si auto
+      scheduled_at INTEGER,                      -- réservation : date+heure précise
+      duration_min INTEGER,                      -- durée estimée (créneaux)
+      customer_name TEXT,
+      email TEXT,
+      address TEXT,
+      postal_code TEXT,
+      lead_id INTEGER,                           -- prospect converti à l'origine du RDV
+      reminder_sent INTEGER NOT NULL DEFAULT 0,  -- rappel J-1 envoyé
       created_at INTEGER NOT NULL
     );
     CREATE INDEX IF NOT EXISTS jobs_ts ON jobs(ts DESC);
+    CREATE INDEX IF NOT EXISTS jobs_scheduled ON jobs(scheduled_at);
+
+    -- Indisponibilités (congés / créneaux bloqués) — impactent les dispos.
+    CREATE TABLE IF NOT EXISTS blocks (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      start_at INTEGER NOT NULL,
+      end_at INTEGER NOT NULL,
+      reason TEXT,
+      created_at INTEGER NOT NULL
+    );
+    CREATE INDEX IF NOT EXISTS blocks_start ON blocks(start_at);
 
     -- Prospects (leads) reçus des pubs Meta Lead Ads (et autres sources).
     -- Stockés pour le suivi CRM (statut) et les relances. Dédup via
@@ -220,6 +239,14 @@ function openDb(): Database.Database {
     "ALTER TABLE leads ADD COLUMN email_step INTEGER NOT NULL DEFAULT 0",
     "ALTER TABLE leads ADD COLUMN last_email_at INTEGER",
     "ALTER TABLE leads ADD COLUMN email_opt_out INTEGER NOT NULL DEFAULT 0",
+    "ALTER TABLE jobs ADD COLUMN scheduled_at INTEGER",
+    "ALTER TABLE jobs ADD COLUMN duration_min INTEGER",
+    "ALTER TABLE jobs ADD COLUMN customer_name TEXT",
+    "ALTER TABLE jobs ADD COLUMN email TEXT",
+    "ALTER TABLE jobs ADD COLUMN address TEXT",
+    "ALTER TABLE jobs ADD COLUMN postal_code TEXT",
+    "ALTER TABLE jobs ADD COLUMN lead_id INTEGER",
+    "ALTER TABLE jobs ADD COLUMN reminder_sent INTEGER NOT NULL DEFAULT 0",
   ]) {
     try {
       db.exec(stmt);
@@ -863,6 +890,15 @@ export type Job = {
   status: string;
   notes: string | null;
   booking_id: number | null;
+  // Réservation (job planifié via /reserver)
+  scheduled_at: number | null; // date+heure précise (ms)
+  duration_min: number | null;
+  customer_name: string | null;
+  email: string | null;
+  address: string | null;
+  postal_code: string | null;
+  lead_id: number | null; // prospect converti à l'origine du RDV
+  reminder_sent: number;
   created_at: number;
 };
 
@@ -881,20 +917,30 @@ export type JobInput = {
   status: string;
   notes: string | null;
   booking_id?: number | null;
+  scheduled_at?: number | null;
+  duration_min?: number | null;
+  customer_name?: string | null;
+  address?: string | null;
 };
 
 const insertJobStmt = db.prepare(`
   INSERT INTO jobs
     (ts, phone, prestation, vehicle_type, price, supplements, total,
-     collected, payment, source, status, notes, booking_id, created_at)
+     collected, payment, source, status, notes, booking_id,
+     scheduled_at, duration_min, customer_name, address, created_at)
   VALUES
     (@ts, @phone, @prestation, @vehicle_type, @price, @supplements, @total,
-     @collected, @payment, @source, @status, @notes, @booking_id, @created_at)
+     @collected, @payment, @source, @status, @notes, @booking_id,
+     @scheduled_at, @duration_min, @customer_name, @address, @created_at)
 `);
 
 export function insertJob(j: JobInput): number {
   const r = insertJobStmt.run({
     booking_id: null,
+    scheduled_at: null,
+    duration_min: null,
+    customer_name: null,
+    address: null,
     ...j,
     created_at: Date.now(),
   });
@@ -926,6 +972,10 @@ export function updateJob(id: number, fields: Partial<JobInput>): void {
     "source",
     "status",
     "notes",
+    "scheduled_at",
+    "duration_min",
+    "customer_name",
+    "address",
   ];
   const sets: string[] = [];
   const params: Record<string, unknown> = { id };
@@ -1066,4 +1116,146 @@ export function markLeadEmailed(id: number, step: number): void {
 /** Désinscrit un lead des relances email. */
 export function setLeadOptOut(id: number): void {
   db.prepare(`UPDATE leads SET email_opt_out = 1 WHERE id = ?`).run(id);
+}
+
+/** Cherche un prospect (statut nouveau/à-relancer) par email OU téléphone —
+ *  pour l'auto-conversion quand un lead réserve de lui-même. */
+export function findLeadByContact(
+  email: string | null,
+  phone: string | null,
+): Lead | null {
+  const em = (email || "").trim().toLowerCase();
+  const ph = (phone || "").replace(/[^0-9]/g, "").slice(-9);
+  if (!em && !ph) return null;
+  const rows = db
+    .prepare(
+      `SELECT * FROM leads WHERE status IN ('nouveau','a_relancer') ORDER BY ts DESC`,
+    )
+    .all() as Lead[];
+  return (
+    rows.find((l) => {
+      const le = (l.email || "").trim().toLowerCase();
+      const lp = (l.phone || "").replace(/[^0-9]/g, "").slice(-9);
+      return (em && le === em) || (!!ph && !!lp && lp === ph);
+    }) ?? null
+  );
+}
+
+// ─── Réservations & indisponibilités ──────────────────────────────────────
+
+/** Jobs planifiés (avec heure) sur une période — pour calculer les créneaux. */
+export function getScheduledBetween(
+  startMs: number,
+  endMs: number,
+): { id: number; scheduled_at: number; duration_min: number | null }[] {
+  return db
+    .prepare(
+      `SELECT id, scheduled_at, duration_min FROM jobs
+       WHERE scheduled_at IS NOT NULL AND scheduled_at >= ? AND scheduled_at < ?
+         AND status != 'annule'`,
+    )
+    .all(startMs, endMs) as {
+    id: number;
+    scheduled_at: number;
+    duration_min: number | null;
+  }[];
+}
+
+export type Block = {
+  id: number;
+  start_at: number;
+  end_at: number;
+  reason: string | null;
+  created_at: number;
+};
+export function getBlocksBetween(startMs: number, endMs: number): Block[] {
+  return db
+    .prepare(
+      `SELECT * FROM blocks WHERE end_at > ? AND start_at < ? ORDER BY start_at ASC`,
+    )
+    .all(startMs, endMs) as Block[];
+}
+export function listBlocks(): Block[] {
+  return db
+    .prepare(`SELECT * FROM blocks WHERE end_at > ? ORDER BY start_at ASC`)
+    .all(Date.now()) as Block[];
+}
+export function insertBlock(
+  start_at: number,
+  end_at: number,
+  reason: string | null,
+): number {
+  const r = db
+    .prepare(
+      `INSERT INTO blocks (start_at, end_at, reason, created_at) VALUES (?,?,?,?)`,
+    )
+    .run(start_at, end_at, reason, Date.now());
+  return r.lastInsertRowid as number;
+}
+export function deleteBlock(id: number): void {
+  db.prepare(`DELETE FROM blocks WHERE id = ?`).run(id);
+}
+
+export type ReservationInput = {
+  ts: number; // jour du RDV
+  scheduled_at: number; // date+heure précise
+  duration_min: number;
+  prestation: string | null;
+  vehicle_type: string | null;
+  price: number;
+  total: number;
+  phone: string | null;
+  customer_name: string | null;
+  email: string | null;
+  address: string | null;
+  postal_code: string | null;
+  notes: string | null;
+  source: string | null;
+  lead_id: number | null;
+};
+const insertReservationStmt = db.prepare(`
+  INSERT INTO jobs
+    (ts, scheduled_at, duration_min, phone, prestation, vehicle_type, price,
+     supplements, total, collected, payment, source, status, notes,
+     customer_name, email, address, postal_code, lead_id, created_at)
+  VALUES
+    (@ts, @scheduled_at, @duration_min, @phone, @prestation, @vehicle_type, @price,
+     0, @total, 0, NULL, @source, 'a_faire', @notes,
+     @customer_name, @email, @address, @postal_code, @lead_id, @created_at)
+`);
+/** Crée une réservation = un job planifié (statut à faire). */
+export function insertReservation(r: ReservationInput): number {
+  const res = insertReservationStmt.run({ ...r, created_at: Date.now() });
+  return res.lastInsertRowid as number;
+}
+
+/** Annule une réservation (libère le créneau). */
+export function cancelReservation(id: number): void {
+  db.prepare(`UPDATE jobs SET status = 'annule' WHERE id = ?`).run(id);
+}
+
+/** Reporte une réservation à un nouveau créneau. */
+export function rescheduleReservation(
+  id: number,
+  scheduledAt: number,
+  dayTs: number,
+): void {
+  db.prepare(
+    `UPDATE jobs SET scheduled_at = ?, ts = ?, reminder_sent = 0 WHERE id = ?`,
+  ).run(scheduledAt, dayTs, id);
+}
+
+/** Réservations à rappeler (dans la fenêtre, à faire, pas encore rappelées). */
+export function getRemindableReservations(fromMs: number, toMs: number): Job[] {
+  return db
+    .prepare(
+      `SELECT * FROM jobs
+       WHERE scheduled_at IS NOT NULL AND scheduled_at >= ? AND scheduled_at < ?
+         AND status = 'a_faire' AND reminder_sent = 0
+         AND email IS NOT NULL AND email != ''`,
+    )
+    .all(fromMs, toMs) as Job[];
+}
+export function markReminded(id: number): void {
+  db.prepare(`UPDATE jobs SET reminder_sent = 1 WHERE id = ?`).run(id);
 }
