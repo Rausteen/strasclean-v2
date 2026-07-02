@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import crypto from "crypto";
+import { insertLead } from "@/lib/db";
 
 // ─────────────────────────────────────────────────────────────────────────
 //  Webhook Meta Lead Ads → Telegram (instantané).
@@ -129,6 +130,23 @@ async function handleLead(leadgenId: string): Promise<void> {
     const wa = phoneClean
       ? `https://wa.me/${phoneClean.replace(/^\+/, "")}`
       : "";
+
+    // Stockage du prospect (best-effort, dédup sur l'id Meta). Ne doit jamais
+    // empêcher la notification Telegram.
+    try {
+      insertLead({
+        source: "meta_ads",
+        meta_lead_id: leadgenId,
+        form_id: lead.form_id ?? null,
+        ad_id: lead.ad_id ?? null,
+        full_name: name !== "—" ? name : null,
+        phone: phoneClean || null,
+        email: email || null,
+        raw: JSON.stringify(lead.field_data ?? []),
+      });
+    } catch {
+      /* stockage best-effort */
+    }
 
     // Champs personnalisés du formulaire (hors champs standards)
     const extras = Object.entries(map)

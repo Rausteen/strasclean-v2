@@ -159,6 +159,29 @@ function openDb(): Database.Database {
     );
     CREATE INDEX IF NOT EXISTS jobs_ts ON jobs(ts DESC);
 
+    -- Prospects (leads) reçus des pubs Meta Lead Ads (et autres sources).
+    -- Stockés pour le suivi CRM (statut) et les relances. Dédup via
+    -- meta_lead_id (INSERT OR IGNORE) — SQLite autorise plusieurs NULL, donc
+    -- les leads du site (meta_lead_id NULL) ne sont pas bloqués.
+    CREATE TABLE IF NOT EXISTS leads (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      ts INTEGER NOT NULL,                       -- Date de réception
+      source TEXT,                               -- 'meta_ads' | 'site' | ...
+      meta_lead_id TEXT,                         -- leadgen_id Meta (dédup)
+      form_id TEXT,
+      ad_id TEXT,
+      full_name TEXT,
+      phone TEXT,
+      email TEXT,
+      raw TEXT,                                  -- JSON brut des field_data
+      status TEXT NOT NULL DEFAULT 'nouveau',    -- nouveau|qualifie|perdu|converti
+      notes TEXT,
+      created_at INTEGER NOT NULL
+    );
+    CREATE INDEX IF NOT EXISTS leads_ts ON leads(ts DESC);
+    CREATE INDEX IF NOT EXISTS leads_status ON leads(status);
+    CREATE UNIQUE INDEX IF NOT EXISTS leads_meta_id ON leads(meta_lead_id);
+
     -- Cache persistant des avis Google. Google Places API ne renvoie que
     -- les 5 derniers à chaque requête, mais ils varient dans le temps.
     -- En accumulant ici, on a TOUS les avis qu'on a vus passer, et on
@@ -901,4 +924,99 @@ export function updateJob(id: number, fields: Partial<JobInput>): void {
 
 export function deleteJob(id: number): void {
   db.prepare(`DELETE FROM jobs WHERE id = ?`).run(id);
+}
+
+// ─── Prospects (leads) ────────────────────────────────────────────────────
+export type LeadStatus = "nouveau" | "qualifie" | "perdu" | "converti";
+
+export type Lead = {
+  id: number;
+  ts: number;
+  source: string | null;
+  meta_lead_id: string | null;
+  form_id: string | null;
+  ad_id: string | null;
+  full_name: string | null;
+  phone: string | null;
+  email: string | null;
+  raw: string | null;
+  status: string;
+  notes: string | null;
+  created_at: number;
+};
+
+export type LeadInput = {
+  ts?: number;
+  source?: string | null;
+  meta_lead_id?: string | null;
+  form_id?: string | null;
+  ad_id?: string | null;
+  full_name?: string | null;
+  phone?: string | null;
+  email?: string | null;
+  raw?: string | null;
+  status?: string;
+  notes?: string | null;
+};
+
+const insertLeadStmt = db.prepare(`
+  INSERT OR IGNORE INTO leads
+    (ts, source, meta_lead_id, form_id, ad_id, full_name, phone, email,
+     raw, status, notes, created_at)
+  VALUES
+    (@ts, @source, @meta_lead_id, @form_id, @ad_id, @full_name, @phone, @email,
+     @raw, @status, @notes, @created_at)
+`);
+
+/** Enregistre un lead. Dédup sur meta_lead_id (INSERT OR IGNORE) : un webhook
+ *  rejoué pour le même lead ne crée pas de doublon. Renvoie l'id inséré, ou 0
+ *  si ignoré (doublon). Best-effort — ne doit jamais casser la réception. */
+export function insertLead(l: LeadInput): number {
+  const now = Date.now();
+  const r = insertLeadStmt.run({
+    ts: l.ts ?? now,
+    source: l.source ?? null,
+    meta_lead_id: l.meta_lead_id ?? null,
+    form_id: l.form_id ?? null,
+    ad_id: l.ad_id ?? null,
+    full_name: l.full_name ?? null,
+    phone: l.phone ?? null,
+    email: l.email ?? null,
+    raw: l.raw ?? null,
+    status: l.status ?? "nouveau",
+    notes: l.notes ?? null,
+    created_at: now,
+  });
+  return r.changes > 0 ? (r.lastInsertRowid as number) : 0;
+}
+
+export function listLeads(limit = 300): Lead[] {
+  return db
+    .prepare(`SELECT * FROM leads ORDER BY ts DESC, id DESC LIMIT ?`)
+    .all(limit) as Lead[];
+}
+
+export function getLead(id: number): Lead | null {
+  return (
+    (db.prepare(`SELECT * FROM leads WHERE id = ?`).get(id) as Lead) ?? null
+  );
+}
+
+/** Met à jour le statut et/ou les notes d'un lead (whitelist stricte). */
+export function updateLead(
+  id: number,
+  fields: Partial<Pick<LeadInput, "status" | "notes">>,
+): void {
+  const sets: string[] = [];
+  const params: Record<string, unknown> = { id };
+  if ("status" in fields) {
+    sets.push("status = @status");
+    params.status = fields.status;
+  }
+  if ("notes" in fields) {
+    sets.push("notes = @notes");
+    params.notes = fields.notes;
+  }
+  if (sets.length === 0) return;
+  db.prepare(`UPDATE leads SET ${sets.join(", ")} WHERE id = @id`).run(params);
 }
