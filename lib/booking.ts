@@ -33,33 +33,17 @@ const DURATIONS: Record<string, number> = {
   confort: 60, // Essentiel
   premium: 90, // Premium Intérieur
   luxury: 150, // Intégrale (2h30)
-  exterieur: 60, // Lavage extérieur (1h)
 };
 
-export const BOOKING_FORMULAS: BookingFormula[] = [
-  ...PLANS.map((p) => ({
-    id: p.id,
-    name: p.name.replace(/^Formule /, ""),
-    durationMin: DURATIONS[p.id] ?? 90,
-    priceFrom: parseInt(p.priceFrom, 10),
-    emoji: p.emoji,
-    tagline: p.tagline,
-    features: p.features,
-  })),
-  {
-    id: "exterieur",
-    name: "Lavage extérieur",
-    durationMin: DURATIONS.exterieur,
-    priceFrom: 49,
-    emoji: "🚿",
-    tagline: "Carrosserie, jantes, vitres — lavage à la main, sans rouleaux.",
-    features: [
-      "Pré-lavage puis lavage à la main",
-      "Jantes + bas de caisse",
-      "Vitres extérieures, séchage sans trace",
-    ],
-  },
-];
+export const BOOKING_FORMULAS: BookingFormula[] = PLANS.map((p) => ({
+  id: p.id,
+  name: p.name.replace(/^Formule /, ""),
+  durationMin: DURATIONS[p.id] ?? 90,
+  priceFrom: parseInt(p.priceFrom, 10),
+  emoji: p.emoji,
+  tagline: p.tagline,
+  features: p.features,
+}));
 
 export function getFormula(id: string): BookingFormula | undefined {
   return BOOKING_FORMULAS.find((f) => f.id === id);

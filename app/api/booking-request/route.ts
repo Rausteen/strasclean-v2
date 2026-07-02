@@ -2,6 +2,8 @@ import { NextResponse } from "next/server";
 import {
   insertBookingRequest,
   insertJob,
+  insertLead,
+  findLeadByContact,
   type BookingRequest,
 } from "@/lib/db";
 import { notifyNewLead } from "@/lib/notify";
@@ -186,6 +188,27 @@ export async function POST(req: Request) {
     });
   } catch (err) {
     console.error("Job auto-insert failed", err);
+  }
+
+  // Prospect (CRM + relances email) : un formulaire Auto avec email devient un
+  // lead « nouveau » → il entre dans la séquence de relance (drip). Dédup douce
+  // sur email/téléphone pour ne pas créer deux prospects si double envoi.
+  if (section === "auto" && email) {
+    try {
+      if (!findLeadByContact(email, phone)) {
+        insertLead({
+          ts: record.ts,
+          source: "Formulaire site",
+          full_name: firstName,
+          phone,
+          email,
+          status: "nouveau",
+          notes: [item.label, variant].filter(Boolean).join(" · ") || null,
+        });
+      }
+    } catch (err) {
+      console.error("Lead insert failed", err);
+    }
   }
 
   // Notification email du nouveau lead (no-op si RESEND_API_KEY absente).

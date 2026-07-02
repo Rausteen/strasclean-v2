@@ -61,6 +61,13 @@ function card(heading: string, bodyHtml: string, cta: string, ctaUrl: string): s
       <div style="text-align:center;margin:22px 0 4px">
         <a href="${ctaUrl}" style="display:inline-block;background:#10B981;color:#062b1e;font-weight:700;text-decoration:none;padding:12px 24px;border-radius:999px">${cta}</a>
       </div>
+      <p style="text-align:center;margin:16px 0 0;font-size:13px">
+        <a href="${SITE.instagram}" style="color:#10B981;text-decoration:none;font-weight:600">Instagram</a>
+        &nbsp;·&nbsp;
+        <a href="${SITE.facebook}" style="color:#10B981;text-decoration:none;font-weight:600">Facebook</a>
+        &nbsp;·&nbsp;
+        <a href="${SITE.tiktok}" style="color:#10B981;text-decoration:none;font-weight:600">TikTok</a>
+      </p>
     </div>
     <p style="text-align:center;color:#9aa08f;font-size:12px;margin:16px 0 0">StrasClean — nettoyage auto à domicile à Strasbourg · <a href="${SITE.url}" style="color:#9aa08f">strasclean.fr</a></p>
   </div></body></html>`;

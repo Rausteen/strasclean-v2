@@ -17,11 +17,14 @@ const FROM =
   "StrasClean <onboarding@resend.dev>";
 const SECRET = process.env.SESSION_SECRET || "strasclean-unsub-fallback";
 
-/** Jours après réception pour chaque étape : 0=J0, 1=J3, 2=J5, 3=J7. */
-export const DRIP_DAYS = [0, 3, 5, 7];
+/** Jours après réception : J0/J3/J5/J7 (relances), puis J14/J21 (offres). */
+export const DRIP_DAYS = [0, 3, 5, 7, 14, 21];
 /** Fenêtre (jours) pendant laquelle une étape peut encore partir. Au-delà, on
  *  la saute (évite de spammer un vieux lead au 1er passage du cron). */
-export const DRIP_GRACE_DAYS = [0.5, 2, 2, 3];
+export const DRIP_GRACE_DAYS = [0.5, 2, 2, 3, 5, 7];
+
+/** Code promo mentionné dans les emails d'offre (déduit à la main au RDV). */
+const PROMO_CODE = "STRAS10";
 
 function firstName(full: string | null): string {
   return full ? full.trim().split(/\s+/)[0] || "" : "";
@@ -78,13 +81,33 @@ function stepContent(step: number, prenom: string): Step | null {
         `<p style="margin:0">On vous répond en moins de 30 min, 7j/7 de 8h à 22h. On vous cale ça :</p>`,
       cta: "Voir les disponibilités",
     };
+  if (step === 3)
+    return {
+      subject: `On garde votre place${p} 🙂`,
+      heading: `Toujours là quand vous voulez${p}`,
+      body:
+        `<p style="margin:0 0 14px">Pas encore trouvé le bon moment ? Pas de souci — on garde votre contact. Dès que votre voiture a besoin d'un nettoyage, on est à un simple message.</p>` +
+        `<p style="margin:0">À très vite chez StrasClean :</p>`,
+      cta: "Réserver quand je veux",
+    };
+  // ── Offres (J14 / J21) ──
+  if (step === 4)
+    return {
+      subject: `🎁 ${prenom ? prenom + ", 10" : "10"} € offerts sur votre nettoyage`,
+      heading: `Un petit cadeau pour vous décider 🎁`,
+      body:
+        `<p style="margin:0 0 14px">On aimerait vraiment s'occuper de votre voiture${p}. Pour vous lancer, on vous offre <b>10 €</b> sur votre premier nettoyage à domicile.</p>` +
+        `<p style="margin:0 0 14px;padding:12px 15px;background:#ecfdf5;border:1px dashed #10B981;border-radius:12px;text-align:center;font-weight:700;color:#047857">Code <span style="letter-spacing:1px">${PROMO_CODE}</span> — 10 € de remise</p>` +
+        `<p style="margin:0">Mentionnez simplement le code à la réservation :</p>`,
+      cta: "Réserver avec ma remise",
+    };
   return {
-    subject: `On garde votre place${p} 🙂`,
-    heading: `Toujours là quand vous voulez${p}`,
+    subject: `Dernière offre${p} : -10 € + on vient à vous`,
+    heading: `Votre voiture mérite ça${p} ✨`,
     body:
-      `<p style="margin:0 0 14px">Pas encore trouvé le bon moment ? Pas de souci — on garde votre contact. Dès que votre voiture a besoin d'un nettoyage, on est à un simple message.</p>` +
-      `<p style="margin:0">À très vite chez StrasClean :</p>`,
-    cta: "Réserver quand je veux",
+      `<p style="margin:0 0 14px">Dernier petit rappel 🙂 Votre remise de <b>10 € (code ${PROMO_CODE})</b> est toujours valable. Nettoyage à la main, à domicile, sans engagement — vous ne bougez pas, on s'occupe de tout.</p>` +
+      `<p style="margin:0">On vous réserve un créneau quand vous voulez :</p>`,
+    cta: "J'en profite maintenant",
   };
 }
 
@@ -101,6 +124,13 @@ function render(s: Step, ctaUrl: string, unsub: string): string {
         <a href="${ctaUrl}" style="display:inline-block;background:#10B981;color:#062b1e;font-weight:700;text-decoration:none;padding:13px 28px;border-radius:999px;font-size:16px">${s.cta}</a>
       </div>
       <p style="text-align:center;margin:12px 0 0;color:#86857e;font-size:13px">⭐ 5,0/5 sur Google · à domicile · 7j/7</p>
+      <p style="text-align:center;margin:12px 0 0;font-size:13px">
+        <a href="${SITE.instagram}" style="color:#10B981;text-decoration:none;font-weight:600">Instagram</a>
+        &nbsp;·&nbsp;
+        <a href="${SITE.facebook}" style="color:#10B981;text-decoration:none;font-weight:600">Facebook</a>
+        &nbsp;·&nbsp;
+        <a href="${SITE.tiktok}" style="color:#10B981;text-decoration:none;font-weight:600">TikTok</a>
+      </p>
     </div>
     <p style="text-align:center;color:#9aa08f;font-size:12px;margin:18px 0 0">
       StrasClean — nettoyage auto à domicile à Strasbourg · <a href="${SITE.url}" style="color:#9aa08f">strasclean.fr</a><br>

@@ -163,6 +163,8 @@ function openDb(): Database.Database {
       postal_code TEXT,
       lead_id INTEGER,                           -- prospect converti à l'origine du RDV
       reminder_sent INTEGER NOT NULL DEFAULT 0,  -- rappel J-1 envoyé
+      review_step INTEGER NOT NULL DEFAULT 0,    -- relances demande d'avis Google
+      completed_at INTEGER,                      -- horodatage de fin du job (ancre relances avis)
       created_at INTEGER NOT NULL
     );
     CREATE INDEX IF NOT EXISTS jobs_ts ON jobs(ts DESC);
@@ -246,6 +248,8 @@ function openDb(): Database.Database {
     "ALTER TABLE jobs ADD COLUMN postal_code TEXT",
     "ALTER TABLE jobs ADD COLUMN lead_id INTEGER",
     "ALTER TABLE jobs ADD COLUMN reminder_sent INTEGER NOT NULL DEFAULT 0",
+    "ALTER TABLE jobs ADD COLUMN review_step INTEGER NOT NULL DEFAULT 0",
+    "ALTER TABLE jobs ADD COLUMN completed_at INTEGER",
   ]) {
     try {
       db.exec(stmt);
@@ -907,6 +911,8 @@ export type Job = {
   postal_code: string | null;
   lead_id: number | null; // prospect converti à l'origine du RDV
   reminder_sent: number;
+  review_step: number; // relances avis Google (0 = pas encore démarré)
+  completed_at: number | null;
   created_at: number;
 };
 
@@ -928,6 +934,7 @@ export type JobInput = {
   scheduled_at?: number | null;
   duration_min?: number | null;
   customer_name?: string | null;
+  email?: string | null;
   address?: string | null;
 };
 
@@ -935,11 +942,11 @@ const insertJobStmt = db.prepare(`
   INSERT INTO jobs
     (ts, phone, prestation, vehicle_type, price, supplements, total,
      collected, payment, source, status, notes, booking_id,
-     scheduled_at, duration_min, customer_name, address, created_at)
+     scheduled_at, duration_min, customer_name, email, address, created_at)
   VALUES
     (@ts, @phone, @prestation, @vehicle_type, @price, @supplements, @total,
      @collected, @payment, @source, @status, @notes, @booking_id,
-     @scheduled_at, @duration_min, @customer_name, @address, @created_at)
+     @scheduled_at, @duration_min, @customer_name, @email, @address, @created_at)
 `);
 
 export function insertJob(j: JobInput): number {
@@ -948,6 +955,7 @@ export function insertJob(j: JobInput): number {
     scheduled_at: null,
     duration_min: null,
     customer_name: null,
+    email: null,
     address: null,
     ...j,
     created_at: Date.now(),
@@ -983,6 +991,7 @@ export function updateJob(id: number, fields: Partial<JobInput>): void {
     "scheduled_at",
     "duration_min",
     "customer_name",
+    "email",
     "address",
   ];
   const sets: string[] = [];
@@ -1266,4 +1275,27 @@ export function getRemindableReservations(fromMs: number, toMs: number): Job[] {
 }
 export function markReminded(id: number): void {
   db.prepare(`UPDATE jobs SET reminder_sent = 1 WHERE id = ?`).run(id);
+}
+
+// ─── Relances « avis Google » après un job terminé ───
+/** Marque un job comme terminé maintenant (ancre les relances d'avis). */
+export function markJobCompleted(id: number): void {
+  db.prepare(
+    `UPDATE jobs SET status = 'termine', collected = 1, completed_at = ? WHERE id = ?`,
+  ).run(Date.now(), id);
+}
+/** Jobs terminés avec email, séquence d'avis en cours (step < maxStep). */
+export function listJobsForReviewDrip(maxStep: number): Job[] {
+  return db
+    .prepare(
+      `SELECT * FROM jobs
+       WHERE status = 'termine' AND completed_at IS NOT NULL
+         AND email IS NOT NULL AND email != ''
+         AND review_step > 0 AND review_step < ?
+       ORDER BY completed_at ASC`,
+    )
+    .all(maxStep) as Job[];
+}
+export function markReviewStep(id: number, step: number): void {
+  db.prepare(`UPDATE jobs SET review_step = ? WHERE id = ?`).run(step, id);
 }

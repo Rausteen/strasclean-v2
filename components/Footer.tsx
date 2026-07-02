@@ -78,15 +78,32 @@ export default function Footer() {
               Strasbourg + 12 communes desservies
             </p>
 
-            <a
-              href="https://www.tiktok.com/@strasclean67000"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="mt-4 inline-flex items-center gap-1.5 text-xs font-semibold text-slate-300 transition hover:text-white"
-            >
-              🎵 Suivez-nous sur TikTok
-              <span className="text-slate-500">@strasclean67000</span>
-            </a>
+            <div className="mt-4 flex flex-wrap items-center gap-x-4 gap-y-2 text-xs font-semibold text-slate-300">
+              <a
+                href={SITE.instagram}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1.5 transition hover:text-white"
+              >
+                📸 Instagram
+              </a>
+              <a
+                href={SITE.facebook}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1.5 transition hover:text-white"
+              >
+                👍 Facebook
+              </a>
+              <a
+                href="https://www.tiktok.com/@strasclean67000"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1.5 transition hover:text-white"
+              >
+                🎵 TikTok
+              </a>
+            </div>
           </div>
 
           {/* COL 2 — Auto */}

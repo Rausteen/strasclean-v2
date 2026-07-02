@@ -48,7 +48,6 @@ export default function ReservationWizard() {
   const [done, setDone] = useState<{ when: string; price: number } | null>(null);
 
   const f = BOOKING_FORMULAS.find((x) => x.id === formula);
-  const isExterior = formula === "exterieur";
   const price = useMemo(
     () => (formula && vehicle ? computePrice(formula, vehicle, options) : 0),
     [formula, vehicle, options],
@@ -186,10 +185,7 @@ export default function ReservationWizard() {
             {BOOKING_FORMULAS.map((fo) => (
               <button
                 key={fo.id}
-                onClick={() => {
-                  setFormula(fo.id);
-                  if (fo.id === "exterieur") setOptions([]);
-                }}
+                onClick={() => setFormula(fo.id)}
                 className={`flex w-full items-center gap-3 rounded-2xl border p-4 text-left transition ${
                   formula === fo.id
                     ? "border-brand-500 bg-brand-50 ring-1 ring-brand-500"
@@ -240,7 +236,7 @@ export default function ReservationWizard() {
             ))}
           </div>
 
-          {!isExterior && (
+          {!!formula && (
             <div className="mt-6">
               <p className="mb-2 text-sm font-semibold text-slate-700">
                 Options (facultatif)

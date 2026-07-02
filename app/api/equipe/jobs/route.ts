@@ -5,8 +5,12 @@ import {
   insertJob,
   updateJob,
   deleteJob,
+  getJob,
+  markJobCompleted,
+  markReviewStep,
   type JobInput,
 } from "@/lib/db";
+import { sendReviewRequest } from "@/lib/reviewEmail";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -50,6 +54,7 @@ function toJobInput(b: Record<string, unknown>): JobInput {
         ? b.duration_min
         : null,
     customer_name: str(b.customer_name, 120),
+    email: str(b.email, 120),
     address: str(b.address, 200),
   };
 }
@@ -116,8 +121,21 @@ export async function PATCH(req: Request) {
     fields.duration_min =
       typeof body.duration_min === "number" ? body.duration_min : null;
   if ("customer_name" in body) fields.customer_name = str(body.customer_name, 120);
+  if ("email" in body) fields.email = str(body.email, 120);
   if ("address" in body) fields.address = str(body.address, 200);
+
+  // Détecte le passage à « terminé » (pour lancer la demande d'avis).
+  const wasDone = getJob(id)?.status === "termine";
   updateJob(id, fields);
+
+  if (fields.status === "termine" && !wasDone) {
+    markJobCompleted(id); // horodate la fin (ancre les relances d'avis)
+    const job = getJob(id);
+    if (job?.email && job.review_step === 0) {
+      markReviewStep(id, 1);
+      await sendReviewRequest(job, 0); // best-effort, ne throw pas
+    }
+  }
   return NextResponse.json({ ok: true });
 }
 

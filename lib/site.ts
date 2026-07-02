@@ -20,6 +20,12 @@ export const SITE = {
   city: "Strasbourg",
   region: "Grand Est",
   country: "FR",
+  // Réseaux sociaux (affichés dans les emails et le footer)
+  instagram: "https://www.instagram.com/strasbourg67",
+  facebook: "https://www.facebook.com/profile.php?id=61591324480855",
+  tiktok: "https://www.tiktok.com/@strasclean67000",
+  // Lien direct « laisser un avis » Google (ouvre le formulaire d'avis)
+  googleReview: "https://g.page/r/CRa5hY3dnAMDEBM/review",
   /**
    * URLs publiques de la marque sur les réseaux et fiches externes.
    * Renseignées dans le JSON-LD LocalBusiness (champ sameAs) pour
@@ -32,10 +38,8 @@ export const SITE = {
     // Fiche Google Business (la plus importante pour le SEO local)
     "https://maps.app.goo.gl/qSzgbJbMYC17HQnc6",
     "https://www.tiktok.com/@strasclean67000",
-    // 👇 décommente / ajoute les profils existants
-    // "https://www.facebook.com/strasclean",
-    // "https://www.instagram.com/strasclean",
-    // "https://www.linkedin.com/company/strasclean",
+    "https://www.instagram.com/strasbourg67",
+    "https://www.facebook.com/profile.php?id=61591324480855",
   ],
   /**
    * Horaires d'intervention StrasClean.

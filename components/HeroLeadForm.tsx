@@ -25,7 +25,8 @@ export default function HeroLeadForm() {
 
     if (!firstName.trim()) return setError("Indiquez votre prénom.");
     if (phoneDigits(phone) < 8) return setError("Numéro de téléphone invalide.");
-    if (email.trim() && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    if (!email.trim()) return setError("Indiquez votre email.");
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
       return setError("Email invalide.");
     }
     if (!service) return setError("Choisissez un service.");
@@ -39,7 +40,7 @@ export default function HeroLeadForm() {
           section: "auto",
           itemId: service,
           firstName: firstName.trim(),
-          email: email.trim() || null,
+          email: email.trim(),
           phone: phone.trim(),
         }),
       });
@@ -129,9 +130,10 @@ export default function HeroLeadForm() {
           inputMode="email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          placeholder="Email (facultatif)"
+          placeholder="Email"
+          required
           autoComplete="email"
-          aria-label="Email (facultatif)"
+          aria-label="Email"
           className="w-full rounded-xl border border-slate-200 bg-white px-3.5 py-3 text-sm text-slate-900 outline-none transition focus:border-brand-400/60 focus:ring-2 focus:ring-brand-400/20"
         />
         <select

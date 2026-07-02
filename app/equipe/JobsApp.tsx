@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { PLANS, VEHICLE_TYPES } from "@/lib/plans";
+import { getFormulaByName, BOOKING_CONFIG } from "@/lib/booking";
 
 // Forme d'un job (miroir de lib/db Job — défini ici car lib/db est server-only).
 type Job = {
@@ -177,14 +178,18 @@ function fmtTime(ts: number): string {
   });
 }
 // Durée estimée par prestation (min) — pour occuper l'agenda sur un RDV manuel.
+// On s'appuie sur le moteur de réservation (source unique) pour rester
+// synchronisé avec les créneaux en ligne ; PRESTATION_DUR ne couvre que les
+// prestations qui ne sont pas des formules réservables (ex. extérieur seul).
 const PRESTATION_DUR: Record<string, number> = {
-  Essentiel: 60,
-  "Premium Intérieur": 90,
-  "Intégrale StrasClean": 120,
   "Lavage extérieur seul": 45,
 };
 function prestationDuration(label: string | null): number {
-  return PRESTATION_DUR[label ?? ""] ?? 90;
+  return (
+    getFormulaByName(label ?? "")?.durationMin ??
+    PRESTATION_DUR[label ?? ""] ??
+    90
+  );
 }
 // Combine un jour (ts) + une heure "HH:MM" en timestamp précis.
 function combineTs(ts: number, time: string): number {
@@ -722,16 +727,26 @@ function JobCard({
       </div>
 
       <div className="mt-2.5 flex items-center justify-between gap-3 border-t border-slate-100 pt-2.5">
-        {job.phone ? (
-          <a
-            href={`tel:${job.phone.replace(/[^0-9+]/g, "")}`}
-            className="text-xs font-semibold text-brand-700"
-          >
-            📞 {job.phone}
-          </a>
-        ) : (
-          <span className="text-xs text-slate-400">—</span>
-        )}
+        <div className="flex min-w-0 items-center gap-3">
+          {job.phone ? (
+            <a
+              href={`tel:${job.phone.replace(/[^0-9+]/g, "")}`}
+              className="truncate text-xs font-semibold text-brand-700"
+            >
+              📞 {job.phone}
+            </a>
+          ) : (
+            <span className="text-xs text-slate-400">—</span>
+          )}
+          {job.email ? (
+            <span
+              title={`Avis Google auto : ${job.email}`}
+              className="shrink-0 text-xs text-slate-400"
+            >
+              ✉️
+            </span>
+          ) : null}
+        </div>
         {/* Validation rapide directement sur la carte (sans ouvrir le form) */}
         {done ? (
           <button
@@ -1033,6 +1048,12 @@ function JobForm({
               />
             </Field>
           </div>
+          {time && (
+            <p className="-mt-1 text-xs text-slate-500">
+              Bloque l'agenda&nbsp;: {prestationDuration(d.prestation)} min de
+              prestation + {BOOKING_CONFIG.bufferMin} min de trajet avant/après.
+            </p>
+          )}
 
           <Field label="Prestation">
             <select
@@ -1149,6 +1170,16 @@ function JobForm({
                     value={d.customer_name ?? ""}
                     onChange={(e) => set("customer_name", e.target.value)}
                     placeholder="Prénom Nom"
+                    className={inputCls}
+                  />
+                </Field>
+                <Field label="Email (avis Google auto à la fin du job)">
+                  <input
+                    type="email"
+                    inputMode="email"
+                    value={d.email ?? ""}
+                    onChange={(e) => set("email", e.target.value)}
+                    placeholder="client@email.fr"
                     className={inputCls}
                   />
                 </Field>
