@@ -166,7 +166,6 @@ function openDb(): Database.Database {
       created_at INTEGER NOT NULL
     );
     CREATE INDEX IF NOT EXISTS jobs_ts ON jobs(ts DESC);
-    CREATE INDEX IF NOT EXISTS jobs_scheduled ON jobs(scheduled_at);
 
     -- Indisponibilités (congés / créneaux bloqués) — impactent les dispos.
     CREATE TABLE IF NOT EXISTS blocks (
@@ -253,6 +252,15 @@ function openDb(): Database.Database {
     } catch {
       /* colonne déjà présente */
     }
+  }
+
+  // Index dépendant d'une colonne ajoutée par migration (scheduled_at) : à créer
+  // APRÈS l'ALTER ci-dessus, sinon il échoue sur une base pré-existante et fait
+  // capoter toute la migration.
+  try {
+    db.exec("CREATE INDEX IF NOT EXISTS jobs_scheduled ON jobs(scheduled_at)");
+  } catch {
+    /* colonne pas encore là : ignoré */
   }
 
   return db;
