@@ -1,6 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { isTeamAuthenticated } from "@/lib/auth";
-import { listJobs } from "@/lib/db";
+import { listJobs, listLeads } from "@/lib/db";
 import JobsApp from "./JobsApp";
 import LoginForm from "./LoginForm";
 import InstallPrompt from "./InstallPrompt";
@@ -34,7 +34,11 @@ export default async function EquipePage() {
   return (
     <>
       <InstallPrompt />
-      {authed ? <JobsApp initialJobs={listJobs()} /> : <LoginForm />}
+      {authed ? (
+        <JobsApp initialJobs={listJobs()} initialLeads={listLeads()} />
+      ) : (
+        <LoginForm />
+      )}
     </>
   );
 }

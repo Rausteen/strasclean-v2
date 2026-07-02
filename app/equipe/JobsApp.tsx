@@ -28,7 +28,31 @@ const STATUSES: { id: string; label: string; cls: string }[] = [
   { id: "termine", label: "Terminé", cls: "bg-brand-100 text-brand-800" },
 ];
 const PAYMENTS = ["Espèces", "Carte", "Virement"];
-const SOURCES = ["WhatsApp", "Téléphone", "Formulaire", "Bouche à oreille"];
+const SOURCES = ["Meta Ads", "WhatsApp", "Téléphone", "Formulaire", "Bouche à oreille"];
+
+// Forme d'un lead (miroir de lib/db Lead — lib/db est server-only).
+type Lead = {
+  id: number;
+  ts: number;
+  source: string | null;
+  meta_lead_id: string | null;
+  form_id: string | null;
+  ad_id: string | null;
+  full_name: string | null;
+  phone: string | null;
+  email: string | null;
+  raw: string | null;
+  status: string;
+  notes: string | null;
+  created_at: number;
+};
+
+const LEAD_STATUSES: { id: string; label: string; cls: string }[] = [
+  { id: "nouveau", label: "Nouveau", cls: "bg-sky-100 text-sky-800" },
+  { id: "a_relancer", label: "À relancer", cls: "bg-amber-100 text-amber-800" },
+  { id: "converti", label: "Converti", cls: "bg-brand-100 text-brand-800" },
+  { id: "perdu", label: "Perdu", cls: "bg-slate-100 text-slate-500" },
+];
 
 // Prestations + prix de base : les 3 formules (lib/plans) + l'extérieur seul.
 const PRESTATIONS: { label: string; base: number }[] = [
@@ -149,11 +173,19 @@ function emptyDraft(): Draft {
   };
 }
 
-export default function JobsApp({ initialJobs }: { initialJobs: Job[] }) {
+export default function JobsApp({
+  initialJobs,
+  initialLeads,
+}: {
+  initialJobs: Job[];
+  initialLeads: Lead[];
+}) {
   const [jobs, setJobs] = useState<Job[]>(initialJobs);
+  const [leads, setLeads] = useState<Lead[]>(initialLeads);
   const [filter, setFilter] = useState<string>("a_faire");
+  const [leadFilter, setLeadFilter] = useState<string>("nouveau");
   const [draft, setDraft] = useState<Draft | null>(null); // null = aucun form ouvert
-  const [view, setView] = useState<"jobs" | "stats">("jobs");
+  const [view, setView] = useState<"jobs" | "prospects" | "stats">("jobs");
   const [refreshing, setRefreshing] = useState(false);
   const [pull, setPull] = useState(0); // tirer-pour-actualiser (px)
   const [dragging, setDragging] = useState(false);
@@ -182,13 +214,32 @@ export default function JobsApp({ initialJobs }: { initialJobs: Job[] }) {
     return groups;
   }, [visible]);
 
-  // Recharge la liste depuis le serveur.
+  // Compteurs + liste filtrée des prospects.
+  const leadCounts = useMemo(() => {
+    const c: Record<string, number> = {};
+    for (const l of leads) c[l.status] = (c[l.status] ?? 0) + 1;
+    return c;
+  }, [leads]);
+  const visibleLeads = useMemo(
+    () =>
+      leadFilter === "tous"
+        ? leads
+        : leads.filter((l) => l.status === leadFilter),
+    [leads, leadFilter],
+  );
+
+  // Recharge jobs + prospects depuis le serveur.
   const refresh = useCallback(async () => {
     setRefreshing(true);
     try {
-      const res = await fetch("/api/equipe/jobs");
-      const data = (await res.json()) as { ok?: boolean; jobs?: Job[] };
-      if (data.ok && Array.isArray(data.jobs)) setJobs(data.jobs);
+      const [jr, lr] = await Promise.all([
+        fetch("/api/equipe/jobs"),
+        fetch("/api/equipe/leads"),
+      ]);
+      const jd = (await jr.json()) as { ok?: boolean; jobs?: Job[] };
+      if (jd.ok && Array.isArray(jd.jobs)) setJobs(jd.jobs);
+      const ld = (await lr.json()) as { ok?: boolean; leads?: Lead[] };
+      if (ld.ok && Array.isArray(ld.leads)) setLeads(ld.leads);
     } catch {
       /* hors-ligne : on garde les données affichées */
     } finally {
@@ -323,6 +374,30 @@ export default function JobsApp({ initialJobs }: { initialJobs: Job[] }) {
     );
   }
 
+  // Change le statut d'un prospect (optimiste).
+  async function setLeadStatus(lead: Lead, status: string) {
+    setLeads((prev) =>
+      prev.map((l) => (l.id === lead.id ? { ...l, status } : l)),
+    );
+    await fetch("/api/equipe/leads", {
+      method: "PATCH",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({ id: lead.id, status }),
+    });
+  }
+
+  // « Converti » : marque le prospect converti ET ouvre un job pré-rempli
+  // (téléphone + nom) → le pont prospect → client en un geste.
+  function convertLead(lead: Lead) {
+    setLeadStatus(lead, "converti");
+    setDraft({
+      ...emptyDraft(),
+      phone: lead.phone ?? "",
+      source: "Meta Ads",
+      notes: lead.full_name ? `Prospect : ${lead.full_name}` : "",
+    });
+  }
+
   return (
     <div ref={rootRef} className="min-h-screen bg-slate-50 pb-24">
       {/* Barre du haut */}
@@ -371,14 +446,16 @@ export default function JobsApp({ initialJobs }: { initialJobs: Job[] }) {
       </div>
 
       <div className="mx-auto max-w-2xl px-4 pt-3">
-        {/* Bascule Jobs / Tableau de bord */}
+        {/* Bascule Jobs / Prospects / Stats */}
         <div className="mb-3 flex gap-1.5">
-          {(
-            [
-              { id: "jobs", label: "Jobs" },
-              { id: "stats", label: "Tableau de bord" },
-            ] as const
-          ).map((v) => (
+          {[
+            { id: "jobs" as const, label: "Jobs" },
+            {
+              id: "prospects" as const,
+              label: `Prospects${leadCounts.nouveau ? ` · ${leadCounts.nouveau}` : ""}`,
+            },
+            { id: "stats" as const, label: "Stats" },
+          ].map((v) => (
             <button
               key={v.id}
               onClick={() => setView(v.id)}
@@ -395,6 +472,50 @@ export default function JobsApp({ initialJobs }: { initialJobs: Job[] }) {
 
         {view === "stats" ? (
           <Dashboard stats={stats} />
+        ) : view === "prospects" ? (
+          <>
+            {/* Filtres prospects */}
+            <div className="sticky top-[57px] z-10 -mx-4 bg-slate-50 px-4 py-3">
+              <div className="flex gap-1.5 overflow-x-auto">
+                {[
+                  { id: "nouveau", label: `Nouveaux (${leadCounts.nouveau ?? 0})` },
+                  { id: "a_relancer", label: `À relancer (${leadCounts.a_relancer ?? 0})` },
+                  { id: "converti", label: `Convertis (${leadCounts.converti ?? 0})` },
+                  { id: "perdu", label: `Perdus (${leadCounts.perdu ?? 0})` },
+                  { id: "tous", label: "Tous" },
+                ].map((t) => (
+                  <button
+                    key={t.id}
+                    onClick={() => setLeadFilter(t.id)}
+                    className={`shrink-0 rounded-full px-3.5 py-1.5 text-sm font-semibold transition ${
+                      leadFilter === t.id
+                        ? "bg-slate-900 text-white"
+                        : "bg-white text-slate-600 ring-1 ring-slate-200"
+                    }`}
+                  >
+                    {t.label}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {visibleLeads.length === 0 ? (
+              <p className="mt-12 text-center text-sm text-slate-400">
+                Aucun prospect ici.
+              </p>
+            ) : (
+              <ul className="mt-2 space-y-2.5">
+                {visibleLeads.map((lead) => (
+                  <LeadCard
+                    key={lead.id}
+                    lead={lead}
+                    onStatus={(s) => setLeadStatus(lead, s)}
+                    onConvert={() => convertLead(lead)}
+                  />
+                ))}
+              </ul>
+            )}
+          </>
         ) : (
           <>
             {/* Filtres */}
@@ -537,6 +658,96 @@ function JobCard({
             ✓ Terminer
           </button>
         )}
+      </div>
+    </li>
+  );
+}
+
+// ─── Carte prospect ────────────────────────────────────────────────────────
+function LeadCard({
+  lead,
+  onStatus,
+  onConvert,
+}: {
+  lead: Lead;
+  onStatus: (status: string) => void;
+  onConvert: () => void;
+}) {
+  const st = LEAD_STATUSES.find((s) => s.id === lead.status);
+  const tel = lead.phone ? lead.phone.replace(/[^0-9+]/g, "") : "";
+  const wa = tel ? `https://wa.me/${tel.replace(/^\+/, "")}` : "";
+  const srcLabel = lead.source === "meta_ads" ? "Meta Ads" : lead.source;
+  return (
+    <li className="rounded-2xl border border-slate-200 bg-white p-3.5 shadow-sm">
+      <div className="flex items-start justify-between gap-3">
+        <div className="min-w-0 flex-1">
+          <p className="truncate text-sm font-bold text-slate-900">
+            {lead.full_name || "Prospect"}
+          </p>
+          <p className="mt-0.5 text-xs text-slate-500">
+            {fmtDate(lead.ts)}
+            {srcLabel ? ` · ${srcLabel}` : ""}
+          </p>
+        </div>
+        {st && (
+          <span
+            className={`shrink-0 rounded-full px-2.5 py-0.5 text-[11px] font-bold ${st.cls}`}
+          >
+            {st.label}
+          </span>
+        )}
+      </div>
+
+      {/* Contact rapide */}
+      <div className="mt-2.5 flex flex-wrap gap-2 text-xs">
+        {lead.phone && (
+          <a
+            href={`tel:${tel}`}
+            className="inline-flex items-center gap-1 rounded-full bg-slate-100 px-3 py-1.5 font-semibold text-slate-700 active:scale-95"
+          >
+            📞 {lead.phone}
+          </a>
+        )}
+        {wa && (
+          <a
+            href={wa}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-1 rounded-full bg-brand-50 px-3 py-1.5 font-semibold text-brand-700 active:scale-95"
+          >
+            💬 WhatsApp
+          </a>
+        )}
+        {lead.email && (
+          <a
+            href={`mailto:${lead.email}`}
+            className="inline-flex items-center gap-1 rounded-full bg-slate-100 px-3 py-1.5 font-semibold text-slate-600 active:scale-95"
+          >
+            ✉️ Email
+          </a>
+        )}
+      </div>
+
+      {/* Résultat de l'appel */}
+      <div className="mt-2.5 grid grid-cols-3 gap-2 border-t border-slate-100 pt-2.5">
+        <button
+          onClick={onConvert}
+          className="rounded-xl bg-brand-600 px-2 py-2.5 text-xs font-bold text-white active:scale-95"
+        >
+          ✅ Converti
+        </button>
+        <button
+          onClick={() => onStatus("a_relancer")}
+          className="rounded-xl bg-amber-100 px-2 py-2.5 text-xs font-bold text-amber-800 active:scale-95"
+        >
+          🔁 Relancer
+        </button>
+        <button
+          onClick={() => onStatus("perdu")}
+          className="rounded-xl bg-slate-100 px-2 py-2.5 text-xs font-bold text-slate-500 active:scale-95"
+        >
+          ❌ Perdu
+        </button>
       </div>
     </li>
   );

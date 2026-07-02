@@ -149,20 +149,50 @@ L'Ad 2 affiche encore les **anciennes formules** :
 
 ## 6. Mots-clés négatifs (à ajouter — stoppe le gaspillage)
 
-**Stations / car-wash / concurrents** (intention = lavage automatique pas cher, ≠ ton service) :
+À coller en **requête large** (Mots clés → Mots clés à exclure → +), une par ligne :
+
 ```
-elephant bleu, éléphant, car wash, station, station lavage, rouleau, borne,
-presti lav, star lav, total wash, christ wash, az lavage, sineo, norauto,
-feu vert, auchan, polish, polissage
+elephant bleu
+eléphant bleu
+éléphant bleu
+car wash
+station
+rouleau
+borne
+presti lav
+star lav
+total wash
+christ wash
+az lavage
+sineo
+norauto
+feu vert
+auchan
+leclerc
+carrefour
+polish
+polissage
+lustrage
+nettoyant
+produit
+karcher
+kärcher
+aspirateur
+comment nettoyer
+comment laver
+tuto
+emploi
+recrutement
+pare-brise
+thionville
+haguenau
+metz
+mulhouse
+colmar
+nancy
 ```
-**DIY / produits / emploi :**
-```
-nettoyant, produit, comment nettoyer, emploi, recrutement, pare-brise
-```
-**Hors zone :**
-```
-thionville, haguenau, metz, mulhouse, colmar
-```
+
+> Catégories : stations/concurrents · bricolage-DIY (produit, nettoyant, tuto, karcher…) · emploi · hors-zone. **À NE PAS exclure :** « occasion » / « vendre » (= un particulier qui nettoie sa voiture avant de la revendre = bon client).
 
 ---
 

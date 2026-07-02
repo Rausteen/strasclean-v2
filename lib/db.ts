@@ -927,7 +927,7 @@ export function deleteJob(id: number): void {
 }
 
 // ─── Prospects (leads) ────────────────────────────────────────────────────
-export type LeadStatus = "nouveau" | "qualifie" | "perdu" | "converti";
+export type LeadStatus = "nouveau" | "a_relancer" | "converti" | "perdu";
 
 export type Lead = {
   id: number;
