@@ -8,28 +8,27 @@ export default function FinalCTA() {
     <section id="reserver" className="relative py-16 sm:py-24">
       <div className="container-x">
         <Reveal>
-          {/* CTA final : carte vert forêt pour clore la page sur un
-              accent fort de marque. Bg + halo radial gérés par la classe
-              utilitaire surface-forest (globals.css). */}
-          <div className="surface-forest relative overflow-hidden rounded-[28px] p-7 text-center sm:rounded-[32px] sm:p-12 lg:p-16">
-            <div className="pointer-events-none absolute inset-0 bg-grid-light bg-[size:36px_36px] opacity-[0.10] [mask-image:radial-gradient(ellipse_at_center,black_30%,transparent_75%)]" />
-            <div className="pointer-events-none absolute -top-24 -right-10 h-64 w-64 rounded-full bg-emerald-400/15 blur-3xl" />
+          {/* CTA final : carte CLAIRE premium, teintée de vert de marque
+              (halo + ring), pour clore la page sans assombrir. */}
+          <div className="relative overflow-hidden rounded-[28px] border border-brand-500/15 bg-gradient-to-br from-brand-50 via-white to-white p-7 text-center shadow-soft ring-1 ring-brand-500/10 sm:rounded-[32px] sm:p-12 lg:p-16">
+            <div className="pointer-events-none absolute -top-24 -right-10 h-64 w-64 rounded-full bg-brand-400/20 blur-3xl" />
+            <div className="pointer-events-none absolute -bottom-24 -left-10 h-64 w-64 rounded-full bg-brand-300/15 blur-3xl" />
 
-            <span className="relative inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-3 py-1.5 text-xs font-medium text-white/80 backdrop-blur">
+            <span className="relative inline-flex items-center gap-2 rounded-full border border-brand-200 bg-white px-3 py-1.5 text-xs font-semibold text-brand-700 shadow-sm">
               <span className="relative flex h-2 w-2">
                 <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-brand-400/70" />
-                <span className="relative inline-flex h-2 w-2 rounded-full bg-brand-400" />
+                <span className="relative inline-flex h-2 w-2 rounded-full bg-brand-500" />
               </span>
               Disponible cette semaine
             </span>
 
-            <h2 className="h-display relative mx-auto mt-5 max-w-3xl text-balance text-[30px] font-bold leading-tight text-white sm:text-4xl lg:text-5xl">
+            <h2 className="h-display relative mx-auto mt-5 max-w-3xl text-balance text-[30px] font-bold leading-tight text-slate-900 sm:text-4xl lg:text-5xl">
               Prêt à retrouver une voiture propre,{" "}
-              <span className="bg-gradient-to-r from-brand-300 to-brand-500 bg-clip-text text-transparent">
+              <span className="bg-gradient-to-r from-brand-600 to-brand-800 bg-clip-text text-transparent">
                 saine et agréable&nbsp;?
               </span>
             </h2>
-            <p className="relative mx-auto mt-5 max-w-2xl text-slate-300">
+            <p className="relative mx-auto mt-5 max-w-2xl text-slate-600">
               Réservez votre nettoyage auto à domicile à Strasbourg en quelques
               secondes. On vous répond rapidement et on s'occupe de tout.
             </p>
@@ -47,7 +46,7 @@ export default function FinalCTA() {
               <div className="grid w-full grid-cols-2 gap-2 sm:flex sm:w-auto sm:gap-2.5">
                 <a
                   href={SITE.phoneHref}
-                  className="btn h-12 px-5 text-sm border border-white/25 bg-white/5 text-white hover:bg-white/10 active:scale-[0.98] sm:w-auto"
+                  className="btn-ghost h-12 px-5 text-sm active:scale-[0.98] sm:w-auto"
                 >
                   <PhoneIcon size={16} />
                   Appeler
@@ -56,7 +55,7 @@ export default function FinalCTA() {
                   href={SITE.whatsappHref}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="btn h-12 px-5 text-sm border border-white/25 bg-white/5 text-white hover:bg-white/10 active:scale-[0.98] sm:w-auto"
+                  className="btn-ghost h-12 px-5 text-sm active:scale-[0.98] sm:w-auto"
                 >
                   <WhatsAppIcon size={16} />
                   WhatsApp
@@ -64,21 +63,21 @@ export default function FinalCTA() {
               </div>
             </div>
 
-            <ul className="relative mt-8 flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-sm text-slate-300">
+            <ul className="relative mt-8 flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-sm text-slate-600">
               <li className="inline-flex items-center gap-2">
-                <CheckIcon size={16} className="text-brand-300" />
+                <CheckIcon size={16} className="text-brand-600" />
                 Satisfait ou on repasse
               </li>
               <li className="inline-flex items-center gap-2">
-                <CheckIcon size={16} className="text-brand-300" />
+                <CheckIcon size={16} className="text-brand-600" />
                 Devis gratuit · sans engagement
               </li>
               <li className="inline-flex items-center gap-2">
-                <MapPinIcon size={16} className="text-brand-300" />
+                <MapPinIcon size={16} className="text-brand-600" />
                 Strasbourg & alentours
               </li>
               <li className="inline-flex items-center gap-2">
-                <BoltIcon size={16} className="text-brand-300" />
+                <BoltIcon size={16} className="text-brand-600" />
                 Réponse rapide
               </li>
             </ul>

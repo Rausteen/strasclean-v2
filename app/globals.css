@@ -61,7 +61,11 @@ body {
     @apply btn bg-whatsapp text-white shadow-glow hover:bg-whatsapp-dark hover:scale-[1.02] focus-visible:ring-whatsapp;
   }
   .btn-primary {
-    /* slate-900 is now warm ink (#15190F) via the palette override */
+    /* CTA principal = vert de marque (moins « dark » que l'encre noire). */
+    @apply btn bg-brand-600 text-white shadow-glow hover:bg-brand-700 hover:scale-[1.02];
+  }
+  /* Variante encre foncée si besoin d'un bouton neutre (rare). */
+  .btn-ink {
     @apply btn bg-slate-900 text-white hover:bg-slate-800 hover:scale-[1.02];
   }
   .btn-ghost {

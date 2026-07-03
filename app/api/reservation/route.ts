@@ -12,6 +12,7 @@ import {
   getFormula,
   computePrice,
   computeSlots,
+  promoDiscount,
   type Interval,
 } from "@/lib/booking";
 import { VEHICLE_TYPES, AUTO_OPTIONS } from "@/lib/plans";
@@ -105,7 +106,13 @@ export async function POST(req: Request) {
     );
   }
 
-  const price = computePrice(f.id, vehicle.id, options);
+  const basePrice = computePrice(f.id, vehicle.id, options);
+  // Code promo — remise recalculée côté serveur (jamais confiance au client).
+  const promo = str(b.promo, 40);
+  const discount = promoDiscount(promo);
+  const total = Math.max(0, basePrice - discount);
+  const promoLabel = discount > 0 ? `Code promo ${promo!.toUpperCase()} (−${discount} €)` : "";
+
   const fullName = [firstName, lastName].filter(Boolean).join(" ");
   const optionLabels = options
     .map((o) => AUTO_OPTIONS.find((x) => x.id === o)?.label)
@@ -117,7 +124,7 @@ export async function POST(req: Request) {
   if (lead) updateLead(lead.id, { status: "converti" });
 
   const resNotes =
-    [notes, optionLabels ? `Options : ${optionLabels}` : ""]
+    [notes, optionLabels ? `Options : ${optionLabels}` : "", promoLabel]
       .filter(Boolean)
       .join(" · ") || null;
 
@@ -127,8 +134,8 @@ export async function POST(req: Request) {
     duration_min: f.durationMin,
     prestation: f.name,
     vehicle_type: vehicle.label,
-    price,
-    total: price,
+    price: basePrice,
+    total,
     phone,
     customer_name: fullName,
     email,
@@ -174,10 +181,10 @@ export async function POST(req: Request) {
       prenom: firstName,
       service: `${f.name} · ${vehicle.label}`,
       when,
-      price,
+      price: total,
       address,
     }),
   ]);
 
-  return NextResponse.json({ ok: true, id, scheduled_at, price, converted: !!lead });
+  return NextResponse.json({ ok: true, id, scheduled_at, price: total, converted: !!lead });
 }

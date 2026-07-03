@@ -39,7 +39,10 @@ export default async function ReserverPage({
             ⭐ 5,0/5 · à domicile · sans engagement
           </p>
           <h1 className="h-display mt-3 text-2xl font-bold text-slate-900 sm:text-3xl">
-            Réservez votre nettoyage
+            Réservez votre{" "}
+            <span className="bg-gradient-to-r from-brand-600 to-brand-800 bg-clip-text text-transparent">
+              nettoyage
+            </span>
           </h1>
           <p className="mt-1.5 text-sm text-slate-500">
             En 1 minute · créneau garanti · paiement sur place

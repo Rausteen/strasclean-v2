@@ -45,6 +45,15 @@ export const BOOKING_FORMULAS: BookingFormula[] = PLANS.map((p) => ({
   features: p.features,
 }));
 
+// ── Codes promo (remise fixe en €), appliqués à la réservation en ligne ──
+export const PROMO_CODES: Record<string, number> = {
+  STRAS10: 10,
+};
+/** Remise (€) pour un code donné, 0 si inconnu/vide. Insensible à la casse. */
+export function promoDiscount(code: string | null | undefined): number {
+  return PROMO_CODES[(code || "").trim().toUpperCase()] ?? 0;
+}
+
 export function getFormula(id: string): BookingFormula | undefined {
   return BOOKING_FORMULAS.find((f) => f.id === id);
 }

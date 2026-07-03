@@ -29,7 +29,7 @@ export default function HowItWorks() {
   return (
     <section
       id="fonctionnement"
-      className="relative border-y border-slate-200 bg-slate-100 py-16 sm:py-24"
+      className="relative border-y border-brand-500/10 bg-gradient-to-b from-brand-50 via-white to-brand-50/50 py-16 sm:py-24"
     >
       <div className="container-x">
         <Reveal className="mx-auto max-w-3xl text-center">
@@ -37,7 +37,10 @@ export default function HowItWorks() {
             Comment ça marche
           </p>
           <h2 className="h-display mt-3 text-balance text-3xl font-bold text-slate-900 sm:text-4xl lg:text-5xl">
-            Réservez en ligne en 1 minute. On s'occupe du reste.
+            Réservez en ligne en 1 minute.{" "}
+            <span className="bg-gradient-to-r from-brand-600 to-brand-800 bg-clip-text text-transparent">
+              On s'occupe du reste.
+            </span>
           </h2>
           <p className="mt-4 text-slate-600">
             Pas besoin de vous déplacer ni d'attendre un rappel. Vous choisissez
@@ -49,12 +52,12 @@ export default function HowItWorks() {
         <div className="mt-12 grid gap-5 md:grid-cols-2 lg:grid-cols-4">
           {STEPS.map((s, i) => (
             <Reveal key={s.n} delay={i * 90}>
-              <div className="group h-full rounded-3xl border border-slate-200 bg-white p-7 shadow-soft transition-all duration-300 hover:-translate-y-1 hover:border-slate-300 hover:shadow-card">
+              <div className="group h-full rounded-3xl border border-slate-200 bg-white p-7 shadow-soft transition-all duration-300 hover:-translate-y-1 hover:border-brand-400/50 hover:shadow-glow">
                 <div className="flex items-center justify-between">
-                  <span className="h-display text-[44px] font-extrabold leading-none text-brand-600">
+                  <span className="h-display bg-gradient-to-br from-brand-500 to-brand-700 bg-clip-text text-[44px] font-extrabold leading-none text-transparent">
                     {s.n}
                   </span>
-                  <span className="grid h-9 w-9 place-items-center rounded-full border border-slate-200 bg-slate-50 text-sm font-semibold text-slate-600">
+                  <span className="grid h-9 w-9 place-items-center rounded-full border border-brand-200 bg-brand-50 text-sm font-bold text-brand-700">
                     {i + 1}
                   </span>
                 </div>

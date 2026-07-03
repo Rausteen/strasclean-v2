@@ -2,7 +2,12 @@
 
 import { useCallback, useEffect, useMemo, useState } from "react";
 import Link from "next/link";
-import { BOOKING_FORMULAS, computePrice, isServedPostal } from "@/lib/booking";
+import {
+  BOOKING_FORMULAS,
+  computePrice,
+  isServedPostal,
+  promoDiscount,
+} from "@/lib/booking";
 import { VEHICLE_TYPES, AUTO_OPTIONS, autoOptionPrice } from "@/lib/plans";
 import BookingCalendar from "@/components/BookingCalendar";
 import { ClockIcon, CheckIcon, ArrowRightIcon } from "@/components/Icon";
@@ -65,6 +70,7 @@ export default function ReservationWizard({
     postalCode: "",
     notes: "",
   });
+  const [promo, setPromo] = useState("");
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState("");
   const [done, setDone] = useState<{ when: string; price: number } | null>(null);
@@ -75,6 +81,10 @@ export default function ReservationWizard({
     () => (formula && vehicle ? computePrice(formula, vehicle, options) : 0),
     [formula, vehicle, options],
   );
+  const discount = promoDiscount(promo);
+  const total = Math.max(0, price - discount);
+  // Code saisi mais non reconnu (pour un retour visuel discret).
+  const promoInvalid = promo.trim().length > 0 && discount === 0;
 
   const fetchSlots = useCallback(async () => {
     if (!date || !formula) return;
@@ -143,11 +153,11 @@ export default function ReservationWizard({
       const res = await fetch("/api/reservation", {
         method: "POST",
         headers: { "content-type": "application/json" },
-        body: JSON.stringify({ formula, vehicle, options, date, time, ...form }),
+        body: JSON.stringify({ formula, vehicle, options, date, time, promo, ...form }),
       });
       const data = (await res.json()) as { ok?: boolean; error?: string; price?: number };
       if (data.ok) {
-        setDone({ when: prettyWhen(date, time), price: data.price ?? price });
+        setDone({ when: prettyWhen(date, time), price: data.price ?? total });
       } else {
         setError(data.error || "Une erreur est survenue.");
         if (res.status === 409) {
@@ -539,13 +549,23 @@ export default function ReservationWizard({
                     />
                   );
                 })}
+                {discount > 0 && (
+                  <div className="flex items-baseline justify-between gap-3 text-sm">
+                    <span className="font-medium text-brand-700">
+                      Code promo {promo.trim().toUpperCase()}
+                    </span>
+                    <span className="font-semibold text-brand-700">
+                      −{discount}&nbsp;€
+                    </span>
+                  </div>
+                )}
               </div>
               <div className="mt-3.5 flex items-center justify-between border-t border-slate-100 pt-3.5">
                 <span className="font-semibold text-slate-700">
                   Total à régler sur place
                 </span>
                 <span className="h-display text-2xl font-bold text-slate-900">
-                  {price}&nbsp;€
+                  {total}&nbsp;€
                 </span>
               </div>
             </div>
@@ -564,6 +584,30 @@ export default function ReservationWizard({
               </div>
             </div>
           </div>
+
+          {/* Code promo */}
+          <div className="mt-3.5">
+            <Field label="Code promo" hint="facultatif">
+              <input
+                className={inputCls}
+                placeholder="Votre code"
+                autoCapitalize="characters"
+                autoComplete="off"
+                value={promo}
+                onChange={(e) => setPromo(e.target.value)}
+              />
+            </Field>
+            {discount > 0 ? (
+              <p className="mt-1.5 inline-flex items-center gap-1 text-xs font-semibold text-brand-700">
+                <CheckIcon size={12} /> Remise de {discount} € appliquée
+              </p>
+            ) : promoInvalid ? (
+              <p className="mt-1.5 text-xs text-slate-400">
+                Code non reconnu.
+              </p>
+            ) : null}
+          </div>
+
           {error && (
             <p className="mt-3 rounded-xl bg-rose-50 px-3.5 py-2.5 text-sm text-rose-700">
               {error}
@@ -601,7 +645,12 @@ export default function ReservationWizard({
                 Total
               </span>
               <span className="block text-sm font-bold text-slate-900">
-                {price}&nbsp;€
+                {discount > 0 && (
+                  <span className="mr-1 font-medium text-slate-400 line-through">
+                    {price}&nbsp;€
+                  </span>
+                )}
+                {total}&nbsp;€
               </span>
             </div>
           )}

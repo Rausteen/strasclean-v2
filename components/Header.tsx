@@ -4,14 +4,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { SITE } from "@/lib/site";
-import {
-  WhatsAppIcon,
-  PhoneIcon,
-  MenuIcon,
-  CloseIcon,
-  CarIcon,
-  HomeIcon,
-} from "./Icon";
+import { WhatsAppIcon, PhoneIcon, MenuIcon, CloseIcon } from "./Icon";
 import LogoMark from "./LogoMark";
 import { isMaisonPathname, NAV_AUTO, NAV_MAISON } from "@/lib/section";
 
@@ -75,13 +68,6 @@ export default function Header() {
             </span>
           </span>
         </Link>
-
-        {/* Toggle Auto/Maison — collé au logo, desktop uniquement.
-            Sur mobile c'est dans le drawer (cf. plus bas) pour ne pas
-            surcharger la topbar. */}
-        <div className="hidden lg:block">
-          <SectionToggle onMaison={onMaison} />
-        </div>
 
         {/* NAV anchors centrales (desktop uniquement) */}
         <nav className="mx-auto hidden items-center gap-6 lg:flex">
@@ -176,11 +162,6 @@ export default function Header() {
           </button>
         </div>
 
-        {/* Toggle Auto/Maison — en haut du drawer pour switcher de section */}
-        <div className="flex justify-center border-b border-slate-200 bg-white py-3">
-          <SectionToggle onMaison={onMaison} />
-        </div>
-
         {/* Nav scrollable si liste longue */}
         <nav className="flex-1 overflow-y-auto px-4 py-5">
           <ul className="flex flex-col gap-1">
@@ -245,39 +226,3 @@ export default function Header() {
   );
 }
 
-function SectionToggle({ onMaison }: { onMaison: boolean }) {
-  return (
-    <div
-      role="tablist"
-      aria-label="Section StrasClean"
-      className="inline-flex items-center gap-0.5 rounded-full border border-slate-200 bg-slate-100 p-1 text-[13px]"
-    >
-      <Link
-        href="/"
-        role="tab"
-        aria-selected={!onMaison}
-        className={`inline-flex items-center gap-1.5 rounded-full px-4 py-1.5 font-bold transition-all ${
-          !onMaison
-            ? "bg-brand-500 text-[#062b1e] shadow-sm"
-            : "text-slate-500 hover:text-slate-900"
-        }`}
-      >
-        <CarIcon size={13} />
-        Auto
-      </Link>
-      <Link
-        href="/strasclean-maison"
-        role="tab"
-        aria-selected={onMaison}
-        className={`inline-flex items-center gap-1.5 rounded-full px-4 py-1.5 font-bold transition-all ${
-          onMaison
-            ? "bg-[#E0A100] text-[#2a1f00] shadow-sm"
-            : "text-slate-500 hover:text-slate-900"
-        }`}
-      >
-        <HomeIcon size={13} />
-        Maison
-      </Link>
-    </div>
-  );
-}

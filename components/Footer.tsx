@@ -7,7 +7,14 @@ import { CITIES, cityPath } from "@/lib/cities";
 import { QUARTIERS } from "@/lib/quartiers";
 import { USE_CASES, useCasePath } from "@/lib/usecases";
 import { HOME_SERVICES, homeServicePath, homeServiceCityPath } from "@/lib/homeServices";
-import { WhatsAppIcon, PhoneIcon, MapPinIcon } from "./Icon";
+import {
+  WhatsAppIcon,
+  PhoneIcon,
+  MapPinIcon,
+  CarIcon,
+  HomeIcon,
+  ArrowRightIcon,
+} from "./Icon";
 import LogoMark from "./LogoMark";
 import { isMaisonPathname } from "@/lib/section";
 
@@ -19,7 +26,6 @@ export default function Footer() {
   // Tons d'accent contextualisés à la section pour rester cohérent
   // avec le Header / Hero (brand vert pour Auto, ambre pour Maison).
   const accent = isMaison ? "text-amber-300" : "text-brand-300";
-  const accentMuted = isMaison ? "text-amber-200/80" : "text-brand-200/80";
 
   const waHref = isMaison
     ? waLink(
@@ -106,75 +112,86 @@ export default function Footer() {
             </div>
           </div>
 
-          {/* COL 2 — Auto */}
-          <div className="lg:col-span-3">
-            <h3 className="text-xs font-semibold uppercase tracking-wider text-white/85">
-              StrasClean Auto
-            </h3>
-            <ul className="mt-3 space-y-1.5 text-sm text-slate-400">
-              <li>
-                <Link href="/" className="hover:text-white">
-                  Accueil
-                </Link>
-              </li>
-              <li>
-                <Link href="/formules" className="hover:text-white">
-                  Formules (59 / 89 / 139 €)
-                </Link>
-              </li>
-              <li>
-                <Link href="/reserver-auto" className="hover:text-white">
-                  Réserver en ligne
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href={cityPath(CITIES[0])}
-                  prefetch={false}
-                  className="hover:text-white"
-                >
-                  Nettoyage voiture Strasbourg
-                </Link>
-              </li>
-            </ul>
-          </div>
-
-          {/* COL 3 — Maison */}
-          <div className="lg:col-span-4">
-            <h3
-              className={`text-xs font-semibold uppercase tracking-wider ${accentMuted}`}
-            >
-              StrasClean Maison
-            </h3>
-            <ul className="mt-3 space-y-1.5 text-sm text-slate-400">
-              <li>
-                <Link
-                  href="/strasclean-maison"
-                  className="hover:text-white"
-                >
-                  Hub Maison
-                </Link>
-              </li>
-              <li>
-                <Link href="/reserver-maison" className="hover:text-white">
-                  Réserver en ligne
-                </Link>
-              </li>
-              {HOME_SERVICES.map((s) => (
-                <li key={s.slug}>
+          {/* COL 2 — Deux univers distincts (seul pont Auto ↔ Maison) */}
+          <div className="grid gap-4 sm:grid-cols-2 lg:col-span-7">
+            {/* Auto (vert) */}
+            <div className="rounded-2xl border border-brand-500/25 bg-white/[0.03] p-5">
+              <div className="flex items-center gap-2.5">
+                <span className="grid h-9 w-9 place-items-center rounded-xl bg-brand-500/15 text-brand-300">
+                  <CarIcon size={18} />
+                </span>
+                <h3 className="h-display text-base font-bold text-white">
+                  StrasClean <span className="text-brand-300">Auto</span>
+                </h3>
+              </div>
+              <p className="mt-2.5 text-sm text-slate-400">
+                Nettoyage voiture à domicile — intérieur & extérieur.
+              </p>
+              <ul className="mt-3 space-y-1.5 text-sm text-slate-400">
+                <li>
+                  <Link href="/formules" className="hover:text-white">
+                    Formules (59 / 89 / 139 €)
+                  </Link>
+                </li>
+                <li>
                   <Link
-                    href={homeServicePath(s)}
+                    href={cityPath(CITIES[0])}
                     prefetch={false}
                     className="hover:text-white"
                   >
-                    {s.shortName}{" "}
-                    <span className="text-slate-500">
-                      · dès {s.pricing.priceFrom} €
-                    </span>
+                    Nettoyage voiture Strasbourg
                   </Link>
                 </li>
-              ))}
-            </ul>
+              </ul>
+              <Link
+                href="/reserver"
+                className="mt-4 inline-flex items-center gap-1.5 rounded-full bg-brand-500 px-4 py-2 text-sm font-bold text-[#062b1e] transition hover:bg-brand-400"
+              >
+                Réserver en ligne <ArrowRightIcon size={14} />
+              </Link>
+            </div>
+
+            {/* Maison (ambre) */}
+            <div className="rounded-2xl border border-amber-400/25 bg-white/[0.03] p-5">
+              <div className="flex items-center gap-2.5">
+                <span className="grid h-9 w-9 place-items-center rounded-xl bg-amber-400/15 text-amber-300">
+                  <HomeIcon size={18} />
+                </span>
+                <h3 className="h-display text-base font-bold text-white">
+                  StrasClean <span className="text-amber-300">Maison</span>
+                </h3>
+              </div>
+              <p className="mt-2.5 text-sm text-slate-400">
+                Canapés, tapis, matelas & fauteuils nettoyés à domicile.
+              </p>
+              <ul className="mt-3 space-y-1.5 text-sm text-slate-400">
+                <li>
+                  <Link href="/strasclean-maison" className="hover:text-white">
+                    Hub Maison
+                  </Link>
+                </li>
+                {HOME_SERVICES.slice(0, 3).map((s) => (
+                  <li key={s.slug}>
+                    <Link
+                      href={homeServicePath(s)}
+                      prefetch={false}
+                      className="hover:text-white"
+                    >
+                      {s.shortName}{" "}
+                      <span className="text-slate-500">
+                        · dès {s.pricing.priceFrom} €
+                      </span>
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+              <Link
+                href="/reserver-maison"
+                className="mt-4 inline-flex items-center gap-1.5 rounded-full bg-amber-400 px-4 py-2 text-sm font-bold text-[#2a1f00] transition hover:bg-amber-300"
+              >
+                Réserver en ligne <ArrowRightIcon size={14} />
+              </Link>
+            </div>
           </div>
         </div>
 

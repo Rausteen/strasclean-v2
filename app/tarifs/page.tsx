@@ -186,7 +186,7 @@ export default function TarifsPage() {
         </section>
 
         {/* Pied de page / contact */}
-        <footer className="mt-6 rounded-3xl bg-slate-900 p-5 text-center text-white sm:p-6">
+        <footer className="surface-forest mt-6 rounded-3xl p-5 text-center text-white sm:p-6">
           <p className="text-sm font-semibold">
             Réservation en ligne en 1 minute · sans engagement
           </p>

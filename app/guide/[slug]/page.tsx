@@ -180,7 +180,7 @@ export default async function GuideArticlePage({
             </div>
 
             {/* Conclusion + CTA */}
-            <div className="mx-auto mt-12 max-w-3xl rounded-3xl bg-slate-900 p-7 text-white sm:p-10">
+            <div className="surface-forest mx-auto mt-12 max-w-3xl rounded-3xl p-7 text-white sm:p-10">
               <h2 className="h-display text-xl font-bold sm:text-2xl">
                 {g.cta.title}
               </h2>

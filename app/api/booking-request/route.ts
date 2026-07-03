@@ -185,6 +185,10 @@ export async function POST(req: Request) {
       status: "a_faire",
       notes: record.notes,
       booking_id: id,
+      // Nom + email portés sur le job → demande d'avis Google auto à la fin.
+      customer_name: firstName,
+      email: email,
+      address: record.address_note,
     });
   } catch (err) {
     console.error("Job auto-insert failed", err);

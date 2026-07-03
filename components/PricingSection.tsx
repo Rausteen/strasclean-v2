@@ -32,7 +32,10 @@ export default function PricingSection({ compact = false }: PricingSectionProps 
             Formules
           </p>
           <h2 className="h-display mt-3 text-balance text-3xl font-bold text-slate-900 sm:text-4xl lg:text-5xl">
-            Du simple entretien au detailing complet.
+            Du simple entretien au{" "}
+            <span className="bg-gradient-to-r from-brand-600 to-brand-800 bg-clip-text text-transparent">
+              detailing complet.
+            </span>
           </h2>
           <p className="mt-4 text-slate-600">
             Trois formules claires, pensées pour s'adapter à l'état de votre
@@ -130,12 +133,12 @@ function PlanCard({ plan }: { plan: Plan }) {
       <div
         className={`relative flex h-full flex-col overflow-hidden rounded-[28px] border p-6 transition-all duration-300 sm:p-7 ${
           popular
-            ? "border-brand-500/50 bg-white shadow-glow lg:scale-[1.03]"
-            : "border-slate-200 bg-white shadow-soft group-hover:-translate-y-1 group-hover:border-slate-300 group-hover:shadow-card"
+            ? "border-brand-500/50 bg-gradient-to-b from-brand-50 to-white shadow-glow lg:scale-[1.03]"
+            : "border-slate-200 bg-white shadow-soft group-hover:-translate-y-1 group-hover:border-brand-400/40 group-hover:shadow-card"
         }`}
       >
         <div className="flex items-center gap-3">
-          <span className="grid h-11 w-11 shrink-0 place-items-center rounded-[13px] bg-slate-100 text-[22px]">
+          <span className="grid h-11 w-11 shrink-0 place-items-center rounded-[13px] bg-brand-50 text-[22px] ring-1 ring-brand-500/10">
             {plan.emoji}
           </span>
           <h3 className="h-display text-lg font-bold text-slate-900 sm:text-[19px]">
