@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { BOOKING_CONFIG, isOpenDay } from "@/lib/booking";
 
 const WEEKDAYS = ["L", "M", "M", "J", "V", "S", "D"];
@@ -41,6 +41,18 @@ export default function BookingCalendar({
     }
     return new Date(today.getFullYear(), today.getMonth(), 1);
   });
+
+  // Suit la date sélectionnée si elle est posée par programme (1er jour dispo
+  // dans un mois suivant) → le calendrier affiche le bon mois.
+  useEffect(() => {
+    if (!value) return;
+    const [y, m] = value.split("-").map(Number);
+    setCursor((c) =>
+      c.getFullYear() === y && c.getMonth() === m - 1
+        ? c
+        : new Date(y, m - 1, 1),
+    );
+  }, [value]);
 
   const year = cursor.getFullYear();
   const month = cursor.getMonth();
