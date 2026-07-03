@@ -1,4 +1,3 @@
-import Link from "next/link";
 import Reveal from "./Reveal";
 import { waLink } from "@/lib/site";
 import { PLANS, Plan } from "@/lib/plans";
@@ -61,21 +60,11 @@ export default function PricingSection({ compact = false }: PricingSectionProps 
           </Reveal>
         )}
 
-        {/* Mention tarif + renvoi léger vers l'abonnement, regroupés pour
-            éviter un écart difforme quand le tableau véhicule est masqué. */}
+        {/* Mention tarif (l'abonnement 99 €/mois est masqué pour le moment). */}
         <div className="mx-auto mt-8 max-w-2xl text-center">
           <p className="text-sm text-slate-600">
             Le tarif final peut varier selon l'état intérieur du véhicule et les
             options demandées.
-          </p>
-          <p className="mt-3 text-sm text-slate-600">
-            Envie d'une voiture toujours propre toute l'année ?{" "}
-            <Link
-              href="/abonnement"
-              className="font-semibold text-brand-700 underline-offset-2 hover:underline"
-            >
-              Découvrez l'abonnement entretien, dès 99 €/mois →
-            </Link>
           </p>
         </div>
 

@@ -40,6 +40,14 @@ const nextConfig = {
         destination: "https://g.page/r/CRa5hY3dnAMDEAE/review",
         permanent: false,
       },
+      // Offre abonnement 99 €/mois masquée pour le moment → renvoi vers l'accueil.
+      // permanent: false (307) pour pouvoir la réactiver sans souci de cache.
+      // (Pour réactiver la page, supprime ce bloc.)
+      {
+        source: "/abonnement",
+        destination: "/",
+        permanent: false,
+      },
     ];
   },
   async headers() {

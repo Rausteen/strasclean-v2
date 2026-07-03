@@ -21,7 +21,7 @@ export const SITE = {
   region: "Grand Est",
   country: "FR",
   // Réseaux sociaux (affichés dans les emails et le footer)
-  instagram: "https://www.instagram.com/strasbourg67",
+  instagram: "https://www.instagram.com/strasclean67",
   facebook: "https://www.facebook.com/profile.php?id=61591324480855",
   tiktok: "https://www.tiktok.com/@strasclean67000",
   // Lien direct « laisser un avis » Google (ouvre le formulaire d'avis)
@@ -38,7 +38,7 @@ export const SITE = {
     // Fiche Google Business (la plus importante pour le SEO local)
     "https://maps.app.goo.gl/qSzgbJbMYC17HQnc6",
     "https://www.tiktok.com/@strasclean67000",
-    "https://www.instagram.com/strasbourg67",
+    "https://www.instagram.com/strasclean67",
     "https://www.facebook.com/profile.php?id=61591324480855",
   ],
   /**

@@ -1048,10 +1048,15 @@ function JobForm({
               />
             </Field>
           </div>
-          {time && (
+          {time ? (
             <p className="-mt-1 text-xs text-slate-500">
               Bloque l'agenda&nbsp;: {prestationDuration(d.prestation)} min de
               prestation + {BOOKING_CONFIG.bufferMin} min de trajet avant/après.
+            </p>
+          ) : (
+            <p className="-mt-1 rounded-lg bg-amber-50 px-2.5 py-1.5 text-xs text-amber-700">
+              ⚠️ Sans heure, ce job ne bloque aucun créneau de réservation en
+              ligne.
             </p>
           )}
 
