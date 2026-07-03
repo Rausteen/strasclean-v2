@@ -119,21 +119,28 @@ export default function UseCasePage({ useCase: uc, place }: Props) {
               </p>
 
               <div className="mx-auto mt-6 flex w-full max-w-md flex-col items-stretch gap-3 sm:mt-7 sm:max-w-none sm:flex-row sm:justify-center">
+                <Link
+                  href="/reserver"
+                  className="btn-primary h-14 w-full px-6 text-base sm:h-12 sm:w-auto"
+                >
+                  Réserver en ligne
+                  <ArrowRightIcon size={18} />
+                </Link>
                 <a
                   href={waLink(message)}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="btn-wa h-14 w-full px-6 text-base sm:h-12 sm:w-auto"
+                  className="btn-ghost h-14 w-full px-6 text-base sm:h-12 sm:w-auto"
                 >
-                  <WhatsAppIcon size={20} />
-                  Réserver sur WhatsApp
+                  <WhatsAppIcon size={18} />
+                  WhatsApp
                 </a>
                 <a
                   href={SITE.phoneHref}
                   className="btn-ghost h-14 w-full px-6 text-base sm:h-12 sm:w-auto"
                 >
                   <PhoneIcon size={18} />
-                  Appeler maintenant
+                  Appeler
                 </a>
               </div>
 
@@ -266,15 +273,13 @@ export default function UseCasePage({ useCase: uc, place }: Props) {
                   </p>
                 </div>
                 <div className="lg:col-span-5">
-                  <a
-                    href={waLink(message)}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="btn-wa h-12 w-full"
+                  <Link
+                    href="/reserver"
+                    className="btn-primary h-12 w-full"
                   >
-                    <WhatsAppIcon size={18} />
-                    Réserver sur WhatsApp
-                  </a>
+                    Réserver en ligne
+                    <ArrowRightIcon size={16} />
+                  </Link>
                   {recommendedService && strasbourg && (
                     <Link
                       href={servicePath(recommendedService, strasbourg)}

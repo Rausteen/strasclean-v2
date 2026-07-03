@@ -1,6 +1,7 @@
 import fs from "node:fs";
 import path from "node:path";
 import Image from "next/image";
+import Link from "next/link";
 import { SITE } from "@/lib/site";
 import HeroLeadForm from "./HeroLeadForm";
 
@@ -20,13 +21,13 @@ const HERO_IMAGE_PATH = (() => {
 })();
 import {
   WhatsAppIcon,
-  PhoneIcon,
   MapPinIcon,
   CarIcon,
   SparklesIcon,
   CheckIcon,
   BoltIcon,
   StarIcon,
+  ArrowRightIcon,
 } from "./Icon";
 
 type HeroProps = {
@@ -93,26 +94,25 @@ export default function Hero({ rating, reviewCount, reviewsUrl }: HeroProps = {}
               pas.
             </p>
 
-            {/* CTA — hiérarchie claire : 1 primaire (WhatsApp) + Appeler en
-                secondaire. La réservation en ligne est portée par le
-                formulaire ci-contre → on retire le bouton redondant (loi de
-                Hick : moins de choix concurrents = clic moins dilué). */}
+            {/* CTA — hiérarchie claire : 1 primaire (Réserver en ligne) +
+                WhatsApp en secondaire pour les hésitants. Le formulaire
+                « être rappelé » ci-contre reste le 3e canal. */}
             <div className="mt-5 flex flex-col gap-3 sm:mt-7 sm:flex-row sm:flex-wrap sm:items-center">
+              <Link
+                href="/reserver"
+                className="btn-primary h-14 w-full px-6 text-base active:scale-[0.98] sm:h-12 sm:w-auto"
+              >
+                Réserver en ligne
+                <ArrowRightIcon size={18} />
+              </Link>
               <a
                 href={SITE.whatsappHref}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="btn-wa h-14 w-full px-6 text-base active:scale-[0.98] sm:h-12 sm:w-auto"
-              >
-                <WhatsAppIcon size={20} />
-                Réserver sur WhatsApp
-              </a>
-              <a
-                href={SITE.phoneHref}
                 className="btn-ghost h-12 w-full px-4 text-sm active:scale-[0.98] sm:w-auto"
               >
-                <PhoneIcon size={16} />
-                Appeler
+                <WhatsAppIcon size={18} />
+                Ou par WhatsApp
               </a>
             </div>
 

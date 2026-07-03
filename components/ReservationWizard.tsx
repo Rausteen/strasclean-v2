@@ -25,9 +25,13 @@ function prettyDay(date: string): string {
 const inputCls =
   "w-full rounded-xl border border-slate-200 bg-white px-3.5 py-3 text-base text-slate-900 outline-none focus:border-brand-400/60 focus:ring-2 focus:ring-brand-400/20";
 
-export default function ReservationWizard() {
-  const [step, setStep] = useState(0);
-  const [formula, setFormula] = useState("");
+export default function ReservationWizard({
+  initialFormula = "",
+}: {
+  initialFormula?: string;
+}) {
+  const [step, setStep] = useState(initialFormula ? 1 : 0);
+  const [formula, setFormula] = useState(initialFormula);
   const [vehicle, setVehicle] = useState("");
   const [options, setOptions] = useState<string[]>([]);
   const [date, setDate] = useState("");

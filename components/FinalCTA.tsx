@@ -34,18 +34,16 @@ export default function FinalCTA() {
               secondes. On vous répond rapidement et on s'occupe de tout.
             </p>
 
-            {/* CTA — 1 primaire (WhatsApp) + 2 secondaires démotés pour ne
-                pas diluer le clic. */}
+            {/* CTA — 1 primaire (Réserver en ligne) + 2 secondaires démotés
+                (WhatsApp, Appeler) pour ne pas diluer le clic. */}
             <div className="mx-auto mt-7 flex w-full max-w-md flex-col items-center justify-center gap-3">
-              <a
-                href={SITE.whatsappHref}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="btn-wa h-14 w-full px-7 text-base active:scale-[0.98] sm:h-12 sm:w-auto"
+              <Link
+                href="/reserver"
+                className="btn-primary h-14 w-full px-7 text-base active:scale-[0.98] sm:h-12 sm:w-auto"
               >
-                <WhatsAppIcon size={20} />
-                Réserver sur WhatsApp
-              </a>
+                Réserver en ligne
+                <ArrowRightIcon size={16} />
+              </Link>
               <div className="grid w-full grid-cols-2 gap-2 sm:flex sm:w-auto sm:gap-2.5">
                 <a
                   href={SITE.phoneHref}
@@ -54,13 +52,15 @@ export default function FinalCTA() {
                   <PhoneIcon size={16} />
                   Appeler
                 </a>
-                <Link
-                  href="/reserver-auto"
+                <a
+                  href={SITE.whatsappHref}
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="btn h-12 px-5 text-sm border border-white/25 bg-white/5 text-white hover:bg-white/10 active:scale-[0.98] sm:w-auto"
                 >
-                  Réserver en ligne
-                  <ArrowRightIcon size={14} />
-                </Link>
+                  <WhatsAppIcon size={16} />
+                  WhatsApp
+                </a>
               </div>
             </div>
 

@@ -101,34 +101,30 @@ export default function Header() {
             déjà les CTA Hero et la sticky bar en bas qui prennent le
             relais après scroll. */}
         <div className="ml-auto flex shrink-0 items-center gap-2.5">
-          {/* Réserver en ligne (desktop) — 3e canal, présent sur toutes les
-              pages. Section-aware. */}
+          {/* CTA PRINCIPAL : Réserver en ligne (desktop). Section-aware. */}
           <Link
-            href={onMaison ? "/reserver-maison" : "/reserver-auto"}
-            className="btn hidden h-11 px-4 text-sm font-semibold border border-slate-300 bg-white text-slate-900 hover:border-slate-900 lg:inline-flex"
+            href={onMaison ? "/reserver-maison" : "/reserver"}
+            className="btn-primary hidden h-11 px-5 text-sm font-bold lg:inline-flex"
           >
-            Réserver
+            Réserver en ligne
           </Link>
-          {/* WhatsApp desktop (pill texte) */}
+          {/* WhatsApp desktop (secondaire, contour) */}
           <a
             href={SITE.whatsappHref}
             target="_blank"
             rel="noopener noreferrer"
-            className="btn-wa hidden h-11 px-[18px] lg:inline-flex"
+            className="btn hidden h-11 px-4 text-sm font-semibold border border-slate-300 bg-white text-slate-900 hover:border-slate-900 lg:inline-flex"
           >
             <WhatsAppIcon size={18} />
             WhatsApp
           </a>
-          {/* WhatsApp mobile (cercle icône uniquement) */}
-          <a
-            href={SITE.whatsappHref}
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label="Réserver sur WhatsApp"
-            className="grid h-11 w-11 place-items-center rounded-full bg-whatsapp text-white shadow-glow active:scale-95 lg:hidden"
+          {/* CTA PRINCIPAL mobile : Réserver (pill compacte) */}
+          <Link
+            href={onMaison ? "/reserver-maison" : "/reserver"}
+            className="btn-primary h-11 px-4 text-sm font-bold lg:hidden"
           >
-            <WhatsAppIcon size={20} />
-          </a>
+            Réserver
+          </Link>
           <button
             onClick={() => setOpen((s) => !s)}
             aria-label={open ? "Fermer le menu" : "Ouvrir le menu"}
@@ -221,9 +217,9 @@ export default function Header() {
           }}
         >
           <Link
-            href={onMaison ? "/reserver-maison" : "/reserver-auto"}
+            href={onMaison ? "/reserver-maison" : "/reserver"}
             onClick={() => setOpen(false)}
-            className="mb-2 flex h-12 w-full items-center justify-center gap-1.5 rounded-full bg-slate-900 text-[15px] font-semibold text-white active:scale-[0.98]"
+            className="btn-primary mb-2 h-12 w-full text-[15px] font-bold active:scale-[0.98]"
           >
             Réserver en ligne <span aria-hidden>→</span>
           </Link>

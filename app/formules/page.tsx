@@ -128,21 +128,28 @@ export default function FormulesPage() {
               </div>
 
               <div className="mx-auto mt-8 flex w-full max-w-md flex-col items-stretch gap-3 sm:max-w-none sm:flex-row sm:justify-center">
+                <Link
+                  href="/reserver"
+                  className="btn-primary h-14 w-full px-6 text-base sm:h-12 sm:w-auto"
+                >
+                  Réserver en ligne
+                  <ArrowRightIcon size={18} />
+                </Link>
                 <a
                   href={SITE.whatsappHref}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="btn-wa h-14 w-full px-6 text-base sm:h-12 sm:w-auto"
+                  className="btn-ghost h-14 w-full px-6 text-base sm:h-12 sm:w-auto"
                 >
-                  <WhatsAppIcon size={20} />
-                  Réserver sur WhatsApp
+                  <WhatsAppIcon size={18} />
+                  WhatsApp
                 </a>
                 <a
                   href={SITE.phoneHref}
                   className="btn-ghost h-14 w-full px-6 text-base sm:h-12 sm:w-auto"
                 >
                   <PhoneIcon size={18} />
-                  Appeler maintenant
+                  Appeler
                 </a>
               </div>
             </div>
@@ -218,15 +225,13 @@ export default function FormulesPage() {
                           ))}
                         </ul>
 
-                        <a
-                          href={waLink(p.ctaMessage)}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className={`mt-7 ${p.highlight ? "btn-wa" : "btn-primary"} h-12 w-full sm:w-auto`}
+                        <Link
+                          href={`/reserver?formule=${p.id}`}
+                          className="btn-primary mt-7 h-12 w-full sm:w-auto"
                         >
-                          {p.highlight ? <WhatsAppIcon size={18} /> : null}
-                          Réserver la formule {p.name.replace("Formule ", "")}
-                        </a>
+                          Réserver la {p.name.replace("Formule ", "")}
+                          <ArrowRightIcon size={16} />
+                        </Link>
                       </div>
 
                       {/* City selector */}

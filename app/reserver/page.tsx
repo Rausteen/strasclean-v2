@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Header from "@/components/Header";
 import ReservationWizard from "@/components/ReservationWizard";
 import { SITE } from "@/lib/site";
+import { BOOKING_FORMULAS } from "@/lib/booking";
 
 export const metadata: Metadata = {
   title: "Réserver un nettoyage auto à domicile à Strasbourg — StrasClean",
@@ -20,7 +21,15 @@ export const metadata: Metadata = {
   },
 };
 
-export default function ReserverPage() {
+export default async function ReserverPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ formule?: string }>;
+}) {
+  const { formule } = await searchParams;
+  const initialFormula = BOOKING_FORMULAS.some((f) => f.id === formule)
+    ? formule!
+    : "";
   return (
     <>
       <Header />
@@ -36,7 +45,7 @@ export default function ReserverPage() {
             En 1 minute · créneau garanti · paiement sur place
           </p>
         </div>
-        <ReservationWizard />
+        <ReservationWizard initialFormula={initialFormula} />
       </main>
     </>
   );

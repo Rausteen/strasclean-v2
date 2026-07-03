@@ -93,13 +93,14 @@ export default function HeroLeadForm() {
     <div className="rounded-3xl border border-slate-200 bg-white p-5 shadow-card sm:p-7">
       <div className="flex items-center gap-2 text-sm font-bold text-brand-700">
         <ClockIcon size={15} />
-        Demande en 1 minute
+        Vous préférez qu'on vous rappelle ?
       </div>
       <h2 className="h-display mt-1 text-xl font-bold text-slate-900 sm:text-2xl">
-        Recevez votre créneau
+        Être rappelé gratuitement
       </h2>
       <p className="mt-1 text-sm text-slate-600">
-        Laissez vos coordonnées, on vous rappelle pour confirmer votre créneau.
+        Pas envie de choisir un créneau maintenant ? Laissez vos coordonnées, on
+        vous recontacte pour tout caler.
       </p>
 
       <form onSubmit={handleSubmit} className="mt-5 space-y-3">

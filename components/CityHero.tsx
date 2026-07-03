@@ -10,6 +10,7 @@ import {
   CheckIcon,
   CarIcon,
   SparklesIcon,
+  ArrowRightIcon,
 } from "./Icon";
 
 export default function CityHero({ city }: { city: City }) {
@@ -56,18 +57,25 @@ export default function CityHero({ city }: { city: City }) {
           </p>
 
           <div className="mx-auto mt-6 flex w-full max-w-md flex-col items-stretch gap-3 sm:mt-7 sm:max-w-none sm:flex-row sm:justify-center">
+            <Link
+              href="/reserver"
+              className="btn-primary h-14 w-full px-6 text-base sm:h-12 sm:w-auto"
+            >
+              Réserver en ligne
+              <ArrowRightIcon size={18} />
+            </Link>
             <a
               href={SITE.whatsappHref}
               target="_blank"
               rel="noopener noreferrer"
-              className="btn-wa h-14 w-full px-6 text-base sm:h-12 sm:w-auto"
+              className="btn-ghost h-14 w-full px-6 text-base sm:h-12 sm:w-auto"
             >
-              <WhatsAppIcon size={20} />
-              Réserver sur WhatsApp
+              <WhatsAppIcon size={18} />
+              WhatsApp
             </a>
             <a href={SITE.phoneHref} className="btn-ghost h-14 w-full px-6 text-base sm:h-12 sm:w-auto">
               <PhoneIcon size={18} />
-              Appeler maintenant
+              Appeler
             </a>
           </div>
 

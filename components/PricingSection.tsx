@@ -1,9 +1,10 @@
+import Link from "next/link";
 import Reveal from "./Reveal";
 import { waLink } from "@/lib/site";
 import { PLANS, Plan } from "@/lib/plans";
 import VehiclePricing from "./VehiclePricing";
 import PlansCarousel from "./PlansCarousel";
-import { CheckIcon, WhatsAppIcon, PawIcon, SprayIcon } from "./Icon";
+import { CheckIcon, WhatsAppIcon, PawIcon, SprayIcon, ArrowRightIcon } from "./Icon";
 
 // Options ciblées sur l'état du véhicule — slim à 4 cas les plus
 // fréquents (vs 6 avant), pour ne pas surcharger le client.
@@ -190,15 +191,13 @@ function PlanCard({ plan }: { plan: Plan }) {
         </ul>
 
         <div className="mt-auto pt-6">
-          <a
-            href={waLink(plan.ctaMessage)}
-            target="_blank"
-            rel="noopener noreferrer"
-            className={`${popular ? "btn-wa" : "btn-primary"} h-12 w-full text-base`}
+          <Link
+            href={`/reserver?formule=${plan.id}`}
+            className="btn-primary h-12 w-full text-base"
           >
-            {popular ? <WhatsAppIcon size={18} /> : null}
-            Réserver maintenant
-          </a>
+            Réserver ce forfait
+            <ArrowRightIcon size={18} />
+          </Link>
         </div>
       </div>
     </div>
