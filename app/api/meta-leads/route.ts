@@ -63,6 +63,12 @@ function escapeHtml(s: string): string {
   return s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
 }
 
+// Clé brute Meta (ex. "quand_souhaitez-vous_le_nettoyage_?") → libellé lisible.
+function humanize(key: string): string {
+  const s = key.replace(/[_-]+/g, " ").replace(/\?+\s*$/, "").trim();
+  return s ? s.charAt(0).toUpperCase() + s.slice(1) : key;
+}
+
 // Vérifie la signature Meta (X-Hub-Signature-256). Si aucun APP_SECRET n'est
 // configuré, on ne bloque pas (utile pour tester), mais c'est recommandé.
 function verifySignature(raw: string, header: string | null): boolean {
@@ -151,7 +157,7 @@ async function handleLead(leadgenId: string): Promise<void> {
     // Champs personnalisés du formulaire (hors champs standards)
     const extras = Object.entries(map)
       .filter(([k]) => !KNOWN_KEYS.includes(k))
-      .map(([k, v]) => `• ${escapeHtml(k)} : ${escapeHtml(v)}`);
+      .map(([k, v]) => `• ${escapeHtml(humanize(k))} : <b>${escapeHtml(v)}</b>`);
 
     const lines = [
       "🎯 <b>Nouveau lead Meta Ads</b>",
