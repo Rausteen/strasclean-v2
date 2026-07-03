@@ -28,7 +28,7 @@ const sora = Sora({
 });
 
 const description =
-  "Nettoyage auto à domicile à Strasbourg et alentours. Intérieur, shampouinage, désinfection, lavage extérieur et detailing premium. Réservation rapide par WhatsApp.";
+  "Nettoyage auto à domicile à Strasbourg et alentours. Intérieur, shampouinage, désinfection, lavage extérieur et detailing premium. Réservation en ligne en 1 minute.";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE.url),

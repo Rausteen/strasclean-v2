@@ -36,8 +36,7 @@ export default function PricingSection({ compact = false }: PricingSectionProps 
           </h2>
           <p className="mt-4 text-slate-600">
             Trois formules claires, pensées pour s'adapter à l'état de votre
-            véhicule et à votre besoin. Réservation en quelques secondes par
-            WhatsApp.
+            véhicule et à votre besoin. Réservation en ligne en 1 minute.
           </p>
         </Reveal>
 

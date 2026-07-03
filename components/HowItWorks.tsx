@@ -1,27 +1,27 @@
+import Link from "next/link";
 import Reveal from "./Reveal";
-import { SITE } from "@/lib/site";
-import { WhatsAppIcon, ArrowRightIcon } from "./Icon";
+import { ArrowRightIcon } from "./Icon";
 
 const STEPS = [
   {
     n: "01",
-    title: "Vous choisissez votre formule",
-    desc: "Essentiel, Premium Intérieur ou Intégrale StrasClean — selon l'état de votre véhicule et votre besoin.",
+    title: "Choisissez votre formule",
+    desc: "Essentiel, Premium Intérieur ou Intégrale StrasClean — selon l'état de votre véhicule. Ajoutez vos options si besoin.",
   },
   {
     n: "02",
-    title: "Vous envoyez un message WhatsApp",
-    desc: "Une photo de votre voiture suffit pour qu'on vous confirme la formule adaptée.",
+    title: "Réservez votre créneau en ligne",
+    desc: "Sélectionnez le jour et l'heure précise qui vous arrangent. Disponibilités en temps réel, en moins d'une minute.",
   },
   {
     n: "03",
-    title: "On fixe un créneau près de chez vous",
-    desc: "Strasbourg ou alentours, à votre domicile, votre travail ou l'adresse de votre choix.",
+    title: "Confirmation immédiate",
+    desc: "Vous recevez votre confirmation par email, avec un rappel la veille. Modifiable ou annulable en un clic.",
   },
   {
     n: "04",
-    title: "On nettoie votre voiture à domicile",
-    desc: "Vous récupérez un véhicule propre, sain et agréable à conduire — sans avoir bougé.",
+    title: "On nettoie votre voiture chez vous",
+    desc: "À votre domicile, au travail ou à l'adresse de votre choix. Paiement sur place, sans engagement.",
   },
 ];
 
@@ -37,11 +37,12 @@ export default function HowItWorks() {
             Comment ça marche
           </p>
           <h2 className="h-display mt-3 text-balance text-3xl font-bold text-slate-900 sm:text-4xl lg:text-5xl">
-            Réservez en quelques secondes. On s'occupe du reste.
+            Réservez en ligne en 1 minute. On s'occupe du reste.
           </h2>
           <p className="mt-4 text-slate-600">
-            Pas besoin de vous déplacer. Vous réservez, on vient, votre voiture
-            retrouve un intérieur propre et agréable.
+            Pas besoin de vous déplacer ni d'attendre un rappel. Vous choisissez
+            votre créneau, on vient, votre voiture retrouve un intérieur propre et
+            agréable.
           </p>
         </Reveal>
 
@@ -69,17 +70,12 @@ export default function HowItWorks() {
         </div>
 
         <Reveal className="mt-12 flex flex-col items-center justify-center gap-3 sm:flex-row">
-          <a
-            href={SITE.whatsappHref}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="btn-wa h-12 px-6"
-          >
-            <WhatsAppIcon size={18} />
-            Réserver mon créneau
-          </a>
+          <Link href="/reserver" className="btn-primary h-12 px-6">
+            Réserver en ligne
+            <ArrowRightIcon size={16} />
+          </Link>
           <a href="#formules" className="btn-ghost h-12 px-6">
-            Voir les formules <ArrowRightIcon size={16} />
+            Voir les formules
           </a>
         </Reveal>
       </div>

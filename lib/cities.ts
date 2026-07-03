@@ -50,7 +50,7 @@ export const CITIES: City[] = [
     angle: "Tous les quartiers desservis",
     review: {
       name: "Julien M.",
-      text: "Intervention au pied de mon immeuble dans le centre. Voiture impeccable, plus aucune odeur. Réservation hyper simple par WhatsApp.",
+      text: "Intervention au pied de mon immeuble dans le centre. Voiture impeccable, plus aucune odeur. Réservation en ligne hyper simple, créneau en quelques clics.",
     },
   },
   {
@@ -129,7 +129,7 @@ export const CITIES: City[] = [
     neighborhoods: ["Centre", "Tiergaertel", "Les Tanneries"],
     distanceKm: 6,
     intro:
-      "Lingolsheim, au sud-ouest de l'agglomération strasbourgeoise, mêle zones résidentielles et zones d'activités. StrasClean intervient à votre domicile ou en entreprise pour un nettoyage auto complet, avec une réservation par WhatsApp en moins d'une minute.",
+      "Lingolsheim, au sud-ouest de l'agglomération strasbourgeoise, mêle zones résidentielles et zones d'activités. StrasClean intervient à votre domicile ou en entreprise pour un nettoyage auto complet, avec une réservation en ligne en moins d'une minute.",
     maisonIntro:
       "Lingolsheim accueille beaucoup de jeunes familles installées dans des maisons des Tanneries — canapés convertibles fréquemment utilisés en chambre d'amis, tapis d'enfants à laver, matelas de chambre d'invités peu sortis du lit. C'est aussi une commune où on traite régulièrement les chaises de salle à manger en lot après les anniversaires des kids.",
     angle: "Domicile & entreprises",

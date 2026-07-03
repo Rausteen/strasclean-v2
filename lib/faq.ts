@@ -30,7 +30,7 @@ export const FAQS: FAQItem[] = [
   },
   {
     q: "Comment réserver ?",
-    a: "Le plus simple : envoyez-nous un message WhatsApp avec votre ville et idéalement une photo de votre véhicule. On vous confirme un créneau et la formule adaptée. Vous pouvez aussi nous appeler.",
+    a: "Le plus simple : réservez en ligne en 1 minute — choisissez votre formule, puis le jour et l'heure précise qui vous arrangent. Vous recevez une confirmation immédiate. Vous préférez qu'on s'en occupe ? Écrivez-nous sur WhatsApp ou appelez-nous.",
   },
   {
     q: "Intervenez-vous en dehors de Strasbourg ?",

@@ -35,7 +35,7 @@ const FALLBACK_REVIEWS: Review[] = [
     name: "Julien M.",
     city: "Strasbourg",
     text:
-      "Intérieur nickel, plus aucune odeur. Réservation hyper simple par WhatsApp, créneau dans la semaine.",
+      "Intérieur nickel, plus aucune odeur. Réservation en ligne hyper simple, créneau dans la semaine.",
     initials: "JM",
     tone: TONES[0],
     source: "fixture",

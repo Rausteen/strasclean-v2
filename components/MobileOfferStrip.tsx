@@ -1,9 +1,10 @@
 "use client";
 
+import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { BoltIcon } from "./Icon";
 import { isMaisonPathname } from "@/lib/section";
-import { SITE, waLink } from "@/lib/site";
+import { waLink } from "@/lib/site";
 
 /**
  * Bandeau d'offre mobile sticky sous le header : ancre prix + dispo dans le
@@ -14,8 +15,8 @@ import { SITE, waLink } from "@/lib/site";
  * chaude au lieu de le laisser inerte. Le chevron signale l'affordance.
  *
  * Auto-adaptatif selon la section :
- *  - Auto   → "Dès 49 € · Réponse WhatsApp en moins de 30 min" (vert)
- *  - Maison → "Dès 39 € · Canapé, tapis, matelas à domicile"   (ambre)
+ *  - Auto   → "Dès 49 € · Réservez en ligne en 1 min" → /reserver (vert)
+ *  - Maison → "Dès 39 € · Canapé, tapis, matelas à domicile" → WhatsApp (ambre)
  */
 export default function MobileOfferStrip() {
   const pathname = usePathname() || "/";
@@ -48,20 +49,18 @@ export default function MobileOfferStrip() {
 
   return (
     <div className="lg:hidden">
-      <a
-        href={SITE.whatsappHref}
-        target="_blank"
-        rel="noopener noreferrer"
-        aria-label="Demander un devis sur WhatsApp"
+      <Link
+        href="/reserver"
+        aria-label="Réserver un nettoyage auto en ligne"
         className="flex items-center justify-center gap-2 border-b border-brand-500/30 bg-brand-500/10 px-4 py-2 text-[13px] font-medium text-brand-700 transition active:bg-brand-500/20"
       >
         <BoltIcon size={14} className="text-brand-600" />
         <span>
-          <strong className="font-bold text-slate-900">Dès 49 €</strong> · Réponse
-          WhatsApp en moins de 30 min
+          <strong className="font-bold text-slate-900">Dès 49 €</strong> ·
+          Réservez en ligne en 1 min
         </span>
         <span aria-hidden className="font-bold text-brand-600">›</span>
-      </a>
+      </Link>
     </div>
   );
 }

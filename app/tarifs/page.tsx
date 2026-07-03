@@ -188,7 +188,7 @@ export default function TarifsPage() {
         {/* Pied de page / contact */}
         <footer className="mt-6 rounded-3xl bg-slate-900 p-5 text-center text-white sm:p-6">
           <p className="text-sm font-semibold">
-            Devis gratuit &amp; sans engagement · Réponse rapide sur WhatsApp
+            Réservation en ligne en 1 minute · sans engagement
           </p>
           <div className="mt-3 inline-flex items-center justify-center gap-2 text-base font-bold">
             <WhatsAppIcon size={18} className="text-brand-400" />

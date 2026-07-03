@@ -82,7 +82,7 @@ export async function generateMetadata({
   if (m.type === "city") {
     const city = m.city;
     const title = `Nettoyage voiture à domicile ${inCity(city)} — StrasClean`;
-    const description = `Nettoyage auto à domicile ${inCity(city)} (${city.postalCodes.join(", ")}). Intérieur, shampouinage, désinfection, lavage extérieur et detailing premium. Réservation rapide par WhatsApp.`;
+    const description = `Nettoyage auto à domicile ${inCity(city)} (${city.postalCodes.join(", ")}). Intérieur, shampouinage, désinfection, lavage extérieur et detailing premium. Réservation en ligne en 1 minute.`;
     return {
       title,
       description,
@@ -182,7 +182,7 @@ export async function generateMetadata({
   // service × city
   const { service, city } = m;
   const title = `${service.name} ${inCity(city)} — StrasClean`;
-  const description = `${service.shortDesc} StrasClean intervient ${inCity(city)} (${city.postalCodes.join(", ")}) à domicile. À partir de ${service.priceFrom} €. Réservation rapide par WhatsApp.`;
+  const description = `${service.shortDesc} StrasClean intervient ${inCity(city)} (${city.postalCodes.join(", ")}) à domicile. À partir de ${service.priceFrom} €. Réservation en ligne en 1 minute.`;
   return {
     title,
     description,

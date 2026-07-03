@@ -427,8 +427,8 @@ export default async function QuiSommesNousPage() {
                       7j/7 — 8h à 22h
                     </p>
                     <p className="mt-1 text-sm text-slate-600">
-                      Y compris les week-ends. Réservation par WhatsApp ou
-                      téléphone, on revient vers vous rapidement.
+                      Y compris les week-ends. Réservez en ligne en 1 minute, ou
+                      par WhatsApp / téléphone si vous préférez.
                     </p>
                   </div>
                   <div className="rounded-2xl border border-slate-200 bg-slate-50 p-5">
