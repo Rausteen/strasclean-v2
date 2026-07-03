@@ -1,3 +1,9 @@
+// Force le fuseau horaire de l'application en Europe/Paris. Sans ça, un serveur
+// (conteneur Dokploy) en UTC calcule les créneaux de réservation et le délai
+// mini avec 2 h de décalage l'été → on pouvait réserver un créneau déjà passé.
+// Défini avant tout usage de Date, quel que soit le TZ du système.
+process.env.TZ = "Europe/Paris";
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
