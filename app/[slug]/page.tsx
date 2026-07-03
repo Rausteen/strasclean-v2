@@ -96,7 +96,7 @@ export async function generateMetadata({
         locale: "fr_FR",
         images: [
           {
-            url: "/og.svg",
+            url: "/og.png",
             width: 1200,
             height: 630,
             alt: `StrasClean — nettoyage voiture à domicile ${inCity(city)}`,
@@ -107,7 +107,7 @@ export async function generateMetadata({
         card: "summary_large_image",
         title,
         description,
-        images: ["/og.svg"],
+        images: ["/og.png"],
       },
       keywords: [
         `nettoyage voiture domicile ${city.name}`,
@@ -133,11 +133,11 @@ export async function generateMetadata({
     const city = m.type === "home-service-city" ? m.city : null;
 
     // Les pages Maison utilisent l'OG image dédiée (palette ambre, emojis
-    // canapé/tapis/matelas/fauteuil) ; les pages Auto gardent /og.svg.
+    // canapé/tapis/matelas/fauteuil) ; les pages Auto gardent /og.png.
     const ogImage =
       m.type === "home-service" || m.type === "home-service-city"
         ? "/og-maison.svg"
-        : "/og.svg";
+        : "/og.png";
 
     // Pour les pages service × ville, on construit dynamiquement titre,
     // description et URL canonique (le data natif est Strasbourg).
@@ -196,7 +196,7 @@ export async function generateMetadata({
       locale: "fr_FR",
       images: [
         {
-          url: "/og.svg",
+          url: "/og.png",
           width: 1200,
           height: 630,
           alt: `StrasClean — ${service.name} ${inCity(city)}`,
@@ -207,7 +207,7 @@ export async function generateMetadata({
       card: "summary_large_image",
       title,
       description,
-      images: ["/og.svg"],
+      images: ["/og.png"],
     },
     keywords: [
       `${service.name} ${city.name}`,
@@ -273,7 +273,7 @@ function CityPage({
     description: `Nettoyage auto à domicile ${inCity(city)}.`,
     url: `${SITE.url}${cityPath(city)}`,
     telephone: SITE.phoneDisplay,
-    image: `${SITE.url}/og.svg`,
+    image: `${SITE.url}/og.png`,
     priceRange: "€€",
     address: {
       "@type": "PostalAddress",

@@ -59,7 +59,7 @@ export const metadata: Metadata = {
     locale: "fr_FR",
     images: [
       {
-        url: "/og.svg",
+        url: "/og.png",
         width: 1200,
         height: 630,
         alt: "StrasClean — nettoyage voiture à domicile à Strasbourg",
@@ -70,7 +70,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "StrasClean — Nettoyage voiture à domicile à Strasbourg",
     description,
-    images: ["/og.svg"],
+    images: ["/og.png"],
   },
   icons: {
     icon: [{ url: "/favicon.svg", type: "image/svg+xml" }],
@@ -96,7 +96,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
     description,
     url: SITE.url,
     telephone: SITE.phoneDisplay,
-    image: `${SITE.url}/og.svg`,
+    image: `${SITE.url}/og.png`,
     priceRange: "€€",
     address: {
       "@type": "PostalAddress",

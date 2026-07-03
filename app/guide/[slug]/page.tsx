@@ -83,7 +83,7 @@ export default async function GuideArticlePage({
       "@type": "Organization",
       name: SITE.name,
       url: SITE.url,
-      logo: { "@type": "ImageObject", url: `${SITE.url}/og.svg` },
+      logo: { "@type": "ImageObject", url: `${SITE.url}/og.png` },
     },
     mainEntityOfPage: `${SITE.url}${guidePath(g)}`,
   };
