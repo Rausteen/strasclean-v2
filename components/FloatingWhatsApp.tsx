@@ -40,8 +40,8 @@ export default function FloatingWhatsApp() {
       )
     : SITE.whatsappHref;
 
-  // Formulaire de réservation de la bonne section (3e canal d'acquisition).
-  const reserveHref = isMaison ? "/reserver-maison" : "/reserver-auto";
+  // Réservation en ligne de la bonne section — CTA principal.
+  const reserveHref = isMaison ? "/reserver-maison" : "/reserver";
 
   return (
     <>
@@ -58,20 +58,21 @@ export default function FloatingWhatsApp() {
         }}
       >
         <div className="mx-auto flex max-w-md items-center gap-2">
+          <Link
+            href={reserveHref}
+            className="btn-primary h-12 flex-1 text-[15px] font-bold active:scale-[0.98]"
+          >
+            Réserver en ligne
+          </Link>
           <a
             href={waHref}
             target="_blank"
             rel="noopener noreferrer"
-            className="btn-wa h-12 flex-1 text-[15px] font-semibold active:scale-[0.98]"
+            aria-label="Contacter sur WhatsApp"
+            className="grid h-12 w-12 shrink-0 place-items-center rounded-full bg-whatsapp text-white active:scale-95"
           >
-            <WhatsAppIcon size={20} /> WhatsApp
+            <WhatsAppIcon size={20} />
           </a>
-          <Link
-            href={reserveHref}
-            className="flex h-12 shrink-0 items-center justify-center rounded-full border border-slate-300 bg-white px-4 text-[14px] font-semibold text-slate-900 active:scale-[0.98]"
-          >
-            Devis
-          </Link>
           <a
             href={SITE.phoneHref}
             aria-label="Appeler StrasClean"
@@ -82,23 +83,32 @@ export default function FloatingWhatsApp() {
         </div>
       </div>
 
-      {/* Desktop floating button */}
-      <a
-        href={waHref}
-        target="_blank"
-        rel="noopener noreferrer"
-        aria-label="Réserver sur WhatsApp"
-        className={`fixed bottom-6 right-6 z-40 hidden lg:inline-flex items-center gap-2 rounded-full bg-whatsapp px-5 py-3.5 text-sm font-semibold text-white shadow-glow transition hover:bg-whatsapp-dark hover:scale-[1.03] ${
+      {/* Desktop floating — Réserver en ligne (principal) + WhatsApp (icône) */}
+      <div
+        className={`fixed bottom-6 right-6 z-40 hidden items-center gap-2.5 transition-opacity duration-300 lg:flex ${
           scrolled ? "opacity-100" : "pointer-events-none opacity-0"
         }`}
       >
-        <span className="relative flex h-3 w-3">
-          <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-white/70" />
-          <span className="relative inline-flex h-3 w-3 rounded-full bg-white" />
-        </span>
-        <WhatsAppIcon size={20} />
-        Réserver sur WhatsApp
-      </a>
+        <a
+          href={waHref}
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="Contacter sur WhatsApp"
+          className="grid h-12 w-12 place-items-center rounded-full bg-whatsapp text-white shadow-glow transition hover:bg-whatsapp-dark hover:scale-[1.05]"
+        >
+          <WhatsAppIcon size={22} />
+        </a>
+        <Link
+          href={reserveHref}
+          className="inline-flex items-center gap-2 rounded-full bg-brand-600 px-5 py-3.5 text-sm font-bold text-white shadow-glow transition hover:bg-brand-700 hover:scale-[1.03]"
+        >
+          <span className="relative flex h-3 w-3">
+            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-white/70" />
+            <span className="relative inline-flex h-3 w-3 rounded-full bg-white" />
+          </span>
+          Réserver en ligne
+        </Link>
+      </div>
     </>
   );
 }
