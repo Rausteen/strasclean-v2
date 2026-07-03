@@ -5,7 +5,7 @@ import Link from "next/link";
 import { BOOKING_FORMULAS, computePrice, isServedPostal } from "@/lib/booking";
 import { VEHICLE_TYPES, AUTO_OPTIONS, autoOptionPrice } from "@/lib/plans";
 import BookingCalendar from "@/components/BookingCalendar";
-import { ClockIcon, CheckIcon } from "@/components/Icon";
+import { ClockIcon, CheckIcon, ArrowRightIcon } from "@/components/Icon";
 
 const STEP_LABELS = ["Formule", "Véhicule", "Créneau", "Vous", "Récap"];
 
@@ -70,6 +70,7 @@ export default function ReservationWizard({
   const [done, setDone] = useState<{ when: string; price: number } | null>(null);
 
   const f = BOOKING_FORMULAS.find((x) => x.id === formula);
+  const vehObj = VEHICLE_TYPES.find((v) => v.id === vehicle);
   const price = useMemo(
     () => (formula && vehicle ? computePrice(formula, vehicle, options) : 0),
     [formula, vehicle, options],
@@ -182,7 +183,8 @@ export default function ReservationWizard({
           <Row label="À payer sur place" value={`${done.price} €`} strong />
         </div>
         <p className="mt-4 text-sm text-slate-500">
-          Un email de confirmation vous a été envoyé (si vous l'avez renseigné).
+          Un email de confirmation vient de vous être envoyé, avec le lien pour
+          gérer votre rendez-vous.
         </p>
         <Link
           href="/"
@@ -197,19 +199,26 @@ export default function ReservationWizard({
   return (
     <div className="mx-auto max-w-2xl px-4 pb-32 pt-6">
       {/* Progression */}
-      <div className="mb-6 flex items-center gap-1.5">
-        {STEP_LABELS.map((l, i) => (
-          <div key={l} className="flex-1">
+      <div className="mb-7">
+        <div className="flex items-center gap-1.5">
+          {STEP_LABELS.map((l, i) => (
             <div
-              className={`h-1.5 rounded-full ${i <= step ? "bg-brand-500" : "bg-slate-200"}`}
+              key={l}
+              className={`h-1.5 flex-1 rounded-full transition-all duration-300 ${
+                i < step
+                  ? "bg-brand-500"
+                  : i === step
+                    ? "bg-brand-500"
+                    : "bg-slate-200"
+              }`}
             />
-            <p
-              className={`mt-1.5 text-[11px] font-semibold ${i === step ? "text-slate-900" : "text-slate-400"}`}
-            >
-              {l}
-            </p>
-          </div>
-        ))}
+          ))}
+        </div>
+        <p className="mt-2 text-xs font-medium text-slate-400">
+          Étape {step + 1} sur {STEP_LABELS.length}
+          <span className="mx-1.5 text-slate-300">·</span>
+          <span className="font-semibold text-slate-600">{STEP_LABELS[step]}</span>
+        </p>
       </div>
 
       {/* ÉTAPE 0 — Formule */}
@@ -223,38 +232,56 @@ export default function ReservationWizard({
                 <button
                   key={fo.id}
                   onClick={() => setFormula(fo.id)}
-                  className={`flex w-full items-start gap-3.5 rounded-2xl border p-4 text-left transition ${
+                  className={`flex w-full flex-col rounded-2xl border p-4 text-left transition ${
                     active
                       ? "border-brand-500 bg-brand-50/60 ring-2 ring-brand-500/40"
                       : "border-slate-200 bg-white hover:border-slate-300 hover:bg-slate-50/60"
                   }`}
                 >
-                  <Radio active={active} className="mt-0.5" />
-                  <span className="min-w-0 flex-1">
-                    <span className="flex items-center gap-2">
-                      <span className="font-semibold text-slate-900">{fo.name}</span>
-                      {popular && (
-                        <span className="rounded-full bg-brand-100 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide text-brand-700">
-                          Populaire
-                        </span>
-                      )}
+                  <span className="flex w-full items-start gap-3.5">
+                    <Radio active={active} className="mt-0.5" />
+                    <span className="min-w-0 flex-1">
+                      <span className="flex items-center gap-2">
+                        <span className="font-semibold text-slate-900">{fo.name}</span>
+                        {popular && (
+                          <span className="rounded-full bg-brand-100 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide text-brand-700">
+                            Populaire
+                          </span>
+                        )}
+                      </span>
+                      <span className="mt-0.5 block text-sm leading-snug text-slate-500">
+                        {fo.tagline}
+                      </span>
+                      <span className="mt-2 inline-flex items-center gap-1 rounded-md bg-slate-100 px-2 py-0.5 text-[12px] font-medium text-slate-500">
+                        <ClockIcon size={12} />
+                        {durLabel(fo.durationMin)}
+                      </span>
                     </span>
-                    <span className="mt-0.5 block text-sm leading-snug text-slate-500">
-                      {fo.tagline}
-                    </span>
-                    <span className="mt-2 inline-flex items-center gap-1 rounded-md bg-slate-100 px-2 py-0.5 text-[12px] font-medium text-slate-500">
-                      <ClockIcon size={12} />
-                      {durLabel(fo.durationMin)}
+                    <span className="shrink-0 text-right">
+                      <span className="block text-[10px] uppercase tracking-wide text-slate-400">
+                        dès
+                      </span>
+                      <span className="text-lg font-bold text-slate-900">
+                        {fo.priceFrom}&nbsp;€
+                      </span>
                     </span>
                   </span>
-                  <span className="shrink-0 text-right">
-                    <span className="block text-[10px] uppercase tracking-wide text-slate-400">
-                      dès
-                    </span>
-                    <span className="text-lg font-bold text-slate-900">
-                      {fo.priceFrom}&nbsp;€
-                    </span>
-                  </span>
+
+                  {active && fo.features.length > 0 && (
+                    <ul className="mt-3.5 w-full space-y-1.5 border-t border-brand-500/20 pt-3.5">
+                      {fo.features.map((feat) => (
+                        <li
+                          key={feat}
+                          className="flex items-start gap-2 text-[13.5px] leading-snug text-slate-600"
+                        >
+                          <span className="mt-0.5 grid h-4 w-4 shrink-0 place-items-center rounded-full bg-brand-500 text-white">
+                            <CheckIcon size={10} />
+                          </span>
+                          {feat}
+                        </li>
+                      ))}
+                    </ul>
+                  )}
                 </button>
               );
             })}
@@ -405,63 +432,83 @@ export default function ReservationWizard({
       {/* ÉTAPE 3 — Coordonnées */}
       {step === 3 && (
         <Section title="Vos coordonnées">
-          <div className="space-y-3">
+          <div className="space-y-4">
             <div className="grid grid-cols-2 gap-3">
-              <input
-                className={inputCls}
-                placeholder="Prénom *"
-                value={form.firstName}
-                onChange={(e) => set("firstName", e.target.value)}
-              />
-              <input
-                className={inputCls}
-                placeholder="Nom"
-                value={form.lastName}
-                onChange={(e) => set("lastName", e.target.value)}
-              />
+              <Field label="Prénom *">
+                <input
+                  className={inputCls}
+                  placeholder="Jean"
+                  autoComplete="given-name"
+                  value={form.firstName}
+                  onChange={(e) => set("firstName", e.target.value)}
+                />
+              </Field>
+              <Field label="Nom">
+                <input
+                  className={inputCls}
+                  placeholder="Dupont"
+                  autoComplete="family-name"
+                  value={form.lastName}
+                  onChange={(e) => set("lastName", e.target.value)}
+                />
+              </Field>
             </div>
-            <input
-              className={inputCls}
-              type="tel"
-              inputMode="tel"
-              placeholder="Téléphone *"
-              value={form.phone}
-              onChange={(e) => set("phone", e.target.value)}
-            />
-            <input
-              className={inputCls}
-              type="email"
-              inputMode="email"
-              placeholder="Email * (confirmation + gestion du RDV)"
-              value={form.email}
-              onChange={(e) => set("email", e.target.value)}
-            />
-            <input
-              className={inputCls}
-              placeholder="Adresse (où on intervient) *"
-              value={form.address}
-              onChange={(e) => set("address", e.target.value)}
-            />
-            <input
-              className={inputCls}
-              inputMode="numeric"
-              placeholder="Code postal *"
-              value={form.postalCode}
-              onChange={(e) => set("postalCode", e.target.value)}
-            />
+            <Field label="Téléphone *">
+              <input
+                className={inputCls}
+                type="tel"
+                inputMode="tel"
+                placeholder="06 12 34 56 78"
+                autoComplete="tel"
+                value={form.phone}
+                onChange={(e) => set("phone", e.target.value)}
+              />
+            </Field>
+            <Field label="Email *" hint="confirmation + gestion du RDV">
+              <input
+                className={inputCls}
+                type="email"
+                inputMode="email"
+                placeholder="jean.dupont@email.fr"
+                autoComplete="email"
+                value={form.email}
+                onChange={(e) => set("email", e.target.value)}
+              />
+            </Field>
+            <Field label="Adresse d'intervention *">
+              <input
+                className={inputCls}
+                placeholder="12 rue des Fleurs, Strasbourg"
+                autoComplete="street-address"
+                value={form.address}
+                onChange={(e) => set("address", e.target.value)}
+              />
+            </Field>
+            <Field label="Code postal *">
+              <input
+                className={inputCls}
+                inputMode="numeric"
+                placeholder="67000"
+                autoComplete="postal-code"
+                value={form.postalCode}
+                onChange={(e) => set("postalCode", e.target.value)}
+              />
+            </Field>
             {zoneWarn && (
               <p className="rounded-xl bg-amber-50 px-3.5 py-2.5 text-sm text-amber-800">
                 On n'est pas sûrs de desservir cette zone — on vous confirme la
                 dispo après réservation.
               </p>
             )}
-            <textarea
-              className={inputCls}
-              rows={2}
-              placeholder="Précisions (accès, état du véhicule…)"
-              value={form.notes}
-              onChange={(e) => set("notes", e.target.value)}
-            />
+            <Field label="Précisions" hint="facultatif">
+              <textarea
+                className={inputCls}
+                rows={2}
+                placeholder="Accès, étage, état du véhicule…"
+                value={form.notes}
+                onChange={(e) => set("notes", e.target.value)}
+              />
+            </Field>
           </div>
         </Section>
       )}
@@ -469,30 +516,52 @@ export default function ReservationWizard({
       {/* ÉTAPE 4 — Récap */}
       {step === 4 && (
         <Section title="Vérifiez et confirmez">
-          <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-soft">
-            <Row label="Formule" value={f?.name ?? "—"} />
-            <Row
-              label="Véhicule"
-              value={VEHICLE_TYPES.find((v) => v.id === vehicle)?.label ?? "—"}
-            />
-            {options.length > 0 && (
-              <Row
-                label="Options"
-                value={options
-                  .map((o) => AUTO_OPTIONS.find((x) => x.id === o)?.label)
-                  .join(", ")}
-              />
-            )}
-            <Row label="Quand" value={prettyWhen(date, time)} />
-            <Row label="Adresse" value={`${form.address}, ${form.postalCode}`} />
-            <Row label="Contact" value={`${form.firstName} · ${form.phone}`} />
-            <div className="mt-3 flex items-center justify-between border-t border-slate-100 pt-3">
-              <span className="font-semibold text-slate-700">
-                Total (sur place)
-              </span>
-              <span className="h-display text-2xl font-bold text-slate-900">
-                {price} €
-              </span>
+          <div className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-soft">
+            {/* Prestation + détail du prix */}
+            <div className="p-5">
+              <p className="text-[11px] font-semibold uppercase tracking-wider text-slate-400">
+                Prestation
+              </p>
+              <div className="mt-2.5 space-y-1.5">
+                <PriceLine label={`Formule ${f?.name ?? ""}`} value={`${f?.priceFrom ?? 0} €`} />
+                {vehObj && vehObj.surcharge > 0 && (
+                  <PriceLine label={vehObj.label} value={`+${vehObj.surcharge} €`} muted />
+                )}
+                {options.map((oid) => {
+                  const o = AUTO_OPTIONS.find((x) => x.id === oid);
+                  if (!o) return null;
+                  return (
+                    <PriceLine
+                      key={oid}
+                      label={o.label}
+                      value={`+${autoOptionPrice(o, vehicle)} €`}
+                      muted
+                    />
+                  );
+                })}
+              </div>
+              <div className="mt-3.5 flex items-center justify-between border-t border-slate-100 pt-3.5">
+                <span className="font-semibold text-slate-700">
+                  Total à régler sur place
+                </span>
+                <span className="h-display text-2xl font-bold text-slate-900">
+                  {price}&nbsp;€
+                </span>
+              </div>
+            </div>
+            {/* Rendez-vous */}
+            <div className="border-t border-slate-100 bg-slate-50/70 p-5">
+              <p className="text-[11px] font-semibold uppercase tracking-wider text-slate-400">
+                Rendez-vous
+              </p>
+              <div className="mt-2.5 space-y-1.5">
+                <Row label="Quand" value={prettyWhen(date, time)} />
+                <Row label="Adresse" value={`${form.address}, ${form.postalCode}`} />
+                <Row
+                  label="Contact"
+                  value={`${[form.firstName, form.lastName].filter(Boolean).join(" ")} · ${form.phone}`}
+                />
+              </div>
             </div>
           </div>
           {error && (
@@ -500,8 +569,14 @@ export default function ReservationWizard({
               {error}
             </p>
           )}
-          <p className="mt-3 text-center text-xs text-slate-400">
-            Paiement sur place après la prestation · sans engagement
+          <p className="mt-3.5 flex flex-wrap items-center justify-center gap-x-2 gap-y-1 text-center text-xs text-slate-400">
+            <span className="inline-flex items-center gap-1">
+              <CheckIcon size={12} className="text-brand-500" /> Paiement sur place
+            </span>
+            <span className="text-slate-300">·</span>
+            <span>sans engagement</span>
+            <span className="text-slate-300">·</span>
+            <span>annulable jusqu'à 3h avant</span>
           </p>
         </Section>
       )}
@@ -521,23 +596,29 @@ export default function ReservationWizard({
             </button>
           )}
           {price > 0 && (
-            <span className="ml-auto text-sm font-semibold text-slate-500">
-              {price} €
-            </span>
+            <div className="ml-auto text-right leading-tight">
+              <span className="block text-[10px] uppercase tracking-wide text-slate-400">
+                Total
+              </span>
+              <span className="block text-sm font-bold text-slate-900">
+                {price}&nbsp;€
+              </span>
+            </div>
           )}
           {step < 4 ? (
             <button
               disabled={!canNext}
               onClick={() => setStep((s) => s + 1)}
-              className={`${price > 0 ? "" : "ml-auto"} rounded-full bg-brand-600 px-6 py-3 text-sm font-bold text-white transition disabled:opacity-40`}
+              className={`${price > 0 ? "" : "ml-auto"} inline-flex items-center gap-1.5 rounded-full bg-brand-600 px-6 py-3 text-sm font-bold text-white transition hover:bg-brand-700 disabled:opacity-40`}
             >
               Continuer
+              <ArrowRightIcon size={16} />
             </button>
           ) : (
             <button
               disabled={submitting}
               onClick={submit}
-              className="rounded-full bg-brand-600 px-6 py-3 text-sm font-bold text-white disabled:opacity-50"
+              className="inline-flex items-center gap-1.5 rounded-full bg-brand-600 px-6 py-3 text-sm font-bold text-white transition hover:bg-brand-700 disabled:opacity-50"
             >
               {submitting ? "…" : "Confirmer la réservation"}
             </button>
@@ -557,6 +638,47 @@ function Radio({ active, className = "" }: { active: boolean; className?: string
     >
       {active && <span className="h-2 w-2 rounded-full bg-white" />}
     </span>
+  );
+}
+
+function Field({
+  label,
+  hint,
+  children,
+}: {
+  label: string;
+  hint?: string;
+  children: React.ReactNode;
+}) {
+  return (
+    <label className="block">
+      <span className="mb-1 flex items-baseline gap-1.5 text-xs font-semibold text-slate-600">
+        {label}
+        {hint && <span className="font-normal text-slate-400">· {hint}</span>}
+      </span>
+      {children}
+    </label>
+  );
+}
+
+function PriceLine({
+  label,
+  value,
+  muted,
+}: {
+  label: string;
+  value: string;
+  muted?: boolean;
+}) {
+  return (
+    <div className="flex items-baseline justify-between gap-3 text-sm">
+      <span className={muted ? "text-slate-500" : "font-medium text-slate-700"}>
+        {label}
+      </span>
+      <span className={`font-semibold ${muted ? "text-slate-500" : "text-slate-900"}`}>
+        {value}
+      </span>
+    </div>
   );
 }
 
