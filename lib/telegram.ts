@@ -10,6 +10,18 @@ export function tgEscape(s: string): string {
   return s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
 }
 
+/** Timestamp (ms) → date lisible en heure de Paris. */
+export function tgWhen(ms: number): string {
+  return new Date(ms).toLocaleString("fr-FR", {
+    timeZone: "Europe/Paris",
+    weekday: "long",
+    day: "numeric",
+    month: "long",
+    hour: "2-digit",
+    minute: "2-digit",
+  });
+}
+
 export async function sendTelegram(text: string): Promise<void> {
   if (!TG_TOKEN || !TG_CHAT) return;
   try {

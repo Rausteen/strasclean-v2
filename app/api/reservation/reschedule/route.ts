@@ -7,6 +7,7 @@ import {
 } from "@/lib/db";
 import { checkResaToken } from "@/lib/reservationEmail";
 import { BOOKING_CONFIG, computeSlots, type Interval } from "@/lib/booking";
+import { sendTelegram, tgEscape, tgWhen } from "@/lib/telegram";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -80,5 +81,19 @@ export async function POST(req: Request) {
   }
 
   rescheduleReservation(id, scheduled_at, dayStart);
+
+  await sendTelegram(
+    [
+      "🔄 <b>Réservation reportée</b> (par le client)",
+      job.customer_name ? `👤 <b>${tgEscape(job.customer_name)}</b>` : "",
+      `🧽 ${tgEscape([job.prestation, job.vehicle_type].filter(Boolean).join(" · "))}`,
+      `🗓️ Avant : ${tgWhen(job.scheduled_at)}`,
+      `✅ Après : <b>${tgWhen(scheduled_at)}</b>`,
+      job.phone ? `📞 ${tgEscape(job.phone)}` : "",
+    ]
+      .filter(Boolean)
+      .join("\n"),
+  );
+
   return NextResponse.json({ ok: true, scheduled_at });
 }

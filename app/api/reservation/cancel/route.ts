@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { getJob, cancelReservation } from "@/lib/db";
 import { checkResaToken } from "@/lib/reservationEmail";
 import { BOOKING_CONFIG } from "@/lib/booking";
+import { sendTelegram, tgEscape, tgWhen } from "@/lib/telegram";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -41,5 +42,18 @@ export async function POST(req: Request) {
   }
 
   cancelReservation(id);
+
+  await sendTelegram(
+    [
+      "❌ <b>Réservation annulée</b> (par le client)",
+      job.customer_name ? `👤 <b>${tgEscape(job.customer_name)}</b>` : "",
+      `🧽 ${tgEscape([job.prestation, job.vehicle_type].filter(Boolean).join(" · "))}`,
+      `🗓️ ${tgWhen(job.scheduled_at)}`,
+      job.phone ? `📞 ${tgEscape(job.phone)}` : "",
+    ]
+      .filter(Boolean)
+      .join("\n"),
+  );
+
   return NextResponse.json({ ok: true });
 }
