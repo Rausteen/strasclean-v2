@@ -18,6 +18,7 @@ import {
 import { VEHICLE_TYPES, AUTO_OPTIONS } from "@/lib/plans";
 import { notifyNewLead } from "@/lib/notify";
 import { sendReservationConfirmation } from "@/lib/reservationEmail";
+import { sendTelegram, tgEscape } from "@/lib/telegram";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -155,8 +156,27 @@ export async function POST(req: Request) {
     minute: "2-digit",
   });
 
+  // Message Telegram équipe (best-effort).
+  const tgMsg = [
+    "📅 <b>Nouvelle réservation en ligne</b>",
+    `👤 <b>${tgEscape(fullName || firstName)}</b>`,
+    phone
+      ? `📞 <a href="tel:${tgEscape(phone.replace(/[^\d+]/g, ""))}">${tgEscape(phone)}</a>`
+      : "",
+    email ? `✉️ ${tgEscape(email)}` : "",
+    `🧽 ${tgEscape(`${f.name} · ${vehicle.label}`)}`,
+    optionLabels ? `➕ ${tgEscape(optionLabels)}` : "",
+    `🗓️ ${tgEscape(when)}`,
+    address ? `📍 ${tgEscape([address, postalCode].filter(Boolean).join(", "))}` : "",
+    `💶 <b>${total} €</b> (sur place)${discount > 0 ? ` — ${tgEscape(promoLabel)}` : ""}`,
+    notes ? `📝 ${tgEscape(notes)}` : "",
+  ]
+    .filter(Boolean)
+    .join("\n");
+
   // Notif équipe + confirmation client (jamais bloquant).
   await Promise.allSettled([
+    sendTelegram(tgMsg),
     notifyNewLead({
       id,
       ts: scheduled_at,
