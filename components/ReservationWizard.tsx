@@ -86,15 +86,18 @@ export default function ReservationWizard({
   // Code saisi mais non reconnu (pour un retour visuel discret).
   const promoInvalid = promo.trim().length > 0 && discount === 0;
 
-  // Event Meta 'InitiateCheckout' — une seule fois, dès qu'une formule est
-  // choisie (l'utilisateur commence réellement sa réservation).
+  // Event Meta 'InitiateCheckout' — une seule fois, quand l'utilisateur choisit
+  // son type de véhicule (intention plus ferme que le simple choix de formule).
   const checkoutFired = useRef(false);
   useEffect(() => {
-    if (formula && !checkoutFired.current) {
+    if (formula && vehicle && !checkoutFired.current) {
       checkoutFired.current = true;
-      window.scInitiateCheckout?.({ service: f?.name, value: f?.priceFrom });
+      window.scInitiateCheckout?.({
+        service: f ? `${f.name} · ${vehObj?.label ?? ""}` : undefined,
+        value: price,
+      });
     }
-  }, [formula, f]);
+  }, [formula, vehicle, f, vehObj, price]);
 
   const fetchSlots = useCallback(async () => {
     if (!date || !formula) return;
