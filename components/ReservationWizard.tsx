@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import {
   BOOKING_FORMULAS,
@@ -85,6 +85,16 @@ export default function ReservationWizard({
   const total = Math.max(0, price - discount);
   // Code saisi mais non reconnu (pour un retour visuel discret).
   const promoInvalid = promo.trim().length > 0 && discount === 0;
+
+  // Event Meta 'InitiateCheckout' — une seule fois, dès qu'une formule est
+  // choisie (l'utilisateur commence réellement sa réservation).
+  const checkoutFired = useRef(false);
+  useEffect(() => {
+    if (formula && !checkoutFired.current) {
+      checkoutFired.current = true;
+      window.scInitiateCheckout?.({ service: f?.name, value: f?.priceFrom });
+    }
+  }, [formula, f]);
 
   const fetchSlots = useCallback(async () => {
     if (!date || !formula) return;

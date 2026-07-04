@@ -819,5 +819,6 @@ declare global {
       data?: ScMatch,
     ) => void;
     scReserve?: (opts: ScMatch & { value?: number; service?: string }) => void;
+    scInitiateCheckout?: (opts?: { value?: number; service?: string }) => void;
   }
 }

@@ -235,6 +235,21 @@ export default function Analytics() {
             }
             window.scConvert = fireConversion;
 
+            // Début de réservation (l'utilisateur choisit une formule sur
+            // /reserver) → event Meta 'InitiateCheckout'.
+            function fireCheckout(opts){
+              opts = opts || {};
+              try {
+                if (typeof fbq === 'function') {
+                  var d = { currency: 'EUR' };
+                  if (opts.value) d.value = opts.value;
+                  if (opts.service) d.content_name = opts.service;
+                  fbq('track', 'InitiateCheckout', d);
+                }
+              } catch (_) { /* silencieux */ }
+            }
+            window.scInitiateCheckout = fireCheckout;
+
             // Réservation en ligne confirmée → event Meta 'Schedule' dédié
             // (+ GA4/Ads), avec la vraie valeur du RDV et l'advanced matching.
             function fireReserve(opts){
