@@ -7,6 +7,7 @@ import {
   type BookingRequest,
 } from "@/lib/db";
 import { notifyNewLead } from "@/lib/notify";
+import { sendTelegram, tgEscape } from "@/lib/telegram";
 import { checkSameOrigin } from "@/lib/auth";
 import { checkRateLimit, getClientIp } from "@/lib/ratelimit";
 import { HOME_SERVICES } from "@/lib/homeServices";
@@ -215,10 +216,25 @@ export async function POST(req: Request) {
     }
   }
 
-  // Notification email du nouveau lead (no-op si RESEND_API_KEY absente).
-  // notifyNewLead avale ses propres erreurs → ne peut pas faire échouer la
-  // réponse au client, dont le lead est déjà enregistré en base.
-  await notifyNewLead({ ...record, id });
+  // Notifications équipe (email + Telegram), best-effort et non bloquantes.
+  const waPhone = phone.replace(/[^\d]/g, "").replace(/^0/, "33");
+  const tgMsg = [
+    `📝 <b>Nouveau lead formulaire</b> (${section === "maison" ? "Maison" : "Auto"})`,
+    `👤 <b>${tgEscape(firstName)}</b>`,
+    `📞 <a href="tel:${tgEscape(phone.replace(/[^\d+]/g, ""))}">${tgEscape(phone)}</a>`,
+    email ? `✉️ ${tgEscape(email)}` : "",
+    `🧽 ${tgEscape([item.label, variant].filter(Boolean).join(" · "))}`,
+    postalCode ? `📍 ${tgEscape(postalCode)}` : "",
+    notes ? `📝 ${tgEscape(notes)}` : "",
+    waPhone ? `\n💬 <a href="https://wa.me/${waPhone}">Répondre sur WhatsApp</a>` : "",
+  ]
+    .filter(Boolean)
+    .join("\n");
+
+  await Promise.allSettled([
+    notifyNewLead({ ...record, id }),
+    sendTelegram(tgMsg),
+  ]);
 
   return NextResponse.json({ ok: true, id });
 }

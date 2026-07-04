@@ -114,57 +114,10 @@ async function notifyByEmail(lead: LeadInput): Promise<void> {
 }
 
 /**
- * Notification WhatsApp du gérant via CallMeBot (https://www.callmebot.com).
- * Gratuit, envoie un message sur TON propre WhatsApp. Activé uniquement si
- * CALLMEBOT_PHONE + CALLMEBOT_APIKEY sont définis (sinon no-op).
- *
- * Setup (2 min, une seule fois) :
- *   1. Ajoute le contact CallMeBot : +34 644 51 95 23
- *   2. Envoie-lui sur WhatsApp : « I allow callmebot to send me messages »
- *   3. Il te répond avec ton apikey personnelle.
- *   4. Renseigne côté hébergeur :
- *        CALLMEBOT_PHONE  = ton numéro au format international (ex: 33767052435)
- *        CALLMEBOT_APIKEY = la clé reçue
- */
-async function notifyByWhatsApp(lead: LeadInput): Promise<void> {
-  const phone = process.env.CALLMEBOT_PHONE;
-  const apikey = process.env.CALLMEBOT_APIKEY;
-  if (!phone || !apikey) return; // WhatsApp désactivé tant que non configuré
-
-  const sectionLabel = lead.section === "maison" ? "Maison" : "Auto";
-  const when = new Date(lead.ts).toLocaleString("fr-FR", {
-    timeZone: "Europe/Paris",
-  });
-  const variant = lead.variant ? ` (${lead.variant})` : "";
-  const msg =
-    `🟢 Nouveau lead ${sectionLabel} #${lead.id}\n` +
-    `👤 ${lead.first_name}\n` +
-    `📞 ${lead.phone}\n` +
-    `🧰 ${lead.service_label}${variant}\n` +
-    `✉️ ${lead.email || "—"}\n` +
-    `📝 ${lead.notes || "—"}\n` +
-    `🕒 ${when}`;
-
-  const url =
-    `https://api.callmebot.com/whatsapp.php?phone=${encodeURIComponent(phone)}` +
-    `&apikey=${encodeURIComponent(apikey)}&text=${encodeURIComponent(msg)}`;
-
-  try {
-    const res = await fetch(url, { method: "GET" });
-    if (!res.ok) {
-      const detail = await res.text().catch(() => "");
-      console.error(`[notify] CallMeBot a renvoyé ${res.status}: ${detail}`);
-    }
-  } catch (err) {
-    console.error("[notify] échec envoi WhatsApp lead", err);
-  }
-}
-
-/**
- * Notifie le gérant d'un nouveau lead : email (Resend) ET WhatsApp (CallMeBot)
- * en parallèle. Chaque canal est activé par ses propres variables d'env et
- * avale ses erreurs → ne peut jamais faire échouer l'enregistrement du lead.
+ * Notifie le gérant d'un nouveau lead par email (Resend). La notif Telegram
+ * est gérée séparément par l'appelant (booking-request / réservation).
+ * Avale ses erreurs → ne peut jamais faire échouer l'enregistrement du lead.
  */
 export async function notifyNewLead(lead: LeadInput): Promise<void> {
-  await Promise.all([notifyByEmail(lead), notifyByWhatsApp(lead)]);
+  await notifyByEmail(lead);
 }
