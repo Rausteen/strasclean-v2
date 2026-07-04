@@ -157,6 +157,19 @@ export default function ReservationWizard({
       });
       const data = (await res.json()) as { ok?: boolean; error?: string; price?: number };
       if (data.ok) {
+        // Event Meta 'Schedule' (+ GA/Ads) avec la valeur réelle du RDV et
+        // l'advanced matching (email/tél/nom/CP → Meta les hash).
+        if (typeof window !== "undefined" && typeof window.scReserve === "function") {
+          window.scReserve({
+            value: data.price ?? total,
+            service: f ? `${f.name} · ${vehObj?.label ?? ""}` : "reservation-auto",
+            email: form.email.trim(),
+            phone: form.phone.trim(),
+            firstName: form.firstName.trim(),
+            lastName: form.lastName.trim(),
+            postalCode: form.postalCode.trim(),
+          });
+        }
         setDone({ when: prettyWhen(date, time), price: data.price ?? total });
       } else {
         setError(data.error || "Une erreur est survenue.");

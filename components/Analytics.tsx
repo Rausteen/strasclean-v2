@@ -139,6 +139,7 @@ export default function Analytics() {
             var MAISON_WA  = ${j(ADS_MAISON_WA_LABEL)} || MAISON_LABEL;
             var MAISON_TEL = ${j(ADS_MAISON_PHONE_LABEL)} || MAISON_LABEL;
             var MAISON_FORM = ${j(ADS_MAISON_FORM_LABEL)} || MAISON_LABEL;
+            var PIXEL_ID = ${j(PIXEL_ID)};
 
             // Préfixes slug Maison — DOIT rester synchro avec lib/section.ts
             var MAISON_PREFIXES = [
@@ -172,7 +173,23 @@ export default function Analytics() {
             // formulaire de réservation. Pour 'form', on cible l'action de
             // conversion dédiée si elle existe, sinon repli sur le label
             // WhatsApp (la soumission compte quand même).
-            function fireConversion(kind, section){
+            // Advanced Matching Meta : passe les infos client (email, tél, nom,
+            // CP) au pixel. Le SDK Meta les HASH côté navigateur (SHA-256) avant
+            // envoi → améliore la correspondance des conversions. On ré-init le
+            // pixel avec ces données juste avant de tirer l'event.
+            function amInit(d){
+              if (typeof fbq !== 'function' || !PIXEL_ID || !d) return;
+              if (!d.email && !d.phone) return;
+              var am = {};
+              if (d.email)      am.em = String(d.email).trim().toLowerCase();
+              if (d.phone)      am.ph = String(d.phone).replace(/[^0-9]/g,'');
+              if (d.firstName)  am.fn = String(d.firstName).trim().toLowerCase();
+              if (d.lastName)   am.ln = String(d.lastName).trim().toLowerCase();
+              if (d.postalCode) am.zp = String(d.postalCode).trim();
+              try { fbq('init', PIXEL_ID, am); } catch (_) {}
+            }
+
+            function fireConversion(kind, section, data){
               var maison = section === 'maison';
               var sendTo;
               if (kind === 'form') {
@@ -206,6 +223,7 @@ export default function Analytics() {
                   }
                 }
                 if (typeof fbq === 'function') {
+                  amInit(data);
                   fbq('track', 'Lead', {
                     content_name: ga4Event,
                     section: section,
@@ -216,6 +234,33 @@ export default function Analytics() {
               } catch (_) { /* silencieux */ }
             }
             window.scConvert = fireConversion;
+
+            // Réservation en ligne confirmée → event Meta 'Schedule' dédié
+            // (+ GA4/Ads), avec la vraie valeur du RDV et l'advanced matching.
+            function fireReserve(opts){
+              opts = opts || {};
+              var value = opts.value || 0;
+              try {
+                if (typeof gtag === 'function') {
+                  gtag('event', 'schedule', { section: 'auto', value: value });
+                  var sendTo = AUTO_FORM || AUTO_WA;
+                  if (sendTo) {
+                    gtag('event', 'conversion', {
+                      'send_to': sendTo, 'value': value, 'currency': 'EUR'
+                    });
+                  }
+                }
+                if (typeof fbq === 'function') {
+                  amInit(opts);
+                  fbq('track', 'Schedule', {
+                    value: value,
+                    currency: 'EUR',
+                    content_name: opts.service || 'reservation-auto'
+                  });
+                }
+              } catch (_) { /* silencieux */ }
+            }
+            window.scReserve = fireReserve;
 
             document.addEventListener('click', function(e){
               var a = e.target && e.target.closest ? e.target.closest('a') : null;

@@ -50,7 +50,11 @@ export default function HeroLeadForm() {
       }
       // Conversion (GA4 / Google Ads / Meta) — cf. Analytics.tsx
       if (typeof window !== "undefined" && typeof window.scConvert === "function") {
-        window.scConvert("form", "auto");
+        window.scConvert("form", "auto", {
+          email: email.trim(),
+          phone: phone.trim(),
+          firstName: firstName.trim(),
+        });
       }
       setDone(true);
     } catch (err) {

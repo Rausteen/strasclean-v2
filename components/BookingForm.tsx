@@ -802,12 +802,22 @@ function SuccessPanel({
 }
 
 // Type augmentation : gtag + helper de conversion exposé par Analytics.tsx
+type ScMatch = {
+  email?: string;
+  phone?: string;
+  firstName?: string;
+  lastName?: string;
+  postalCode?: string;
+};
+
 declare global {
   interface Window {
     gtag?: (...args: unknown[]) => void;
     scConvert?: (
       kind: "whatsapp" | "phone" | "form",
       section: "auto" | "maison",
+      data?: ScMatch,
     ) => void;
+    scReserve?: (opts: ScMatch & { value?: number; service?: string }) => void;
   }
 }
