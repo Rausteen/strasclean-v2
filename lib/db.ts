@@ -165,6 +165,7 @@ function openDb(): Database.Database {
       reminder_sent INTEGER NOT NULL DEFAULT 0,  -- rappel J-1 envoyé
       review_step INTEGER NOT NULL DEFAULT 0,    -- relances demande d'avis Google
       completed_at INTEGER,                      -- horodatage de fin du job (ancre relances avis)
+      confirmation_sent INTEGER NOT NULL DEFAULT 0, -- email de confirmation RDV envoyé
       created_at INTEGER NOT NULL
     );
     CREATE INDEX IF NOT EXISTS jobs_ts ON jobs(ts DESC);
@@ -250,6 +251,7 @@ function openDb(): Database.Database {
     "ALTER TABLE jobs ADD COLUMN reminder_sent INTEGER NOT NULL DEFAULT 0",
     "ALTER TABLE jobs ADD COLUMN review_step INTEGER NOT NULL DEFAULT 0",
     "ALTER TABLE jobs ADD COLUMN completed_at INTEGER",
+    "ALTER TABLE jobs ADD COLUMN confirmation_sent INTEGER NOT NULL DEFAULT 0",
   ]) {
     try {
       db.exec(stmt);
@@ -913,6 +915,7 @@ export type Job = {
   reminder_sent: number;
   review_step: number; // relances avis Google (0 = pas encore démarré)
   completed_at: number | null;
+  confirmation_sent: number; // email de confirmation RDV envoyé (0/1)
   created_at: number;
 };
 
@@ -1298,4 +1301,7 @@ export function listJobsForReviewDrip(maxStep: number): Job[] {
 }
 export function markReviewStep(id: number, step: number): void {
   db.prepare(`UPDATE jobs SET review_step = ? WHERE id = ?`).run(step, id);
+}
+export function markConfirmationSent(id: number): void {
+  db.prepare(`UPDATE jobs SET confirmation_sent = 1 WHERE id = ?`).run(id);
 }

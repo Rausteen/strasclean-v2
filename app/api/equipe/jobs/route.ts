@@ -8,9 +8,44 @@ import {
   getJob,
   markJobCompleted,
   markReviewStep,
+  markConfirmationSent,
   type JobInput,
 } from "@/lib/db";
 import { sendReviewRequest } from "@/lib/reviewEmail";
+import { sendReservationConfirmation } from "@/lib/reservationEmail";
+
+// Envoie la confirmation de RDV (une seule fois) si le job a un email + une
+// heure et n'a pas déjà été confirmé. Best-effort, ne throw jamais.
+async function maybeSendConfirmation(id: number): Promise<void> {
+  const job = getJob(id);
+  if (
+    !job ||
+    job.confirmation_sent ||
+    job.status !== "a_faire" ||
+    !job.email ||
+    !job.scheduled_at
+  ) {
+    return;
+  }
+  markConfirmationSent(id); // marqué avant l'envoi → jamais de doublon
+  const when = new Date(job.scheduled_at).toLocaleString("fr-FR", {
+    timeZone: "Europe/Paris",
+    weekday: "long",
+    day: "numeric",
+    month: "long",
+    hour: "2-digit",
+    minute: "2-digit",
+  });
+  await sendReservationConfirmation({
+    id: job.id,
+    email: job.email,
+    prenom: (job.customer_name || "").split(" ")[0] || "vous",
+    service: [job.prestation, job.vehicle_type].filter(Boolean).join(" · "),
+    when,
+    price: job.total ?? job.price ?? 0,
+    address: job.address ?? null,
+  });
+}
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -80,6 +115,7 @@ export async function POST(req: Request) {
     return NextResponse.json({ ok: false, error: "Bad body" }, { status: 400 });
   }
   const id = insertJob(toJobInput(body));
+  await maybeSendConfirmation(id);
   return NextResponse.json({ ok: true, id });
 }
 
@@ -135,6 +171,9 @@ export async function PATCH(req: Request) {
       markReviewStep(id, 1);
       await sendReviewRequest(job, 0); // best-effort, ne throw pas
     }
+  } else {
+    // Confirmation auto si le job (à faire) a désormais email + heure.
+    await maybeSendConfirmation(id);
   }
   return NextResponse.json({ ok: true });
 }

@@ -7,6 +7,7 @@ import {
   insertReservation,
   findLeadByContact,
   updateLead,
+  markConfirmationSent,
 } from "@/lib/db";
 import {
   getFormula,
@@ -146,6 +147,9 @@ export async function POST(req: Request) {
     source: "Réservation en ligne",
     lead_id: lead?.id ?? null,
   });
+  // La confirmation est envoyée ci-dessous → marqué pour éviter un doublon si
+  // l'équipe édite ce RDV depuis /equipe.
+  markConfirmationSent(id);
 
   const when = new Date(scheduled_at).toLocaleString("fr-FR", {
     timeZone: "Europe/Paris",
