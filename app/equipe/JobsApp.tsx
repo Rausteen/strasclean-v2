@@ -449,8 +449,11 @@ export default function JobsApp({
     setDraft({
       ...emptyDraft(),
       phone: lead.phone ?? "",
-      source: "Meta Ads",
-      notes: lead.full_name ? `Prospect : ${lead.full_name}` : "",
+      email: lead.email ?? "",
+      customer_name: lead.full_name ?? "",
+      source: lead.source === "meta_ads" ? "Meta Ads" : "Prospect",
+      lead_id: lead.id,
+      notes: "",
     });
   }
 
