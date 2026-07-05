@@ -13,9 +13,9 @@
 
 FROM node:20-slim AS base
 WORKDIR /app
-# Outils natifs pour compiler better-sqlite3 (node-gyp).
+# Outils natifs pour compiler better-sqlite3 (node-gyp) + curl (crons Dokploy).
 RUN apt-get update \
-  && apt-get install -y --no-install-recommends python3 make g++ \
+  && apt-get install -y --no-install-recommends python3 make g++ curl \
   && rm -rf /var/lib/apt/lists/*
 ENV NEXT_TELEMETRY_DISABLED=1
 
