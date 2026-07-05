@@ -72,6 +72,7 @@ export default async function ReservationPage({
         id={job.id}
         token={t!}
         formulaId={formula?.id ?? ""}
+        durationMin={job.duration_min ?? 90}
         service={[job.prestation, job.vehicle_type].filter(Boolean).join(" · ")}
         when={when}
         price={job.total ?? job.price ?? 0}

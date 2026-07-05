@@ -15,7 +15,11 @@ export const BOOKING_CONFIG = {
   leadTimeMin: 120, // délai mini avant un RDV (+2 h)
   horizonDays: 30, // réservation jusqu'à 30 j à l'avance
   cancelHoursBefore: 3, // annulation/report possible jusqu'à 3 h avant
-  openDays: [3, 5, 6], // jours ouvrés (0=dim..6=sam) → mer, ven, sam
+  openDays: [3, 5, 6], // jours pleins (0=dim..6=sam) → mer, ven, sam (8h-19h)
+  // Jours "extra" : seulement un créneau matinal, et pas les formules longues.
+  extraDays: [0, 1, 2, 4], // dim, lun, mar, jeu
+  extraDaySlotsMin: [8 * 60], // uniquement 08:00 ces jours-là
+  extraDayMaxDurationMin: 120, // exclut l'Intégrale (150 min) les jours extra
 };
 
 export type BookingFormula = {
@@ -110,14 +114,39 @@ export function computeSlots(
   busy: Interval[],
   nowMs: number,
 ): string[] {
-  const { openMin, closeMin, slotStepMin, bufferMin, leadTimeMin } =
-    BOOKING_CONFIG;
+  const {
+    openMin,
+    closeMin,
+    slotStepMin,
+    bufferMin,
+    leadTimeMin,
+    openDays,
+    extraDays,
+    extraDaySlotsMin,
+    extraDayMaxDurationMin,
+  } = BOOKING_CONFIG;
   const out: string[] = [];
-  // Jour fermé → aucun créneau.
-  if (!isOpenDay(new Date(dayStartMs).getDay())) return out;
+  const wd = new Date(dayStartMs).getDay();
   const minAbsStart = nowMs + leadTimeMin * 60000;
 
-  for (let start = openMin; start + durationMin <= closeMin; start += slotStepMin) {
+  // Débuts candidats selon le type de jour.
+  let starts: number[];
+  if (openDays.includes(wd)) {
+    // Jour plein : tous les créneaux 8h → 19h.
+    starts = [];
+    for (let s = openMin; s + durationMin <= closeMin; s += slotStepMin) {
+      starts.push(s);
+    }
+  } else if (extraDays.includes(wd)) {
+    // Jour extra : uniquement le(s) créneau(x) matinal(aux), et pas les
+    // formules longues (Intégrale).
+    if (durationMin > extraDayMaxDurationMin) return out;
+    starts = extraDaySlotsMin.filter((s) => s + durationMin <= closeMin);
+  } else {
+    return out; // jour fermé
+  }
+
+  for (const start of starts) {
     const end = start + durationMin;
     // délai mini (heure absolue du créneau)
     if (dayStartMs + start * 60000 < minAbsStart) continue;
@@ -130,7 +159,20 @@ export function computeSlots(
   return out;
 }
 
-/** Vrai si le jour (0=dim..6=sam) est ouvré. */
+/** Vrai si le jour (0=dim..6=sam) accepte des réservations (plein OU extra). */
 export function isOpenDay(weekday: number): boolean {
-  return BOOKING_CONFIG.openDays.includes(weekday);
+  return (
+    BOOKING_CONFIG.openDays.includes(weekday) ||
+    BOOKING_CONFIG.extraDays.includes(weekday)
+  );
+}
+
+/** Vrai si le jour est réservable POUR une durée donnée (les jours extra
+ *  n'acceptent pas les formules longues, ex. Intégrale 150 min). */
+export function isDayBookable(weekday: number, durationMin: number): boolean {
+  if (BOOKING_CONFIG.openDays.includes(weekday)) return true;
+  if (BOOKING_CONFIG.extraDays.includes(weekday)) {
+    return durationMin <= BOOKING_CONFIG.extraDayMaxDurationMin;
+  }
+  return false;
 }

@@ -411,6 +411,7 @@ export default function ReservationWizard({
           <div className="grid gap-5 sm:grid-cols-[1fr_15rem]">
             <BookingCalendar
               value={date}
+              durationMin={f?.durationMin}
               onSelect={(d) => {
                 setDate(d);
                 setTime("");
@@ -459,8 +460,9 @@ export default function ReservationWizard({
           </div>
 
           <p className="mt-4 text-center text-xs text-slate-400">
-            Interventions le <b className="text-slate-500">mercredi, vendredi et
-            samedi</b> · 8h – 19h
+            <b className="text-slate-500">Mer · ven · sam</b> : 8h – 19h.{" "}
+            <b className="text-slate-500">Lun · mar · jeu · dim</b> : créneau de 8h
+            (sauf Intégrale).
           </p>
         </Section>
       )}

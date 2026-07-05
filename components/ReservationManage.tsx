@@ -22,6 +22,7 @@ type Props = {
   id: number;
   token: string;
   formulaId: string;
+  durationMin: number;
   service: string;
   when: string;
   price: number;
@@ -201,6 +202,7 @@ export default function ReservationManage(p: Props) {
           <div className="grid gap-5 sm:grid-cols-[1fr_14rem]">
             <BookingCalendar
               value={date}
+              durationMin={p.durationMin}
               onSelect={(d) => {
                 setDate(d);
                 setTime("");

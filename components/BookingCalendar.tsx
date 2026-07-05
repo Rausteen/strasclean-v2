@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import { BOOKING_CONFIG, isOpenDay } from "@/lib/booking";
+import { BOOKING_CONFIG, isOpenDay, isDayBookable } from "@/lib/booking";
 
 const WEEKDAYS = ["L", "M", "M", "J", "V", "S", "D"];
 const pad = (n: number) => String(n).padStart(2, "0");
@@ -23,9 +23,12 @@ export function firstOpenDay(): string {
 export default function BookingCalendar({
   value,
   onSelect,
+  durationMin,
 }: {
   value: string;
   onSelect: (dateStr: string) => void;
+  /** Durée de la prestation → grise les jours extra pour les formules longues. */
+  durationMin?: number;
 }) {
   const today = useMemo(() => {
     const d = new Date();
@@ -66,7 +69,9 @@ export default function BookingCalendar({
   const selectable = (d: Date) =>
     d.getTime() >= today.getTime() &&
     d.getTime() <= maxMs &&
-    isOpenDay(d.getDay());
+    (durationMin != null
+      ? isDayBookable(d.getDay(), durationMin)
+      : isOpenDay(d.getDay()));
 
   const thisMonthFirst = new Date(today.getFullYear(), today.getMonth(), 1);
   const canPrev = new Date(year, month, 1) > thisMonthFirst;

@@ -48,6 +48,11 @@ const ADS_AUTO_LABEL = process.env.NEXT_PUBLIC_GOOGLE_ADS_AUTO_LABEL;
 const ADS_AUTO_WA_LABEL = process.env.NEXT_PUBLIC_GOOGLE_ADS_AUTO_WA_LABEL;
 const ADS_AUTO_PHONE_LABEL = process.env.NEXT_PUBLIC_GOOGLE_ADS_AUTO_PHONE_LABEL;
 const ADS_AUTO_FORM_LABEL = process.env.NEXT_PUBLIC_GOOGLE_ADS_AUTO_FORM_LABEL;
+// Action de conversion « Réservation » (PRIMARY) — réservation en ligne
+// confirmée, avec la valeur réelle du RDV (prix dynamique). Distincte du
+// « Contact » (WhatsApp/téléphone/formulaire) qui reste en secondary.
+const ADS_AUTO_RESERVATION_LABEL =
+  process.env.NEXT_PUBLIC_GOOGLE_ADS_AUTO_RESERVATION_LABEL;
 
 const ADS_MAISON_ID = process.env.NEXT_PUBLIC_GOOGLE_ADS_MAISON_ID;
 const ADS_MAISON_LABEL = process.env.NEXT_PUBLIC_GOOGLE_ADS_MAISON_LABEL;
@@ -139,6 +144,9 @@ export default function Analytics() {
             var MAISON_WA  = ${j(ADS_MAISON_WA_LABEL)} || MAISON_LABEL;
             var MAISON_TEL = ${j(ADS_MAISON_PHONE_LABEL)} || MAISON_LABEL;
             var MAISON_FORM = ${j(ADS_MAISON_FORM_LABEL)} || MAISON_LABEL;
+            // Action « Réservation » (primary). Repli sur le libellé formulaire
+            // puis Contact si non configurée → la conv part quand même.
+            var AUTO_RESA = ${j(ADS_AUTO_RESERVATION_LABEL)} || AUTO_FORM || AUTO_LABEL;
             var PIXEL_ID = ${j(PIXEL_ID)};
 
             // Préfixes slug Maison — DOIT rester synchro avec lib/section.ts
@@ -258,10 +266,10 @@ export default function Analytics() {
               try {
                 if (typeof gtag === 'function') {
                   gtag('event', 'schedule', { section: 'auto', value: value });
-                  var sendTo = AUTO_FORM || AUTO_WA;
-                  if (sendTo) {
+                  // Action « Réservation » (primary) avec le prix réel du RDV.
+                  if (AUTO_RESA) {
                     gtag('event', 'conversion', {
-                      'send_to': sendTo, 'value': value, 'currency': 'EUR'
+                      'send_to': AUTO_RESA, 'value': value, 'currency': 'EUR'
                     });
                   }
                 }
