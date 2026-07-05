@@ -68,5 +68,8 @@ COPY --from=build /app/.next ./.next
 COPY --from=build /app/public ./public
 COPY --from=build /app/package.json ./package.json
 COPY --from=build /app/next.config.js ./next.config.js
+# Scripts de cron (appelés par les tâches planifiées Dokploy), rendus exécutables.
+COPY --from=build /app/scripts ./scripts
+RUN chmod +x scripts/*.sh
 EXPOSE 3000
 CMD ["npm", "start"]
