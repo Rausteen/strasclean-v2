@@ -8,19 +8,11 @@ import {
   isServedPostal,
   promoDiscount,
 } from "@/lib/booking";
-import { VEHICLE_TYPES, AUTO_OPTIONS, autoOptionPrice } from "@/lib/plans";
+import { VEHICLE_TYPES } from "@/lib/plans";
 import BookingCalendar from "@/components/BookingCalendar";
 import { ClockIcon, CheckIcon, ArrowRightIcon } from "@/components/Icon";
 
-const STEP_LABELS = ["Formule", "Véhicule", "Créneau", "Vous", "Récap"];
-
-// Sous-titres véhicule (repère de gabarit, sans emoji → rendu pro).
-const VEHICLE_HINTS: Record<string, string> = {
-  citadine: "Petite ou compacte",
-  berline: "Berline, break, familiale",
-  suv: "SUV, 4×4, monospace",
-  utilitaire: "Fourgon, véhicule pro",
-};
+const STEP_LABELS = ["Véhicule", "Formule", "Créneau", "Vous", "Récap"];
 
 // Durée lisible : 60 → "≈ 1h", 90 → "≈ 1h30", 150 → "≈ 2h30".
 function durLabel(min: number): string {
@@ -53,10 +45,11 @@ export default function ReservationWizard({
 }: {
   initialFormula?: string;
 }) {
-  const [step, setStep] = useState(initialFormula ? 1 : 0);
+  // On commence TOUJOURS par le véhicule (étape 0). Une formule pré-choisie
+  // (via ?formule=) est mémorisée pour l'étape 1, mais le véhicule passe avant.
+  const [step, setStep] = useState(0);
   const [formula, setFormula] = useState(initialFormula);
   const [vehicle, setVehicle] = useState("");
-  const [options, setOptions] = useState<string[]>([]);
   const [date, setDate] = useState("");
   const [time, setTime] = useState("");
   const [slots, setSlots] = useState<string[]>([]);
@@ -78,26 +71,23 @@ export default function ReservationWizard({
   const f = BOOKING_FORMULAS.find((x) => x.id === formula);
   const vehObj = VEHICLE_TYPES.find((v) => v.id === vehicle);
   const price = useMemo(
-    () => (formula && vehicle ? computePrice(formula, vehicle, options) : 0),
-    [formula, vehicle, options],
+    () => (formula && vehicle ? computePrice(formula, vehicle) : 0),
+    [formula, vehicle],
   );
   const discount = promoDiscount(promo);
   const total = Math.max(0, price - discount);
   // Code saisi mais non reconnu (pour un retour visuel discret).
   const promoInvalid = promo.trim().length > 0 && discount === 0;
 
-  // Event Meta 'InitiateCheckout' — une seule fois, quand l'utilisateur choisit
-  // son type de véhicule (intention plus ferme que le simple choix de formule).
+  // Event Meta 'InitiateCheckout' — une seule fois, dès le choix du véhicule
+  // (1ʳᵉ action ferme du tunnel).
   const checkoutFired = useRef(false);
   useEffect(() => {
-    if (formula && vehicle && !checkoutFired.current) {
+    if (vehicle && !checkoutFired.current) {
       checkoutFired.current = true;
-      window.scInitiateCheckout?.({
-        service: f ? `${f.name} · ${vehObj?.label ?? ""}` : undefined,
-        value: price,
-      });
+      window.scInitiateCheckout?.({ service: vehObj?.label });
     }
-  }, [formula, vehicle, f, vehObj, price]);
+  }, [vehicle, vehObj]);
 
   const fetchSlots = useCallback(async () => {
     if (!date || !formula) return;
@@ -140,13 +130,10 @@ export default function ReservationWizard({
   function set<K extends keyof typeof form>(k: K, v: string) {
     setForm((p) => ({ ...p, [k]: v }));
   }
-  function toggleOption(id: string) {
-    setOptions((p) => (p.includes(id) ? p.filter((x) => x !== id) : [...p, id]));
-  }
 
   const canNext =
-    (step === 0 && !!formula) ||
-    (step === 1 && !!vehicle) ||
+    (step === 0 && !!vehicle) ||
+    (step === 1 && !!formula) ||
     (step === 2 && !!date && !!time) ||
     (step === 3 &&
       !!form.firstName &&
@@ -166,7 +153,7 @@ export default function ReservationWizard({
       const res = await fetch("/api/reservation", {
         method: "POST",
         headers: { "content-type": "application/json" },
-        body: JSON.stringify({ formula, vehicle, options, date, time, promo, ...form }),
+        body: JSON.stringify({ formula, vehicle, date, time, promo, ...form }),
       });
       const data = (await res.json()) as { ok?: boolean; error?: string; price?: number };
       if (data.ok) {
@@ -257,13 +244,57 @@ export default function ReservationWizard({
         </p>
       </div>
 
-      {/* ÉTAPE 0 — Formule */}
+      {/* ÉTAPE 0 — Véhicule (sans prix) */}
       {step === 0 && (
+        <Section title="Votre véhicule">
+          <div className="space-y-2.5">
+            {VEHICLE_TYPES.map((v) => {
+              const active = vehicle === v.id;
+              return (
+                <button
+                  key={v.id}
+                  onClick={() => setVehicle(v.id)}
+                  className={`flex w-full items-center gap-3 rounded-2xl border p-2.5 text-left transition ${
+                    active
+                      ? "border-brand-500 bg-brand-50/60 ring-2 ring-brand-500/40"
+                      : "border-slate-200 bg-white hover:border-slate-300 hover:bg-slate-50/60"
+                  }`}
+                >
+                  <span className="grid h-14 w-20 shrink-0 place-items-center rounded-xl bg-slate-50 p-1 sm:h-16 sm:w-24">
+                    {v.image ? (
+                      // eslint-disable-next-line @next/next/no-img-element
+                      <img
+                        src={v.image}
+                        alt={v.label}
+                        className="max-h-full max-w-full object-contain"
+                        loading="lazy"
+                      />
+                    ) : (
+                      <span className="text-3xl">{v.emoji}</span>
+                    )}
+                  </span>
+                  <span className="min-w-0 flex-1">
+                    <span className="block font-semibold text-slate-900">{v.label}</span>
+                    <span className="block text-[13px] leading-snug text-slate-500">
+                      {v.desc}
+                    </span>
+                  </span>
+                  <Radio active={active} className="mr-0.5 shrink-0" />
+                </button>
+              );
+            })}
+          </div>
+        </Section>
+      )}
+
+      {/* ÉTAPE 1 — Formule (prix déjà calculé pour le véhicule) */}
+      {step === 1 && (
         <Section title="Choisissez votre formule">
           <div className="space-y-3">
             {BOOKING_FORMULAS.map((fo) => {
               const active = formula === fo.id;
               const popular = fo.id === "premium";
+              const fprice = computePrice(fo.id, vehicle, []);
               return (
                 <button
                   key={fo.id}
@@ -293,13 +324,8 @@ export default function ReservationWizard({
                         {durLabel(fo.durationMin)}
                       </span>
                     </span>
-                    <span className="shrink-0 text-right">
-                      <span className="block text-[10px] uppercase tracking-wide text-slate-400">
-                        dès
-                      </span>
-                      <span className="text-lg font-bold text-slate-900">
-                        {fo.priceFrom}&nbsp;€
-                      </span>
+                    <span className="shrink-0 text-lg font-bold text-slate-900">
+                      {fprice}&nbsp;€
                     </span>
                   </span>
 
@@ -322,86 +348,7 @@ export default function ReservationWizard({
               );
             })}
           </div>
-        </Section>
-      )}
 
-      {/* ÉTAPE 1 — Véhicule + options */}
-      {step === 1 && (
-        <Section title="Votre véhicule">
-          <div className="grid grid-cols-2 gap-2.5">
-            {VEHICLE_TYPES.map((v) => {
-              const active = vehicle === v.id;
-              return (
-                <button
-                  key={v.id}
-                  onClick={() => setVehicle(v.id)}
-                  className={`flex flex-col rounded-2xl border p-4 text-left transition ${
-                    active
-                      ? "border-brand-500 bg-brand-50/60 ring-2 ring-brand-500/40"
-                      : "border-slate-200 bg-white hover:border-slate-300 hover:bg-slate-50/60"
-                  }`}
-                >
-                  <span className="flex items-center justify-between gap-2">
-                    <span className="font-semibold text-slate-900">{v.label}</span>
-                    <Radio active={active} />
-                  </span>
-                  <span className="mt-0.5 text-xs leading-snug text-slate-500">
-                    {VEHICLE_HINTS[v.id] ?? ""}
-                  </span>
-                  <span
-                    className={`mt-2 text-sm font-semibold ${
-                      v.surcharge > 0 ? "text-slate-700" : "text-brand-700"
-                    }`}
-                  >
-                    {v.surcharge > 0 ? `+${v.surcharge} €` : "Inclus"}
-                  </span>
-                </button>
-              );
-            })}
-          </div>
-
-          {!!formula && (
-            <div className="mt-6">
-              <p className="mb-2 text-sm font-semibold text-slate-700">
-                Options (facultatif)
-              </p>
-              <div className="space-y-2">
-                {AUTO_OPTIONS.map((o) => {
-                  const active = options.includes(o.id);
-                  const p = vehicle ? autoOptionPrice(o, vehicle) : o.priceByVehicle.citadine;
-                  return (
-                    <button
-                      key={o.id}
-                      onClick={() => toggleOption(o.id)}
-                      className={`flex w-full items-center justify-between rounded-xl border px-4 py-3 text-left transition ${
-                        active
-                          ? "border-brand-500 bg-brand-50"
-                          : "border-slate-200 bg-white"
-                      }`}
-                    >
-                      <span className="text-sm font-medium text-slate-800">
-                        {o.label}
-                      </span>
-                      <span className="flex items-center gap-2">
-                        <span className="text-sm font-semibold text-brand-700">
-                          +{p} €
-                        </span>
-                        <span
-                          className={`grid h-5 w-5 place-items-center rounded-md border transition ${
-                            active
-                              ? "border-brand-500 bg-brand-500 text-white"
-                              : "border-slate-300 text-transparent"
-                          }`}
-                        >
-                          <CheckIcon size={12} />
-                        </span>
-                      </span>
-                    </button>
-                  );
-                })}
-              </div>
-            </div>
-          )}
         </Section>
       )}
 
@@ -565,18 +512,6 @@ export default function ReservationWizard({
                 {vehObj && vehObj.surcharge > 0 && (
                   <PriceLine label={vehObj.label} value={`+${vehObj.surcharge} €`} muted />
                 )}
-                {options.map((oid) => {
-                  const o = AUTO_OPTIONS.find((x) => x.id === oid);
-                  if (!o) return null;
-                  return (
-                    <PriceLine
-                      key={oid}
-                      label={o.label}
-                      value={`+${autoOptionPrice(o, vehicle)} €`}
-                      muted
-                    />
-                  );
-                })}
                 {discount > 0 && (
                   <div className="flex items-baseline justify-between gap-3 text-sm">
                     <span className="font-medium text-brand-700">

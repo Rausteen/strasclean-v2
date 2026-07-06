@@ -97,19 +97,31 @@ export const findPlan = (id: string) => PLANS.find((p) => p.id === id);
 //  véhicules plus volumineux, un léger supplément forfaitaire est appliqué.
 //  Centralisé ici pour rester cohérent partout (PricingSection, /formules).
 
+// Classe de tarif (pour le prix des options). Plusieurs véhicules partagent
+// la même classe (ex. Sportive → berline, Pick-up/Van → utilitaire).
+export type VehicleTier = "citadine" | "berline" | "suv" | "utilitaire";
+
 export type VehicleType = {
-  id: "citadine" | "berline" | "suv" | "utilitaire";
+  id: string;
   label: string;
+  /** Descriptif affiché sous le nom. */
+  desc: string;
+  /** Vignette (dans public/vehicules/…) — repli sur l'emoji si absente. */
+  image?: string;
   emoji: string;
-  /** Supplément en € au-dessus du prix de base "citadine" */
+  /** Classe de tarif pour le prix des options. */
+  tier: VehicleTier;
+  /** Supplément en € au-dessus du prix de base "citadine". */
   surcharge: number;
 };
 
 export const VEHICLE_TYPES: VehicleType[] = [
-  { id: "citadine", label: "Citadine", emoji: "🚗", surcharge: 0 },
-  { id: "berline", label: "Berline", emoji: "🚙", surcharge: 10 },
-  { id: "suv", label: "SUV", emoji: "🚐", surcharge: 20 },
-  { id: "utilitaire", label: "Utilitaire", emoji: "🚛", surcharge: 30 },
+  { id: "citadine", label: "Citadine", desc: "Petits véhicules (Mini, Fiat 500)", image: "/vehicules/citadine.png", emoji: "🚗", tier: "citadine", surcharge: 0 },
+  { id: "berline", label: "Berline", desc: "Voitures standards (Audi A4, Classe C)", image: "/vehicules/berline.png", emoji: "🚙", tier: "berline", surcharge: 10 },
+  { id: "sportive", label: "Sportive", desc: "Voitures de sport (Porsche, Ferrari)", image: "/vehicules/sportive.png", emoji: "🏎️", tier: "berline", surcharge: 10 },
+  { id: "suv", label: "SUV", desc: "Véhicules plus grands (5008, Range Rover)", image: "/vehicules/suv.png", emoji: "🚙", tier: "suv", surcharge: 20 },
+  { id: "pickup", label: "Pick-up", desc: "Pick-up, camionnettes (Silverado, Tacoma)", image: "/vehicules/pickup.png", emoji: "🛻", tier: "utilitaire", surcharge: 30 },
+  { id: "van", label: "Van", desc: "Minivans, fourgonnettes", image: "/vehicules/van.png", emoji: "🚐", tier: "utilitaire", surcharge: 30 },
 ];
 
 // ─── Options selon l'état du véhicule ────────────────────────────────────
@@ -123,8 +135,8 @@ export type AutoOptionId = "poils" | "tres-sale" | "odeur" | "taches";
 export type AutoOption = {
   id: AutoOptionId;
   label: string;
-  /** Prix fixe (€) selon le type de véhicule. */
-  priceByVehicle: Record<VehicleType["id"], number>;
+  /** Prix fixe (€) selon la CLASSE de véhicule (tier). */
+  priceByVehicle: Record<VehicleTier, number>;
 };
 
 export const AUTO_OPTIONS: AutoOption[] = [
@@ -150,9 +162,11 @@ export const AUTO_OPTIONS: AutoOption[] = [
   },
 ];
 
-/** Prix d'une option pour un véhicule (fallback citadine si véhicule inconnu). */
-export const autoOptionPrice = (o: AutoOption, vehicleId: string): number =>
-  o.priceByVehicle[vehicleId as VehicleType["id"]] ?? o.priceByVehicle.citadine;
+/** Prix d'une option pour un véhicule (via sa classe de tarif). */
+export const autoOptionPrice = (o: AutoOption, vehicleId: string): number => {
+  const tier = VEHICLE_TYPES.find((v) => v.id === vehicleId)?.tier ?? "citadine";
+  return o.priceByVehicle[tier];
+};
 
 // ─── Services rapides du formulaire d'accueil (hero) ─────────────────────
 //  Choix volontairement larges (≠ formules détaillées) pour un 1er contact
