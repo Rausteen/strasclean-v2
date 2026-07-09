@@ -8,7 +8,9 @@ import {
   findLeadByContact,
   updateLead,
   markConfirmationSent,
+  getSessionAcquisition,
 } from "@/lib/db";
+import { acquisitionLabel } from "@/lib/ua";
 import {
   getFormula,
   computePrice,
@@ -121,6 +123,13 @@ export async function POST(req: Request) {
     .filter(Boolean)
     .join(", ");
 
+  // Attribution d'acquisition : le sid analytics (Tracker) relie cette
+  // réservation à l'historique de visites → Google Ads / SEO / Meta / direct…
+  // "anon" = localStorage bloqué chez le client, sid partagé → inutilisable.
+  const sid = str(b.sid, 64);
+  const acq = sid && sid !== "anon" ? getSessionAcquisition(sid) : null;
+  const acqLabel = acq ? acquisitionLabel(acq) : null;
+
   // Auto-conversion d'un prospect existant (email ou téléphone).
   const lead = findLeadByContact(email, phone);
   if (lead) updateLead(lead.id, { status: "converti" });
@@ -144,8 +153,9 @@ export async function POST(req: Request) {
     address,
     postal_code: postalCode,
     notes: resNotes,
-    source: "Réservation en ligne",
+    source: acqLabel ? `Réservation en ligne · ${acqLabel}` : "Réservation en ligne",
     lead_id: lead?.id ?? null,
+    session_id: sid && sid !== "anon" ? sid : null,
   });
   // La confirmation est envoyée ci-dessous → marqué pour éviter un doublon si
   // l'équipe édite ce RDV depuis /equipe.
@@ -173,6 +183,7 @@ export async function POST(req: Request) {
     `🗓️ ${tgEscape(when)}`,
     address ? `📍 ${tgEscape([address, postalCode].filter(Boolean).join(", "))}` : "",
     `💶 <b>${total} €</b> (sur place)${discount > 0 ? ` — ${tgEscape(promoLabel)}` : ""}`,
+    acqLabel ? `📈 Source : ${tgEscape(acqLabel)}` : "",
     notes ? `📝 ${tgEscape(notes)}` : "",
   ]
     .filter(Boolean)

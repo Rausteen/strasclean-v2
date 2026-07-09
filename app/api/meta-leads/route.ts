@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import crypto from "crypto";
-import { insertLead } from "@/lib/db";
+import { insertLead, getUnnotifiedLeadId, markLeadTgNotified } from "@/lib/db";
 
 // ─────────────────────────────────────────────────────────────────────────
 //  Webhook Meta Lead Ads → Telegram (instantané).
@@ -139,8 +139,9 @@ async function handleLead(leadgenId: string): Promise<void> {
 
     // Stockage du prospect (best-effort, dédup sur l'id Meta). Ne doit jamais
     // empêcher la notification Telegram.
+    let insertedId = 0;
     try {
-      insertLead({
+      insertedId = insertLead({
         source: "meta_ads",
         meta_lead_id: leadgenId,
         form_id: lead.form_id ?? null,
@@ -171,6 +172,15 @@ async function handleLead(leadgenId: string): Promise<void> {
     ].filter(Boolean);
 
     await sendTelegram(lines.join("\n"));
+
+    // Flag partagé avec le poll de rattrapage : notifié ici → le poll ne
+    // renverra pas ce lead une seconde fois.
+    try {
+      const pendingId = insertedId > 0 ? insertedId : getUnnotifiedLeadId(leadgenId);
+      if (pendingId > 0) markLeadTgNotified(pendingId);
+    } catch {
+      /* best-effort */
+    }
   } catch (e) {
     // On prévient quand même sur Telegram pour ne jamais perdre un lead.
     await sendTelegram(

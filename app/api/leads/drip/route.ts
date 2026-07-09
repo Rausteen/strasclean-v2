@@ -42,6 +42,10 @@ export async function GET(req: NextRequest) {
       if (ok) {
         markLeadEmailed(lead.id, step + 1);
         sent++;
+        // Resend limite à ~2 req/s : sans pause, un lot de leads dus en même
+        // temps (rattrapage après panne) perd des envois en 429 et doit
+        // attendre le passage suivant du cron.
+        await new Promise((r) => setTimeout(r, 600));
       }
       break; // un seul email par lead par passage
     }

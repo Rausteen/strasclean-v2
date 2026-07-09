@@ -166,6 +166,7 @@ function openDb(): Database.Database {
       review_step INTEGER NOT NULL DEFAULT 0,    -- relances demande d'avis Google
       completed_at INTEGER,                      -- horodatage de fin du job (ancre relances avis)
       confirmation_sent INTEGER NOT NULL DEFAULT 0, -- email de confirmation RDV envoyé
+      session_id TEXT,                           -- sid analytics → attribution (table visits)
       created_at INTEGER NOT NULL
     );
     CREATE INDEX IF NOT EXISTS jobs_ts ON jobs(ts DESC);
@@ -200,6 +201,7 @@ function openDb(): Database.Database {
       email_step INTEGER NOT NULL DEFAULT 0,     -- nb de relances email envoyées
       last_email_at INTEGER,
       email_opt_out INTEGER NOT NULL DEFAULT 0,  -- désinscription des relances
+      tg_notified INTEGER NOT NULL DEFAULT 0,    -- poussé sur Telegram (rattrapage panne)
       created_at INTEGER NOT NULL
     );
     CREATE INDEX IF NOT EXISTS leads_ts ON leads(ts DESC);
@@ -252,12 +254,24 @@ function openDb(): Database.Database {
     "ALTER TABLE jobs ADD COLUMN review_step INTEGER NOT NULL DEFAULT 0",
     "ALTER TABLE jobs ADD COLUMN completed_at INTEGER",
     "ALTER TABLE jobs ADD COLUMN confirmation_sent INTEGER NOT NULL DEFAULT 0",
+    "ALTER TABLE jobs ADD COLUMN session_id TEXT",
   ]) {
     try {
       db.exec(stmt);
     } catch {
       /* colonne déjà présente */
     }
+  }
+
+  // Migration tg_notified : ne s'exécute qu'une fois (l'ALTER échoue ensuite).
+  // L'historique est marqué notifié — les leads déjà en base à la migration ont
+  // été poussés sur Telegram (ou rattrapés à la main) ; seuls les leads
+  // ultérieurs entrent dans le circuit de rattrapage du poll.
+  try {
+    db.exec("ALTER TABLE leads ADD COLUMN tg_notified INTEGER NOT NULL DEFAULT 0");
+    db.exec("UPDATE leads SET tg_notified = 1");
+  } catch {
+    /* colonne déjà présente */
   }
 
   // Index dépendant d'une colonne ajoutée par migration (scheduled_at) : à créer
@@ -1080,6 +1094,19 @@ export function insertLead(l: LeadInput): number {
   return r.changes > 0 ? (r.lastInsertRowid as number) : 0;
 }
 
+/** Id du lead Meta pas encore poussé sur Telegram (0 si inconnu ou déjà fait). */
+export function getUnnotifiedLeadId(metaLeadId: string): number {
+  const row = db
+    .prepare(`SELECT id FROM leads WHERE meta_lead_id = ? AND tg_notified = 0`)
+    .get(metaLeadId) as { id: number } | undefined;
+  return row?.id ?? 0;
+}
+
+/** Marque un lead comme poussé sur Telegram (ou volontairement ignoré). */
+export function markLeadTgNotified(id: number): void {
+  db.prepare(`UPDATE leads SET tg_notified = 1 WHERE id = ?`).run(id);
+}
+
 export function listLeads(limit = 300): Lead[] {
   return db
     .prepare(`SELECT * FROM leads ORDER BY ts DESC, id DESC LIMIT ?`)
@@ -1232,21 +1259,49 @@ export type ReservationInput = {
   notes: string | null;
   source: string | null;
   lead_id: number | null;
+  session_id: string | null;
 };
 const insertReservationStmt = db.prepare(`
   INSERT INTO jobs
     (ts, scheduled_at, duration_min, phone, prestation, vehicle_type, price,
      supplements, total, collected, payment, source, status, notes,
-     customer_name, email, address, postal_code, lead_id, created_at)
+     customer_name, email, address, postal_code, lead_id, session_id, created_at)
   VALUES
     (@ts, @scheduled_at, @duration_min, @phone, @prestation, @vehicle_type, @price,
      0, @total, 0, NULL, @source, 'a_faire', @notes,
-     @customer_name, @email, @address, @postal_code, @lead_id, @created_at)
+     @customer_name, @email, @address, @postal_code, @lead_id, @session_id, @created_at)
 `);
 /** Crée une réservation = un job planifié (statut à faire). */
 export function insertReservation(r: ReservationInput): number {
   const res = insertReservationStmt.run({ ...r, created_at: Date.now() });
   return res.lastInsertRowid as number;
+}
+
+export type SessionAcquisition = {
+  source: string | null;
+  utm_source: string | null;
+  utm_campaign: string | null;
+  fbclid: string | null;
+  referer: string | null;
+};
+/**
+ * Attribution d'acquisition d'une session analytics (sid du Tracker) :
+ * dernière visite NON-directe de la session ("last non-direct touch" — une
+ * visite Google Ads suivie d'un retour direct reste attribuée à Google Ads),
+ * sinon la première visite. Null si la session est inconnue.
+ */
+export function getSessionAcquisition(sessionId: string): SessionAcquisition | null {
+  const rows = db
+    .prepare(
+      `SELECT source, utm_source, utm_campaign, fbclid, referer
+       FROM visits WHERE session_id = ? ORDER BY ts ASC LIMIT 500`,
+    )
+    .all(sessionId) as SessionAcquisition[];
+  if (!rows.length) return null;
+  for (let i = rows.length - 1; i >= 0; i--) {
+    if (rows[i].source && rows[i].source !== "direct") return rows[i];
+  }
+  return rows[0];
 }
 
 /** Annule une réservation (libère le créneau). */

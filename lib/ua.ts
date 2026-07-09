@@ -53,6 +53,44 @@ export type TrafficSource =
   | "referral"
   | "social";
 
+// Libellé FR court d'une acquisition (affiché sur les jobs, Telegram, stats).
+// Distingue Meta du reste du social via fbclid / utm_source / referer.
+export function acquisitionLabel(v: {
+  source: string | null;
+  utm_source?: string | null;
+  utm_campaign?: string | null;
+  fbclid?: string | null;
+  referer?: string | null;
+}): string {
+  let host = "";
+  try {
+    if (v.referer) host = new URL(v.referer).hostname.replace(/^www\./, "");
+  } catch {
+    /* referer illisible → pas de host */
+  }
+  switch (v.source) {
+    case "ads":
+      return v.utm_campaign ? `Google Ads (${v.utm_campaign})` : "Google Ads";
+    case "social": {
+      const meta =
+        !!v.fbclid ||
+        /facebook|instagram/.test(v.utm_source ?? "") ||
+        /facebook|instagram|fb\.com/.test(host);
+      return meta ? "Meta (FB/Insta)" : host || "Réseaux sociaux";
+    }
+    case "organic":
+      return host ? `SEO (${host})` : "SEO";
+    case "ai":
+      return host ? `IA (${host})` : "IA";
+    case "referral":
+      return host ? `Référent (${host})` : "Référent";
+    case "direct":
+      return "Direct";
+    default:
+      return "Inconnu";
+  }
+}
+
 export function classifySource(
   params: Record<string, string | undefined>,
   referer: string | null,

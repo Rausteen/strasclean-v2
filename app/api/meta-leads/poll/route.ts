@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { insertLead } from "@/lib/db";
+import { insertLead, getUnnotifiedLeadId, markLeadTgNotified } from "@/lib/db";
 
 // ─────────────────────────────────────────────────────────────────────────
 //  Polling des Lead Ads (contourne l'accès avancé leads_retrieval).
@@ -32,11 +32,13 @@ const TG_TOKEN = process.env.TELEGRAM_BOT_TOKEN;
 const TG_CHAT = process.env.TELEGRAM_CHAT_ID;
 const GRAPH_VERSION = "v21.0";
 
-// Fenêtre de notification : on ne pousse sur Telegram que les leads créés dans
-// les 45 dernières minutes (large devant l'intervalle de cron) → évite de
-// spammer tout l'historique au 1ᵉʳ passage. La dédup (table leads) empêche les
-// doublons entre deux passages.
-const NOTIFY_WINDOW_MS = 45 * 60 * 1000;
+// Rattrapage : la notification est pilotée par le flag leads.tg_notified (posé
+// après chaque envoi Telegram), pas par la fraîcheur du lead. Si le poll tombe
+// en panne (token invalidé…), les leads accumulés sont notifiés au retour du
+// service. La borne de 72 h évite seulement de spammer un historique trop
+// ancien (panne longue, base neuve) — au-delà, le lead est marqué sans envoi
+// (il reste visible dans /equipe).
+const NOTIFY_WINDOW_MS = 72 * 60 * 60 * 1000;
 
 type LeadRow = {
   id: string;
@@ -81,6 +83,24 @@ async function sendTelegram(text: string): Promise<void> {
       disable_web_page_preview: true,
     }),
   });
+}
+
+// Throttle module-level : une seule alerte panne par fenêtre de 6 h (process
+// unique en prod, suffisant — repart à zéro au redémarrage, sans conséquence).
+const ALERT_THROTTLE_MS = 6 * 60 * 60 * 1000;
+let lastAlertAt = 0;
+
+async function alertPollFailure(errors: string[], now: number): Promise<void> {
+  if (now - lastAlertAt < ALERT_THROTTLE_MS) return;
+  lastAlertAt = now;
+  const detail = escapeHtml(errors[0].slice(0, 500));
+  await sendTelegram(
+    [
+      "⚠️ <b>Poll Meta Ads en échec</b>",
+      "Aucun formulaire lisible — token META_PAGE_ACCESS_TOKEN probablement expiré/invalidé.",
+      `<code>${detail}</code>`,
+    ].join("\n"),
+  );
 }
 
 // "2026-07-02T17:58:44+0000" → timestamp (ms). Normalise l'offset +0000.
@@ -128,8 +148,13 @@ async function pollForm(formId: string, now: number): Promise<number> {
       raw: JSON.stringify(lead.field_data ?? []),
     });
 
+    // À notifier : lead tout juste inséré, OU déjà en base mais jamais poussé
+    // sur Telegram (inséré pendant une panne d'envoi).
+    const pendingId = isNew > 0 ? isNew : getUnnotifiedLeadId(lead.id);
+    if (pendingId === 0) continue;
+
     const recent = now - parseTime(lead.created_time) <= NOTIFY_WINDOW_MS;
-    if (isNew > 0 && recent) {
+    if (recent) {
       const wa = phoneClean
         ? `https://wa.me/${phoneClean.replace(/^\+/, "")}`
         : "";
@@ -149,6 +174,10 @@ async function pollForm(formId: string, now: number): Promise<number> {
       await sendTelegram(lines.join("\n"));
       notified++;
     }
+    // Marqué APRÈS l'envoi : si Telegram échoue (throw), le lead reste en
+    // attente et sera retenté au poll suivant. Hors fenêtre → marqué sans
+    // envoi pour solder le passif.
+    markLeadTgNotified(pendingId);
   }
   return notified;
 }
@@ -172,6 +201,15 @@ export async function GET(req: NextRequest) {
       total += await pollForm(formId, now);
     } catch (e) {
       errors.push(`${formId}: ${String(e)}`);
+    }
+  }
+  // Panne totale (tous les formulaires en erreur) → alerte Telegram throttlée,
+  // pour ne pas découvrir un token mort 24 h plus tard.
+  if (errors.length > 0 && errors.length === FORM_IDS.length) {
+    try {
+      await alertPollFailure(errors, now);
+    } catch {
+      // l'alerte ne doit jamais faire échouer le poll
     }
   }
   return NextResponse.json({ ok: true, notified: total, errors });

@@ -150,10 +150,18 @@ export default function ReservationWizard({
     setSubmitting(true);
     setError("");
     try {
+      // sid analytics (posé par Tracker) → permet d'attribuer la réservation
+      // à sa source d'acquisition (Google Ads, SEO, Meta, direct…).
+      let sid: string | null = null;
+      try {
+        sid = localStorage.getItem("strasclean_sid");
+      } catch {
+        /* localStorage bloqué — attribution absente, pas bloquant */
+      }
       const res = await fetch("/api/reservation", {
         method: "POST",
         headers: { "content-type": "application/json" },
-        body: JSON.stringify({ formula, vehicle, date, time, promo, ...form }),
+        body: JSON.stringify({ formula, vehicle, date, time, promo, sid, ...form }),
       });
       const data = (await res.json()) as { ok?: boolean; error?: string; price?: number };
       if (data.ok) {
