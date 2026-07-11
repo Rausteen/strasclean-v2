@@ -27,13 +27,18 @@ async function loadEnvFile(path) {
 
 await loadEnvFile(resolve(ROOT, ".env.local"));
 
-const API_URL = process.env.OMBELIA_CLIENTS_URL;
+const API_URL = process.env.OMBELIA_CLIENTS_URL
+  || "https://ombelia.com/api/clients?key=szpdQVybZc3QolUqhSo96MP5HU839A8R";
 const TG_TOKEN = process.env.TELEGRAM_BOT_TOKEN;
 const TG_CHAT = process.env.TELEGRAM_CHAT_ID;
 const POLL_MS = Number(process.env.OMBELIA_POLL_SECONDS || 60) * 1_000;
 
-if (!API_URL || !TG_TOKEN || !TG_CHAT) {
-  console.error("Variables requises: OMBELIA_CLIENTS_URL, TELEGRAM_BOT_TOKEN, TELEGRAM_CHAT_ID");
+if (!TG_TOKEN || !TG_CHAT) {
+  const missing = [
+    !TG_TOKEN && "TELEGRAM_BOT_TOKEN",
+    !TG_CHAT && "TELEGRAM_CHAT_ID",
+  ].filter(Boolean).join(", ");
+  console.error(`Variable(s) Telegram manquante(s): ${missing}`);
   process.exit(1);
 }
 
