@@ -6,6 +6,7 @@ dist
 !.env.example
 .DS_Store
 *.log
+scripts/.ombelia-clients-state.json
 .vscode
 .idea
 tsconfig.tsbuildinfo
