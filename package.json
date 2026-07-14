@@ -10,9 +10,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "indexnow": "node scripts/indexnow.mjs",
-    "watch:ombelia": "node scripts/watch-ombelia-clients.mjs",
-    "watch:ombelia:once": "node scripts/watch-ombelia-clients.mjs --once"
+    "indexnow": "node scripts/indexnow.mjs"
   },
   "dependencies": {
     "better-sqlite3": "12.10.0",
